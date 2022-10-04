@@ -67,6 +67,10 @@ de:
       student:
         one: Schüler*in
         other: Schüler*innen
+      theme:
+        one: Wortkarten-Variante
+        other: Wortkarten-Varianten
+
     attributes:
       user:
         first_name: Vorname
@@ -197,3 +201,9 @@ de:
         plural_1_pronoun: wir
         plural_2_pronoun: ihr
         plural_3_pronoun: sie
+      theme:
+        name: Name
+        description: Beschreibung
+        word_type: Wortart
+        template: Template
+        visibility: Sichtbarkeit

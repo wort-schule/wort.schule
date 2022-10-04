@@ -51,6 +51,7 @@ Rails.application.routes.draw do
   resources :compound_postconfixes
   resources :compound_phonemreductions
   resources :compound_vocalalternations
+  resources :themes
 
   # User's own routes
   resource :profile, only: %i[show edit update]

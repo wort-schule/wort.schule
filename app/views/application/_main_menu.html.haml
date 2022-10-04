@@ -29,6 +29,19 @@
           = dropdown_link CompoundPhonemreduction
           = dropdown_link CompoundVocalalternation
 
+- if [Theme].any? { |klass| can? :read, klass }
+  .text-gray-300.hover:bg-primary-hover.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
+    .relative(data-controller="dropdown reveal")
+      .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
+        %span.appearance-none.flex.items-center.inline-block.text-gray-300.gap-1
+          .md:hidden(data-reveal-target="item")= heroicon 'chevron-right'
+          .hidden.md:hidden(data-reveal-target="item")= heroicon 'chevron-down'
+          = t('navigation.learning')
+          .hidden.md:block= heroicon 'chevron-down'
+      .md:absolute.md:right-0.mt-2special_entries.hidden.z-50(data-dropdown-target="menu")
+        .md:bg-primary-hover.md:shadow.rounded-md.md:border.md:border-primary-hover.overflow-hidden
+          = dropdown_link Theme
+
 .md:hidden
   = link_to search_path, class: "block navigation #{params[:controller] == 'searches' ? 'active' : ''}" do
     .flex.items-center.gap-2

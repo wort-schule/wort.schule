@@ -231,6 +231,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_105512) do
     t.index ["school_id", "teacher_id"], name: "index_teaching_assignments_on_school_id_and_teacher_id", unique: true
   end
 
+  create_table "themes", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.text "template"
+    t.string "word_type", default: "noun"
+    t.string "visibility", default: "private"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_themes_on_name", unique: true
+    t.index ["user_id"], name: "index_themes_on_user_id"
+  end
+
   create_table "topics", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -347,6 +360,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_105512) do
   add_foreign_key "learning_group_memberships", "users", column: "student_id"
   add_foreign_key "learning_groups", "schools"
   add_foreign_key "learning_groups", "users", column: "teacher_id"
+  add_foreign_key "themes", "users"
   add_foreign_key "words", "hierarchies"
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"

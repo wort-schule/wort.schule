@@ -1,0 +1,55 @@
+# frozen_string_literal: true
+
+class ThemesController < ApplicationController
+  load_and_authorize_resource
+
+  def index
+    @themes = @themes.order(:name).page(params[:page])
+  end
+
+  def show
+  end
+
+  def new
+  end
+
+  def create
+    @theme.user = current_user
+
+    if @theme.save
+      redirect_to @theme, notice: t("notices.shared.created", name: @theme.name, class_name: Theme.model_name.human)
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @theme.update(theme_params)
+      redirect_to @theme, notice: t("notices.shared.updated", name: @theme.name, class_name: Theme.model_name.human)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    destroyed = @theme.destroy
+    notice = if destroyed
+      {notice: t("notices.shared.destroyed", name: @theme.name, class_name: Theme.model_name.human)}
+    else
+      {alert: t("alerts.shared.destroyed", name: @theme.name)}
+    end
+
+    redirect_to themes_url, notice
+  end
+
+  private
+
+  def theme_params
+    params.require(:theme).permit(
+      :name, :description, :word_type, :template, :visibility
+    )
+  end
+end

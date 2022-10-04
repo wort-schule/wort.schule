@@ -227,3 +227,10 @@ de:
   searches:
     show:
       title: Suchen und Filtern
+  themes:
+    index:
+      new: Neue Wortkarten-Variante
+    new:
+      title: Wortkarten-Variante erstellen
+    edit:
+      title: Wortkarten-Variante bearbeiten
