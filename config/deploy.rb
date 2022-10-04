@@ -12,7 +12,7 @@ set :application_name, 'wortschule'
 set :domain, 'wort.schule'
 set :user, fetch(:application_name)
 set :deploy_to, "/home/wortschule/app"
-set :repository, 'git@github.com:wintermeyer/wort.schule.git'
+set :repository, 'git@github.com:wort-schule/wort.schule.git'
 set :branch, 'main'
 set :rvm_use_path, '/etc/profile.d/rvm.sh'
 
