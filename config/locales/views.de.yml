@@ -1,0 +1,228 @@
+de:
+  navigation:
+    special_entries: Spezialeinträge
+  profiles:
+    show:
+      title: Mein Profil
+      change_password: Passwort ändern
+      change_email: E-Mail Adresse ändern
+      learning_groups: Meine Lerngruppen
+    edit:
+      title: Mein Profil bearbeiten
+  users:
+    passwords:
+      edit:
+        title: Passwort ändern
+    index:
+      new: Neue Benutzer*in
+    show:
+      title: Profil
+      learning_groups: Lerngruppen
+    new:
+      title: Benutzer*in erstellen
+    edit:
+      title: Benutzer*in bearbeiten
+  devise:
+    sessions:
+      new:
+        no_account: Kein Konto?
+    registrations:
+      new:
+        already_have_account: Bereits registriert?
+    passwords:
+      new:
+        forgot_your_password: Passwort vergessen?
+        send_me_reset_password_instructions: Passwort zurücksetzen
+  nouns:
+    index:
+      new: Neues Substantiv
+    new:
+      title: Substantiv erstellen
+    edit:
+      title: Substantiv bearbeiten
+  verbs:
+    index:
+      new: Neues Verb
+    new:
+      title: Verb erstellen
+    edit:
+      title: Verb bearbeiten
+  adjectives:
+    index:
+      new: Neues Adjektiv
+    new:
+      title: Adjektiv erstellen
+    edit:
+      title: Adjektiv bearbeiten
+  words:
+    actions:
+      create: Erstellt
+      destroy: Gelöscht
+      update: Bearbeitet
+    versions:
+      title: Änderungshistorie
+      changed_by: '%{action} von %{username} am %{datetime}'
+      no_versions: Dieses Wort wurde noch nicht geändert.
+    show:
+      general:
+        title: Bedeutung
+        description: Erklärung und thematische Einordnung
+      word_properties:
+        title: Wortbildung
+        description: Silben und Klassifizierung
+      noun:
+        title: Substantiv
+        description: spezifische Eigenschaften des Substantivs
+      cases:
+        title: Fälle / Kasus
+        description: ""
+      example_sentences:
+        title: Beispielsätze
+        description: ""
+        new: Neuer Beispielsatz
+      relations:
+        title: Wortbeziehungen
+        description: ""
+      adjective:
+        title: Adjektiv
+        description: spezifische Eigenschaften des Adjektivs
+      verb:
+        title: Verb
+        description: spezifische Eigenschaften des Verbs
+        tense:
+          title: Zeitformen
+          description: ""
+  schools:
+    index:
+      new: Neue Schule
+    show:
+      assign_teacher: Lehrer*in hinzufügen
+    new:
+      title: Schule erstellen
+    edit:
+      title: Schule bearbeiten
+  sources:
+    index:
+      new: Neue Quelle
+    new:
+      title: Neue Quelle
+    edit:
+      title: Quelle bearbeiten
+  teaching_assignments:
+    new:
+      title: Lehrer*in hinzufügen
+      assign: Hinzufügen
+  learning_group_memberships:
+    new:
+      title: Schüler*in hinzufügen
+      assign: Hinzufügen
+  function_words:
+    index:
+      new: Neues Funktionswort
+    new:
+      title: Neues Funktionswort
+    edit:
+      title: Funktionswort bearbeiten
+  topics:
+    index:
+      new: Neues Thema
+    new:
+      title: Neues Thema
+    edit:
+      title: Thema bearbeiten
+  hierarchies:
+    index:
+      new: Neue Kategorie
+    new:
+      title: Neue Kategorie
+    edit:
+      title: Kategorie bearbeiten
+  prefixes:
+    index:
+      new: Neue Vorsilbe
+    new:
+      title: Neue Vorsilbe
+    edit:
+      title: Vorsilbe bearbeiten
+  postfixes:
+    index:
+      new: Neue Endung
+    new:
+      title: Neue Endung
+    edit:
+      title: Endung bearbeiten
+  phenomenons:
+    index:
+      new: Neues Rechtschreibphänomen
+    new:
+      title: Neues Rechtschreibphänomen
+    edit:
+      title: Rechtschreibphänomen bearbeiten
+  strategies:
+    index:
+      new: Neue Rechtschreibstrategie
+    new:
+      title: Neue Rechtschreibstrategie
+    edit:
+      title: Rechtschreibstrategie bearbeiten
+  compound_interfixes:
+    index:
+      new: Neue Fuge
+    new:
+      title: Neue Fuge
+    edit:
+      title: Fuge bearbeiten
+  compound_preconfixes:
+    index:
+      new: Neues Präkonfix
+    new:
+      title: Neues Präkonfix
+    edit:
+      title: Präkonfix bearbeiten
+  compound_postconfixes:
+    index:
+      new: Neues Postkonfix
+    new:
+      title: Neues Postkonfix
+    edit:
+      title: Postkonfix bearbeiten
+  compound_phonemreductions:
+    index:
+      new: Neue Phonemreduktion
+    new:
+      title: Neue Phonemreduktion
+    edit:
+      title: Phonemreduktion bearbeiten
+  compound_vocalalternations:
+    index:
+      new: Neue Vokalalternation
+    new:
+      title: Neue Vokalalternation
+    edit:
+      title: Vokalalternation bearbeiten
+  learning_groups:
+    index:
+      new: Neue Lerngruppe
+    show:
+      assign_student: Schüler*in hinzufügen
+      request_access: Gruppe beitreten
+      accept: Zulassen
+      reject: Ablehnen
+    new:
+      title: Neue Lerngruppe
+    edit:
+      title: Lerngruppe bearbeiten
+    invitation:
+      title: Link für Einladungen
+      active: Aktiv
+      active_help: Der folgende Link kann von Schüler*innen verwendet werden um dieser Lerngruppe beizutreten.
+      inactive_html: Einladungen sind <b>deaktiviert</b>. Schüler*innen können einzeln von der Lehrer*in oder einer Administrator*in der Lerngruppe hinzugefügt werden.
+      activate: Aktivieren
+      activate_help: Das Aktivieren erstellt einen Link, der es jeder Schüler*in ermöglicht der Lerngruppe beizutreten. Dies kann jederzeit deaktiviert werden.
+      deactivate: Deaktivieren
+      copy: In Zwischenablage kopieren
+      copied: Kopiert!
+      accepted_html: Du bist der Lerngruppe &laquo;%{name}&raquo; beigetreten.
+  searches:
+    show:
+      title: Suchen und Filtern

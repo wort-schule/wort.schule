@@ -1,0 +1,13 @@
+de:
+  enumerize:
+    user:
+      role:
+        Guest: Keine
+        Student: Schüler*in
+        Teacher: Lehrer*in
+        Admin: Admin
+    prefix:
+      prefix_type:
+        Verb: Verb
+        adjective: Adjektiv
+        noun: Substantiv

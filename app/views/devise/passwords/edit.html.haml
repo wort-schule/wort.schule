@@ -1,0 +1,22 @@
+.min-h-full.flex.items-center.justify-center.py-12.px-4.sm:px-6.lg:px-8
+  .max-w-md.w-full.space-y-8
+    %div
+      = image_tag 'logo.png', class: 'mx-auto h-12 w-auto', alt: ''
+      %h2.mt-6.text-center.text-3xl.font-extrabold.text-gray-900= t('.change_your_password')
+      %p.mt-2.text-center.text-sm.text-gray-600
+        = link_to t('devise.shared.links.sign_in'), new_user_session_path, class: 'font-medium text-indigo-600 hover:text-indigo-500'
+        = t('shared.or')
+        = link_to t('devise.shared.links.sign_up'), new_user_registration_path, class: 'font-medium text-indigo-600 hover:text-indigo-500'
+
+    = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+      = box class: 'px-4 py-5 sm:px-6' do
+        = f.error_notification
+
+        = f.input :reset_password_token, as: :hidden, autofocus: true
+        = f.full_error :reset_password_token
+
+        = f.input :password, label: t(".new_password"), required: true, autofocus: true, hint: (t('devise.shared.minimum_password_length', count: @minimum_password_length) if @minimum_password_length), input_html: { autocomplete: "new-password" }
+        = f.input :password_confirmation, label: t(".confirm_new_password"), required: true, input_html: { autocomplete: "new-password" }
+
+        .form-actions
+          = f.submit value: t('.change_my_password'), class: 'group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'

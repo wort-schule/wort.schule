@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = button_to t('actions.delete'), adjective_path(@adjective), class: 'button danger', method: :delete, data: { confirm: t('confirmations.adjectives.destroy', adjective: @adjective.name) } if can?(:destroy, @adjective)
+
+= render 'form'

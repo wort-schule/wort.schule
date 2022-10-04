@@ -1,0 +1,7 @@
+= title_with_actions <%= singular_table_name.titleize.gsub(/\s/, '') %>.model_name.human(count: 2) do
+  = link_to t('.new'), new_<%= singular_table_name %>_path, class: 'button primary'
+
+= index_grid do
+  = render @<%= plural_table_name %>
+
+= paginate @<%= plural_table_name %>

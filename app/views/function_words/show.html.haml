@@ -1,0 +1,20 @@
+= title_with_actions @function_word.name
+
+= two_column_card FunctionWord.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Word.human_attribute_name(:name))) do
+        = @function_word.name
+    
+      = render(list.add(FunctionWord.human_attribute_name(:function_type))) do
+        = t @function_word.function_type, scope: %i[activerecord attributes function_word function_types]
+    
+      = render(list.add(Word.human_attribute_name(:syllables))) do
+        = @function_word.syllables
+    
+      = render(list.add(Word.human_attribute_name(:written_syllables))) do
+        = @function_word.written_syllables
+    
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_function_word_path(@function_word), class: 'button primary'

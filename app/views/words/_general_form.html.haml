@@ -1,0 +1,29 @@
+= two_column_card t('words.show.general.title'), t('words.show.general.description'), first: true do
+  = box do
+    = f.input :actable_type, input_html: {value: word.class.model_name.human}, disabled: true, label: Word.human_attribute_name(:type)
+    = f.input :name, autofocus: true, label: Word.human_attribute_name(:name) if show_name
+    = f.input :image, label: Word.human_attribute_name(:image)
+    = f.input :meaning, label: Word.human_attribute_name(:meaning)
+    = f.input :meaning_long, as: :text, label: Word.human_attribute_name(:meaning_long)
+    = f.association :hierarchy, label: Word.human_attribute_name(:hierarchy)
+    = f.association :topics, input_html: {'data-controller': 'select'}, label: Word.human_attribute_name(:topics)
+
+= two_column_card t('words.show.word_properties.title'), t('words.show.word_properties.description') do
+  = box do
+    = f.input :syllables, label: Word.human_attribute_name(:syllables)
+    = f.input :written_syllables, label: Word.human_attribute_name(:written_syllables)
+    = f.input :prototype, label: Word.human_attribute_name(:prototype), as: :boolean
+    = f.input :foreign, label: Word.human_attribute_name(:foreign), as: :boolean
+    = f.input :compound, label: Word.human_attribute_name(:compound), as: :boolean
+    = f.association :prefix, label: Word.human_attribute_name(:prefix)
+    = f.association :postfix, label: Word.human_attribute_name(:postfix)
+    = f.association :strategies, input_html: {'data-controller': 'select'}, label: Word.human_attribute_name(:strategies)
+    = f.association :phenomenons, input_html: {'data-controller': 'select'}, label: Word.human_attribute_name(:phenomenons)
+    = f.association :compound_entities, collection: f.object.compound_entities, input_html: {'data-controller': 'select', 'data-select-url-value': compounds_path}, label: Word.human_attribute_name(:compound_entities)
+
+= two_column_card t('words.show.relations.title'), t('words.show.relations.description') do
+  = box do
+    = f.association :synonyms, input_html: {'data-controller': 'select'}, label: Word.human_attribute_name(:synonyms)
+    = f.association :opposites, input_html: {'data-controller': 'select'}, label: Word.human_attribute_name(:opposites)
+    = f.association :keywords, input_html: {'data-controller': 'select'}, label: Word.human_attribute_name(:keywords)
+    = f.association :rimes, input_html: {'data-controller': 'select'}, label: Word.human_attribute_name(:rimes)

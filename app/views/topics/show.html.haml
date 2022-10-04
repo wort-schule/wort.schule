@@ -1,0 +1,13 @@
+= title_with_actions @topic.name
+
+= two_column_card Topic.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Topic.human_attribute_name(:name))) do
+        = @topic.name
+    
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_topic_path(@topic), class: 'button primary'

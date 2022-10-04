@@ -1,0 +1,11 @@
+%h1= t '.title'
+
+= index_grid do
+  - @students.each do |student|
+    = box do
+      .flex.justify-between.items-center{id: dom_id(student)}
+        = student
+        = form_with url: school_learning_group_learning_group_memberships_path(@school, @learning_group) do |f|
+          = f.hidden_field 'learning_group_membership[student_id]', value: student.id
+          = button_tag :submit, class: 'button' do
+            = t('.assign')

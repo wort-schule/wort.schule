@@ -1,0 +1,17 @@
+= simple_form_for @adjective, html: {data: {controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper'}} do |f|
+  = two_column_card t('words.show.adjective.title'), t('words.show.adjective.description'), first: true do
+    = box padding: false do
+      = box_content do
+        = f.input :name, autofocus: true
+        = f.input :comparative
+        = f.input :superlative
+        = f.input :absolute
+        = f.input :irregular_comparison
+        = f.input :irregular_declination
+
+  = render 'words/general_form', word: @adjective, f:, show_name: false
+
+  .md:grid.md:grid-cols-3.md:gap-6.my-6
+    .md:col-span-1
+    .mt-5.md:mt-0.md:col-span-2
+      = f.submit

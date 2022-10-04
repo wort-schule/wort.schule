@@ -1,0 +1,24 @@
+= title_with_actions @source.name
+
+= two_column_card Source.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+      = render(list.add(Source.human_attribute_name(:name))) do
+        = @source.name
+
+      = render(list.add(Source.human_attribute_name(:author))) do
+        = @source.author
+
+      = render(list.add(Source.human_attribute_name(:licence))) do
+        = @source.licence
+
+      = render(list.add(Source.human_attribute_name(:source_url))) do
+        = link_to_if @source.source_url.present?, @source.source_url, @source.source_url, target: '_blank', rel: 'noopener noreferrer'
+
+      = render(list.add(Source.human_attribute_name(:comment))) do
+        = @source.comment
+
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_source_path(@source), class: 'button primary'

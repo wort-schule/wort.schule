@@ -1,0 +1,8 @@
+= box padding: false do
+  = simple_form_for @compound_preconfix do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+
+    = box_footer do
+      = f.submit
+      = cancel_button @compound_preconfix.new_record? ? compound_preconfixes_path : compound_preconfix_path(@compound_preconfix)

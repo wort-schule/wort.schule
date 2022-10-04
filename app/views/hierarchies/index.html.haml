@@ -1,0 +1,8 @@
+= title_with_actions Hierarchy.model_name.human(count: 2)
+
+= index_grid do
+  = render @hierarchies
+
+.pagination-with-actions
+  = paginate @hierarchies
+  = link_to t('.new'), new_hierarchy_path, class: 'button primary'

@@ -1,0 +1,13 @@
+-#  Link to the "First" page
+-#  available local variables
+-#    url:           url to the first page
+-#    current_page:  a page object for the currently displayed page
+-#    total_pages:   total number of pages
+-#    per_page:      number of items to fetch per page
+-#    remote:        data-remote
+- unless current_page.first?
+  = link_to url, remote: remote, class: "page bg-white border-gray-300 text-gray-500 hover:bg-gray-50 rounded-l-md relative inline-flex items-center px-4 py-2 border text-sm font-medium" do
+    %span.sr-only= t('views.pagination.first')
+    <!-- Heroicon name: solid/chevron-double-left -->
+    %svg.h-4.w-4(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2")
+      %path(stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7")

@@ -1,0 +1,9 @@
+= two_column_card t('.title'), "", first: true do
+  = box padding: false do
+    = render UserProfileAttributesComponent.new(user: @user)
+
+- if @user.student?
+  = two_column_card t('.learning_groups'), "" do
+    = box padding: false do
+      - Student.find(@user.id).learning_groups.each do |learning_group|
+        .p-4= link_to learning_group.name, [learning_group.school, learning_group]

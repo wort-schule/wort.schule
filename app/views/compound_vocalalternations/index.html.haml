@@ -1,0 +1,8 @@
+= title_with_actions CompoundVocalalternation.model_name.human(count: 2)
+
+= index_grid do
+  = render @compound_vocalalternations
+
+.pagination-with-actions
+  = paginate @compound_vocalalternations
+  = link_to t('.new'), new_compound_vocalalternation_path, class: 'button primary'

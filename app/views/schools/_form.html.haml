@@ -1,0 +1,6 @@
+= box do
+  = simple_form_for @school do |f|
+    = f.input :name, autofocus: true
+
+    = f.submit
+    = cancel_button schools_path

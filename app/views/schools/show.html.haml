@@ -1,0 +1,29 @@
+= title_with_actions @school.name
+
+- if can? :read_teachers, @school
+  = two_column_card Teacher.model_name.human(count: 2), "", first: true do
+    = box padding: false do
+      - if can? :create, TeachingAssignment.new(school: @school)
+        .px-4.py-5.flex.justify-end
+          = link_to t('.assign_teacher'), new_school_teaching_assignment_path(@school), class: 'button primary'
+
+      = box_description_list do |list|
+        - @school.teaching_assignments.each do |assignment|
+          = render(list.add(assignment.teacher.decorate.display_name)) do
+            %div
+            .ml-4.flex-shrink-0
+              = button_to t('actions.remove'), school_teaching_assignment_path(@school, assignment), method: :delete, class: 'button' if can? :destroy, assignment
+
+= two_column_card LearningGroup.model_name.human(count: 2), "" do
+  = box padding: false, class: 'striped' do
+    - if can? :create, LearningGroup.new(school: @school, teacher: current_user.teacher? ? Teacher.find(current_user.id) : nil)
+      %div
+        .px-4.py-5.flex.justify-end
+          = link_to t('learning_groups.index.new'), new_school_learning_group_path(@school), class: 'button primary'
+        %hr
+
+    - @school.learning_groups.each do |learning_group|
+      .p-4= link_to_if can?(:show, learning_group), learning_group.name, [@school, learning_group]
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_school_path(@school), class: 'button primary' if can? :edit, @school

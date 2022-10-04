@@ -1,0 +1,198 @@
+de:
+  activerecord:
+    models:
+      noun:
+        one: Substantiv
+        other: Substantive
+      school:
+        one: Schule
+        other: Schulen
+      user:
+        one: Benutzer*in
+        other: Benutzer*innen
+      teacher:
+        one: Lehrer*in
+        other: Lehrer*innen
+      verb:
+        one: Verb
+        other: Verben
+      adjective:
+        one: Adjektiv
+        other: Adjektive
+      source:
+        one: Quelle
+        other: Quellen
+      word:
+        one: Wort
+        other: Wörter
+      function_word:
+        one: Funktionswort
+        other: Funktionswörter
+      topic:
+        one: Thema
+        other: Themen
+      hierarchy:
+        one: Kategorie
+        other: Kategorien
+      prefix:
+        one: Vorsilbe
+        other: Vorsilben
+      postfix:
+        one: Endung
+        other: Endungen
+      phenomenon:
+        one: Rechtschreibphänomen
+        other: Rechtschreibphänomene
+      strategy:
+        one: Rechtschreibstrategie
+        other: Rechtschreibstrategie
+      compound_interfix:
+        one: Fuge
+        other: Fugen
+      compound_preconfix:
+        one: Präkonfix
+        other: Präkonfixe
+      compound_postconfix:
+        one: Postkonfix
+        other: Postkonfixe
+      compound_phonemreduction:
+        one: Phonemreduktion
+        other: Phonemreduktionen
+      compound_vocalalternation:
+        one: Vokalalternation
+        other: Vokalalternation
+      learning_group:
+        one: Lerngruppe
+        other: Lerngruppen
+      student:
+        one: Schüler*in
+        other: Schüler*innen
+    attributes:
+      user:
+        first_name: Vorname
+        last_name: Nachname
+        role: Rolle
+      word:
+        type: Wortart
+        name: Wort
+        image: Bild
+        hierarchy: Kategorie
+        topics: Themen
+        meaning: Bedeutung
+        meaning_long: Erklärung
+        prototype: Modellwort
+        foreign: Fremdwort
+        compound: Zusammensetzung
+        prefix_id: Vorsilbe
+        prefix: Vorsilbe
+        postfix_id: Endung
+        postfix: Endung
+        syllables: Sprechsilben
+        written_syllables: Schreibsilben
+        strategies: Strategien
+        phenomenons: Phänomene
+        synonyms: Synonyme
+        opposites: Gegenteile
+        keywords: Stichwörter
+        rimes: Reimwörter
+        compound_entities: Bausteine
+      noun:
+        name: Grundform
+        singularetantum: Singularwort
+        pluraletantum: Pluralwort
+        genus_id: Geschlecht
+        case_1: '1. Fall / Nominativ'
+        case_1_question: 'Wer oder was?'
+        case_2: '2. Fall / Genitiv'
+        case_2_question: 'Wessen?'
+        case_3: '3. Fall / Dativ'
+        case_3_question: 'Wem?'
+        case_4: '4. Fall / Akkusativ'
+        case_4_question: 'Wen oder was?'
+        singular: Singular
+        plural: Plural
+        genus_neuter: Form (Neutrum)
+        genus_masculine: Form (Maskulinum)
+        genus_feminine: Form (Femininum)
+      source:
+        name: Bezeichnung
+        author: Autor*in(nen)
+        licence: Lizenz
+        source_url: Link zur Quelle
+        comment: Kommentar
+      function_word:
+        function_type: Worttyp
+        function_types:
+          article_definite: "Bestimmter Artikel"
+          article_indefinite: "Unbestimmter Artikel"
+          auxiliary_verb: "Hilfsverb"
+          conjunction: "Konjunktion"
+          preposition: "Präposition"
+          pronoun: "Pronomen"
+      paper_trail/version:
+        index: Version
+      topic:
+        name: Bezeichnung
+      hierarchy:
+        name: Bezeichnung
+        parent: Übergeordnete Kategorie
+      prefix:
+        name: Bezeichnung
+        prefix_type: Typ
+        separable: Trennbar
+        inseparable: Untrennbar
+      postfix:
+        name: Bezeichnung
+      phenomenon:
+        name: Bezeichnung
+        description: Beschreibung
+      strategy:
+        name: Bezeichnung
+        description: Beschreibung
+      compound_interfix:
+        name: Bezeichnung
+      compound_preconfix:
+        name: Bezeichnung
+      compound_postconfix:
+        name: Bezeichnung
+      compound_phonemreduction:
+        name: Bezeichnung
+      compound_vocalalternation:
+        name: Bezeichnung
+      learning_group:
+        name: Bezeichnung
+        teacher: Lehrer*in
+        school: Schule
+      adjective:
+        name: Grundform
+        absolute: Absolutes Adjektiv (nicht steigerbar)
+        comparative: Komparativ
+        irregular_comparison: Unregelmäßige Komparation
+        irregular_declination: Unregelmäßige Deklination
+        superlative: Superlativ
+      verb:
+        name: Grundform
+        subjectless: Subjektloses Verb
+        modal: Modalverb
+        strong: Starkes Verb
+        imperative: Imperativ
+        singular: Singular
+        plural: Plural
+        imperative_singular: Imperativ (singular)
+        imperative_plural: Imperativ (plural)
+        participle_both: Partizip
+        participle: Partizip 1
+        past_participle: Partizip 2
+        perfect: Perfektbildung
+        perfect_haben_short: 'über "haben"'
+        perfect_sein_short: 'über "sein"'
+        perfect_haben: 'Perfektbildung über "haben"'
+        perfect_sein: 'Perfektbildung über "sein"'
+        present: Präsens
+        past: Präteritum
+        singular_1_pronoun: ich
+        singular_2_pronoun: du
+        singular_3_pronoun: er/sie/es
+        plural_1_pronoun: wir
+        plural_2_pronoun: ihr
+        plural_3_pronoun: sie

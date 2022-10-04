@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = button_to t('actions.delete'), compound_preconfix_path(@compound_preconfix), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @compound_preconfix.name) } if can?(:destroy, @compound_preconfix)
+
+= render 'form'

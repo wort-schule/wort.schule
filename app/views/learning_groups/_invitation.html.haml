@@ -1,0 +1,16 @@
+.flex.flex-col.w-full.gap-4
+  - if learning_group.invitable?
+    %b= t '.active'
+    %span= t '.active_help'
+
+    - invitation_url = school_learning_group_invitation_url(@school, @learning_group, token: learning_group.invitation_token)
+    .flex.flex-col.gap-1(data-controller="clipboard"){ 'data-clipboard-success-content': t('.copied') }
+      %input.pre(type="text" name="invitation_url" readonly data-clipboard-target="source"){ value: invitation_url }
+      %button.self-end(type="button" data-action="clipboard#copy" data-clipboard-target="button")
+        = t '.copy'
+
+    = button_to t('.deactivate'), school_learning_group_invitation_path(@school, @learning_group), method: :delete, class: 'button md:self-start'
+  - else
+    %div= t '.inactive_html'
+    = button_to t('.activate'), school_learning_group_invitation_path(@school, @learning_group), class: 'button md:self-start'
+    %div= t '.activate_help'

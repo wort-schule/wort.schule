@@ -1,0 +1,3 @@
+= link_if(can?(:show, postfix), postfix, id: dom_id(postfix)) do
+  = box class: 'h-full' do
+    = postfix.name

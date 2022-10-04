@@ -1,0 +1,22 @@
+= title_with_actions @prefix.name
+
+= two_column_card Prefix.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Prefix.human_attribute_name(:name))) do
+        = @prefix.name
+    
+      = render(list.add(Prefix.human_attribute_name(:prefix_type))) do
+        = @prefix.prefix_type_text
+    
+      = render(list.add(Prefix.human_attribute_name(:separable))) do
+        = @prefix.separable.humanize
+    
+      = render(list.add(Prefix.human_attribute_name(:inseparable))) do
+        = @prefix.inseparable.humanize
+    
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_prefix_path(@prefix), class: 'button primary'

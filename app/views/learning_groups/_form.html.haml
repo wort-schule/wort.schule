@@ -1,0 +1,10 @@
+= box padding: false do
+  = simple_form_for [@school, @learning_group] do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+      - unless current_user.teacher?
+        = f.association :teacher
+
+    = box_footer do
+      = f.submit
+      = cancel_button school_path(@school)

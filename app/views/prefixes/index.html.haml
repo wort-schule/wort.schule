@@ -1,0 +1,8 @@
+= title_with_actions Prefix.model_name.human(count: 2)
+
+= index_grid do
+  = render @prefixes
+
+.pagination-with-actions
+  = paginate @prefixes
+  = link_to t('.new'), new_prefix_path, class: 'button primary'

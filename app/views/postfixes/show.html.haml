@@ -1,0 +1,13 @@
+= title_with_actions @postfix.name
+
+= two_column_card Postfix.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Postfix.human_attribute_name(:name))) do
+        = @postfix.name
+    
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_postfix_path(@postfix), class: 'button primary'

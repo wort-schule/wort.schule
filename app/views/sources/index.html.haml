@@ -1,0 +1,8 @@
+= title_with_actions Source.model_name.human(count: 2)
+
+= index_grid do
+  = render @sources
+
+.pagination-with-actions
+  = paginate @sources
+  = link_to t('.new'), new_source_path, class: 'button primary'

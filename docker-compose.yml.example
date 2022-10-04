@@ -1,0 +1,35 @@
+# Before running this in real life, make sure that:
+#
+# * `db_password` is changed
+# * `ports` are setup correctly. With the current configuration, the HTTP port is accessible publicly without HTTPS. You probably want to add a reverse proxy with HTTPS in front of it.
+# * storage volume is changed to point to a proper location
+# * Backups of database are done or volume location is changed to point to a location on the host system being backuped
+
+version: '3.9'
+services:
+  web:
+    image: wortschule
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 80 -b '0.0.0.0'"
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://wortschule:db_password@db/wortschule
+    hostname: wortschule
+    restart: unless-stopped
+    volumes:
+      - /tmp/wortschule/storage:/app/storage
+
+  db:
+    image: postgres:13.1
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=wortschule
+      - POSTGRES_PASSWORD=db_password
+    volumes:
+      - wortschule-db:/var/lib/postgresql/data
+
+volumes:
+  wortschule-db:

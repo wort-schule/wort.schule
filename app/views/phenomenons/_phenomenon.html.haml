@@ -1,0 +1,3 @@
+= link_if(can?(:show, phenomenon), phenomenon, id: dom_id(phenomenon)) do
+  = box class: 'h-full' do
+    = phenomenon.name

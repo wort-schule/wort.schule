@@ -1,0 +1,38 @@
+= simple_form_for @noun, html: {data: {controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper'}} do |f|
+  = two_column_card t('words.show.noun.title'), t('words.show.noun.description') do
+    = box do
+      = f.input :name
+      = f.input :plural
+      = f.association :genus
+      = f.association :genus_neuter, collection: [f.object.genus_neuter].compact, input_html: {data: {controller: 'select', select_url_value: by_genus_nouns_path('Neutrum')}}
+      = f.association :genus_masculine, collection: [f.object.genus_masculine].compact, input_html: {data: {controller: 'select', select_url_value: by_genus_nouns_path('Maskulinum')}}
+      = f.association :genus_feminine, collection: [f.object.genus_feminine].compact, input_html: {data: {controller: 'select', select_url_value: by_genus_nouns_path('Femininum')}}
+      = f.input :singularetantum
+      = f.input :pluraletantum
+
+  = two_column_card t('words.show.cases.title'), t('words.show.cases.description') do
+    = box padding: false do
+      = box_description_list do |list|
+        - (1..4).each do |index|
+          - case_label = capture do
+            = content_tag :div do
+              = content_tag :div, Noun.human_attribute_name("case_#{index}".to_sym)
+              = content_tag :div, Noun.human_attribute_name("case_#{index}_question".to_sym), class: 'text-sm text-gray-400'
+
+          = render(list.add(case_label)) do
+            .w-full.grid.grid-cols-1.md:grid-cols-2.gap-4.md:gap-2
+              = render PrefixInputComponent.new(prefix: @noun.article_definite(case_number: index, singular: true), hint: Noun.human_attribute_name(:singular)) do
+                = f.input "case_#{index}_singular", label: false, input_html: {class: 'prefix'}
+
+              = render PrefixInputComponent.new(prefix: @noun.article_definite(case_number: index, singular: false), hint: Noun.human_attribute_name(:plural)) do
+                = f.input "case_#{index}_plural", label: false, input_html: {class: 'prefix'}
+
+
+  = render 'words/general_form', word: @noun, f:, show_name: false
+
+  = render 'words/example_sentences', f:
+
+  .md:grid.md:grid-cols-3.md:gap-6.my-6
+    .md:col-span-1
+    .mt-5.md:mt-0.md:col-span-2
+      = f.submit

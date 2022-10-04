@@ -1,0 +1,5 @@
+= title_with_actions Verb.model_name.human count: 2
+
+= render 'shared/filter'
+= render 'words/index', words: @verbs do
+  = link_to t('verbs.index.new'), new_verb_path, class: 'button primary', 'data-turbo-frame': '_top' if can?(:create, Verb)

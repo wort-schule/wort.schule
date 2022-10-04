@@ -1,0 +1,38 @@
+= box_description_list do |list|
+  = render(list.add(User.human_attribute_name(:first_name), 'ci-first-name')) do
+    %span= @user.first_name
+    - if own_user?
+      .ml-4.flex-shrink-0
+        = edit_button edit_profile_path
+
+  = render(list.add(User.human_attribute_name(:last_name), 'ci-last-name')) do
+    %span= @user.last_name
+    - if own_user?
+      .ml-4.flex-shrink-0
+        = edit_button edit_profile_path
+
+  = render(list.add(User.human_attribute_name(:avatar), 'ci-avatar')) do
+    = image_tag @user.avatar_url
+    - if own_user?
+      .ml-4.flex-shrink-0.flex.gap-2.items-center
+        = edit_button edit_profile_path
+        - if @user.avatar.attached?
+          = delete_button avatar_path
+
+  = render(list.add(User.human_attribute_name(:email), 'ci-email')) do
+    = @user.email
+    - if own_user?
+      .ml-4.flex-shrink-0
+        = edit_button edit_email_path
+
+  - if own_user?
+    = render(list.add(User.human_attribute_name(:password), 'ci-password')) do
+      .flex.gap-1
+        - 8.times do
+          %svg(class="block h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true")
+            %circle(cx="12" cy="12" r="10")
+      .ml-4.flex-shrink-0
+        = edit_button edit_password_path
+
+  = render(list.add(User.human_attribute_name(:role))) do
+    = @user.role_text

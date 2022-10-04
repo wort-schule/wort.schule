@@ -1,0 +1,67 @@
+= simple_form_for @verb, html: {data: {controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper'}} do |f|
+  = two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do
+    = box padding: false do
+      = box_content do
+        = f.input :name, autofocus: true
+        = f.input :subjectless
+        = f.input :strong
+        = f.input :imperative_singular
+        = f.input :imperative_plural
+        = f.input :participle
+        = f.input :past_participle
+        = f.input :perfect_haben
+        = f.input :perfect_sein
+
+  = two_column_card t('words.show.verb.tense.title'), t('words.show.verb.tense.description') do
+    = box padding: false do
+      = box_content do
+        %strong= Verb.human_attribute_name(:present)
+        %strong.ml-4.text-sm.text-gray-400= Verb.human_attribute_name(:singular)
+
+        .flex.flex-wrap.gap-4.pb-6
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:singular_1_pronoun), width_class: 'w-20') do
+            = f.input :present_singular_1, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:singular_2_pronoun), width_class: 'w-20') do
+            = f.input :present_singular_2, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:singular_3_pronoun), width_class: 'w-20') do
+            = f.input :present_singular_3, label: false, input_html: {class: 'prefix'}
+
+        %strong= Verb.human_attribute_name(:present)
+        %strong.ml-4.text-sm.text-gray-400= Verb.human_attribute_name(:plural)
+
+        .flex.flex-wrap.gap-4.pb-6
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:plural_1_pronoun), width_class: 'w-20') do
+            = f.input :present_plural_1, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:plural_2_pronoun), width_class: 'w-20') do
+            = f.input :present_plural_2, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:plural_3_pronoun), width_class: 'w-20') do
+            = f.input :present_plural_3, label: false, input_html: {class: 'prefix'}
+
+        %strong= Verb.human_attribute_name(:past)
+        %strong.ml-4.text-sm.text-gray-400= Verb.human_attribute_name(:singular)
+
+        .flex.flex-wrap.gap-4.pb-6
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:singular_1_pronoun), width_class: 'w-20') do
+            = f.input :past_singular_1, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:singular_2_pronoun), width_class: 'w-20') do
+            = f.input :past_singular_2, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:singular_3_pronoun), width_class: 'w-20') do
+            = f.input :past_singular_3, label: false, input_html: {class: 'prefix'}
+
+        %strong= Verb.human_attribute_name(:past)
+        %strong.ml-4.text-sm.text-gray-400= Verb.human_attribute_name(:plural)
+
+        .flex.flex-wrap.gap-4.pb-6
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:plural_1_pronoun), width_class: 'w-20') do
+            = f.input :past_plural_1, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:plural_2_pronoun), width_class: 'w-20') do
+            = f.input :past_plural_2, label: false, input_html: {class: 'prefix'}
+          = render PrefixInputComponent.new(prefix: Verb.human_attribute_name(:plural_3_pronoun), width_class: 'w-20') do
+            = f.input :past_plural_3, label: false, input_html: {class: 'prefix'}
+
+  = render 'words/general_form', word: @verb, f:, show_name: false
+
+  .md:grid.md:grid-cols-3.md:gap-6.my-6
+    .md:col-span-1
+    .mt-5.md:mt-0.md:col-span-2
+      = f.submit

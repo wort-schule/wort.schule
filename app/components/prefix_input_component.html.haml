@@ -1,0 +1,5 @@
+%div
+  .flex.items-stretch
+    .text-sm.bg-gray-100.text-gray-500.flex.items-center.px-2.py-1.border.border-gray-300.rounded-tl-md.rounded-bl-md.items-center.justify-center{class: @width_class }= @prefix.presence || "&nbsp;".html_safe
+    = content
+  .text-sm.text-gray-400= @hint

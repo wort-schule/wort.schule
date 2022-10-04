@@ -1,0 +1,9 @@
+= box padding: false do
+  = simple_form_for @strategy do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+      = f.input :description
+
+    = box_footer do
+      = f.submit
+      = cancel_button @strategy.new_record? ? strategies_path : strategy_path(@strategy)

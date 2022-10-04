@@ -1,0 +1,12 @@
+= box padding: false do
+  = simple_form_for @source do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+      = f.input :author
+      = f.input :licence
+      = f.input :source_url
+      = f.input :comment
+
+    = box_footer do
+      = f.submit
+      = cancel_button sources_path

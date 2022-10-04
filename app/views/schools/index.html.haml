@@ -1,0 +1,7 @@
+= title_with_actions School.model_name.human(count: 2)
+
+= index_grid do
+  = render @schools
+
+.pagination-with-actions
+  = link_to t('.new'), new_school_path, class: 'button primary'

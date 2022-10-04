@@ -1,0 +1,3 @@
+= link_if(can?(:show, strategy), strategy, id: dom_id(strategy)) do
+  = box class: 'h-full' do
+    = strategy.name

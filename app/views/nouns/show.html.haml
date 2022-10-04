@@ -1,0 +1,69 @@
+= title_with_actions @noun.name
+
+= two_column_card t('words.show.noun.title'), t('words.show.noun.description'), first: true do
+  = box padding: false do
+    = box_description_list do |list|
+      = render(list.add(Word.human_attribute_name(:name))) do
+        .w-full.grid.grid-cols-2
+          %div
+            .flex.gap-1
+              .text-sm.text-gray-400= @noun.article_definite(case_number: 1, singular: true)
+              = @noun.name
+            .text-sm.text-gray-400= Noun.human_attribute_name(:singular)
+          %div
+            .flex.gap-1
+              .text-sm.text-gray-400= @noun.article_definite(case_number: 1, singular: false)
+              = @noun.plural
+            .text-sm.text-gray-400= Noun.human_attribute_name(:plural)
+
+      = render(list.add(Noun.human_attribute_name(:genus_id))) do
+        = @noun.genus&.name
+
+      = render(list.add(Noun.human_attribute_name(:genus_neuter))) do
+        = @noun.genus_neuter&.name
+      = render(list.add(Noun.human_attribute_name(:genus_masculine))) do
+        = @noun.genus_masculine&.name
+      = render(list.add(Noun.human_attribute_name(:genus_feminine))) do
+        = @noun.genus_feminine&.name
+
+      = render(list.add(Noun.human_attribute_name(:singularetantum))) do
+        = @noun.singularetantum&.humanize
+
+      = render(list.add(Noun.human_attribute_name(:pluraletantum))) do
+        = @noun.pluraletantum&.humanize
+
+- if any_present?(@noun, (1..4).map { |index| ["case_#{index}_singular", "case_#{index}_plural"] }.flatten)
+  = two_column_card t('words.show.cases.title'), t('words.show.cases.description') do
+    = box padding: false do
+      = box_description_list do |list|
+        - (1..4).each do |index|
+          - case_label = capture do
+            = content_tag :div do
+              = content_tag :div, Noun.human_attribute_name("case_#{index}".to_sym)
+              = content_tag :div, Noun.human_attribute_name("case_#{index}_question".to_sym), class: 'text-sm text-gray-400'
+
+          = render(list.add(case_label)) do
+            .w-full.grid.grid-cols-2
+              %div
+                .flex.gap-1
+                  .text-sm.text-gray-400= @noun.article_definite(case_number: index, singular: true)
+                  = @noun.public_send("case_#{index}_singular")
+                .text-sm.text-gray-400= t Noun.human_attribute_name(:singular)
+              %div
+                .flex.gap-1
+                  .text-sm.text-gray-400= @noun.article_definite(case_number: index, singular: false)
+                  = @noun.public_send("case_#{index}_plural")
+                .text-sm.text-gray-400= t Noun.human_attribute_name(:plural)
+
+- if @noun.example_sentences.present?
+  = two_column_card t('words.show.example_sentences.title'), t('words.show.example_sentences.description') do
+    = box padding: false, class: 'striped' do
+      - @noun.example_sentences.each do |sentence|
+        .p-4= sentence.sentence
+
+= render 'words/general', word: @noun
+
+= render 'words/versions', word: @noun
+
+.pagination-with-actions
+  = link_to t('actions.edit'), [:edit, @noun], data: { turbo_frame: '_top' }, class: 'button primary' if can?(:edit, @noun)

@@ -1,0 +1,10 @@
+= title_with_actions @<%= singular_table_name %>.name do
+  = link_to t('actions.edit'), edit_<%= singular_table_name %>_path(@<%= singular_table_name %>), class: 'button primary'
+
+= two_column_card <%= singular_table_name.titleize.gsub(/\s/, '') %>.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+    <%- attributes.each do |attribute| %>
+      = render(list.add(<%= singular_table_name.titleize.gsub(/\s/, '') %>.human_attribute_name(:<%= attribute.name %>))) do
+        = @<%= singular_table_name %>.<%= attribute.name %>
+    <% end %>

@@ -1,0 +1,9 @@
+= box padding: false do
+  = simple_form_for @phenomenon do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+      = f.input :description
+
+    = box_footer do
+      = f.submit
+      = cancel_button @phenomenon.new_record? ? phenomenons_path : phenomenon_path(@phenomenon)

@@ -1,0 +1,8 @@
+= title_with_actions Topic.model_name.human(count: 2)
+
+= index_grid do
+  = render @topics
+
+.pagination-with-actions
+  = paginate @topics
+  = link_to t('.new'), new_topic_path, class: 'button primary'

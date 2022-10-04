@@ -1,0 +1,8 @@
+= title_with_actions Strategy.model_name.human(count: 2)
+
+= index_grid do
+  = render @strategies
+
+.pagination-with-actions
+  = paginate @strategies
+  = link_to t('.new'), new_strategy_path, class: 'button primary'

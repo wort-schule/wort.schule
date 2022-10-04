@@ -1,0 +1,17 @@
+= title_with_actions @compound_vocalalternation.name
+
+= two_column_card CompoundVocalalternation.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(CompoundVocalalternation.human_attribute_name(:name))) do
+        = @compound_vocalalternation.name
+
+= render 'words/usages' do |compound_entity|
+  - if compound_entity.word.blank?
+    %span
+  - else
+    .p-4= link_to compound_entity.word.name, compound_entity.word.actable
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_compound_vocalalternation_path(@compound_vocalalternation), class: 'button primary'

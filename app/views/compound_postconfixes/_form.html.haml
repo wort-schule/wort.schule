@@ -1,0 +1,8 @@
+= box padding: false do
+  = simple_form_for @compound_postconfix do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+
+    = box_footer do
+      = f.submit
+      = cancel_button @compound_postconfix.new_record? ? compound_postconfixes_path : compound_postconfix_path(@compound_postconfix)

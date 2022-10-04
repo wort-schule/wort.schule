@@ -1,0 +1,13 @@
+%h1= t '.title'
+
+= box do
+  = simple_form_for(@user, url: registration_path(:user), html: { method: :put }) do |f|
+    = f.error_notification
+
+    = f.input :password, required: false, input_html: { autocomplete: "new-password" }, autofocus: true
+    = f.input :password_confirmation, required: false, input_html: { autocomplete: "new-password" }
+    = f.input :current_password, hint: t("devise.registrations.edit.we_need_your_current_password_to_confirm_your_changes"), required: true, input_html: { autocomplete: "current-password" }
+
+    .form-actions
+      = f.submit
+      = cancel_button profile_path

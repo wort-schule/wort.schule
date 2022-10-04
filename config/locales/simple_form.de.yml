@@ -1,0 +1,52 @@
+de:
+  simple_form:
+    "yes": 'Ja'
+    "no": 'Nein'
+    required:
+      text: 'Pflichtfeld'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "Bitte behebe die folgenden Probleme:"
+    placeholders:
+      noun:
+        name: Elefant
+        plural: Elefanten
+        syllables: 'E-le-fant'
+        written_syllables: 'Ele|fant'
+        meaning: 'Kurzbedeutung (1-2 Wörter)'
+        meaning_long: längere Bedeutung
+    hints:
+      noun:
+        singularetantum: 'Manche Substantive kommen nur im Singular vor, Beispiele sind: Schnee, Vernunft, Gesundheit, Butter, Post. <a href="https://de.wikipedia.org/wiki/Singularetantum" rel="noopener noreferrer" target="_blank">Mehr dazu</a>'
+        pluraletantum: 'Manche Substantive kommen nur im Plural vor, Beispiele sind: Ferien, Kosten, Leute. <a href="https://de.wikipedia.org/wiki/Pluraletantum" rel="noopener noreferrer" target="_blank">Mehr dazu</a>'
+        meaning: 'z.B. beim Wort "Bauer" könnte eine Bedeutung "Schachfigur", eine andere "Landwirt" sein'
+      source:
+        licence: Hier sollte ein eindeutiger Identifizierer wie CC0, CC BY 4.0, GFDL 1.3 oder der Link zum vollständigen Lizenztext angegeben werden.
+        source_url: Falls zu der Quelle eine Onlinepräsenz (z.B. über eine Studie in dessen Rahmen die Daten erfasst wurden) existiert kann diese hier angegeben werden. 
+      adjective:
+        absolute: 'Absolute Adjektive sind nicht steigerbar (Beispiele: gleich, leer, einzig) bzw. nur in übertragener oder relativer Bedeutung steigerbar. <a href="https://de.wikipedia.org/wiki/Absolutadjektiv" rel="noopener noreferrer" target="_blank">Mehr dazu</a>'
+        irregular_comparison: 'Adjektive können unregelmäßig steigerbar sein, Beispiel: gut - besser - am besten. <a href="https://de.wikipedia.org/wiki/Komparation" rel="noopener noreferrer" target="_blank">Mehr dazu</a>'
+        irregular_declination: 'Manche Adjektive werden unregelmäßig dekliniert, Beispiele: hoch - ein hoher Baum, dunkel - ein dunkles Zimmer. <a href="http://mein-deutschbuch.de/adjektivdeklination-mit-dem-unbestimmten-artikel.html" rel="noopener noreferrer" target="_blank">Mehr dazu</a>'
+
+    # Examples
+    # labels:
+    #   defaults:
+    #     password: 'Password'
+    #   user:
+    #     new:
+    #       email: 'E-mail to sign in.'
+    #     edit:
+    #       email: 'E-mail.'
+    # hints:
+    #   defaults:
+    #     username: 'User name to sign in.'
+    #     password: 'No special characters, please.'
+    # include_blanks:
+    #   defaults:
+    #     age: 'Rather not say'
+    # prompts:
+    #   defaults:
+    #     age: 'Select your age'

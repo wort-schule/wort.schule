@@ -1,0 +1,16 @@
+= title_with_actions @phenomenon.name
+
+= two_column_card Phenomenon.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Phenomenon.human_attribute_name(:name))) do
+        = @phenomenon.name
+    
+      = render(list.add(Phenomenon.human_attribute_name(:description))) do
+        = @phenomenon.description
+
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_phenomenon_path(@phenomenon), class: 'button primary'

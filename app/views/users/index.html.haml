@@ -1,0 +1,12 @@
+= title_with_actions User.model_name.human(count: 2)
+
+= index_grid do
+  - @users.each do |user|
+    = link_if(can?(:show, user), user, id: dom_id(user)) do
+      = box do
+        .font-medium.text-md= user.decorate.display_name
+        %div= user.role_text
+
+.pagination-with-actions
+  = paginate @users
+  = link_to t('.new'), new_user_path, class: 'button primary'

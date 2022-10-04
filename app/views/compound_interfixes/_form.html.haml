@@ -1,0 +1,8 @@
+= box padding: false do
+  = simple_form_for @compound_interfix do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+
+    = box_footer do
+      = f.submit
+      = cancel_button @compound_interfix.new_record? ? compound_interfixes_path : compound_interfix_path(@compound_interfix)

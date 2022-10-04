@@ -1,0 +1,8 @@
+= box do
+  = simple_form_for @user do |f|
+    = f.input :first_name, autofocus: true
+    = f.input :last_name
+    = f.input :email
+    = f.input :role, include_blank: false
+    = f.submit
+    = cancel_button (@user.new_record? ? users_path : user_path(@user))

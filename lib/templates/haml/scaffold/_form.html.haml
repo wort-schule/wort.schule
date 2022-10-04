@@ -1,0 +1,10 @@
+= box padding: false do
+  = simple_form_for @<%= singular_table_name %> do |f|
+    = box_content do
+    <%- attributes.each.with_index do |attribute, index| -%>
+      = f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %><%= index == 0 ? ', autofocus: true' : '' %>
+    <%- end -%>
+
+    = box_footer do
+      = f.submit
+      = cancel_button @<%= singular_table_name %>.new_record? ? <%= plural_table_name %>_path : <%= singular_table_name %>_path(@<%= singular_table_name %>)

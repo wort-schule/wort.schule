@@ -1,0 +1,8 @@
+= title_with_actions Postfix.model_name.human(count: 2)
+
+= index_grid do
+  = render @postfixes
+
+.pagination-with-actions
+  = paginate @postfixes
+  = link_to t('.new'), new_postfix_path, class: 'button primary'

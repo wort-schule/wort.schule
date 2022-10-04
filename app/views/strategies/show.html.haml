@@ -1,0 +1,16 @@
+= title_with_actions @strategy.name
+
+= two_column_card Strategy.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Strategy.human_attribute_name(:name))) do
+        = @strategy.name
+    
+      = render(list.add(Strategy.human_attribute_name(:description))) do
+        = @strategy.description
+
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_strategy_path(@strategy), class: 'button primary'

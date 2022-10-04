@@ -1,0 +1,16 @@
+= title_with_actions @hierarchy.name
+
+= two_column_card Hierarchy.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Hierarchy.human_attribute_name(:name))) do
+        = @hierarchy.name
+    
+      = render(list.add(Hierarchy.human_attribute_name(:parent))) do
+        .flex.flex-wrap= hierarchy_breadcrumbs @hierarchy.parent
+
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_hierarchy_path(@hierarchy), class: 'button primary'

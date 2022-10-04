@@ -1,0 +1,18 @@
+#mobile-menu.hidden(data-reveal-target="item")
+  .px-2.pt-2.pb-3.space-y-1.sm:px-3.flex.flex-col
+    = render 'main_menu'
+
+  .pt-4.pb-3.border-t.border-gray-200
+
+  - if current_user.blank?
+    = link_to t('navigation.login'), new_user_session_path, class: 'button breaker inline-block  ml-4 mb-4' if current_user.blank?
+  - else
+    = link_to profile_path do
+      .flex.items-center.px-5
+        .flex-shrink-0
+          = image_tag current_user.decorate.avatar_url, class: 'rounded-full', alt: ''
+        .ml-3
+          .text-base.font-medium.leading-none.text-white= current_user.full_name
+          .text-sm.font-medium.leading-none.text-gray-200.mt-1= current_user.email
+    .mt-3.px-2.space-y-1
+      = render 'user_menu', profile: false

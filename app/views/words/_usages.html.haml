@@ -1,0 +1,9 @@
+= two_column_card Word.model_name.human(count: 2), t('shared.word_count', word_count: @words.total_count, words: Word.model_name.human(count: @words.total_count)) do
+  = box padding: false, class: 'striped' do
+    - @words.each do |word|
+      - if (block = yield word).blank?
+        .p-4= link_to word.name, word.actable
+      - else
+        = block
+
+  = paginate @words

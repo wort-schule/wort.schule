@@ -1,0 +1,13 @@
+= title_with_actions @compound_preconfix.name
+
+= two_column_card CompoundPreconfix.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(CompoundPreconfix.human_attribute_name(:name))) do
+        = @compound_preconfix.name
+
+= render 'words/usages'
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_compound_preconfix_path(@compound_preconfix), class: 'button primary'

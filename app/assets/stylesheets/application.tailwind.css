@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  h1 {
+    @apply mt-6 text-3xl font-extrabold text-gray-900 ml-4 md:ml-0;
+  }
+
+  h1 + .box,
+  .title + .box,
+  h1 + form,
+  .title + form,
+  h2 + .box
+  {
+    @apply mt-6;
+  }
+
+  h2 {
+    @apply mt-6 text-2xl font-extrabold text-gray-900 ml-4 md:ml-0;
+  }
+
+  .box + h2 {
+    @apply mt-8;
+  }
+
+  .box + .pagination {
+    @apply mt-6;
+  }
+
+  .input + .input {
+    @apply mt-4;
+  }
+
+  .grid > .input:first-child {
+    @apply mt-4;
+  }
+
+  label {
+    @apply block text-base font-medium text-gray-700;
+  }
+
+  input[type="text"], input[type="email"], input[type="password"] {
+    @apply mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md;
+  }
+
+  input.boolean {
+    @apply w-4;
+  }
+
+  label.boolean + hint {
+    @apply mt-2;
+  }
+
+  input[type="submit"], .button.primary {
+    @apply md:inline-block md:w-auto relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+
+  input[type="submit"] {
+    @apply mt-4;
+  }
+
+  .button {
+    @apply md:inline-block md:w-auto relative w-full flex justify-center py-2 px-4 border border-gray-400 text-sm font-medium rounded-md text-gray-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400;
+  }
+
+  .button.danger {
+    @apply text-red-700 border-red-700 hover:bg-red-700 hover:text-white;
+  }
+
+  .button.breaker {
+    @apply px-5 py-3 bg-orange-400 text-gray-100 rounded-md hover:bg-orange-500 hover:shadow;
+  }
+
+  .form-actions {
+    @apply mt-4;
+  }
+
+  .link {
+    @apply font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer;
+  }
+
+  .field_with_errors .error, .field_with_errors label {
+    @apply text-red-700;
+  }
+
+  .navigation {
+    @apply px-3 py-2 rounded-md text-sm font-medium hover:text-white text-gray-300 hover:bg-primary-hover ;
+  }
+
+  .navigation.active {
+    @apply bg-primary-selected hover:bg-primary-selected text-white;
+  }
+
+  /* TomSelect */
+  .ts-wrapper {
+    @apply w-full relative !ml-0;
+  }
+
+  .ts-control {
+    @apply
+      flex flex-wrap
+      shadow-sm
+      rounded-lg
+      border-gray-300
+      bg-white
+      py-2
+      px-3
+      text-base
+      focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-lg gap-2;
+
+      /* Add caret https://github.com/orchidjs/tom-select/discussions/384 */
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+  }
+
+  .ts-control > input {
+    @apply focus:outline-none;
+  }
+
+  .ts-control .item {
+    @apply px-2 py-1 bg-gray-100 rounded-md;
+  }
+
+  .ts-control a.remove {
+    @apply ml-2;
+  }
+
+  .ts-dropdown {
+    @apply absolute top-full w-full z-50 rounded-md border border-solid border-t border-gray-300 bg-white max-h-80 overflow-y-scroll text-base;
+    left: 0;
+  }
+
+  .ts-dropdown [data-selectable].option {
+    @apply p-1;
+  }
+
+  .ts-dropdown [data-selectable].option:first-child {
+    @apply rounded-t-lg;
+  }
+
+  .ts-dropdown [data-selectable].option:last-child {
+    @apply rounded-b-lg;
+  }
+
+  .ts-dropdown .create:hover, .ts-dropdown .option:hover {
+    @apply bg-primary-hover text-white;
+  }
+
+  .ts-dropdown .active {
+    @apply bg-primary-selected text-white;
+  }
+
+  .striped > div:nth-child(odd) {
+    @apply bg-white;
+  }
+
+  .striped > div:nth-child(even) {
+    @apply bg-gray-50;
+  }
+
+  hr {
+    @apply border-t border-gray-200;
+  }
+
+  .pre {
+    @apply bg-gray-50 whitespace-pre-wrap;
+  }
+
+  .prefix {
+    @apply !mt-0 !border-l-0 !rounded-tl-none !rounded-bl-none;
+  }
+
+  label.checkbox {
+    @apply flex gap-2 leading-6;
+  }
+
+  .default-input, select {
+    @apply mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md;
+  }
+
+  .pagination-with-actions {
+    @apply px-2 md:px-0 flex flex-col gap-4 md:flex-row md:justify-between;
+  }
+}

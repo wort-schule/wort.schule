@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = button_to t('actions.delete'), hierarchy_path(@hierarchy), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @hierarchy.name) } if can?(:destroy, @hierarchy)
+
+= render 'form'

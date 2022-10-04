@@ -1,0 +1,11 @@
+= box padding: false do
+  = simple_form_for @prefix do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+      = f.input :prefix_type
+      = f.input :separable
+      = f.input :inseparable
+
+    = box_footer do
+      = f.submit
+      = cancel_button @prefix.new_record? ? prefixes_path : prefix_path(@prefix)

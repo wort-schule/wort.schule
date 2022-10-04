@@ -1,0 +1,5 @@
+.nested-form-wrapper{'data-new-record': f.object.new_record?}
+  .flex.w-full.gap-2
+    = f.input :sentence, label: false, wrapper_html: {class: 'flex-grow'}
+    %button.text-gray-400(type="button" data-action="nested-form#remove")= heroicon 'x'
+  = f.hidden_field :_destroy

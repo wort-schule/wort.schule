@@ -1,0 +1,8 @@
+= title_with_actions FunctionWord.model_name.human(count: 2)
+
+= index_grid do
+  = render @function_words
+
+.pagination-with-actions
+  = paginate @function_words
+  = link_to t('.new'), new_function_word_path, class: 'button primary'

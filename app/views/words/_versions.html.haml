@@ -1,0 +1,22 @@
+- if can? :read_versions, word
+  = two_column_card t('.title'), '' do
+    .flex.flex-col.gap-4.mt-6
+      - versions = versions_with_changes word.versions
+      - if versions.empty?
+        = box do
+          = t '.no_versions'
+
+      - versions.reverse.each do |version|
+        = box do
+          .md:grid.grid-cols-2.gap-6
+            %div
+              .font-medium.text-md= "#{PaperTrail::Version.human_attribute_name(:index)} #{version.index + 1}"
+              %div= changed_by version
+            - if version.event != 'create'
+              .mt-2.md:mt-0
+                - version.changeset.except("updated_at").each do |attribute, values|
+                  .flex.gap-1.items-center
+                    .font-bold.text-md.mr-2= Word.human_attribute_name(attribute.to_sym)
+                    = values[0]
+                    = heroicon 'arrow-sm-right'
+                    = values[1]

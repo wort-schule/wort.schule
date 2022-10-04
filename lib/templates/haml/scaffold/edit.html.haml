@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = button_to t('actions.delete'), <%= singular_table_name %>_path(@<%= singular_table_name %>), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @<%= singular_table_name %>.name) } if can?(:destroy, @<%= singular_table_name %>)
+
+= render 'form'

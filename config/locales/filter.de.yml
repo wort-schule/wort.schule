@@ -1,0 +1,33 @@
+de:
+  filter:
+    title: Filter
+    apply: Filtern
+    reset: Filter löschen
+    and: und
+    or: oder
+    wordstarts: Wortanfang
+    wordcontains: Wort enthält
+    wordends: Wortende
+    syllablescontains: Silben
+    letters: verwendete Buchstaben
+    source: Quelle
+    topic: Thema
+    hierarchy: Kategorie
+    phenomenons: Phänomene
+    strategies: Strategien
+    keywords: Stichwörter
+    consonant_vowel: Konsonant-Vokal-Folge
+    foreign: Fremdwort
+    prototype: Modellwort
+    compound: Zusammensetzung
+    example_sentences: Beispielsatz
+    singularetantum: Singularwort
+    pluraletantum: Pluralwort
+    subjectless: Subjektlos
+    perfect_haben: Perfektbildung über haben
+    perfect_sein: Perfektbildung über sein
+    modal: Modalverb
+    strong: Starkes Verb
+    irregular_declination: Unregelmäßige Deklination
+    absolute: Absolut (nicht steigerbar)
+    irregular_comparison: Unregelmäßige Komparation

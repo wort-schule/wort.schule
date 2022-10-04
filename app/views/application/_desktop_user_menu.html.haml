@@ -1,0 +1,16 @@
+.hidden.md:flex.items-center
+  = link_to search_path, class: "navigation #{params[:controller] == 'searches' ? 'active' : ''}", title: t('navigation.search') do
+    = heroicon 'search'
+
+  - if current_user.blank?
+    = link_to t('navigation.login'), new_user_session_path, class: 'button breaker ml-4'
+  - else
+    .ml-4.flex.items-center.md:ml-6
+      .ml-3.relative(data-controller="dropdown")
+        %div
+          %button(type="button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu-button" data-action="click->dropdown#toggle click@window->dropdown#hide" data-dropdown-target="button" aria-haspopup="true")
+            %span.sr-only= t 'navigation.open_user_menu'
+            = image_tag current_user.decorate.avatar_url, class: 'h-8 w-8 rounded-full', alt: ''
+
+        .origin-top-right.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg.py-1.bg-white.ring-1.ring-black.ring-opacity-5.focus:outline-none.hidden.z-50(role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" data-dropdown-target="menu")
+          = render 'user_menu'

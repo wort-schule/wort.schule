@@ -1,0 +1,8 @@
+= box padding: false do
+  = simple_form_for @compound_vocalalternation do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+
+    = box_footer do
+      = f.submit
+      = cancel_button @compound_vocalalternation.new_record? ? compound_vocalalternations_path : compound_vocalalternation_path(@compound_vocalalternation)

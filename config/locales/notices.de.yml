@@ -1,0 +1,76 @@
+de:
+  notices:
+    nouns:
+      created: Das Substantiv %{noun} wurde erstellt.
+      updated: Das Substantiv %{noun} wurde gespeichert.
+      destroyed: Das Substantiv %{noun} wurde gelöscht.
+    verbs:
+      created: Das Verb %{verb} wurde erstellt.
+      updated: Das Verb %{verb} wurde gespeichert.
+      destroyed: Das Verb %{verb} wurde gelöscht.
+    adjectives:
+      created: Das Adjektiv %{adjective} wurde erstellt.
+      updated: Das Adjektiv %{adjective} wurde gespeichert.
+      destroyed: Das Adjektiv %{adjective} wurde gelöscht.
+    users:
+      created: Die Benutzer*in mit der E-Mail Adresse %{email} wurde erstellt.
+      updated: Die Benutzer*in mit der E-Mail Adresse %{email} wurde gespeichert.
+      destroyed: Die Benutzer*in mit der E-Mail Adresse %{email} wurde gelöscht.
+    schools:
+      created: Die Schule %{name} wurde erstellt.
+      updated: Die Schule %{name} wurde gespeichert.
+      destroyed: Die Schule %{name} wurde gelöscht.
+    teaching_assignments:
+      created: Die Lehrer*in %{name} wurde hinzugefügt.
+      destroyed: Die Lehrer*in %{name} wurde entfernt.
+    learning_group_memberships:
+      created: Die Schüler*in %{name} wurde hinzugefügt.
+      destroyed: Die Schüler*in %{name} wurde entfernt.
+      access_requested: Ein Antrag zum Gruppenbeitritt wurde gestellt. Die verantwortliche Lehrer*in muss diesen prüfen.
+      access_requested_error: Der Antrag konnte nicht gestellt werden.
+      accepted: Anfrage akzeptiert. Die Schüler*in ist nun Teil der Lerngruppe.
+      accepted_error: Die Schüler*in konnte der Lerngruppe nicht hinzugefügt werden.
+      rejected: Die Anfrage wurde abgelehnt.
+      rejected_error: Die Anfrage konnte nicht abgelehnt werden.
+    sources:
+      created: Die Quelle %{name} wurde erstellt.
+      updated: Die Quelle %{name} wurde gespeichert.
+      destroyed: Die Quelle %{name} wurde gelöscht.
+    shared:
+      created: '%{class_name} %{name} wurde erstellt.'
+      updated: '%{class_name} %{name} wurde gespeichert.'
+      destroyed: '%{class_name} %{name} wurde gelöscht.'
+  alerts:
+    nouns:
+      destroyed: Das Substantiv %{noun} konnte nicht gelöscht werden.
+    verbs:
+      destroyed: Das Verb %{verb} konnte nicht gelöscht werden.
+    adjectives:
+      destroyed: Das Adjektiv %{adjective} konnte nicht gelöscht werden.
+    users:
+      destroyed: Die Benutzer*in mit der E-Mail Adresse %{email} konnte nicht gelöscht werden.
+    schools:
+      destroyed: Die Schule %{name} konnte nicht gelöscht werden.
+    teaching_assignments:
+      destroyed: Die Lehrer*in %{name} konnte nicht entfernt werden.
+    learning_group_membership:
+      destroyed: Die Schüler*in %{name} konnte nicht entfernt werden.
+    sources:
+      destroyed: Die Quelle %{name} konnte nicht gelöscht werden.
+    shared:
+      destroyed: '%{class_name} %{name} konnte nicht gelöscht werden.'
+  confirmations:
+    nouns:
+      destroy: Soll das Substantiv %{noun} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
+    verbs:
+      destroy: Soll das Verb %{verb} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
+    adjectives:
+      destroy: Soll das Adjektiv %{adjective} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
+    users:
+      destroy: Soll die Benutzer*in mit der E-Mail Adresse %{email} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
+    schools:
+      destroy: Soll die Schule %{name} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
+    sources:
+      destroy: Soll die Quelle %{name} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
+    shared:
+      destroy: Soll %{name} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.

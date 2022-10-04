@@ -1,0 +1,8 @@
+= box padding: false do
+  = simple_form_for @postfix do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+
+    = box_footer do
+      = f.submit
+      = cancel_button @postfix.new_record? ? postfixes_path : postfix_path(@postfix)

@@ -1,0 +1,3 @@
+= link_if(can?(:show, learning_group), learning_group, id: dom_id(learning_group)) do
+  = box class: 'h-full' do
+    = learning_group.name

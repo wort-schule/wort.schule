@@ -1,0 +1,2 @@
+class Genus < ApplicationRecord
+end

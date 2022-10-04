@@ -1,0 +1,8 @@
+= turbo_frame_tag 'words' do
+  = index_grid do
+    - words.each do |word|
+      = render word.specific
+
+  .pagination-with-actions
+    = paginate words
+    = yield if block_given?

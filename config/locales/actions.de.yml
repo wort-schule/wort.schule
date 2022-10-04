@@ -1,0 +1,13 @@
+de:
+  actions:
+    edit: Bearbeiten
+    change: Ändern
+    save: Speichern
+    delete: Löschen
+    cancel: Abbrechen
+    remove: Entfernen
+  helpers:
+    submit:
+      create: Erstellen
+      submit: Speichern
+      update: Speichern

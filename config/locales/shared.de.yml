@@ -1,0 +1,9 @@
+de:
+  shared:
+    or: oder
+    unknown: unbekannt
+    word_count: '%{word_count} %{words}'
+  boolean:
+    "yes": Ja
+    "no": Nein
+    "nil": ""

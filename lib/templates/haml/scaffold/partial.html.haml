@@ -1,0 +1,3 @@
+= link_if(can?(:show, <%= singular_table_name %>), <%= singular_table_name %>, id: dom_id(<%= singular_table_name %>)) do
+  = box class: 'h-full' do
+    = <%= singular_table_name %>.name

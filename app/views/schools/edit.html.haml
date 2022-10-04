@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = link_to t('actions.delete'), school_path(@school), method: :delete, class: 'button danger', data: { confirm: t('confirmations.schools.destroy', name: @school.name) }
+
+= render 'form'

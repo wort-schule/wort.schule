@@ -1,0 +1,59 @@
+# frozen_string_literal: true
+
+<% module_namespacing do -%>
+class <%= controller_class_name %>Controller < ApplicationController
+  load_and_authorize_resource
+
+  def index
+    @<%= plural_table_name %> = @<%= plural_table_name %>.order(:name).page(params[:page])
+  end
+
+  def show
+  end
+
+  def new
+  end
+
+  def create
+    if @<%= orm_instance.save %>
+      redirect_to <%= redirect_resource_name %>, notice: t("notices.shared.created", name: @<%= singular_table_name %>.name, class_name: <%= singular_table_name.titleize.gsub(/\s/, '') %>.model_name.human)
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @<%= orm_instance.update("#{singular_table_name}_params") %>
+      redirect_to <%= redirect_resource_name %>, notice: t("notices.shared.updated", name: @<%= singular_table_name %>.name, class_name: <%= singular_table_name.titleize.gsub(/\s/, '') %>.model_name.human)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    destroyed = @<%= orm_instance.destroy %>
+    notice = if destroyed
+      {notice: t("notices.shared.destroyed", name: @<%= singular_table_name %>.name, class_name: <%= singular_table_name.titleize.gsub(/\s/, '') %>.model_name.human)}
+    else
+      {alert: t("alerts.shared.destroyed", name: @<%= singular_table_name %>.name)}
+    end
+
+    redirect_to <%= index_helper %>_url, notice
+  end
+
+  private
+
+  def <%= "#{singular_table_name}_params" %>
+    <%- if attributes_names.empty? -%>
+    params.fetch(:<%= singular_table_name %>, {})
+    <%- else -%>
+    params.require(:<%= singular_table_name %>).permit(
+      <%= permitted_params %>
+    )
+    <%- end -%>
+  end
+end
+<% end -%>

@@ -1,0 +1,41 @@
+= title_with_actions @learning_group.name do
+  = link_to t('actions.edit'), edit_school_learning_group_path(@school, @learning_group), class: 'button primary' if can? :edit, @learning_group
+  = link_to t('.request_access'), requests_school_learning_group_learning_group_memberships_path(@school, @learning_group), method: :post, class: 'button primary' if can?(:create, :learning_group_membership_requests) && !LearningGroupMembership.exists?(learning_group: @learning_group, student: Student.find_by(id: current_user.id))
+
+= two_column_card LearningGroup.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(LearningGroup.human_attribute_name(:name))) do
+        = @learning_group.name
+    
+      = render(list.add(LearningGroup.human_attribute_name(:teacher))) do
+        = link_to_if can?(:read, @learning_group.teacher), @learning_group.teacher, user_path(@learning_group.teacher)
+    
+      = render(list.add(LearningGroup.human_attribute_name(:school))) do
+        = link_to @learning_group.school, @learning_group.school
+
+      - if can? :invite, @learning_group
+        = render(list.add(t('learning_groups.invitation.title'))) do
+          = render 'invitation', learning_group: @learning_group
+
+- if can? :read_students, @learning_group
+  = two_column_card Student.model_name.human(count: 2), "", first: true do
+    = box padding: false do
+      - if can? :create, LearningGroupMembership.new(learning_group: @learning_group)
+        .px-4.py-5.flex.justify-end
+          = link_to t('.assign_student'), new_school_learning_group_learning_group_membership_path(@school, @learning_group), class: 'button primary'
+
+      = box_description_list do |list|
+        - @learning_group.learning_group_memberships.with_access(:requested, :granted).order(access: 'desc').each do |membership|
+          %div{id: dom_id(membership.student)}
+            = render(list.add(membership.student)) do
+              %div
+              - if can? :edit, membership
+                .ml-4.flex-shrink-0
+                  - if membership.access.granted?
+                    = button_to t('actions.remove'), school_learning_group_learning_group_membership_path(@school, @learning_group, membership), method: :delete, class: 'button'
+                  - else
+                    .flex.gap-1
+                      = button_to t('.accept'), school_learning_group_learning_group_membership_requests_accept_path(@school, @learning_group, membership), method: :post, class: 'button primary'
+                      = button_to t('.reject'), school_learning_group_learning_group_membership_requests_reject_path(@school, @learning_group, membership), method: :post, class: 'button'

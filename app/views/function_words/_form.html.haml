@@ -1,0 +1,11 @@
+= box padding: false do
+  = simple_form_for @function_word do |f|
+    = box_content do
+      = f.input :name, autofocus: true, label: Word.human_attribute_name(:name)
+      = f.input :function_type, collection: FunctionWord.function_types_collection, include_blank: false
+      = f.input :syllables, label: Word.human_attribute_name(:syllables)
+      = f.input :written_syllables, label: Word.human_attribute_name(:written_syllables)
+
+    = box_footer do
+      = f.submit
+      = cancel_button @function_word.new_record? ? function_words_path : function_word_path(@function_word)

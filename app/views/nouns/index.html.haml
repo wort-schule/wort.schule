@@ -1,0 +1,5 @@
+= title_with_actions Noun.model_name.human count: 2
+
+= render 'shared/filter'
+= render 'words/index', words: @nouns do
+  = link_to t('nouns.index.new'), new_noun_path, class: 'button primary', 'data-turbo-frame': '_top' if can?(:create, Noun)

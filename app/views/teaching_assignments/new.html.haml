@@ -1,0 +1,11 @@
+%h1= t '.title'
+
+= index_grid do
+  - @teachers.each do |teacher|
+    = box do
+      .flex.justify-between.items-center
+        = teacher.decorate.display_name
+        = form_with url: school_teaching_assignments_path(@school) do |f|
+          = f.hidden_field 'teaching_assignment[teacher_id]', value: teacher.id
+          = button_tag :submit, class: 'button' do
+            = t('.assign')

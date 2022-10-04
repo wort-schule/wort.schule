@@ -1,0 +1,8 @@
+= title_with_actions CompoundPostconfix.model_name.human(count: 2)
+
+= index_grid do
+  = render @compound_postconfixes
+
+.pagination-with-actions
+  = paginate @compound_postconfixes
+  = link_to t('.new'), new_compound_postconfix_path, class: 'button primary'

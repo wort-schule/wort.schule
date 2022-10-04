@@ -1,0 +1,6 @@
+= link_if(can?(:show, source), source, id: dom_id(source)) do
+  = box class: 'h-full' do
+    .flex.justify-between.items-center.mb-2
+      .font-medium.text-md= source.name
+      .text-sm.text-gray-600.bg-gray-100.px-2.py-1.rounded-md{title: t('.word_count', word_count: source.words.count)}= source.words.count
+    .text-sm.text-gray-500= source.author

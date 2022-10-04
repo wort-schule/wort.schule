@@ -1,0 +1,8 @@
+= box padding: false do
+  = simple_form_for @topic do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+
+    = box_footer do
+      = f.submit
+      = cancel_button @topic.new_record? ? topics_path : topic_path(@topic)

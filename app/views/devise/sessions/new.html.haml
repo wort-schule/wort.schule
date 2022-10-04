@@ -1,0 +1,23 @@
+.min-h-full.flex.items-center.justify-center.py-12.px-4.sm:px-6.lg:px-8
+  .max-w-md.w-full.space-y-8
+    %div
+      = image_tag 'logo.png', class: 'mx-auto h-12 w-auto', alt: ''
+      %h1.text-center= t('.sign_in')
+      %p.mt-2.text-center.text-sm.text-gray-600
+        = t('.no_account')
+        = link_to t('devise.shared.links.sign_up'), new_user_registration_path, class: 'font-medium text-indigo-600 hover:text-indigo-500'
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name), class: 'mt-i space-y-6') do |f|
+      = f.input :remember_me, as: :hidden, input_html: { value: true }
+
+      = box class: 'px-4 py-5 sm:px-6' do
+        = f.input :email, required: false, autofocus: true, input_html: { autocomplete: "email" }
+        = f.input :password, required: false, input_html: { autocomplete: "current-password" }
+
+        .flex.items-center.justify-between
+          .flex.items-center
+
+          .text-sm.mt-1
+            = link_to t("devise.shared.links..forgot_your_password"), new_password_path(resource_name), class: 'font-medium text-indigo-600 hover:text-indigo-500'
+
+        .mt-4
+          = f.submit value: t('.sign_in'), class: 'group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'

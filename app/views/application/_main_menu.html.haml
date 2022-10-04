@@ -1,0 +1,36 @@
+= navigation_link params[:controller].to_sym == :nouns, Noun.model_name.human(count: 2), nouns_path
+= navigation_link params[:controller].to_sym == :verbs, Verb.model_name.human(count: 2), verbs_path
+= navigation_link params[:controller].to_sym == :adjectives, Adjective.model_name.human(count: 2), adjectives_path
+= navigation_link params[:controller].to_sym == :sources, Source.model_name.human(count: 2), sources_path if can? :read, Source
+= navigation_link params[:controller].to_sym == :users, User.model_name.human(count: 2), users_path if can?(:index, User)
+= navigation_link params[:controller].to_sym == :schools, School.model_name.human(count: 2), schools_path if can?(:read, School)
+
+- if [FunctionWord, Topic, Hierarchy, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemreduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
+  .text-gray-300.hover:bg-primary-hover.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
+    .relative(data-controller="dropdown reveal")
+      .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
+        %span.appearance-none.flex.items-center.inline-block.text-gray-300.gap-1
+          .md:hidden(data-reveal-target="item")= heroicon 'chevron-right'
+          .hidden.md:hidden(data-reveal-target="item")= heroicon 'chevron-down'
+          = t('navigation.special_entries')
+          .hidden.md:block= heroicon 'chevron-down'
+      .md:absolute.md:right-0.mt-2.hidden.z-50(data-dropdown-target="menu")
+        .md:bg-primary-hover.md:shadow.rounded-md.md:border.md:border-primary-hover.overflow-hidden
+          = dropdown_link FunctionWord
+          = dropdown_link Topic
+          = dropdown_link Hierarchy
+          = dropdown_link Prefix
+          = dropdown_link Postfix
+          = dropdown_link Phenomenon
+          = dropdown_link Strategy
+          = dropdown_link CompoundInterfix
+          = dropdown_link CompoundPreconfix
+          = dropdown_link CompoundPostconfix
+          = dropdown_link CompoundPhonemreduction
+          = dropdown_link CompoundVocalalternation
+
+.md:hidden
+  = link_to search_path, class: "block navigation #{params[:controller] == 'searches' ? 'active' : ''}" do
+    .flex.items-center.gap-2
+      = heroicon 'search'
+      = t('navigation.search')
