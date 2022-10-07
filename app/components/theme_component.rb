@@ -14,12 +14,16 @@ class ThemeComponent < ViewComponent::Base
   end
 
   def liquid_template
-    template = @default ? File.read(Rails.root.join("app/views/themes/default_noun.liquid")) : @theme.template
+    template = @default ? File.read(Rails.root.join("app/views/themes/default_#{word_type}.liquid")) : @theme.template
     template_renderer = Liquid::Template.parse(template)
     template_renderer.render(params.with_indifferent_access).html_safe
   end
 
   private
+
+  def word_type
+    @word.model_name.singular.underscore
+  end
 
   def params
     case @word
