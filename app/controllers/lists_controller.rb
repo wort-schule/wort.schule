@@ -8,7 +8,7 @@ class ListsController < ApplicationController
   end
 
   def show
-    @words = @list.words.page(params[:page])
+    @words = @list.words.ordered_lexigraphically.page(params[:page])
   end
 
   def new
