@@ -3,9 +3,9 @@
     .flex.items-center.justify-between.h-16
       .flex.items-center
         .flex-shrink-0
-          .rounded-full.bg-white.h-10.w-10.flex.items-center.justify-center
+          .h-10.w-10.flex.items-center.justify-center
             = link_to root_path do
-              = image_tag 'logo.png', class: 'h-8 w-8', alt: ''
+              = image_tag 'logo.svg', class: 'h-8 w-8', alt: 'Wort.Schule Logo'
         .hidden.md:block
           .ml-10.flex.items-baseline.space-x-4.ci-navigation
             = render 'main_menu'
