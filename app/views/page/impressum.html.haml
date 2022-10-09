@@ -1,0 +1,70 @@
+.overflow-hidden.bg-white
+  .relative.px-4.py-16.mx-auto.max-w-7xl.sm:px-6.lg:px-8
+    .absolute.top-0.bottom-0.hidden.w-screen.bg-gray-50.lg:block{:class => "left-3/4"}
+    .mx-auto.text-base.max-w-prose.lg:grid.lg:max-w-none.lg:grid-cols-2.lg:gap-8
+      %div
+        %h1.mt-2.text-3xl.font-bold.leading-8.tracking-tight.text-gray-900.sm:text-4xl
+          Impressum
+    .mt-8.lg:grid.lg:grid-cols-2.lg:gap-8
+      .relative.lg:col-start-2.lg:row-start-1
+        %svg.absolute.top-0.right-0.hidden.-mt-20.-mr-20.lg:block{"aria-hidden" => "true", :fill => "none", :height => "384", :viewbox => "0 0 404 384", :width => "404"}
+          %defs
+            %pattern#de316486-4a29-4312-bdfc-fbce2132a2c1{:height => "20", :patternunits => "userSpaceOnUse", :width => "20", :x => "0", :y => "0"}
+              %rect.text-gray-200{:fill => "currentColor", :height => "4", :width => "4", :x => "0", :y => "0"}
+          %rect{:fill => "url(#de316486-4a29-4312-bdfc-fbce2132a2c1)", :height => "384", :width => "404"}
+        .relative.mx-auto.text-base.max-w-prose.lg:max-w-none
+          %figure
+            .aspect-w-12.aspect-h-7.lg:aspect-none
+              = image_tag('logo.svg', alt: 'Wort.Schule Logo')
+      .mt-8.lg:mt-0
+        .mx-auto.text-base.max-w-prose.lg:max-w-none
+          %p.text-lg.text-gray-500 Wort.Schule ist das Ergebnis des Projekts UnsereWörter der Sophie-Scholl-Schulen gGmbH in Zusammenarbeit mit der Universität Bremen.
+        .mx-auto.mt-5.prose.text-gray-500.prose-indigo.lg:col-start-1.lg:row-start-1.lg:max-w-none
+          %p Das Projekt wurde gefördert durch
+          %ul{:role => "list"}
+            %li
+              %a{:href => "https://www.uni-bremen.de"} Universität Bremen
+            %li
+              %a{:href => "https://www.sophie-scholl-schulen.de"} Sophie-Scholl-Schulen - gemeinnützige GmbH - Schulen in freier Trägerschaft
+            %li
+              %a{:href => "https://www.aktion-mensch.de"} Aktion Mensch
+          %h2 Lizenz
+          %p
+            %a{:href => "https://creativecommons.org/publicdomain/zero/1.0/deed.de"} CC0 1.0 Universell (CC0 1.0) Public Domain Dedication
+          %p
+            Alle Inhalte und Zeichnungen stehen unter einer cc-0-Lizenz zur Verfügung. Wir freuen uns über eine Quellenangabe Wort.Schule, aber sie ist optional.
+            Alle Zeichnungen wurden von Scott Krausen konzipiert und gezeichnet.
+          %p
+            Der Quellcode von Wort.Schule steht unter einer MIT Lizenz auf
+            = succeed "." do
+              %a{:href => "https://github.com/wort-schule/wort.schule/"} Github zur Verfügung
+          %p
+            Die Wörter wurden an verschiedenen Schulen gesammelt und von einer Community ergänzt.
+            %a{:href => "https://github.com/wort-schule/wort.schule/issues/new"} Falls Ihnen Fehler auffallen, melden Sie diese bitte online.
+          %p
+            Technische
+            = succeed "." do
+              %a{:href => "https://github.com/wort-schule/wort.schule/issues"} Anfragen oder Fehlermeldungen über GitHub
+          %pre
+            :preserve
+              
+              Angaben gemäß § 5 TMG 
+              Prof. Dr. Frank J. Müller  
+              Universität Bremen  
+              Bibliotheksstraße 1 
+              28359 Bremen  
+              
+              
+              Vertreten durch:  
+              Prof. Dr. Frank J. Müller  
+              Universität Bremen 
+              
+              
+              Inhaltliche Fragen an: 
+              Dr. Anna Driver 
+              inhalt@wort.schule 
+              
+              Kontakt:  
+              Telefon: 0421-21869305 
+              E-Mail: info@wort.schule 
+
