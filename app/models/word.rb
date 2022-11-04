@@ -1,9 +1,13 @@
 class Word < ApplicationRecord
+  extend FriendlyId
+
   has_paper_trail
 
   include WordFilter
 
   VOWELS = "aeiouäöü"
+
+  friendly_id :slug_candidates, use: %i[sequentially_slugged finders]
 
   has_and_belongs_to_many :topics, -> { distinct }
   has_and_belongs_to_many :sources, -> { distinct }
@@ -133,5 +137,12 @@ class Word < ApplicationRecord
       .downcase
       .gsub(/[^[:alpha:]]/, "")
       .chars
+  end
+
+  def slug_candidates
+    [
+      :name,
+      [:name, topics.map(&:name)]
+    ]
   end
 end

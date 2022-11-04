@@ -285,6 +285,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_04_110839) do
     t.string "consonant_vowel"
     t.string "syllables", default: ""
     t.string "written_syllables", default: ""
+    t.string "slug"
     t.string "plural", default: ""
     t.bigint "genus_id"
     t.bigint "genus_masculine_id"
@@ -335,6 +336,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_04_110839) do
     t.index ["hierarchy_id"], name: "index_words_on_hierarchy_id"
     t.index ["postfix_id"], name: "index_words_on_postfix_id"
     t.index ["prefix_id"], name: "index_words_on_prefix_id"
+    t.index ["slug"], name: "index_words_on_slug", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
