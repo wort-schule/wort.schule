@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'page/impressum'
+  get "page/impressum"
   devise_for :users, path: "devise/users", controllers: {registrations: "registrations", sessions: "users/sessions"}
 
   root to: "nouns#index"
