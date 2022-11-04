@@ -21,17 +21,18 @@
     %meta{:content => "#ffffff", :name => "theme-color"}/
 
   %body.h-full
-    .min-h-full
-      = render 'navigation'
+    .min-h-full.flex.flex-col.justify-between
+      %div
+        = render 'navigation'
 
-      - if flash.present?
-        %header(class="bg-white shadow")
-          .max-w-7xl.mx-auto.py-6.px-4.sm:px-6.lg:px-8
-            - flash.each do |type, message|
-              = message
+        - if flash.present?
+          %header(class="bg-white shadow")
+            .max-w-7xl.mx-auto.py-6.px-4.sm:px-6.lg:px-8
+              - flash.each do |type, message|
+                = message
 
-      %main
-        .max-w-7xl.mx-auto.py-6.sm:px-6.lg:px-8
-          = yield
+        %main
+          .max-w-7xl.mx-auto.py-6.sm:px-6.lg:px-8
+            = yield
 
-        = render 'footer'
+      = render 'footer'
