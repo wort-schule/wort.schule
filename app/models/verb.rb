@@ -1,7 +1,3 @@
-class Verb < ApplicationRecord
-  default_scope { joins(:word) }
-  acts_as :word
+class Verb < Word
   validates_presence_of :name
-
-  include WordFilter
 end

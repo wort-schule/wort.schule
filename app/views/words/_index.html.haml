@@ -1,7 +1,7 @@
 = turbo_frame_tag 'words' do
   = index_grid do
     - words.each do |word|
-      = render word.specific
+      = render word
 
   .pagination-with-actions
     = paginate words

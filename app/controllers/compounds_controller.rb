@@ -7,19 +7,21 @@ class CompoundsController < ApplicationController
       CompoundInterfix.all +
       CompoundPhonemreduction.all +
       CompoundVocalalternation.all +
-      FunctionWord.all.map { |w| w.acting_as } +
-      Word.ordered_lexigraphically.where.not(actable_type: "FunctionWord")
+      FunctionWord.all +
+      Word.ordered_lexigraphically.where.not(type: "FunctionWord")
 
     @elements = @elements.map do |element|
-      name = if element.class != Word
-        "#{element.name} [#{element.model_name.human}]"
-      else
+      is_word = [Word, Noun, Verb, Adjective, FunctionWord].include?(element.class)
+
+      name = if is_word
         element.meaning.empty? ? element.name : "#{element.name} [#{element.meaning}]"
+      else
+        "#{element.name} [#{element.model_name.human}]"
       end
 
       {
         text: name,
-        value: "#{element.class.name}:#{element.id}"
+        value: "#{is_word ? "Word" : element.class.name}:#{element.id}"
       }
     end
 

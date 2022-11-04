@@ -11,7 +11,7 @@
   - if compound_entity.word.blank?
     %span
   - else
-    .p-4= link_to compound_entity.word.name, compound_entity.word.actable
+    .p-4= link_to compound_entity.word.name, compound_entity.word
 
 .pagination-with-actions
   = link_to t('actions.edit'), edit_compound_phonemreduction_path(@compound_phonemreduction), class: 'button primary'

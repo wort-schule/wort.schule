@@ -19,11 +19,11 @@ RSpec.describe CompoundsController, type: :request do
       expect(JSON.parse(response.body, symbolize_names: true)).to match_array [
         {
           text: "Bach",
-          value: "Word:#{noun.acting_as.id}"
+          value: "Word:#{noun.id}"
         },
         {
           text: "Haus [Gebäude]",
-          value: "Word:#{noun_with_meaning.acting_as.id}"
+          value: "Word:#{noun_with_meaning.id}"
         },
         {
           text: "-thek [Postkonfix]",
@@ -31,7 +31,7 @@ RSpec.describe CompoundsController, type: :request do
         },
         {
           text: "die",
-          value: "Word:#{function_word.acting_as.id}"
+          value: "Word:#{function_word.id}"
         }
       ]
     end

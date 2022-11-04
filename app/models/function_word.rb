@@ -1,5 +1,4 @@
-class FunctionWord < ApplicationRecord
-  acts_as :word
+class FunctionWord < Word
   validates_presence_of :name, :function_type
 
   enum function_type: {article_definite: 0,

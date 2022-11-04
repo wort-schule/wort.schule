@@ -1,5 +1,4 @@
 class Word < ApplicationRecord
-  actable
   has_paper_trail
 
   include WordFilter

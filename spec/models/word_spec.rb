@@ -38,8 +38,8 @@ RSpec.describe Word do
   end
 
   describe "#opposites" do
-    subject(:word) { create :word, name: "Haus" }
-    let(:synonym) { create :word, name: "Gebäude" }
+    subject(:word) { create :noun, name: "Haus" }
+    let(:synonym) { create :noun, name: "Gebäude" }
 
     it "adds a synonym" do
       word.synonyms << synonym
@@ -63,7 +63,7 @@ RSpec.describe Word do
   end
 
   describe "#example_sentences" do
-    subject(:word) { create :word, name: "Haus" }
+    subject(:word) { create :noun, name: "Haus" }
 
     it "adds a sentence" do
       expect(word.update(
@@ -107,14 +107,14 @@ RSpec.describe Word do
     it "matches umlauts" do
       word = create :noun, name: "Ähre"
       expect(Noun.filter_letters("ä")).to include word
-      expect(Word.filter_letters("ä")).to include word.acting_as
+      expect(Word.filter_letters("ä")).to include word
     end
 
     it "requires all letters to be present" do
       word1 = create :noun, name: "Abc"
       create :noun, name: "A"
       expect(Noun.filter_letters("ac")).to match [word1]
-      expect(Word.filter_letters("ac")).to match [word1.acting_as]
+      expect(Word.filter_letters("ac")).to match [word1]
     end
   end
 
@@ -125,7 +125,7 @@ RSpec.describe Word do
       create :noun
 
       expect(Noun.filter_source(source.id)).to match [word]
-      expect(Word.filter_source(source.id)).to match [word.acting_as]
+      expect(Word.filter_source(source.id)).to match [word]
     end
   end
 
@@ -135,7 +135,7 @@ RSpec.describe Word do
       word = create :noun, topics: [topic]
       create :noun
 
-      expect(Word.filter_topic(topic.id)).to match [word.acting_as]
+      expect(Word.filter_topic(topic.id)).to match [word]
       expect(Noun.filter_topic(topic.id)).to match [word]
     end
   end
@@ -147,7 +147,7 @@ RSpec.describe Word do
       create :noun
 
       expect(Noun.filter_hierarchy(hierarchy.id)).to match [word]
-      expect(Word.filter_hierarchy(hierarchy.id)).to match [word.acting_as]
+      expect(Word.filter_hierarchy(hierarchy.id)).to match [word]
     end
   end
 
@@ -162,7 +162,7 @@ RSpec.describe Word do
       ))).to match [word]
       expect(Word.filter_phenomenons(OpenStruct.new(
         conjunction: "and", phenomenons: [phenomenon.id]
-      ))).to match [word.acting_as]
+      ))).to match [word]
     end
 
     it "finds words with multiple ORed phenomenons" do
@@ -176,7 +176,7 @@ RSpec.describe Word do
       ))).to match_array [word1, word2]
       expect(Word.filter_phenomenons(OpenStruct.new(
         conjunction: "or", phenomenons: [phenomenon1.id, phenomenon2.id]
-      ))).to match_array [word1.acting_as, word2.acting_as]
+      ))).to match_array [word1, word2]
     end
 
     it "finds words with multiple ANDed phenomenons" do
@@ -190,7 +190,7 @@ RSpec.describe Word do
       ))).to match_array [word]
       expect(Word.filter_phenomenons(OpenStruct.new(
         conjunction: "and", phenomenons: [phenomenon1.id, phenomenon2.id]
-      ))).to match_array [word.acting_as]
+      ))).to match_array [word]
     end
   end
 
@@ -205,7 +205,7 @@ RSpec.describe Word do
       ))).to match_array [word]
       expect(Word.filter_strategies(OpenStruct.new(
         conjunction: "and", strategies: [strategy.id]
-      ))).to match_array [word.acting_as]
+      ))).to match_array [word]
     end
 
     it "finds words with multiple ORed strategies" do
@@ -219,7 +219,7 @@ RSpec.describe Word do
       ))).to match_array [word1, word2]
       expect(Word.filter_strategies(OpenStruct.new(
         conjunction: "or", strategies: [strategy1.id, strategy2.id]
-      ))).to match_array [word1.acting_as, word2.acting_as]
+      ))).to match_array [word1, word2]
     end
 
     it "finds words with multiple ANDed strategies" do
@@ -233,7 +233,7 @@ RSpec.describe Word do
       ))).to match [word]
       expect(Word.filter_strategies(OpenStruct.new(
         conjunction: "and", strategies: [strategy1.id, strategy2.id]
-      ))).to match [word.acting_as]
+      ))).to match [word]
     end
   end
 
@@ -241,47 +241,47 @@ RSpec.describe Word do
     it "finds words with a specific keyword" do
       keyword = create :noun
       word = create :noun
-      word.update!(keyword_ids: [keyword.acting_as.id])
+      word.update!(keyword_ids: [keyword.id])
       create :noun
 
       expect(Noun.filter_keywords(OpenStruct.new(
-        conjunction: "and", keywords: [keyword.acting_as.id]
+        conjunction: "and", keywords: [keyword.id]
       ))).to match [word]
       expect(Word.filter_keywords(OpenStruct.new(
-        conjunction: "and", keywords: [keyword.acting_as.id]
-      ))).to match [word.acting_as]
+        conjunction: "and", keywords: [keyword.id]
+      ))).to match [word]
     end
 
     it "finds words with multiple ORed keywords" do
       keyword1 = create :noun
       keyword2 = create :noun
       word1 = create :noun
-      word1.update!(keyword_ids: [keyword1.acting_as.id, keyword2.acting_as.id])
+      word1.update!(keyword_ids: [keyword1.id, keyword2.id])
       word2 = create :noun, keywords: [keyword1]
-      word2.update!(keyword_ids: [keyword1.acting_as.id])
+      word2.update!(keyword_ids: [keyword1.id])
 
       expect(Noun.filter_keywords(OpenStruct.new(
-        conjunction: "or", keywords: [keyword1.acting_as.id, keyword2.acting_as.id]
+        conjunction: "or", keywords: [keyword1.id, keyword2.id]
       ))).to match_array [word1, word2]
       expect(Word.filter_keywords(OpenStruct.new(
-        conjunction: "or", keywords: [keyword1.acting_as.id, keyword2.acting_as.id]
-      ))).to match_array [word1.acting_as, word2.acting_as]
+        conjunction: "or", keywords: [keyword1.id, keyword2.id]
+      ))).to match_array [word1, word2]
     end
 
     it "finds words with multiple ANDed keywords" do
       keyword1 = create :noun
       keyword2 = create :noun
       word = create :noun
-      word.update!(keyword_ids: [keyword1.acting_as.id, keyword2.acting_as.id])
+      word.update!(keyword_ids: [keyword1.id, keyword2.id])
       other_word = create :noun, keywords: [keyword1]
-      other_word.update!(keyword_ids: [keyword1.acting_as.id])
+      other_word.update!(keyword_ids: [keyword1.id])
 
       expect(Noun.filter_keywords(OpenStruct.new(
-        conjunction: "and", keywords: [keyword1.acting_as.id, keyword2.acting_as.id]
+        conjunction: "and", keywords: [keyword1.id, keyword2.id]
       ))).to match [word]
       expect(Word.filter_keywords(OpenStruct.new(
-        conjunction: "and", keywords: [keyword1.acting_as.id, keyword2.acting_as.id]
-      ))).to match [word.acting_as]
+        conjunction: "and", keywords: [keyword1.id, keyword2.id]
+      ))).to match [word]
     end
   end
 
@@ -291,7 +291,7 @@ RSpec.describe Word do
       create :noun
 
       expect(Noun.filter_consonant_vowel("KVVK")).to match [word]
-      expect(Word.filter_consonant_vowel("KVVK")).to match [word.acting_as]
+      expect(Word.filter_consonant_vowel("KVVK")).to match [word]
     end
   end
 
@@ -301,7 +301,7 @@ RSpec.describe Word do
       create :noun, foreign: false
 
       expect(Noun.filter_foreign("1")).to match [word]
-      expect(Word.filter_foreign("1")).to match [word.acting_as]
+      expect(Word.filter_foreign("1")).to match [word]
     end
   end
 
@@ -311,7 +311,7 @@ RSpec.describe Word do
       create :noun, prototype: false
 
       expect(Noun.filter_prototype("1")).to match [word]
-      expect(Word.filter_prototype("1")).to match [word.acting_as]
+      expect(Word.filter_prototype("1")).to match [word]
     end
   end
 
@@ -321,18 +321,18 @@ RSpec.describe Word do
       create :noun, compound: false
 
       expect(Noun.filter_compound("1")).to match [word]
-      expect(Word.filter_compound("1")).to match [word.acting_as]
+      expect(Word.filter_compound("1")).to match [word]
     end
   end
 
   describe "#filter_example_sentences" do
     it "finds words which have example sentences" do
-      example_sentence = create :example_sentence
+      example_sentence = build :example_sentence
       word = create :noun, example_sentences: [example_sentence]
       create :noun
 
       expect(Noun.filter_example_sentences("1")).to match [word]
-      expect(Word.filter_example_sentences("1")).to match [word.acting_as]
+      expect(Word.filter_example_sentences("1")).to match [word]
     end
   end
 
@@ -342,7 +342,7 @@ RSpec.describe Word do
       create :noun, singularetantum: false
 
       expect(Noun.filter_singularetantum("1")).to match [word]
-      expect(Word.filter_singularetantum("1")).to match [word.acting_as]
+      expect(Word.filter_singularetantum("1")).to match [word]
     end
   end
 
@@ -352,19 +352,19 @@ RSpec.describe Word do
       create :noun, pluraletantum: false
 
       expect(Noun.filter_pluraletantum("1")).to match [word]
-      expect(Word.filter_pluraletantum("1")).to match [word.acting_as]
+      expect(Word.filter_pluraletantum("1")).to match [word]
     end
   end
 
   describe "#set_consonant_vowel" do
     it "detects vowels and consonants" do
-      word = create :word, name: "Ähre"
+      word = create :noun, name: "Ähre"
 
       expect(word.consonant_vowel).to eq "VKKV"
     end
 
     it "ignores non alphabetic characters" do
-      word = create :word, name: "Äh-r  9eß"
+      word = create :noun, name: "Äh-r  9eß"
 
       expect(word.consonant_vowel).to eq "VKKVK"
     end

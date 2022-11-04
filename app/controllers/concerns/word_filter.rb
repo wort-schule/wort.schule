@@ -34,13 +34,7 @@ module WordFilter
       return if query.blank?
       return if query.to_s != "1"
 
-      table = if join_table.blank? || table_name == join_table.to_s
-        self
-      else
-        joins("JOIN #{join_table} ON words.actable_id = #{join_table}.id")
-      end
-
-      table.where([join_table, attribute].select(&:present?).join(".") => true)
+      where(attribute => true)
     end
   end
 
@@ -78,7 +72,7 @@ module WordFilter
     )
 
     scope :filter_type, lambda { |type|
-      where(actable_type: type.presence || "Noun")
+      where(type: type.presence || "Noun")
     }
 
     scope :filter_wordquery, lambda { |query|

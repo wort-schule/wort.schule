@@ -2,7 +2,7 @@
   = box padding: false, class: 'striped' do
     - @words.each do |word|
       - if (block = yield word).blank?
-        .p-4= link_to word.name, word.actable
+        .p-4= link_to word.name, word
       - else
         = block
 

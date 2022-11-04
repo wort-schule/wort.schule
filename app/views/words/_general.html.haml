@@ -68,16 +68,16 @@
       = box_description_list do |list|
         = render(list.add(Word.human_attribute_name(:synonyms))) do
           = separate word.synonyms do |synonym|
-            = link_to_if can?(:read, synonym.actable), synonym.name, synonym.actable
+            = link_to_if can?(:read, synonym), synonym.name, synonym
 
         = render(list.add(Word.human_attribute_name(:opposites))) do
           = separate word.opposites do |opposite|
-            = link_to_if can?(:read, opposite.actable), opposite.name, opposite.actable
+            = link_to_if can?(:read, opposite), opposite.name, opposite
 
         = render(list.add(Word.human_attribute_name(:keywords))) do
           = separate word.keywords do |keyword|
-            = link_to_if can?(:read, keyword.actable), keyword.name, keyword.actable
+            = link_to_if can?(:read, keyword), keyword.name, keyword
 
         = render(list.add(Word.human_attribute_name(:rimes))) do
           = separate word.rimes do |rime|
-            = link_to_if can?(:read, rime.actable), rime.name, rime.actable
+            = link_to_if can?(:read, rime), rime.name, rime

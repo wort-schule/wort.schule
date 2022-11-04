@@ -5,8 +5,8 @@ class NounsController < PublicController
 
   def index
     @filterrific = initialize_filterrific(
-      Noun,
-      params[:filterrific]
+      Word,
+      (params[:filterrific] || {}).merge(filter_type: "Noun")
     ) or return
     @nouns = @filterrific.find.ordered_lexigraphically.page(params[:page])
   end
