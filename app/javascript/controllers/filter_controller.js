@@ -9,7 +9,7 @@ export default class extends Controller {
 
   connect() {
     const params = new URLSearchParams(window.location.search)
-    const type = params.get('filterrific[filter_type]') || 'Noun'
+    const type = params.get('filterrific[filter_type]') || ''
 
     if (this.nounTarget) {
       switch(type) {
@@ -20,13 +20,21 @@ export default class extends Controller {
           this.showAdjective()
           break
         case 'Noun':
-        default:
           this.showNoun()
+          break
+        default:
+          this.hideAll()
           break
       }
 
       document.getElementById(`filterrific_filter_type_${type.toLowerCase()}`).checked = true
     }
+  }
+
+  hideAll() {
+    this.nounTarget.classList.toggle("hidden", true)
+    this.verbTarget.classList.toggle("hidden", true)
+    this.adjectiveTarget.classList.toggle("hidden", true)
   }
 
   showNoun() {

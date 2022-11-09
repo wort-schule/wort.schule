@@ -9,6 +9,9 @@
         %label= t 'activerecord.attributes.word.type'
         .flex.flex-col.md:flex-row.md:gap-4
           .flex.items-center.gap-2
+            = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
+            = f.label :filter_type, t('filter.all'), value: ''
+          .flex.items-center.gap-2
             = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
             = f.label :filter_type, t('activerecord.models.noun.one'), value: 'Noun'
           .flex.items-center.gap-2
