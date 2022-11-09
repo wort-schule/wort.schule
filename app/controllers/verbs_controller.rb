@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class VerbsController < PublicController
+  include OpenGraph
+
   load_and_authorize_resource
+
+  before_action :set_open_graph_tags, only: :show
 
   def index
     @filterrific = initialize_filterrific(

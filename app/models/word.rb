@@ -63,6 +63,7 @@ class Word < ApplicationRecord
   accepts_nested_attributes_for :example_sentences, reject_if: :all_blank, allow_destroy: true
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png
+    attachable.variant :open_graph, resize_to_fill: [1080, nil], format: :png
   end
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
