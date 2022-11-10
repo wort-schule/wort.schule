@@ -1,6 +1,6 @@
 = two_column_card t('words.show.general.title'), t('words.show.general.description'), first: true do
   = box do
-    = f.input :actable_type, input_html: {value: word.class.model_name.human}, disabled: true, label: Word.human_attribute_name(:type)
+    = f.input :type, input_html: {value: word.class.model_name.human}, disabled: true, label: Word.human_attribute_name(:type)
     = f.input :name, autofocus: true, label: Word.human_attribute_name(:name) if show_name
     = f.input :image, label: Word.human_attribute_name(:image)
     = f.input :meaning, label: Word.human_attribute_name(:meaning)

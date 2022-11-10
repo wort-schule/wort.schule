@@ -5,8 +5,8 @@ class AdjectivesController < PublicController
 
   def index
     @filterrific = initialize_filterrific(
-      Adjective,
-      params[:filterrific]
+      Word,
+      (params[:filterrific] || {}).merge(filter_type: "Adjective")
     ) or return
     @adjectives = @filterrific.find.ordered_lexigraphically.page(params[:page])
   end

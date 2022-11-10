@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_08_150114) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_04_110839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,14 +40,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_150114) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "adjectives", force: :cascade do |t|
-    t.string "comparative", default: ""
-    t.string "superlative", default: ""
-    t.boolean "absolute", default: false, null: false
-    t.boolean "irregular_declination", default: false, null: false
-    t.boolean "irregular_comparison", default: false, null: false
   end
 
   create_table "compound_entities", force: :cascade do |t|
@@ -144,28 +136,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_150114) do
     t.index ["invitation_token"], name: "index_learning_groups_on_invitation_token", unique: true
     t.index ["school_id"], name: "index_learning_groups_on_school_id"
     t.index ["teacher_id"], name: "index_learning_groups_on_teacher_id"
-  end
-
-  create_table "nouns", force: :cascade do |t|
-    t.string "plural", default: ""
-    t.bigint "genus_id"
-    t.bigint "genus_masculine_id"
-    t.bigint "genus_feminine_id"
-    t.bigint "genus_neuter_id"
-    t.string "case_1_singular", default: ""
-    t.string "case_1_plural", default: ""
-    t.string "case_2_singular", default: ""
-    t.string "case_2_plural", default: ""
-    t.string "case_3_singular", default: ""
-    t.string "case_3_plural", default: ""
-    t.string "case_4_singular", default: ""
-    t.string "case_4_plural", default: ""
-    t.boolean "pluraletantum", default: false, null: false
-    t.boolean "singularetantum", default: false, null: false
-    t.index ["genus_feminine_id"], name: "index_nouns_on_genus_feminine_id"
-    t.index ["genus_id"], name: "index_nouns_on_genus_id"
-    t.index ["genus_masculine_id"], name: "index_nouns_on_genus_masculine_id"
-    t.index ["genus_neuter_id"], name: "index_nouns_on_genus_neuter_id"
   end
 
   create_table "opposites", id: false, force: :cascade do |t|
@@ -289,7 +259,48 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_150114) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "verbs", force: :cascade do |t|
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.text "object_changes"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "words", force: :cascade do |t|
+    t.bigint "hierarchy_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "meaning", default: ""
+    t.string "meaning_long", default: ""
+    t.boolean "prototype", default: false, null: false
+    t.boolean "foreign", default: false, null: false
+    t.boolean "compound", default: false, null: false
+    t.bigint "prefix_id"
+    t.bigint "postfix_id"
+    t.string "name"
+    t.string "consonant_vowel"
+    t.string "syllables", default: ""
+    t.string "written_syllables", default: ""
+    t.string "slug"
+    t.string "plural", default: ""
+    t.bigint "genus_id"
+    t.bigint "genus_masculine_id"
+    t.bigint "genus_feminine_id"
+    t.bigint "genus_neuter_id"
+    t.string "case_1_singular", default: ""
+    t.string "case_1_plural", default: ""
+    t.string "case_2_singular", default: ""
+    t.string "case_2_plural", default: ""
+    t.string "case_3_singular", default: ""
+    t.string "case_3_plural", default: ""
+    t.string "case_4_singular", default: ""
+    t.string "case_4_plural", default: ""
+    t.boolean "pluraletantum", default: false, null: false
+    t.boolean "singularetantum", default: false, null: false
     t.string "participle", default: ""
     t.string "past_participle", default: ""
     t.string "present_singular_1", default: ""
@@ -311,40 +322,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_150114) do
     t.string "imperative_plural"
     t.boolean "modal", default: false, null: false
     t.boolean "strong", default: false, null: false
-  end
-
-  create_table "versions", force: :cascade do |t|
-    t.string "item_type", null: false
-    t.bigint "item_id", null: false
-    t.string "event", null: false
-    t.string "whodunnit"
-    t.text "object"
-    t.datetime "created_at"
-    t.text "object_changes"
-    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
-  end
-
-  create_table "words", force: :cascade do |t|
-    t.bigint "hierarchy_id"
-    t.string "actable_type"
-    t.bigint "actable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "meaning", default: ""
-    t.string "meaning_long", default: ""
-    t.boolean "prototype", default: false, null: false
-    t.boolean "foreign", default: false, null: false
-    t.boolean "compound", default: false, null: false
-    t.bigint "prefix_id"
-    t.bigint "postfix_id"
-    t.string "name"
-    t.string "consonant_vowel"
-    t.string "syllables", default: ""
-    t.string "written_syllables", default: ""
-    t.index ["actable_type", "actable_id"], name: "index_words_on_actable_type_and_actable_id"
+    t.string "comparative", default: ""
+    t.string "superlative", default: ""
+    t.boolean "absolute", default: false, null: false
+    t.boolean "irregular_declination", default: false, null: false
+    t.boolean "irregular_comparison", default: false, null: false
+    t.integer "function_type"
+    t.string "type", null: false
+    t.index ["genus_feminine_id"], name: "index_words_on_genus_feminine_id"
+    t.index ["genus_id"], name: "index_words_on_genus_id"
+    t.index ["genus_masculine_id"], name: "index_words_on_genus_masculine_id"
+    t.index ["genus_neuter_id"], name: "index_words_on_genus_neuter_id"
     t.index ["hierarchy_id"], name: "index_words_on_hierarchy_id"
     t.index ["postfix_id"], name: "index_words_on_postfix_id"
     t.index ["prefix_id"], name: "index_words_on_prefix_id"
+    t.index ["slug"], name: "index_words_on_slug", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -355,10 +347,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_150114) do
   add_foreign_key "learning_group_memberships", "users", column: "student_id"
   add_foreign_key "learning_groups", "schools"
   add_foreign_key "learning_groups", "users", column: "teacher_id"
-  add_foreign_key "nouns", "genus", column: "genus_id"
-  add_foreign_key "nouns", "nouns", column: "genus_feminine_id"
-  add_foreign_key "nouns", "nouns", column: "genus_masculine_id"
-  add_foreign_key "nouns", "nouns", column: "genus_neuter_id"
   add_foreign_key "words", "hierarchies"
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"

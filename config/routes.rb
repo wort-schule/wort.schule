@@ -1,19 +1,25 @@
 Rails.application.routes.draw do
-  get 'page/impressum'
-  devise_for :users, path: "devise/users", controllers: {registrations: "registrations", sessions: "users/sessions"}
+  # These shortlinks have to be the first routes. They are used for URLs
+  # without a controller, such as http://host/myword
+  resources :nouns, except: %i[index new create], path: "", constraints: SlugConstraint.new(Noun)
+  resources :verbs, except: %i[index new create], path: "", constraints: SlugConstraint.new(Verb)
+  resources :adjectives, except: %i[index new create], path: "", constraints: SlugConstraint.new(Adjective)
+  resources :function_words, except: %i[index new create], path: "", constraints: SlugConstraint.new(FunctionWord)
 
   root to: "nouns#index"
+
+  devise_for :users, path: "devise/users", controllers: {registrations: "registrations", sessions: "users/sessions"}
 
   resource :search, only: :show
 
   # Object routes
-  resources :nouns do
+  resources :nouns, only: %i[index new create] do
     collection do
       get "by_genus/:genus", to: "nouns#by_genus", as: :by_genus
     end
   end
-  resources :verbs
-  resources :adjectives
+  resources :verbs, only: %i[index new create]
+  resources :adjectives, only: %i[index new create]
   resources :users
   resources :schools do
     resources :teaching_assignments, only: %i[new create destroy]
@@ -33,7 +39,7 @@ Rails.application.routes.draw do
   end
   resources :compounds, only: :index
   resources :sources
-  resources :function_words
+  resources :function_words, only: %i[index new create]
   resources :topics
   resources :hierarchies
   resources :prefixes
@@ -54,4 +60,6 @@ Rails.application.routes.draw do
     resource :password, only: :edit
     resource :email, only: :edit
   end
+
+  get "page/impressum"
 end

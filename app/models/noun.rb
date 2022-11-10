@@ -1,15 +1,10 @@
-class Noun < ApplicationRecord
-  default_scope { joins(:word) }
-
-  acts_as :word
+class Noun < Word
   belongs_to :genus, optional: true
   validates_presence_of :name
 
   belongs_to :genus_masculine, class_name: "Noun", optional: true
   belongs_to :genus_feminine, class_name: "Noun", optional: true
   belongs_to :genus_neuter, class_name: "Noun", optional: true
-
-  include WordFilter
 
   scope :by_genus, ->(genus) {
     where(genus: Genus.find_by(name: genus))

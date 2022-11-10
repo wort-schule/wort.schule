@@ -5,8 +5,8 @@ class VerbsController < PublicController
 
   def index
     @filterrific = initialize_filterrific(
-      Verb,
-      params[:filterrific]
+      Word,
+      (params[:filterrific] || {}).merge(filter_type: "Verb")
     ) or return
     @verbs = @filterrific.find.ordered_lexigraphically.page(params[:page])
   end

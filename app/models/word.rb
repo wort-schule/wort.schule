@@ -1,10 +1,13 @@
 class Word < ApplicationRecord
-  actable
+  extend FriendlyId
+
   has_paper_trail
 
   include WordFilter
 
   VOWELS = "aeiouäöü"
+
+  friendly_id :name, use: %i[sequentially_slugged finders]
 
   has_and_belongs_to_many :topics, -> { distinct }
   has_and_belongs_to_many :sources, -> { distinct }

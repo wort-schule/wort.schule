@@ -2,7 +2,7 @@
 
 RSpec.describe NounsController, type: :request do
   let(:admin) { create :admin }
-  let(:word) { create :word }
+  let(:word) { create :noun }
   let(:compound_preconfix) { create :compound_preconfix }
   let(:compound_postconfix) { create :compound_postconfix }
 
@@ -32,9 +32,9 @@ RSpec.describe NounsController, type: :request do
         .pluck(:word_id, :part_id, :part_type, :pos)
 
       expect(entities).to match [
-        [noun.acting_as.id, word.id, "Word", 1],
-        [noun.acting_as.id, compound_preconfix.id, "CompoundPreconfix", 2],
-        [noun.acting_as.id, compound_postconfix.id, "CompoundPostconfix", 3]
+        [noun.id, word.id, "Word", 1],
+        [noun.id, compound_preconfix.id, "CompoundPreconfix", 2],
+        [noun.id, compound_postconfix.id, "CompoundPostconfix", 3]
       ]
     end
   end
@@ -66,8 +66,8 @@ RSpec.describe NounsController, type: :request do
         .pluck(:word_id, :part_id, :part_type, :pos)
 
       expect(entities).to match [
-        [noun.acting_as.id, word.id, "Word", 1],
-        [noun.acting_as.id, compound_postconfix.id, "CompoundPostconfix", 2]
+        [noun.id, word.id, "Word", 1],
+        [noun.id, compound_postconfix.id, "CompoundPostconfix", 2]
       ]
     end
 
@@ -89,8 +89,8 @@ RSpec.describe NounsController, type: :request do
         .pluck(:word_id, :part_id, :part_type, :pos)
 
       expect(entities).to match [
-        [noun.acting_as.id, word.id, "Word", 1],
-        [noun.acting_as.id, compound_postconfix.id, "CompoundPostconfix", 2]
+        [noun.id, word.id, "Word", 1],
+        [noun.id, compound_postconfix.id, "CompoundPostconfix", 2]
       ]
     end
   end

@@ -4,7 +4,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.1.0"
 
 gem "rails", "~> 7.0.3"
-gem "active_record-acts_as"
 gem "active_storage_svg_sanitizer"
 gem "bootsnap", require: false
 gem "cancancan"
@@ -13,6 +12,7 @@ gem "devise-i18n"
 gem "draper"
 gem "enumerize"
 gem "filterrific", github: "metikular/filterrific", branch: "fix/nested-array"
+gem "friendly_id"
 gem "haml"
 gem "haml-rails"
 gem "heroicon"
