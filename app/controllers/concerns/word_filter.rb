@@ -72,7 +72,7 @@ module WordFilter
     )
 
     scope :filter_type, lambda { |type|
-      where(type: type.presence || "Noun")
+      where(type: type.presence || "")
     }
 
     scope :filter_wordquery, lambda { |query|

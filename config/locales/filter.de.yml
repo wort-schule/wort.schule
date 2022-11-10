@@ -3,6 +3,7 @@ de:
     title: Filter
     apply: Filtern
     reset: Filter löschen
+    all: Alle
     and: und
     or: oder
     wordstarts: Wortanfang
