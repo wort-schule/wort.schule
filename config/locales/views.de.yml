@@ -67,6 +67,9 @@ de:
       general:
         title: Bedeutung
         description: Erklärung und thematische Einordnung
+        more_meanings:
+          one: '%{count} weitere Bedeutung'
+          other: '%{count} weitere Bedeutungen'
       word_properties:
         title: Wortbildung
         description: Silben und Klassifizierung

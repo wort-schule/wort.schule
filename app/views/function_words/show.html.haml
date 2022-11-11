@@ -1,4 +1,5 @@
-= title_with_actions @function_word.name
+= title_with_actions @function_word.name do
+  = render "words/more_meanings", word: @function_word
 
 = two_column_card FunctionWord.model_name.human, "", first: true do
   = box padding: false do

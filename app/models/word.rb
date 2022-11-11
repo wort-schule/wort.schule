@@ -128,6 +128,10 @@ class Word < ApplicationRecord
     end.compact
   end
 
+  def other_meanings_count
+    Word.where("name ILIKE ?", name).count - 1
+  end
+
   private
 
   def set_consonant_vowel

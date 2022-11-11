@@ -1,4 +1,5 @@
-= title_with_actions @adjective.name
+= title_with_actions @adjective.name do
+  = render "words/more_meanings", word: @adjective
 
 = two_column_card t('words.show.adjective.title'), t('words.show.adjective.description'), first: true do
   = box padding: false do

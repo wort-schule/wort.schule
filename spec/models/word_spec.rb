@@ -387,4 +387,23 @@ RSpec.describe Word do
       expect(updated_version.changeset.except("updated_at")).to eq({"consonant_vowel" => ["VKKVK", "KVVK"], "name" => ["Adler", "Haus"]})
     end
   end
+
+  describe "#other_meanings_count" do
+    context "without other meanings" do
+      let!(:noun) { create :noun, name: "Ticken" }
+
+      it "has no other meanings" do
+        expect(noun.other_meanings_count).to eq 0
+      end
+    end
+
+    context "with other meanings" do
+      let!(:noun) { create :noun, name: "Ticken" }
+      let!(:verb) { create :verb, name: "ticken" }
+
+      it "has other meanings" do
+        expect(noun.other_meanings_count).to eq 1
+      end
+    end
+  end
 end
