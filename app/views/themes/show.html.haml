@@ -22,3 +22,6 @@
 
       = render(list.add(Theme.human_attribute_name(:visibility))) do
         = @theme.visibility_text
+
+= two_column_card t('.preview'), "" do
+  = render ThemeComponent.new(word: @theme.word_type.camelize.constantize.dummy, theme: @theme)

@@ -44,4 +44,35 @@ class Noun < Word
   def article_indefinite
     %w[ein eine ein ein/eine ein eine/ein ein/eine][genus_id] unless genus_id.nil?
   end
+
+  def self.dummy
+    new(
+      meaning: "",
+      meaning_long: "Tier, klettert",
+      prototype: false,
+      foreign: false,
+      compound: false,
+      prefix_id: nil,
+      postfix_id: nil,
+      name: "Affe",
+      consonant_vowel: "VKKV",
+      syllables: "Af-fen",
+      written_syllables: "",
+      plural: "Affen",
+      genus_id: 0,
+      genus_masculine_id: nil,
+      genus_feminine_id: nil,
+      genus_neuter_id: nil,
+      case_1_singular: "Affe",
+      case_1_plural: "Affen",
+      case_2_singular: "Affen",
+      case_2_plural: "Affen",
+      case_3_singular: "Affen",
+      case_3_plural: "Affen",
+      case_4_singular: "Affen",
+      case_4_plural: "Affen",
+      pluraletantum: false,
+      singularetantum: false
+    )
+  end
 end

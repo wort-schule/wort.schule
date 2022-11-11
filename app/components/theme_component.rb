@@ -3,7 +3,7 @@
 class ThemeComponent < ViewComponent::Base
   include WordHelper
 
-  def initialize(word:, theme:, default:)
+  def initialize(word:, theme:, default: false)
     @word = word
     @theme = theme
     @default = default
