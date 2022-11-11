@@ -34,4 +34,36 @@ RSpec.describe "nouns" do
       end
     end
   end
+
+  describe "shows more meanings" do
+    let(:noun) { create :noun, name: "Ticken" }
+    let(:more_meanings) { I18n.t("words.show.general.more_meanings", count: 1) }
+
+    context "with a unique word" do
+      it "does not show another meaning" do
+        visit noun_path(noun)
+
+        expect(page).not_to have_content more_meanings
+      end
+    end
+
+    context "with same spelling" do
+      let!(:verb) { create :noun, name: "ticken" }
+
+      it "shows another meaning" do
+        visit noun_path(noun)
+
+        expect(page).to have_content more_meanings
+        click_on more_meanings
+
+        expect(page).to have_current_path search_path(filterrific: {filter_wordstarts: "Ticken"})
+        within("##{dom_id(noun)}") do
+          expect(page).to have_content "Ticken"
+        end
+        within("##{dom_id(verb)}") do
+          expect(page).to have_content "ticken"
+        end
+      end
+    end
+  end
 end
