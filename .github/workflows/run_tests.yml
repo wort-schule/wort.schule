@@ -29,7 +29,7 @@ jobs:
           bundler-cache: true
 
       - name: Run Ruby lint
-        run: bundle exec standardrb
+        run: bundle exec standardrb --no-fix
 
       - name: Install libvips
         env:
