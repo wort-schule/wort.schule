@@ -139,7 +139,34 @@ class ThemeComponent < ViewComponent::Base
 
   def adjective_params
     {
-      name: @word.name
+      name: @word.name,
+      word_type: @word.class.model_name.human,
+      comparative: @word.comparative,
+      superlative: @word.superlative,
+      absolute: @word.absolute.humanize,
+      irregular_comparison: @word.irregular_comparison.humanize,
+      irregular_declination: @word.irregular_declination.humanize,
+      example_sentence: @word.example_sentences.first.presence || "",
+      image_url: @word_image_url,
+      meaning: @word.meaning.presence || "",
+      meaning_long: @word.meaning_long.presence || "",
+      syllables: @word.syllables,
+      written_syllables: @word.written_syllables,
+      topics: @word.topics.map(&:name).join(", "),
+      hierarchies: hierarchies(@word.hierarchy).map(&:name).join(", "),
+      synonyms: @word.synonyms.map(&:name).join(", "),
+      rimes: @word.rimes.map(&:name).join(", "),
+      labels: {
+        syllables: I18n.t("card.labels.syllables"),
+        keywords: I18n.t("card.labels.keywords"),
+        hierarchy: I18n.t("card.labels.hierarchy"),
+        topics: I18n.t("card.labels.topics"),
+        synonyms: I18n.t("card.labels.synonyms"),
+        rimes: I18n.t("card.labels.rimes"),
+        absolute: I18n.t("card.labels.absolute"),
+        irregular_comparison: I18n.t("card.labels.irregular_comparison"),
+        irregular_declination: I18n.t("card.labels.irregular_declination")
+      }
     }
   end
 end
