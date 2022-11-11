@@ -33,4 +33,16 @@ RSpec.describe "friendly ID" do
       expect(noun3.slug).to eq "bauer-3"
     end
   end
+
+  describe "update a slug" do
+    let(:noun) { create :noun, name: "Bauer" }
+
+    it "lowercases the slug" do
+      expect(noun.slug).to eq "bauer"
+
+      noun.update!(slug: "ADLer")
+
+      expect(noun.slug).to eq "adler"
+    end
+  end
 end
