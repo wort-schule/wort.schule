@@ -2,6 +2,7 @@
 
 class AdjectivesController < PublicController
   include OpenGraph
+  include Themeable
 
   load_and_authorize_resource
 

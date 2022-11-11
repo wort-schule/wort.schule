@@ -10,6 +10,8 @@ class User < ApplicationRecord
     attachable.variant :thumb, resize_to_fill: [64, 64]
   end
 
+  has_many :themes
+
   enumerize :role, in: %w[Guest Student Teacher Admin]
 
   def full_name

@@ -205,6 +205,7 @@ GEM
       addressable (~> 2.7)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
+    liquid (5.4.0)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -435,6 +436,7 @@ DEPENDENCIES
   jbuilder
   kaminari
   letter_opener
+  liquid
   meta-tags
   mina (= 1.2.4)
   paper_trail

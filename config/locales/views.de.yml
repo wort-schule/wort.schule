@@ -93,6 +93,10 @@ de:
         tense:
           title: Zeitformen
           description: ""
+      themes:
+        title: Wortkarte
+        description: ''
+        show: Anzeigen
   schools:
     index:
       new: Neue Schule

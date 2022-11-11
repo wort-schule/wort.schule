@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resources :adjectives, except: %i[index new create], path: "", constraints: SlugConstraint.new(Adjective)
   resources :function_words, except: %i[index new create], path: "", constraints: SlugConstraint.new(FunctionWord)
 
+  concern :themeable do
+    get :theme, action: :theme
+  end
+
   root to: "nouns#index"
 
   devise_for :users, path: "devise/users", controllers: {registrations: "registrations", sessions: "users/sessions"}
@@ -14,12 +18,18 @@ Rails.application.routes.draw do
 
   # Object routes
   resources :nouns, only: %i[index new create] do
+    member { concerns :themeable }
+
     collection do
       get "by_genus/:genus", to: "nouns#by_genus", as: :by_genus
     end
   end
-  resources :verbs, only: %i[index new create]
-  resources :adjectives, only: %i[index new create]
+  resources :verbs, only: %i[index new create] do
+    member { concerns :themeable }
+  end
+  resources :adjectives, only: %i[index new create] do
+    member { concerns :themeable }
+  end
   resources :users
   resources :schools do
     resources :teaching_assignments, only: %i[new create destroy]
