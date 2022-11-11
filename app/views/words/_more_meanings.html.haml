@@ -1,2 +1,2 @@
 - if word.other_meanings_count > 0
-  = link_to t("words.show.general.more_meanings", count: word.other_meanings_count), search_path(filterrific: { filter_wordstarts: word.name })
+  = link_to t("words.show.general.more_meanings", count: word.other_meanings_count), search_path(filterrific: { filter_wordstarts: word.name }), class: 'text-sm text-gray-500'
