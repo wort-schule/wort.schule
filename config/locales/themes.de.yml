@@ -1,0 +1,15 @@
+de:
+  theme:
+    labels:
+      syllables: Trennung
+      keywords: Stichwörter
+      hierarchy: Kategorie
+      topics: Themen
+      synonyms: Synonyme
+      rimes: Reimwörter
+      case_1: '1. Fall (wer/was)'
+      case_2: '2. Fall (wessen)'
+      case_3: '3. Fall (wem)'
+      case_4: '4. Fall (wen/was)'
+      singular: Einzahl
+      plural: Mehrzahl
