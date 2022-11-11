@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FunctionWordsController < ApplicationController
+class FunctionWordsController < PublicController
   load_and_authorize_resource
 
   def index

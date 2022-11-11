@@ -15,6 +15,7 @@
     
       = render(list.add(Word.human_attribute_name(:written_syllables))) do
         = @function_word.written_syllables
-    
+
 .pagination-with-actions
-  = link_to t('actions.edit'), edit_function_word_path(@function_word), class: 'button primary'
+  - if can? :edit, @function_word
+    = link_to t('actions.edit'), edit_function_word_path(@function_word), class: 'button primary'

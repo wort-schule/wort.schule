@@ -5,4 +5,5 @@
 
 .pagination-with-actions
   = paginate @function_words
-  = link_to t('.new'), new_function_word_path, class: 'button primary'
+  - if can? :create, FunctionWord
+    = link_to t('.new'), new_function_word_path, class: 'button primary'

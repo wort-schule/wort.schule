@@ -9,6 +9,7 @@ class Ability
     can :read, Noun
     can :read, Verb
     can :read, Adjective
+    can :read, FunctionWord
 
     if user.present?
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password], id: user.id
