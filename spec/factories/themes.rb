@@ -5,7 +5,7 @@ FactoryBot.define do
     name { Faker::Company.unique.name }
     description { Faker::Lorem.sentence }
     template { File.read(Rails.root.join("app/views/themes/default_noun.liquid")) }
-    word_type { "noun" }
+    word_type { :noun }
     user
   end
 end

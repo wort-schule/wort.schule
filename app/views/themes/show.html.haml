@@ -1,5 +1,7 @@
 = title_with_actions @theme.name do
-  = link_to t('actions.edit'), edit_theme_path(@theme), class: 'button primary'
+  %div
+    = link_to t('actions.copy'), new_theme_path(theme_id: @theme), class: 'button'
+    = link_to t('actions.edit'), edit_theme_path(@theme), class: 'button primary'
 
 = two_column_card Theme.model_name.human, "", first: true do
   = box padding: false do

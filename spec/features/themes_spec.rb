@@ -54,6 +54,24 @@ RSpec.describe "themes for words" do
         entry.reload
       end.to raise_error ActiveRecord::RecordNotFound
     end
+
+    it "copies an existing theme" do
+      visit theme_path(entry)
+
+      click_on t("actions.copy")
+
+      expect do
+        click_on t("helpers.submit.create")
+      end.to change(Theme, :count).by 1
+
+      theme = Theme.find_by(name: "Kopie von #{entry.name}")
+
+      expect(theme.description).to eq entry.description
+      expect(theme.template.gsub("\r\n", "\n")).to eq entry.template
+      expect(theme.word_type).to eq entry.word_type
+      expect(theme.visibility).to eq :private
+      expect(theme.user).to eq User.find(admin.id)
+    end
   end
 
   context "without existing entries" do

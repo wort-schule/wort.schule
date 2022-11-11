@@ -11,6 +11,14 @@ class ThemesController < ApplicationController
   end
 
   def new
+    if params[:theme_id].present?
+      @template_theme = Theme.accessible_by(current_ability).find(params[:theme_id])
+
+      @theme.name = I18n.t("themes.new.copy_of", name: @template_theme.name)
+      @theme.description = @template_theme.description
+      @theme.template = @template_theme.template
+      @theme.word_type = @template_theme.word_type
+    end
   end
 
   def create

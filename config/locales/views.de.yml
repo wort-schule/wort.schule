@@ -236,6 +236,7 @@ de:
       new: Neue Wortkarten-Variante
     new:
       title: Wortkarten-Variante erstellen
+      copy_of: 'Kopie von %{name}'
     edit:
       title: Wortkarten-Variante bearbeiten
     form:
