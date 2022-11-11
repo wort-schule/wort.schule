@@ -1,0 +1,62 @@
+name: Run all tests
+
+on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ci_db
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+
+    steps:
+      - name: Pull repository
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run Ruby lint
+        run: bundle exec standardrb
+
+      - name: Install libvips
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run:
+          sudo apt-get update -qq -o Acquire::Retries=3 && sudo apt-get install --fix-missing -qq -o Acquire::Retries=3 libvips
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
+        run: bundle exec rails spec
+
+      - name: Upload screenshots of failures
+        uses: actions/upload-artifact@v3.1.0
+        if: ${{ failure() }}
+        with:
+          name: capybara-screenshots-${{ github.sha }}
+          path: tmp/capybara/screenshot_*
+          retention-days: 1
