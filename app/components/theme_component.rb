@@ -16,10 +16,16 @@ class ThemeComponent < ViewComponent::Base
   def liquid_template
     template = @default ? File.read(Rails.root.join("app/views/themes/default_#{word_type}.liquid")) : @theme.template
     template_renderer = Liquid::Template.parse(template)
-    template_renderer.render(params.with_indifferent_access).html_safe
+    rendered = template_renderer.render(params.with_indifferent_access)
+
+    sanitize_template(rendered).html_safe
   end
 
   private
+
+  def sanitize_template(template)
+    Sanitize.fragment template, Sanitize::Config::RELAXED
+  end
 
   def word_type
     @word.model_name.singular.underscore
