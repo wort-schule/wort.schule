@@ -20,6 +20,10 @@
     @apply mt-6 text-2xl font-extrabold text-gray-900 ml-4 md:ml-0;
   }
 
+  code {
+    @apply bg-gray-200 rounded px-1;
+  }
+
   .box + h2 {
     @apply mt-8;
   }
