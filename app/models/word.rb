@@ -72,9 +72,13 @@ class Word < ApplicationRecord
   scope :ordered_lexigraphically, -> { order(:name) }
 
   before_save :set_consonant_vowel
+  before_save :sanitize_slug
+
+  validates :slug, presence: true, uniqueness: true
 
   ATTRIBUTES = [
     :name,
+    :slug,
     :image,
     :meaning,
     :meaning_long,
@@ -138,5 +142,9 @@ class Word < ApplicationRecord
       .downcase
       .gsub(/[^[:alpha:]]/, "")
       .chars
+  end
+
+  def sanitize_slug
+    slug.downcase!
   end
 end

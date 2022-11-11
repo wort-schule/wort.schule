@@ -75,6 +75,7 @@ de:
       word:
         type: Wortart
         name: Wort
+        slug: URL Term
         image: Bild
         hierarchy: Kategorie
         topics: Themen

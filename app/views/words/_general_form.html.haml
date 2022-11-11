@@ -2,6 +2,7 @@
   = box do
     = f.input :type, input_html: {value: word.class.model_name.human}, disabled: true, label: Word.human_attribute_name(:type)
     = f.input :name, autofocus: true, label: Word.human_attribute_name(:name) if show_name
+    = f.input :slug, label: Word.human_attribute_name(:slug) unless f.object.new_record?
     = f.input :image, label: Word.human_attribute_name(:image)
     = f.input :meaning, label: Word.human_attribute_name(:meaning)
     = f.input :meaning_long, as: :text, label: Word.human_attribute_name(:meaning_long)
