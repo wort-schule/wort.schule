@@ -20,6 +20,9 @@
           .flex.items-center.gap-2
             = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
             = f.label :filter_type, t('activerecord.models.adjective.one'), value: 'Adjective'
+          .flex.items-center.gap-2
+            = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
+            = f.label :filter_type, t('activerecord.models.function_word.one'), value: 'FunctionWord'
 
       .mt-4.input
         = filter_text_field f, :wordstarts

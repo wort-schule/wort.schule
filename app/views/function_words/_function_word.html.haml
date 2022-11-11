@@ -1,3 +1,7 @@
-= link_if(can?(:show, function_word), function_word, id: dom_id(function_word)) do
-  = box class: 'h-full' do
-    = function_word.name
+= link_if(can?(:show, function_word), function_word, data: { turbo_frame: '_top' }, id: dom_id(function_word)) do
+  = box padding: false, class: 'h-full' do
+    .flex.h-full
+      .bg-gray-50.w-24.h-24
+      .px-4.py-5.sm:px-6
+        .flex.items-baseline.gap-1
+          .text-xl.font-medium= function_word.name
