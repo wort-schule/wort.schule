@@ -80,7 +80,56 @@ class ThemeComponent < ViewComponent::Base
 
   def verb_params
     {
-      name: @word.name
+      infinitive: @word.name,
+      word_type: @word.class.model_name.human,
+      imperative_singular: @word.imperative_singular,
+      imperative_plural: @word.imperative_plural,
+      participle: @word.participle,
+      past_participle: @word.past_participle,
+      perfect_haben: @word.perfect_haben.humanize,
+      perfect_sein: @word.perfect_sein.humanize,
+      present_singular_1: @word.present_singular_1,
+      present_singular_2: @word.present_singular_2,
+      present_singular_3: @word.present_singular_3,
+      present_plural_1: @word.present_plural_1,
+      present_plural_2: @word.present_plural_2,
+      present_plural_3: @word.present_plural_3,
+      past_singular_1: @word.past_singular_1,
+      past_singular_2: @word.past_singular_2,
+      past_singular_3: @word.past_singular_3,
+      past_plural_1: @word.past_plural_1,
+      past_plural_2: @word.past_plural_2,
+      past_plural_3: @word.past_plural_3,
+      example_sentence: @word.example_sentences.first.presence || "",
+      image_url: @word_image_url,
+      meaning: @word.meaning.presence || "",
+      meaning_long: @word.meaning_long.presence || "",
+      syllables: @word.syllables,
+      written_syllables: @word.written_syllables,
+      topics: @word.topics.map(&:name).join(", "),
+      hierarchies: hierarchies(@word.hierarchy).map(&:name).join(", "),
+      synonyms: @word.synonyms.map(&:name).join(", "),
+      rimes: @word.rimes.map(&:name).join(", "),
+      labels: {
+        syllables: I18n.t("card.labels.syllables"),
+        keywords: I18n.t("card.labels.keywords"),
+        hierarchy: I18n.t("card.labels.hierarchy"),
+        topics: I18n.t("card.labels.topics"),
+        synonyms: I18n.t("card.labels.synonyms"),
+        rimes: I18n.t("card.labels.rimes"),
+        singular: I18n.t("card.labels.singular"),
+        plural: I18n.t("card.labels.plural"),
+        singular_1_pronoun: Verb.human_attribute_name(:singular_1_pronoun),
+        singular_2_pronoun: Verb.human_attribute_name(:singular_2_pronoun),
+        singular_3_pronoun: Verb.human_attribute_name(:singular_3_pronoun),
+        plural_1_pronoun: Verb.human_attribute_name(:plural_1_pronoun),
+        plural_2_pronoun: Verb.human_attribute_name(:plural_2_pronoun),
+        plural_3_pronoun: Verb.human_attribute_name(:plural_3_pronoun),
+        participle: I18n.t("card.labels.participle"),
+        past_participle: I18n.t("card.labels.past_participle"),
+        present: I18n.t("card.labels.present"),
+        past: I18n.t("card.labels.past")
+      }
     }
   end
 

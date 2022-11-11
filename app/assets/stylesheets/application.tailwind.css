@@ -184,4 +184,8 @@
   .pagination-with-actions {
     @apply px-2 md:px-0 flex flex-col gap-4 md:flex-row md:justify-between;
   }
+
+  .text-vertical {
+    writing-mode: vertical-lr;
+  }
 }
