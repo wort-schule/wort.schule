@@ -54,4 +54,8 @@ export default class extends Controller {
     this.verbTarget.classList.toggle("hidden", true)
     this.adjectiveTarget.classList.toggle("hidden", false)
   }
+
+  showFunctionWord() {
+    this.hideAll()
+  }
 }
