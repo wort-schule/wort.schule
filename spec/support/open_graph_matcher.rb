@@ -10,10 +10,10 @@ RSpec::Matchers.define :have_open_graph do |name, expected|
   end
 
   failure_message do |actual|
-    actual = first("meta[property='#{name}']", visible: false)
+    actual_element = first("meta[property='#{name}']", visible: false)
 
-    if actual
-      "expected that meta #{name} would have content='#{expected}' but was '#{actual[:content]}'"
+    if actual_element
+      "expected that meta #{name} would have content='#{expected}' but was '#{actual_element[:content]}'"
     else
       "expected that meta #{name} would exist with content='#{expected}'"
     end
