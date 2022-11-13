@@ -61,6 +61,10 @@ class AdjectivesController < PublicController
 
   private
 
+  def page_title
+    instance_variable_defined?("@adjective") ? @adjective.name : super
+  end
+
   def adjective_params
     params.require(:adjective).permit(
       :comparative,
