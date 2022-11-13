@@ -1,0 +1,4 @@
+= render(list.add(t("activerecord.models.#{word_type}.other"), "ci-theme-#{word_type}")) do
+  %span= @user.public_send("theme_#{word_type}")&.name.presence || t('themes.show.standard')
+  .ml-4.flex-shrink-0
+    = edit_button profile_themes_path(word_type:)

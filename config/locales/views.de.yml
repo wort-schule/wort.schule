@@ -7,6 +7,9 @@ de:
       learning_groups: Meine Lerngruppen
     edit:
       title: Mein Profil bearbeiten
+    themes:
+      index:
+        back_to_profile: Zurück zum Profil
   users:
     passwords:
       edit:
@@ -243,3 +246,4 @@ de:
       variables_introduction_html: 'Die folgenden Variablen können je nach Wortart im obigen Template verwendet werden. Jede Variable muss in <code>{{</code> und <code>}}</code> eingeschlossen werden.<p>Beispiel: <code>{{ syllables }}</code></p>'
     show:
       preview: Vorschau
+      standard: Standardansicht

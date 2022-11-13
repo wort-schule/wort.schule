@@ -123,4 +123,62 @@ RSpec.describe "themes for words" do
       expect(page).not_to have_content "hello world"
     end
   end
+
+  describe "set default theme in profile" do
+    let!(:noun_theme) { create :theme, word_type: :noun, name: "Nomenkarte" }
+    let!(:verb_theme) { create :theme, word_type: :verb, name: "Verbenkarte" }
+
+    context "with a different theme set" do
+      before do
+        admin.update!(theme_noun: noun_theme)
+      end
+
+      it "sets standard theme for nouns" do
+        expect(admin.theme_noun).not_to be_nil
+        expect(admin.theme_verb).to be_nil
+
+        visit profile_path
+
+        within ".ci-theme-noun" do
+          click_on I18n.t("actions.change")
+        end
+
+        expect(page).to have_content noun_theme.name
+        expect(page).not_to have_content verb_theme.name
+
+        within "#theme_0" do
+          click_on I18n.t("theme_select_component.select")
+        end
+
+        expect(page).to have_current_path profile_path
+        expect(admin.reload.theme_noun).to be_nil
+      end
+    end
+
+    context "with default theme set" do
+      it "sets another theme for verbs" do
+        expect(admin.theme_noun).to be_nil
+        expect(admin.theme_verb).to be_nil
+
+        visit profile_path
+
+        within ".ci-theme-verb" do
+          click_on I18n.t("actions.change")
+        end
+
+        expect(page).not_to have_content noun_theme.name
+        expect(page).to have_content verb_theme.name
+
+        within "##{dom_id(verb_theme)}" do
+          click_on I18n.t("theme_select_component.select")
+        end
+
+        expect(page).to have_current_path profile_path
+
+        admin.reload
+        expect(admin.theme_noun).to be_nil
+        expect(admin.theme_verb).to eq verb_theme
+      end
+    end
+  end
 end

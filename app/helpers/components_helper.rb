@@ -9,12 +9,12 @@ module ComponentsHelper
   end
 
   def box(options = {}, &block)
-    padding = options[:padding].nil? ? true : options[:padding]
-    classes = options[:class].presence || ""
+    padding = options[:padding].nil? ? true : options.delete(:padding)
+    classes = options.delete(:class) || ""
 
     classes += padding ? " px-4 py-5 sm:px-6" : ""
 
-    content_tag "div", class: "box bg-white shadow sm:rounded-lg #{classes}" do
+    content_tag "div", options.merge(class: "box bg-white shadow sm:rounded-lg #{classes}") do
       yield
     end
   end

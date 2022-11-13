@@ -64,7 +64,9 @@ Rails.application.routes.draw do
   resources :themes
 
   # User's own routes
-  resource :profile, only: %i[show edit update]
+  resource :profile, only: %i[show edit update] do
+    resources :themes, only: %i[index update], module: :profiles
+  end
   resource :avatar, only: :destroy
 
   scope module: :profiles do

@@ -7,6 +7,7 @@ gem "rails", "~> 7.0.3"
 gem "active_storage_svg_sanitizer"
 gem "bootsnap", require: false
 gem "cancancan"
+gem "clamped"
 gem "devise"
 gem "devise-i18n"
 gem "draper"

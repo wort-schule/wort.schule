@@ -12,6 +12,11 @@ class User < ApplicationRecord
 
   has_many :themes
 
+  belongs_to :theme_noun, class_name: "Theme", optional: true
+  belongs_to :theme_verb, class_name: "Theme", optional: true
+  belongs_to :theme_adjective, class_name: "Theme", optional: true
+  belongs_to :theme_function_word, class_name: "Theme", optional: true
+
   enumerize :role, in: %w[Guest Student Teacher Admin]
 
   def full_name

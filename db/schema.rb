@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_11_105512) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_11_162243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -268,8 +268,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_105512) do
     t.string "first_name"
     t.string "last_name"
     t.string "role", default: "Guest"
+    t.bigint "theme_noun_id"
+    t.bigint "theme_verb_id"
+    t.bigint "theme_adjective_id"
+    t.bigint "theme_function_word_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["theme_adjective_id"], name: "index_users_on_theme_adjective_id"
+    t.index ["theme_function_word_id"], name: "index_users_on_theme_function_word_id"
+    t.index ["theme_noun_id"], name: "index_users_on_theme_noun_id"
+    t.index ["theme_verb_id"], name: "index_users_on_theme_verb_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -361,6 +369,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_105512) do
   add_foreign_key "learning_groups", "schools"
   add_foreign_key "learning_groups", "users", column: "teacher_id"
   add_foreign_key "themes", "users"
+  add_foreign_key "users", "themes", column: "theme_adjective_id"
+  add_foreign_key "users", "themes", column: "theme_function_word_id"
+  add_foreign_key "users", "themes", column: "theme_noun_id"
+  add_foreign_key "users", "themes", column: "theme_verb_id"
   add_foreign_key "words", "hierarchies"
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"

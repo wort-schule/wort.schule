@@ -17,7 +17,7 @@
   %h2= t klass.model_name.human
   = box class: 'mt-8' do
     .grid.grid-cols-2
-      - ThemeVariables.public_send("#{klass.underscore}_keys").each do |key|
+      - ThemeVariables.public_send("#{klass.to_s.underscore}_keys").each do |key|
         %div
           %code= key
         %div= t "#{key}_html", scope: 'theme.descriptions'
