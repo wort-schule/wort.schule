@@ -16,4 +16,13 @@ class FunctionWord < Word
       ]
     end
   end
+
+  def self.dummy
+    new(
+      name: "das",
+      function_type: 0,
+      syllables: "",
+      written_syllables: ""
+    )
+  end
 end

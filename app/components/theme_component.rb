@@ -32,10 +32,6 @@ class ThemeComponent < ViewComponent::Base
   end
 
   def params
-    case @word
-    when Noun then ThemeVariables.noun_variables(@word, @word_image_url)
-    when Verb then ThemeVariables.verb_variables(@word, @word_image_url)
-    when Adjective then ThemeVariables.adjective_variables(@word, @word_image_url)
-    end
+    ThemeVariables.public_send("#{word_type}_variables", @word, @word_image_url)
   end
 end

@@ -32,6 +32,9 @@ de:
       synonyms_html: Synonyme
       rimes_html: Reimwörter
 
+      # Shared across adjectives and function words
+      name_html: Grundform
+
       # Nouns
       singular_html: Singularform des Substantivs ohne Artikel, z.B. <code>Haus</code>
       plural_html: Pluralform des Substantivs ohne Artikel, z.B. <code>Häuser</code>
@@ -74,9 +77,11 @@ de:
       past_plural_3_html: Präteritum Plural, 3. Person
 
       # Adjectives
-      name_html: Grundform des Adjektivs
       comparative_html: Komparativform
       superlative_html: Superlativform
       absolute_html: Absolutes Adjektiv, <code>Ja</code> oder <code>Nein</code>
       irregular_comparison_html: Unregelmäßige Komparation, <code>Ja</code> oder <code>Nein</code>
       irregular_declination_html: Unregelmäßige Deklination, <code>Ja</code> oder <code>Nein</code>
+
+      # Function words
+      function_type_html: Typ des Funktionsworts, z.B. <code>Bestimmter Artikel</code>

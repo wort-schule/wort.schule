@@ -15,6 +15,10 @@ class ThemeVariables
     (adjective_variables(Adjective.new, "").keys - %i[labels]).sort
   end
 
+  def self.function_word_keys
+    (function_word_variables(FunctionWord.new, "").keys - %i[labels]).sort
+  end
+
   def self.noun_variables(word, word_image_url)
     {
       word_type: word.class.model_name.human,
@@ -147,6 +151,19 @@ class ThemeVariables
         absolute: I18n.t("theme.labels.absolute"),
         irregular_comparison: I18n.t("theme.labels.irregular_comparison"),
         irregular_declination: I18n.t("theme.labels.irregular_declination")
+      }
+    }
+  end
+
+  def self.function_word_variables(word, word_image_url)
+    {
+      name: word.name,
+      word_type: word.class.model_name.human,
+      function_type: word.function_type_text,
+      syllables: word.syllables,
+      written_syllables: word.written_syllables,
+      labels: {
+        syllables: I18n.t("theme.labels.syllables")
       }
     }
   end
