@@ -8,6 +8,10 @@ class FunctionWord < Word
                        preposition: 4,
                        pronoun: 5}
 
+  def function_type_text
+    I18n.t function_type, scope: %i[activerecord attributes function_word function_types]
+  end
+
   def self.function_types_collection
     function_types.map do |key, value|
       [

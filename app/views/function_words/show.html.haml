@@ -9,7 +9,7 @@
         = @function_word.name
     
       = render(list.add(FunctionWord.human_attribute_name(:function_type))) do
-        = t @function_word.function_type, scope: %i[activerecord attributes function_word function_types]
+        = @function_word.function_type_text
     
       = render(list.add(Word.human_attribute_name(:syllables))) do
         = @function_word.syllables
