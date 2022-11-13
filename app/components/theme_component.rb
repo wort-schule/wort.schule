@@ -14,7 +14,7 @@ class ThemeComponent < ViewComponent::Base
   end
 
   def liquid_template
-    template = @default ? File.read(Rails.root.join("app/views/themes/default_#{word_type}.liquid")) : @theme.template
+    template = @default ? Theme.default_template(word_type:) : @theme.template
     template_renderer = Liquid::Template.parse(template)
     rendered = template_renderer.render(params.with_indifferent_access)
 
