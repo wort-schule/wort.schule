@@ -1,10 +1,11 @@
 = box padding: false do
-  = simple_form_for @theme do |f|
+  = simple_form_for @theme, html: { 'data-controller': 'default-theme' } do |f|
     = box_content do
       = f.input :name, autofocus: true
       = f.input :description
-      = f.input :template
-      = f.input :word_type, include_blank: false
+      = f.input :word_type, include_blank: false, input_html: { 'data-default-theme-target': 'wordType' }
+      = f.input :template, input_html: { 'data-default-theme-target': 'input' }
+      %button.text-xs.text-gray-500(class="!mt-0" type="button" data-action="default-theme#insert")= t('.replace_with_default_theme.action')
       = f.input :visibility, include_blank: false
 
     = box_footer do
@@ -13,7 +14,7 @@
 
 %p.mt-8= t '.variables_introduction_html'
 
-- [Noun, Verb, Adjective].each do |klass|
+- Theme::WORD_CLASSES.each do |klass|
   %h2= t klass.model_name.human
   = box class: 'mt-8' do
     .grid.grid-cols-2
@@ -21,3 +22,7 @@
         %div
           %code= key
         %div= t "#{key}_html", scope: 'theme.descriptions'
+
+:javascript
+  window.defaultTemplates = #{raw Theme::WORD_TYPES.to_h { |word_type| [word_type, Theme.default_template(word_type:)] }.to_json}
+  window.templateOverwriteConfirmation = "#{j t('.replace_with_default_theme.confirmation')}"

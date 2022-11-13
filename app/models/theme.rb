@@ -1,7 +1,8 @@
 class Theme < ApplicationRecord
   extend Enumerize
 
-  WORD_TYPES = %i[noun verb adjective function_word]
+  WORD_CLASSES = [Noun, Verb, Adjective, FunctionWord].freeze
+  WORD_TYPES = WORD_CLASSES.map(&:to_s).map(&:underscore).map(&:to_sym).freeze
 
   belongs_to :user
 
