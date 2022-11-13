@@ -106,7 +106,8 @@ RSpec.describe "themes for words" do
       click_on t("#{klass.model_name.plural}.index.new")
 
       fill_in "#{klass.model_name.singular}[name]", with: "Neuer Name"
-      fill_in "#{klass.model_name.singular}[template]", with: "Template <script>document.write('hello world')</script>"
+      find(".cm-editor").click
+      page.driver.browser.keyboard.type "Template <script>document.write('hello world')</script>"
 
       expect do
         click_on t("helpers.submit.create")

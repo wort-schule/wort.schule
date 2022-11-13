@@ -12,6 +12,7 @@ module.exports = {
     {
       pattern: /^ts-/,
     },
+    "cm-scroller"
   ],
   theme: {
     extend: {
