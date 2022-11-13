@@ -221,4 +221,38 @@ RSpec.describe "themes for words" do
       expect(page).to have_content noun.name
     end
   end
+
+  describe "update theme in learning group" do
+    let(:learning_group) { create :learning_group }
+    let(:student1) { create :student }
+    let!(:student2) { create :student }
+    let!(:noun_theme) { create :theme, word_type: :noun }
+    let!(:membership) do
+      create(
+        :learning_group_membership,
+        student: student1,
+        learning_group: learning_group,
+        access: :granted
+      )
+    end
+
+    it "updates the theme for all students" do
+      expect(learning_group.reload.theme_noun).to be_nil
+      expect(student1.theme_noun).to be_nil
+      expect(student2.theme_noun).to be_nil
+
+      visit school_learning_group_path(learning_group.school, learning_group)
+      expect(page).to have_content student1.full_name
+      expect(page).not_to have_content student2.full_name
+
+      click_on I18n.t("actions.edit")
+
+      select noun_theme.name, from: LearningGroup.human_attribute_name(:theme_noun)
+      click_on I18n.t("actions.save")
+
+      expect(learning_group.reload.theme_noun).to eq noun_theme
+      expect(student1.reload.theme_noun).to eq noun_theme
+      expect(student2.reload.theme_noun).to be_nil
+    end
+  end
 end

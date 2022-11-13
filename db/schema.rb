@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_11_162243) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_13_172929) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -133,9 +133,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_162243) do
     t.datetime "updated_at", null: false
     t.string "invitation_token"
     t.boolean "invitable", default: false, null: false
+    t.bigint "theme_noun_id"
+    t.bigint "theme_verb_id"
+    t.bigint "theme_adjective_id"
+    t.bigint "theme_function_word_id"
     t.index ["invitation_token"], name: "index_learning_groups_on_invitation_token", unique: true
     t.index ["school_id"], name: "index_learning_groups_on_school_id"
     t.index ["teacher_id"], name: "index_learning_groups_on_teacher_id"
+    t.index ["theme_adjective_id"], name: "index_learning_groups_on_theme_adjective_id"
+    t.index ["theme_function_word_id"], name: "index_learning_groups_on_theme_function_word_id"
+    t.index ["theme_noun_id"], name: "index_learning_groups_on_theme_noun_id"
+    t.index ["theme_verb_id"], name: "index_learning_groups_on_theme_verb_id"
   end
 
   create_table "opposites", id: false, force: :cascade do |t|
@@ -367,6 +375,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_11_162243) do
   add_foreign_key "learning_group_memberships", "learning_groups"
   add_foreign_key "learning_group_memberships", "users", column: "student_id"
   add_foreign_key "learning_groups", "schools"
+  add_foreign_key "learning_groups", "themes", column: "theme_adjective_id"
+  add_foreign_key "learning_groups", "themes", column: "theme_function_word_id"
+  add_foreign_key "learning_groups", "themes", column: "theme_noun_id"
+  add_foreign_key "learning_groups", "themes", column: "theme_verb_id"
   add_foreign_key "learning_groups", "users", column: "teacher_id"
   add_foreign_key "themes", "users"
   add_foreign_key "users", "themes", column: "theme_adjective_id"

@@ -168,6 +168,10 @@ de:
         name: Bezeichnung
         teacher: Lehrer*in
         school: Schule
+        theme_noun: Theme für Substantive
+        theme_verb: Theme für Verben
+        theme_adjective: Theme für Adjektive
+        theme_function_word: Theme für Funktionswörter
       adjective:
         name: Grundform
         absolute: Absolutes Adjektiv (nicht steigerbar)
