@@ -11,5 +11,5 @@
 = two_column_card t('activerecord.models.theme.other'), "" do
   = box padding: false do
     = box_description_list do |list|
-      - %i[noun verb adjective function_word].each do |word_type|
+      - Theme::WORD_TYPES.each do |word_type|
         = render UserProfileThemeComponent.new(user: @user, word_type:, list:)

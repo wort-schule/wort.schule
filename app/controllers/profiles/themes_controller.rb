@@ -31,7 +31,8 @@ module Profiles
     def word_type
       params[:word_type]
         &.downcase
-        &.clamped(%w[noun verb adjective function_word]).presence || "noun"
+        &.to_sym
+        &.clamped(Theme::WORD_TYPES).presence || Theme::WORD_TYPES.first
     end
 
     def theme_attribute
