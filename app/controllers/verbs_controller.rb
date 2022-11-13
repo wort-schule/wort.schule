@@ -16,6 +16,10 @@ class VerbsController < PublicController
     @verbs = @filterrific.find.ordered_lexigraphically.page(params[:page])
   end
 
+  def show
+    render ThemeComponent.new(word: @verb, theme: current_user.theme_verb) if current_user&.theme_verb.present?
+  end
+
   def new
   end
 

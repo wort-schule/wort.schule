@@ -28,6 +28,7 @@ class NounsController < PublicController
   end
 
   def show
+    render ThemeComponent.new(word: @noun, theme: current_user.theme_noun) if current_user&.theme_noun.present?
   end
 
   def new

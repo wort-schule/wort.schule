@@ -181,4 +181,44 @@ RSpec.describe "themes for words" do
       end
     end
   end
+
+  describe "renders words according to theme in profile" do
+    let!(:theme) { create :theme, word_type: :noun, name: "Nomenkarte", template: "{{ meaning }}" }
+    let(:noun) { create :noun, name: "Bauer", meaning: "Meine Bedeutung" }
+
+    it "renders the correct theme" do
+      expect(admin.theme_noun).to be_nil
+
+      # Check if standard template is rendered
+      visit noun_path(noun)
+      expect(page).to have_content noun.name
+
+      # Change template in profile
+      visit profile_path
+      within(".ci-theme-noun") { click_on I18n.t("actions.change") }
+      within "##{dom_id(theme)}" do
+        click_on I18n.t("theme_select_component.select")
+      end
+
+      expect(admin.reload.theme_noun).to eq theme
+
+      # Check if new theme is rendered
+      visit noun_path(noun)
+      expect(page).not_to have_content noun.name
+      expect(page).to have_content noun.meaning
+    end
+
+    it "always renders the default template for guests" do
+      # Template is rendered as admin
+      admin.update!(theme_noun: theme)
+      visit noun_path(noun)
+      expect(page).not_to have_content noun.name
+      expect(page).to have_content noun.meaning
+
+      # Renders default view as guest
+      logout
+      visit noun_path(noun)
+      expect(page).to have_content noun.name
+    end
+  end
 end

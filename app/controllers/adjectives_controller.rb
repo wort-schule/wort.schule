@@ -16,6 +16,10 @@ class AdjectivesController < PublicController
     @adjectives = @filterrific.find.ordered_lexigraphically.page(params[:page])
   end
 
+  def show
+    render ThemeComponent.new(word: @adjective, theme: current_user.theme_adjective) if current_user&.theme_adjective.present?
+  end
+
   def new
   end
 
