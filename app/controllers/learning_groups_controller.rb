@@ -46,7 +46,12 @@ class LearningGroupsController < ApplicationController
 
   def learning_group_params
     params.require(:learning_group).permit(
-      :name, :teacher_id
+      :name,
+      :teacher_id,
+      :theme_noun_id,
+      :theme_verb_id,
+      :theme_adjective_id,
+      :theme_function_word_id
     )
   end
 end

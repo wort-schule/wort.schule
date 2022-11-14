@@ -1,0 +1,7 @@
+= title_with_actions Theme.model_name.human(count: 2) do
+  = link_to t('.new'), new_theme_path, class: 'button primary'
+
+= index_grid do
+  = render @themes
+
+= paginate @themes

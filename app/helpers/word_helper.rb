@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module WordHelper
-  def hierarchy_breadcrumbs(initial_hierarchy)
+  def hierarchies(initial_hierarchy)
     hierarchies = [initial_hierarchy].compact
     hierarchy = hierarchies.first
 
@@ -13,7 +13,11 @@ module WordHelper
       hierarchies << parent
     end
 
-    hierarchies_as_links = hierarchies.map do |hierarchy|
+    hierarchies
+  end
+
+  def hierarchy_breadcrumbs(initial_hierarchy)
+    hierarchies_as_links = hierarchies(initial_hierarchy).map do |hierarchy|
       link_to_if can?(:read, hierarchy), hierarchy.name, hierarchy
     end
 

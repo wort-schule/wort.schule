@@ -3,7 +3,6 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     - app_name = "wort.schule"
-    - page_title = content_for :page_title
     %title= [page_title, app_name].select(&:present?).join(" | ")
     %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
     = csrf_meta_tags

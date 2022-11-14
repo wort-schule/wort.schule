@@ -2,6 +2,7 @@
 
 class NounsController < PublicController
   include OpenGraph
+  include Themeable
 
   load_and_authorize_resource
 
@@ -27,6 +28,7 @@ class NounsController < PublicController
   end
 
   def show
+    render ThemeComponent.new(word: @noun, theme: current_user.theme_noun) if current_user&.theme_noun.present?
   end
 
   def new
@@ -71,6 +73,10 @@ class NounsController < PublicController
   end
 
   private
+
+  def page_title
+    instance_variable_defined?("@noun") ? @noun.name : super
+  end
 
   def noun_params
     params.require(:noun).permit(

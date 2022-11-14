@@ -1,6 +1,3 @@
-- content_for :page_title do
-  = word.name
-
 - if any_present?(word, %i[meaning meaning_long hierarchy topics]) || word.image.attached?
   = two_column_card t('words.show.general.title'), t('words.show.general.description') do
     = box padding: false do

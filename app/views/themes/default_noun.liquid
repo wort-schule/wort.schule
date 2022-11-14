@@ -1,0 +1,66 @@
+<div class="p-4 bg-white" style="width: 15cm; height: 21cm">
+  <div class="flex justify-between">
+    <div class="grid" style="grid-template-columns: 3rem 1fr">
+      <span class="text-right mr-2">{{ case_1_singular_article }}</span>
+      <span>{{ singular }}</span>
+
+      <span class="text-right mr-2">{{ case_1_plural_article }}</span>
+      <span>{{ plural }}</span>
+
+      <span></span>
+      <span class="text-md text-gray-700">{{ meaning }}</span>
+    </div>
+
+    <span>{{ word_type }}</span>
+  </div>
+
+  <div class="flex justify-center my-6">
+    <img src="{{ image_url }}" style="max-height: 8cm" />
+  </div>
+
+  <p>{{ example_sentence }}</p>
+
+  <p>{{ meaning_long }}</p>
+
+  <div class="grid" style="grid-template-columns: 30% 1fr">
+    <div class="text-right mr-2">{{ labels.syllables }}</div>
+    <div>{{ syllables }}</div>
+
+    <div class="text-right mr-2">{{ labels.keywords }}</div>
+    <div>{{ keywords }}</div>
+
+    <div class="text-right mr-2">{{ labels.topics }}</div>
+    <div>{{ topics }}</div>
+
+    <div class="text-right mr-2">{{ labels.hierarchy }}</div>
+    <div>{{ hierarchy }}</div>
+
+    <div class="text-right mr-2">{{ labels.synonyms }}</div>
+    <div>{{ synonyms }}</div>
+
+    <div class="text-right mr-2">{{ labels.rimes }}</div>
+    <div>{{ rimes }}</div>
+  </div>
+
+  <div class="grid mt-4" style="grid-template-columns: 1fr 1fr 1fr">
+    <div></div>
+    <div class="font-bold">{{ labels.singular }}</div>
+    <div class="font-bold">{{ labels.plural }}</div>
+
+    <div>{{ labels.case_1 }}</div>
+    <div>{{ case_1_singular_article }} {{ case_1_singular }}</div>
+    <div>{{ case_1_plural_article }} {{ case_1_plural }}</div>
+
+    <div>{{ labels.case_2 }}</div>
+    <div>{{ case_2_singular_article }} {{ case_2_singular }}</div>
+    <div>{{ case_2_plural_article }} {{ case_2_plural }}</div>
+
+    <div>{{ labels.case_3 }}</div>
+    <div>{{ case_3_singular_article }} {{ case_3_singular }}</div>
+    <div>{{ case_3_plural_article }} {{ case_3_plural }}</div>
+
+    <div>{{ labels.case_4 }}</div>
+    <div>{{ case_4_singular_article }} {{ case_4_singular }}</div>
+    <div>{{ case_4_plural_article }} {{ case_4_plural }}</div>
+  </div>
+</div>

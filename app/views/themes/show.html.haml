@@ -1,0 +1,27 @@
+= title_with_actions @theme.name do
+  %div
+    = link_to t('actions.copy'), new_theme_path(theme_id: @theme), class: 'button'
+    = link_to t('actions.edit'), edit_theme_path(@theme), class: 'button primary'
+
+= two_column_card Theme.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(Theme.human_attribute_name(:name))) do
+        = @theme.name
+
+      = render(list.add(Theme.human_attribute_name(:description))) do
+        = @theme.description
+
+      = render(list.add(Theme.human_attribute_name(:word_type))) do
+        = @theme.word_type_text
+
+      = render(list.add(Theme.human_attribute_name(:template))) do
+        %code.w-full.overflow-x-scroll
+          %pre= @theme.template
+
+      = render(list.add(Theme.human_attribute_name(:visibility))) do
+        = @theme.visibility_text
+
+= two_column_card t('.preview'), "" do
+  = render ThemeComponent.new(word: @theme.word_type.camelize.constantize.dummy, theme: @theme)

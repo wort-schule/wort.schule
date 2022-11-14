@@ -2,6 +2,7 @@
 
 class AdjectivesController < PublicController
   include OpenGraph
+  include Themeable
 
   load_and_authorize_resource
 
@@ -13,6 +14,10 @@ class AdjectivesController < PublicController
       (params[:filterrific] || {}).merge(filter_type: "Adjective")
     ) or return
     @adjectives = @filterrific.find.ordered_lexigraphically.page(params[:page])
+  end
+
+  def show
+    render ThemeComponent.new(word: @adjective, theme: current_user.theme_adjective) if current_user&.theme_adjective.present?
   end
 
   def new
@@ -55,6 +60,10 @@ class AdjectivesController < PublicController
   end
 
   private
+
+  def page_title
+    instance_variable_defined?("@adjective") ? @adjective.name : super
+  end
 
   def adjective_params
     params.require(:adjective).permit(

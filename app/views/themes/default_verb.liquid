@@ -1,0 +1,78 @@
+<div class="p-4 bg-white" style="width: 15cm; height: 21cm">
+  <div class="flex justify-between">
+    <div>
+      <div><strong>{{ infinitive }}</strong> &mdash; {{ participle }} &mdash; {{ past_participle }}</div>
+      <div class="text-md text-gray-700">{{ meaning }}</div>
+    </div>
+
+    <span>{{ word_type }}</span>
+  </div>
+
+  <div class="flex justify-center my-6">
+    <img src="{{ image_url }}" style="max-height: 8cm" />
+  </div>
+
+  <p>{{ example_sentence }}</p>
+
+  <p>{{ meaning_long }}</p>
+
+  <div class="grid" style="grid-template-columns: 30% 1fr">
+    <div class="text-right mr-2">{{ labels.syllables }}</div>
+    <div>{{ syllables }}</div>
+
+    <div class="text-right mr-2">{{ labels.keywords }}</div>
+    <div>{{ keywords }}</div>
+
+    <div class="text-right mr-2">{{ labels.topics }}</div>
+    <div>{{ topics }}</div>
+
+    <div class="text-right mr-2">{{ labels.hierarchy }}</div>
+    <div>{{ hierarchy }}</div>
+
+    <div class="text-right mr-2">{{ labels.synonyms }}</div>
+    <div>{{ synonyms }}</div>
+
+    <div class="text-right mr-2">{{ labels.rimes }}</div>
+    <div>{{ rimes }}</div>
+  </div>
+
+  <div class="flex flex-row-reverse gap-2 mt-4 border border-gray-200">
+    <div class="font-bold text-vertical self-stretch text-center bg-gray-100">{{ labels.present }}</div>
+    <div class="grid items-baseline grow p-1" style="grid-template-columns: 4rem 1fr 4rem 1fr">
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.singular_1_pronoun }}</span>
+      <div>{{ present_singular_1 }}</div>
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.plural_1_pronoun }}</span>
+      <div>{{ present_plural_1 }}</div>
+
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.singular_2_pronoun }}</span>
+      <div>{{ present_singular_2 }}</div>
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.plural_2_pronoun }}</span>
+      <div>{{ present_plural_2 }}</div>
+
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.singular_3_pronoun }}</span>
+      <div>{{ present_singular_3 }}</div>
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.plural_3_pronoun }}</span>
+      <div>{{ present_plural_3 }}</div>
+    </div>
+  </div>
+
+  <div class="flex flex-row-reverse gap-2 mt-4 border border-gray-200">
+    <div class="font-bold text-vertical self-stretch text-center bg-gray-100">{{ labels.past }}</div>
+    <div class="grid items-baseline grow p-1" style="grid-template-columns: 4rem 1fr 4rem 1fr">
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.singular_1_pronoun }}</span>
+      <div>{{ past_singular_1 }}</div>
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.plural_1_pronoun }}</span>
+      <div>{{ past_plural_1 }}</div>
+
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.singular_2_pronoun }}</span>
+      <div>{{ past_singular_2 }}</div>
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.plural_2_pronoun }}</span>
+      <div>{{ past_plural_2 }}</div>
+
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.singular_3_pronoun }}</span>
+      <div>{{ past_singular_3 }}</div>
+      <span class="text-gray-700 text-sm text-right mr-2">{{ labels.plural_3_pronoun }}</span>
+      <div>{{ past_plural_3 }}</div>
+    </div>
+  </div>
+</div>

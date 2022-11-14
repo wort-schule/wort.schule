@@ -4,6 +4,10 @@
       = f.input :name, autofocus: true
       - unless current_user.teacher?
         = f.association :teacher
+      = f.association :theme_noun, include_blank: t('themes.show.standard')
+      = f.association :theme_verb, include_blank: t('themes.show.standard')
+      = f.association :theme_adjective, include_blank: t('themes.show.standard')
+      = f.association :theme_function_word, include_blank: t('themes.show.standard')
 
     = box_footer do
       = f.submit

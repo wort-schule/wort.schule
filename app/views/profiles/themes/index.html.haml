@@ -1,0 +1,11 @@
+= title_with_actions Theme.model_name.human(count: 2) do
+  .self-end.text-md.text-gray-500
+    = link_to profile_path, class: 'flex items-center gap-1' do
+      = heroicon 'chevron-left'
+      = t('.back_to_profile')
+
+= index_grid do
+  = render ThemeSelectComponent.new(theme: nil, active: @active_theme.nil?, word_type:)
+  = render @themes
+
+= paginate @themes

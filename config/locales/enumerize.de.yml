@@ -11,3 +11,12 @@ de:
         Verb: Verb
         adjective: Adjektiv
         noun: Substantiv
+    theme:
+      visibility:
+        private: Privat
+        public: Öffentlich
+      word_type:
+        noun: Substantiv
+        verb: Verb
+        adjective: Adjektiv
+        function_word: Funktionswort

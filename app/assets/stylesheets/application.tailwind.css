@@ -20,6 +20,10 @@
     @apply mt-6 text-2xl font-extrabold text-gray-900 ml-4 md:ml-0;
   }
 
+  code {
+    @apply bg-gray-200 rounded px-1;
+  }
+
   .box + h2 {
     @apply mt-8;
   }
@@ -40,8 +44,8 @@
     @apply block text-base font-medium text-gray-700;
   }
 
-  input[type="text"], input[type="email"], input[type="password"] {
-    @apply mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md;
+  input[type="text"], input[type="email"], input[type="password"], .cm-scroller {
+    @apply mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md;
   }
 
   input.boolean {
@@ -183,5 +187,9 @@
 
   .pagination-with-actions {
     @apply px-2 md:px-0 flex flex-col gap-4 md:flex-row md:justify-between;
+  }
+
+  .text-vertical {
+    writing-mode: vertical-lr;
   }
 }

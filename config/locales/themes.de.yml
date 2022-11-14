@@ -1,0 +1,87 @@
+de:
+  theme:
+    labels:
+      syllables: Trennung
+      keywords: Stichwörter
+      hierarchy: Kategorie
+      topics: Themen
+      synonyms: Synonyme
+      rimes: Reimwörter
+      case_1: '1. Fall (wer/was)'
+      case_2: '2. Fall (wessen)'
+      case_3: '3. Fall (wem)'
+      case_4: '4. Fall (wen/was)'
+      singular: Einzahl
+      plural: Mehrzahl
+      present: Präsens
+      past: Präteritum
+      absolute: Absolutes Adjektiv (nicht steigerbar)
+      irregular_comparison: Unregelmäßige Komparation
+      irregular_declination: Unregelmäßige Deklination
+    descriptions:
+      # Shared
+      word_type_html: Wortart, z.B. <code>Substantiv</code>
+      example_sentence_html: Beispielsatz
+      image_url_html: URL zum Bild
+      meaning_html: Kurzbedeutung
+      meaning_long_html: Erklärung
+      syllables_html: Sprechsilben
+      written_syllables_html: Schreibsilben
+      topics_html: Themen
+      hierarchies_html: Kategorien
+      synonyms_html: Synonyme
+      rimes_html: Reimwörter
+
+      # Shared across adjectives and function words
+      name_html: Grundform
+
+      # Nouns
+      singular_html: Singularform des Substantivs ohne Artikel, z.B. <code>Haus</code>
+      plural_html: Pluralform des Substantivs ohne Artikel, z.B. <code>Häuser</code>
+      case_1_singular_html: Form des 1. Falls, Singular, z.B. <code>Haus</code>. Entspricht der Variable <code>singular</code>.
+      case_1_singular_article_html: Artikel des 1. Falls Singular, z.B. <code>das</code>
+      case_2_singular_html: Form des 2. Falls, Singular, z.B. <code>Hauses</code>
+      case_2_singular_article_html: Artikel des 2. Falls Singular, z.B. <code>des</code>
+      case_3_singular_html: Form des 3. Falls, Singular, z.B. <code>Haus</code>
+      case_3_singular_article_html: Artikel des 3. Falls Singular, z.B. <code>dem</code>
+      case_4_singular_html: Form des 4. Falls, Singular, z.B. <code>Haus</code>
+      case_4_singular_article_html: Artikel des 4. Falls Singular, z.B. <code>das</code>
+      case_1_plural_html: Form des 1. Falls, Plural, z.B. <code>Häuser</code>. Entspricht der Variable <code>plural</code>.
+      case_1_plural_article_html: Artikel des 1. Falls Plural, <code>die</code>
+      case_2_plural_html: Form des 2. Falls, Plural, z.B. <code>Häuser</code>
+      case_2_plural_article_html: Artikel des 2. Falls Plural, <code>der</code>
+      case_3_plural_html: Form des 3. Falls, Plural, z.B. <code>Häuser</code>
+      case_3_plural_article_html: Artikel des 3. Falls Plural, <code>den</code>
+      case_4_plural_html: Form des 4. Falls, Plural, z.B. <code>Häuser</code>
+      case_4_plural_article_html: Artikel des 4. Falls Plural, <code>die</code>
+
+      # Verbs
+      infinitive_html: Grundform des Verbes
+      imperative_singular_html: Imperativform Singular
+      imperative_plural_html: Imperativform Plural
+      participle_html: Partizip 1
+      past_participle_html: Partizip 2
+      perfect_haben_html: Perfektbildung über "haben", <code>Ja</code> oder <code>Nein</code>
+      perfect_sein_html: Perfektbildung über "sein", <code>Ja</code> oder <code>Nein</code>
+      present_singular_1_html: Präsens Singular, 1. Person
+      present_singular_2_html: Präsens Singular, 2. Person
+      present_singular_3_html: Präsens Singular, 3. Person
+      present_plural_1_html: Präsens Plural, 1. Person
+      present_plural_2_html: Präsens Plural, 2. Person
+      present_plural_3_html: Präsens Plural, 3. Person
+      past_singular_1_html: Präteritum Singular, 1. Person
+      past_singular_2_html: Präteritum Singular, 2. Person
+      past_singular_3_html: Präteritum Singular, 3. Person
+      past_plural_1_html: Präteritum Plural, 1. Person
+      past_plural_2_html: Präteritum Plural, 2. Person
+      past_plural_3_html: Präteritum Plural, 3. Person
+
+      # Adjectives
+      comparative_html: Komparativform
+      superlative_html: Superlativform
+      absolute_html: Absolutes Adjektiv, <code>Ja</code> oder <code>Nein</code>
+      irregular_comparison_html: Unregelmäßige Komparation, <code>Ja</code> oder <code>Nein</code>
+      irregular_declination_html: Unregelmäßige Deklination, <code>Ja</code> oder <code>Nein</code>
+
+      # Function words
+      function_type_html: Typ des Funktionsworts, z.B. <code>Bestimmter Artikel</code>

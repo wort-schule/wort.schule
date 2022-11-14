@@ -8,6 +8,7 @@ class FunctionWordsController < PublicController
   end
 
   def show
+    render ThemeComponent.new(word: @function_word, theme: current_user.theme_function_word) if current_user&.theme_function_word.present?
   end
 
   def new
@@ -44,6 +45,10 @@ class FunctionWordsController < PublicController
   end
 
   private
+
+  def page_title
+    instance_variable_defined?("@function_word") ? @function_word.name : super
+  end
 
   def function_word_params
     params.require(:function_word).permit(

@@ -7,3 +7,9 @@
     = box padding: false do
       - Student.find(@user.id).learning_groups.each do |learning_group|
         .p-4= link_to learning_group.name, [learning_group.school, learning_group]
+
+= two_column_card t('activerecord.models.theme.other'), "" do
+  = box padding: false do
+    = box_description_list do |list|
+      - Theme::WORD_TYPES.each do |word_type|
+        = render UserProfileThemeComponent.new(user: @user, word_type:, list:)

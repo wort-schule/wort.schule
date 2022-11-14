@@ -1,0 +1,7 @@
+= box class: box_classes, id: dom_id(theme) do
+  = theme.name
+
+  - if active
+    .self-end.bg-gray-100.text-indigo-600.rounded.px-4.py-2= t '.currently_selected'
+  - else
+    = button_to t('.select'), profile_theme_path(theme, word_type:), method: :patch, class: 'button'

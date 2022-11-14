@@ -7,6 +7,9 @@ de:
       learning_groups: Meine Lerngruppen
     edit:
       title: Mein Profil bearbeiten
+    themes:
+      index:
+        back_to_profile: Zurück zum Profil
   users:
     passwords:
       edit:
@@ -93,6 +96,10 @@ de:
         tense:
           title: Zeitformen
           description: ""
+      themes:
+        title: Wortkarte
+        description: ''
+        show: Anzeigen
   schools:
     index:
       new: Neue Schule
@@ -227,3 +234,19 @@ de:
   searches:
     show:
       title: Suchen und Filtern
+  themes:
+    index:
+      new: Neue Wortkarten-Variante
+    new:
+      title: Wortkarten-Variante erstellen
+      copy_of: 'Kopie von %{name}'
+    edit:
+      title: Wortkarten-Variante bearbeiten
+    form:
+      variables_introduction_html: 'Die folgenden Variablen können je nach Wortart im obigen Template verwendet werden. Jede Variable muss in <code>{{</code> und <code>}}</code> eingeschlossen werden.<p>Beispiel: <code>{{ syllables }}</code></p>'
+      replace_with_default_theme:
+        action: Mit Standard-Template ersetzen
+        confirmation: 'Soll das bestehende Template wirklich mit dem Standard-Template ersetzt werden? Ungespeicherte Änderungen gehen dabei verloren.'
+    show:
+      preview: Vorschau
+      standard: Standardansicht

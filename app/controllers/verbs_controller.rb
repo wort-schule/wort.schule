@@ -2,6 +2,7 @@
 
 class VerbsController < PublicController
   include OpenGraph
+  include Themeable
 
   load_and_authorize_resource
 
@@ -13,6 +14,10 @@ class VerbsController < PublicController
       (params[:filterrific] || {}).merge(filter_type: "Verb")
     ) or return
     @verbs = @filterrific.find.ordered_lexigraphically.page(params[:page])
+  end
+
+  def show
+    render ThemeComponent.new(word: @verb, theme: current_user.theme_verb) if current_user&.theme_verb.present?
   end
 
   def new
@@ -55,6 +60,10 @@ class VerbsController < PublicController
   end
 
   private
+
+  def page_title
+    instance_variable_defined?("@verb") ? @verb.name : super
+  end
 
   def verb_params
     params.require(:verb).permit(
