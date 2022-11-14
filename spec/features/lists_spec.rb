@@ -9,6 +9,7 @@ RSpec.describe "lists" do
 
   context "with existing lists" do
     let!(:list) { create :list, user: admin }
+    let(:noun) { create :noun, name: "Adler" }
 
     it "shows existing lists" do
       visit lists_path
@@ -52,6 +53,15 @@ RSpec.describe "lists" do
       expect do
         list.reload
       end.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it "adds a word to a list" do
+      visit noun_path(noun)
+
+      select list.name
+      click_on I18n.t("words.show.lists.add")
+
+      expect(list.words).to eq [noun]
     end
   end
 

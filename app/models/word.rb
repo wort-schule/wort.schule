@@ -133,6 +133,10 @@ class Word < ApplicationRecord
     Word.where("name ILIKE ?", name).count - 1
   end
 
+  def accessible_lists(ability)
+    List.accessible_by(ability).where(id: lists.pluck(:id))
+  end
+
   private
 
   def set_consonant_vowel

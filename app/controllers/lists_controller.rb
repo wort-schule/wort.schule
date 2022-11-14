@@ -46,6 +46,13 @@ class ListsController < ApplicationController
     redirect_to lists_url, notice
   end
 
+  def add_word
+    @word = Word.find params[:word_id]
+    @list.words << @word
+
+    redirect_to @list
+  end
+
   private
 
   def list_params
