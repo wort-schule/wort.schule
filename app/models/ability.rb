@@ -24,7 +24,7 @@ class Ability
         can :show, School, learning_groups: {students: {id: user.id}}
         can :create, :learning_group_membership_requests
 
-        can %i[crud add_word], List, {user:}
+        can %i[crud add_word remove_word], List, {user:}
 
       when "Teacher"
         can :crud, Noun
@@ -48,7 +48,7 @@ class Ability
 
         can :read, Theme, visibility: :public
         can :crud, Theme, {user:}
-        can %i[crud add_word], List, {user:}
+        can %i[crud add_word remove_word], List, {user:}
 
         # User management
         can :read, User, role: "Student"
@@ -78,7 +78,7 @@ class Ability
         can :manage, CompoundVocalalternation
 
         can :crud, Theme
-        can %i[crud add_word], List
+        can %i[crud add_word remove_word], List
 
         # User management
         can :manage, User

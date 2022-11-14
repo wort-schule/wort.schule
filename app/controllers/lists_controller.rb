@@ -53,6 +53,12 @@ class ListsController < ApplicationController
     redirect_to @list
   end
 
+  def remove_word
+    @list.words.delete(params[:word_id])
+
+    redirect_to @list
+  end
+
   private
 
   def list_params

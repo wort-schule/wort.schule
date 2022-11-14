@@ -63,6 +63,18 @@ RSpec.describe "lists" do
 
       expect(list.words).to eq [noun]
     end
+
+    it "removes a word from a a list" do
+      visit noun_path(noun)
+      select list.name
+      click_on I18n.t("words.show.lists.add")
+      expect(list.words).to eq [noun]
+
+      visit list_path(list)
+      click_on I18n.t("actions.remove")
+
+      expect(list.reload.words).to eq []
+    end
   end
 
   context "without existing lists" do

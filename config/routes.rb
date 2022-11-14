@@ -62,7 +62,9 @@ Rails.application.routes.draw do
   resources :compound_phonemreductions
   resources :compound_vocalalternations
   resources :themes
-  resources :lists
+  resources :lists do
+    delete :remove_word, on: :member
+  end
   post :list_add_word, to: "lists#add_word"
 
   # User's own routes
