@@ -20,3 +20,7 @@ de:
         verb: Verb
         adjective: Adjektiv
         function_word: Funktionswort
+    list:
+      visibility:
+        private: Privat
+        public: Öffentlich

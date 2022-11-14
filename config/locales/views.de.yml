@@ -250,3 +250,10 @@ de:
     show:
       preview: Vorschau
       standard: Standardansicht
+  lists:
+    index:
+      new: Neue Wortliste
+    new:
+      title: Wortliste erstellen
+    edit:
+      title: Wortliste bearbeiten

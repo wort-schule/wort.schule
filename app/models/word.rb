@@ -68,6 +68,7 @@ class Word < ApplicationRecord
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
   has_one :compound_entity, as: :part
+  has_and_belongs_to_many :lists
 
   scope :ordered_lexigraphically, -> { order(:name) }
 

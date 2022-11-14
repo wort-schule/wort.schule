@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = button_to t('actions.delete'), list_path(@list), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @list.name) } if can?(:destroy, @list)
+
+= render 'form'

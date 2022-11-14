@@ -1,0 +1,20 @@
+= title_with_actions @list.name do
+  = link_to t('actions.edit'), edit_list_path(@list), class: 'button primary'
+
+= two_column_card List.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+    
+      = render(list.add(List.human_attribute_name(:name))) do
+        = @list.name
+    
+      = render(list.add(List.human_attribute_name(:description))) do
+        = @list.description
+    
+      = render(list.add(List.human_attribute_name(:visibility))) do
+        = @list.visibility_text
+    
+      = render(list.add(List.human_attribute_name(:slug))) do
+        = @list.slug
+
+= render 'words/usages'

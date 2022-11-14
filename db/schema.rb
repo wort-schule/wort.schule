@@ -146,6 +146,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_13_172929) do
     t.index ["theme_verb_id"], name: "index_learning_groups_on_theme_verb_id"
   end
 
+  create_table "lists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.text "description"
+    t.string "visibility"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_lists_on_user_id"
+  end
+
+  create_table "lists_words", id: false, force: :cascade do |t|
+    t.bigint "list_id", null: false
+    t.bigint "word_id", null: false
+  end
+
   create_table "opposites", id: false, force: :cascade do |t|
     t.integer "word_id"
     t.integer "opposite_id"
@@ -380,6 +396,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_13_172929) do
   add_foreign_key "learning_groups", "themes", column: "theme_noun_id"
   add_foreign_key "learning_groups", "themes", column: "theme_verb_id"
   add_foreign_key "learning_groups", "users", column: "teacher_id"
+  add_foreign_key "lists", "users"
   add_foreign_key "themes", "users"
   add_foreign_key "users", "themes", column: "theme_adjective_id"
   add_foreign_key "users", "themes", column: "theme_function_word_id"
