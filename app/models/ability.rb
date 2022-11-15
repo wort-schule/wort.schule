@@ -10,7 +10,6 @@ class Ability
     can :read, Verb
     can :read, Adjective
     can :read, FunctionWord
-    can :read, Theme, visibility: :public
 
     if user.present?
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password], id: user.id
@@ -23,6 +22,8 @@ class Ability
         can %i[read read_students], LearningGroup, students: {id: user.id}
         can :show, School, learning_groups: {students: {id: user.id}}
         can :create, :learning_group_membership_requests
+
+        can :read, Theme, visibility: :public
 
       when "Teacher"
         can :crud, Noun
@@ -44,6 +45,7 @@ class Ability
         can :crud, CompoundPhonemreduction
         can :crud, CompoundVocalalternation
 
+        can :read, Theme, visibility: :public
         can :crud, Theme, {user:}
 
         # User management
