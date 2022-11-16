@@ -11,6 +11,7 @@ class User < ApplicationRecord
   end
 
   has_many :themes
+  has_many :lists
 
   belongs_to :theme_noun, class_name: "Theme", optional: true
   belongs_to :theme_verb, class_name: "Theme", optional: true

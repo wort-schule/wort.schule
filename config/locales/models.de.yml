@@ -218,3 +218,9 @@ de:
         name: Name
         description: Beschreibung
         visibility: Sichtbarkeit
+        flashcard_sections:
+          1: Fach 1
+          2: Fach 2
+          3: Fach 3
+          4: Fach 4
+          5: Fach 5
