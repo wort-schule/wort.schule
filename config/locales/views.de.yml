@@ -100,6 +100,10 @@ de:
         title: Wortkarte
         description: ''
         show: Anzeigen
+      lists:
+        title: Wortlisten
+        description: ''
+        add: Hinzufügen
   schools:
     index:
       new: Neue Schule
@@ -250,3 +254,10 @@ de:
     show:
       preview: Vorschau
       standard: Standardansicht
+  lists:
+    index:
+      new: Neue Wortliste
+    new:
+      title: Wortliste erstellen
+    edit:
+      title: Wortliste bearbeiten

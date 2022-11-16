@@ -70,6 +70,9 @@ de:
       theme:
         one: Wortkarten-Variante
         other: Wortkarten-Varianten
+      list:
+        one: Wortliste
+        other: Wortlisten
 
     attributes:
       user:
@@ -210,4 +213,8 @@ de:
         description: Beschreibung
         word_type: Wortart
         template: Template
+        visibility: Sichtbarkeit
+      list:
+        name: Name
+        description: Beschreibung
         visibility: Sichtbarkeit

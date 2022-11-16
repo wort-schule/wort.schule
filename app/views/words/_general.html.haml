@@ -78,3 +78,5 @@
         = render(list.add(Word.human_attribute_name(:rimes))) do
           = separate word.rimes do |rime|
             = link_to_if can?(:read, rime), rime.name, rime
+
+= render 'words/lists', word:

@@ -68,6 +68,7 @@ class Word < ApplicationRecord
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
   has_one :compound_entity, as: :part
+  has_and_belongs_to_many :lists
 
   scope :ordered_lexigraphically, -> { order(:name) }
 
@@ -130,6 +131,10 @@ class Word < ApplicationRecord
 
   def other_meanings_count
     Word.where("name ILIKE ?", name).count - 1
+  end
+
+  def accessible_lists(ability)
+    List.accessible_by(ability).where(id: lists.pluck(:id))
   end
 
   private

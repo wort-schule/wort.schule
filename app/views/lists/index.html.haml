@@ -1,0 +1,7 @@
+= title_with_actions List.model_name.human(count: 2) do
+  = link_to t('.new'), new_list_path, class: 'button primary'
+
+= index_grid do
+  = render @lists
+
+= paginate @lists

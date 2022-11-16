@@ -1,0 +1,29 @@
+= title_with_actions @list.name do
+  = link_to t('actions.edit'), edit_list_path(@list), class: 'button primary'
+
+= two_column_card List.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+    
+      = render(list.add(List.human_attribute_name(:name))) do
+        = @list.name
+    
+      = render(list.add(List.human_attribute_name(:description))) do
+        = @list.description
+    
+      = render(list.add(List.human_attribute_name(:visibility))) do
+        = @list.visibility_text
+    
+      = render(list.add(List.human_attribute_name(:slug))) do
+        = @list.slug
+
+= two_column_card Word.model_name.human(count: 2), t('shared.word_count', word_count: @words.total_count, words: Word.model_name.human(count: @words.total_count)) do
+  = box padding: false, class: 'striped' do
+    - @words.each do |word|
+      .flex.justify-between.p-4
+        = link_to word.name, word
+        - if can? :remove_word, @list
+          = button_to remove_word_list_path(@list, word_id: word.id), method: :delete, title: t('actions.remove') do
+            = heroicon 'trash', options: {class: 'text-gray-700'}
+
+  .mt-2= paginate @words

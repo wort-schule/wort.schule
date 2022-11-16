@@ -1,0 +1,10 @@
+= box padding: false do
+  = simple_form_for @list do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+      = f.input :description
+      = f.input :visibility, include_blank: false
+
+    = box_footer do
+      = f.submit
+      = cancel_button @list
