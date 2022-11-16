@@ -25,6 +25,7 @@ class Ability
         can :create, :learning_group_membership_requests
 
         can %i[crud add_word remove_word], List, {user:}
+        can :index, :flashcard
 
       when "Teacher"
         can :crud, Noun

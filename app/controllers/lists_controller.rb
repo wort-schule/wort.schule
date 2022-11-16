@@ -4,7 +4,9 @@ class ListsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @lists = @lists.order(:name).page(params[:page])
+    @lists = @lists
+      .order(:name)
+      .page(params[:page])
   end
 
   def show

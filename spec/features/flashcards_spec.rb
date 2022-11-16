@@ -31,6 +31,11 @@ RSpec.describe "flash cards" do
 
       expect(learning_group.lists).to match_array [word_list]
       expect(student.flashcard_list(1).words).to match_array [noun1, noun2]
+
+      login_as student
+      visit flashcards_path
+      expect(page).to have_content noun1.name
+      expect(page).to have_content noun2.name
     end
   end
 end

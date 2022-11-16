@@ -1,0 +1,8 @@
+= title_with_actions t('.title')
+
+- @lists.each.with_index do |list, index|
+  = two_column_card list, '', first: index == 0 do
+    .grid.gap-4.md:grid-cols-3
+      - list.words.each do |word|
+        = box class: 'h-full' do
+          = link_to word.name, word

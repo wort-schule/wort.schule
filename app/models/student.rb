@@ -10,7 +10,11 @@ class Student < User
   after_create :setup_flashcards
 
   def flashcard_list(flashcard_section)
-    lists.find_by(flashcard_section:)
+    lists.unscoped.find_by(flashcard_section:)
+  end
+
+  def flashcard_lists
+    lists.unscoped.where.not(flashcard_section: nil)
   end
 
   private

@@ -8,6 +8,7 @@ class List < ApplicationRecord
 
   enumerize :visibility, in: %i[private public], default: :private
 
+  default_scope { where(flashcard_section: nil) }
   scope :of_user, ->(user) { where(user:) }
 
   validates :name, presence: true, if: ->(list) { list.flashcard_section.blank? }
