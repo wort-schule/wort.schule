@@ -42,6 +42,18 @@ RSpec.describe "learning groups" do
         expect(learning_group.invitable).to be false
       end
     end
+
+    it "adds a word list" do
+      word_list = create :list, user: teacher, visibility: :public
+
+      visit school_learning_group_path(school, learning_group)
+      click_on t("learning_groups.show.assign_list")
+      expect(page).to have_content t("learning_pleas.new.title")
+
+      click_on t("learning_pleas.new.assign")
+
+      expect(learning_group.lists).to match_array [word_list]
+    end
   end
 
   context "as a student" do

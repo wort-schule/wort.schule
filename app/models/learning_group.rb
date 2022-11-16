@@ -12,6 +12,8 @@ class LearningGroup < ApplicationRecord
   has_many :learning_group_memberships, dependent: :destroy
   has_many :granted_learning_group_memberships, -> { with_access("granted") }, class_name: "LearningGroupMembership"
   has_many :students, through: :granted_learning_group_memberships
+  has_many :learning_pleas
+  has_many :lists, through: :learning_pleas
 
   has_secure_token :invitation_token, length: 42
 

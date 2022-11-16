@@ -45,6 +45,7 @@ Rails.application.routes.draw do
           post "requests/reject", to: "requests#reject"
         end
       end
+      resources :learning_pleas, only: %i[new create destroy]
     end
   end
   resources :compounds, only: :index

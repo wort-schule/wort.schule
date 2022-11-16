@@ -32,6 +32,9 @@ de:
       accepted_error: Die Schüler*in konnte der Lerngruppe nicht hinzugefügt werden.
       rejected: Die Anfrage wurde abgelehnt.
       rejected_error: Die Anfrage konnte nicht abgelehnt werden.
+    learning_pleas:
+      created: Die Wortliste %{name} wurde hinzugefügt.
+      destroyed: Die Wortliste %{name} wurde entfernt.
     sources:
       created: Die Quelle %{name} wurde erstellt.
       updated: Die Quelle %{name} wurde gespeichert.
@@ -55,6 +58,8 @@ de:
       destroyed: Die Lehrer*in %{name} konnte nicht entfernt werden.
     learning_group_membership:
       destroyed: Die Schüler*in %{name} konnte nicht entfernt werden.
+    learning_plea:
+      destroyed: Die Wörterliste %{name} konnte nicht entfernt werden.
     sources:
       destroyed: Die Quelle %{name} konnte nicht gelöscht werden.
     shared:
