@@ -3,5 +3,6 @@
 = index_grid do
   = render @schools
 
-.pagination-with-actions
-  = link_to t('.new'), new_school_path, class: 'button primary'
+- if can? :create, School
+  .pagination-with-actions
+    = link_to t('.new'), new_school_path, class: 'button primary'
