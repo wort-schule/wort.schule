@@ -192,4 +192,8 @@
   .text-vertical {
     writing-mode: vertical-lr;
   }
+
+  .dropzone {
+    @apply bg-gray-300;
+  }
 }

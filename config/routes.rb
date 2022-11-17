@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   resources :themes
   resources :lists do
     delete :remove_word, on: :member
+    patch :move_word, on: :member
   end
   post :list_add_word, to: "lists#add_word"
   resources :flashcards, only: :index
