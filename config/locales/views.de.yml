@@ -128,6 +128,10 @@ de:
     new:
       title: Schüler*in hinzufügen
       assign: Hinzufügen
+  learning_pleas:
+    new:
+      title: Wortliste hinzufügen
+      assign: Hinzufügen
   function_words:
     index:
       new: Neues Funktionswort
@@ -220,6 +224,7 @@ de:
       request_access: Gruppe beitreten
       accept: Zulassen
       reject: Ablehnen
+      assign_list: Wortliste hinzufügen
     new:
       title: Neue Lerngruppe
     edit:

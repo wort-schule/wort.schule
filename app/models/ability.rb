@@ -20,7 +20,7 @@ class Ability
         can %i[read accept_invitation], LearningGroup
         can :read, School
 
-        can %i[read read_students], LearningGroup, students: {id: user.id}
+        can %i[read read_students read_lists], LearningGroup, students: {id: user.id}
         can :show, School, learning_groups: {students: {id: user.id}}
         can :create, :learning_group_membership_requests
 
@@ -52,10 +52,11 @@ class Ability
 
         # User management
         can :read, User, role: "Student"
-        can %i[crud invite read_students], LearningGroup, teacher_id: user.id
+        can %i[crud invite read_students read_lists], LearningGroup, teacher_id: user.id
         can :crud, LearningGroupMembership, learning_group: {teacher_id: user.id}
         can %i[read read_teachers], School, teaching_assignments: {teacher_id: user.id}
         can %i[accept reject], :learning_group_membership_requests
+        can :crud, LearningPlea, learning_group: {teacher_id: user.id}
 
       when "Admin"
         can :manage, Noun
@@ -86,6 +87,7 @@ class Ability
         can :manage, TeachingAssignment
         can :manage, LearningGroup
         can :manage, LearningGroupMembership
+        can :manage, LearningPlea
       end
     end
   end
