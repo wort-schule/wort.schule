@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 class ListsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: :move_word
+  skip_forgery_protection only: :move_word
+  authorize_resource only: :move_word
 
   def index
-    @lists = @lists.order(:name).page(params[:page])
+    @lists = @lists
+      .order(:name)
+      .page(params[:page])
   end
 
   def show
@@ -59,11 +63,30 @@ class ListsController < ApplicationController
     redirect_to @list
   end
 
+  def move_word
+    target_list = List.unscoped.accessible_by(current_ability).find(params[:id])
+    word = Word.find(params[:word_id])
+    current_list = student.flashcard_lists.find { |list| list.words.exists?(word.id) }
+
+    return head :unprocessable_entity if current_list == target_list
+
+    ActiveRecord::Base.transaction do
+      current_list.words.delete(word)
+      target_list.words << word
+    end
+
+    head :ok
+  end
+
   private
 
   def list_params
     params.require(:list).permit(
       :name, :description, :visibility
     )
+  end
+
+  def student
+    Student.find(current_user.id)
   end
 end

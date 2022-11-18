@@ -8,11 +8,16 @@ class List < ApplicationRecord
 
   enumerize :visibility, in: %i[private public], default: :private
 
+  default_scope { where(flashcard_section: nil) }
   scope :of_user, ->(user) { where(user:) }
 
-  validates :name, presence: true
+  validates :name, presence: true, if: ->(list) { list.flashcard_section.blank? }
 
   def to_s
-    name
+    if flashcard_section.present?
+      I18n.t(flashcard_section, scope: "activerecord.attributes.list.flashcard_sections")
+    else
+      name
+    end
   end
 end

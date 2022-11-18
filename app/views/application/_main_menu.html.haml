@@ -41,6 +41,8 @@
       .md:absolute.md:right-0.mt-2special_entries.hidden.z-50(data-dropdown-target="menu")
         .md:bg-primary-hover.md:shadow.rounded-md.md:border.md:border-primary-hover.overflow-hidden
           = dropdown_link Theme
+          - if can? :index, :flashcard
+            = link_to t('flashcards.index.title'), flashcards_path, data: {action: "click->dropdown#toggle"}, class: "no-underline block px-8 py-3 text-gray-300 hover:bg-primary whitespace-nowrap"
           = dropdown_link List
 
 .md:hidden
