@@ -18,12 +18,14 @@ RSpec.describe "flash cards" do
     let(:noun1) { create :noun, name: "Adler" }
     let(:noun2) { create :noun, name: "Bauer" }
 
-    it "adds words to the first section" do
+    before do
       word_list.words << noun1
       word_list.words << noun2
       LearningGroupMembership.create!(learning_group:, student:, access: :granted)
       login_as teacher
+    end
 
+    it "adds words to the first section" do
       visit school_learning_group_path(school, learning_group)
       click_on t("learning_groups.show.assign_list")
       expect(page).to have_content t("learning_pleas.new.title")
