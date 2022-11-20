@@ -12,9 +12,7 @@ class LearningPleasController < ApplicationController
 
   def create
     if @learning_plea.save
-      @learning_group.students.each do |student|
-        student.flashcard_list(Flashcards::SECTIONS.first).words << @learning_plea.list.words
-      end
+      Flashcards.add_list(@learning_group, @learning_plea.list)
 
       redirect_to [@school, @learning_group], notice: t("notices.learning_pleas.created", name: @learning_plea.list)
     else
