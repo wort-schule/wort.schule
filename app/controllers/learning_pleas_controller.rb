@@ -22,6 +22,8 @@ class LearningPleasController < ApplicationController
 
   def destroy
     destroyed = @learning_plea.destroy
+    Flashcards.remove_obsolete_words(@learning_group)
+
     notice = if destroyed
       {notice: t("notices.learning_pleas.destroyed", name: @learning_plea.list)}
     else
