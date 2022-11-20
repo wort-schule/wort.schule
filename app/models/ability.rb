@@ -79,8 +79,8 @@ class Ability
         can :manage, CompoundPhonemreduction
         can :manage, CompoundVocalalternation
 
-        can :crud, Theme
-        can %i[crud add_word remove_word], List
+        can :manage, Theme
+        can :manage, List
 
         # User management
         can :manage, User
