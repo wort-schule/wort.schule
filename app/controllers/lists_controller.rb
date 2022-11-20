@@ -20,6 +20,7 @@ class ListsController < ApplicationController
 
   def create
     @list.user = current_user
+    @list.visibility = :private unless can? :create_private, List
 
     if @list.save
       redirect_to @list, notice: t("notices.shared.created", name: @list.name, class_name: List.model_name.human)

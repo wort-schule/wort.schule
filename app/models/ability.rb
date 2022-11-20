@@ -49,7 +49,7 @@ class Ability
 
         can :read, Theme, visibility: :public
         can :crud, Theme, {user:}
-        can %i[crud add_word remove_word], List, {user:}
+        can %i[crud add_word remove_word create_private], List, {user:}
 
         # User management
         can :read, User, role: "Student"
