@@ -18,12 +18,14 @@ RSpec.describe "flash cards" do
     let(:noun1) { create :noun, name: "Adler" }
     let(:noun2) { create :noun, name: "Bauer" }
 
-    it "adds words to the first section" do
+    before do
       word_list.words << noun1
       word_list.words << noun2
       LearningGroupMembership.create!(learning_group:, student:, access: :granted)
       login_as teacher
+    end
 
+    it "adds words to the first section and removes the word when list is removed" do
       visit school_learning_group_path(school, learning_group)
       click_on t("learning_groups.show.assign_list")
       expect(page).to have_content t("learning_pleas.new.title")
@@ -36,6 +38,53 @@ RSpec.describe "flash cards" do
       visit flashcards_path
       expect(page).to have_content noun1.name
       expect(page).to have_content noun2.name
+
+      # Remove list
+      login_as teacher
+      visit school_learning_group_path(school, learning_group)
+      within "##{dom_id(learning_group.learning_pleas.first)}" do
+        click_on t("actions.remove")
+      end
+
+      login_as student
+      visit flashcards_path
+      expect(page).not_to have_content noun1.name
+      expect(page).not_to have_content noun2.name
+    end
+
+    it "adds and removes words when modifying the list" do
+      visit school_learning_group_path(school, learning_group)
+      click_on t("learning_groups.show.assign_list")
+      expect(page).to have_content t("learning_pleas.new.title")
+      click_on t("learning_pleas.new.assign")
+
+      expect(learning_group.lists).to match_array [word_list]
+      expect(student.flashcard_list(1).words).to match_array [noun1, noun2]
+
+      # Add new word
+      noun3 = create :noun, name: "Baum"
+      visit noun_path(noun3)
+      select word_list.name
+      click_on I18n.t("words.show.lists.add")
+
+      login_as student
+      visit flashcards_path
+      expect(page).to have_content noun1.name
+      expect(page).to have_content noun2.name
+      expect(page).to have_content noun3.name
+
+      # Remove word from list
+      login_as teacher
+      visit list_path(word_list)
+      within "##{dom_id(noun3)}" do
+        click_on I18n.t("actions.remove")
+      end
+
+      login_as student
+      visit flashcards_path
+      expect(page).to have_content noun1.name
+      expect(page).to have_content noun2.name
+      expect(page).not_to have_content noun3.name
     end
   end
 end

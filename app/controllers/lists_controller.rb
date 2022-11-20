@@ -54,12 +54,16 @@ class ListsController < ApplicationController
   def add_word
     @word = Word.find params[:word_id]
     @list.words << @word
+    @list.learning_groups.find_each do |learning_group|
+      Flashcards.add_list(learning_group, @list)
+    end
 
     redirect_to @list
   end
 
   def remove_word
     @list.words.delete(params[:word_id])
+    Flashcards.remove_word(@list, Word.find(params[:word_id]))
 
     redirect_to @list
   end

@@ -24,7 +24,7 @@ class Ability
         can :show, School, learning_groups: {students: {id: user.id}}
         can :create, :learning_group_membership_requests
 
-        can %i[crud add_word remove_word move_word], List, {user:}
+        can %i[crud add_word remove_word move_word], List, {user_id: user.id}
         can :index, :flashcard
 
       when "Teacher"
@@ -49,7 +49,7 @@ class Ability
 
         can :read, Theme, visibility: :public
         can :crud, Theme, {user:}
-        can %i[crud add_word remove_word create_private], List, {user:}
+        can %i[crud add_word remove_word create_private], List, {user_id: user.id}
 
         # User management
         can :read, User, role: "Student"

@@ -50,7 +50,8 @@
       = box_description_list do |list|
         - @learning_group.learning_pleas.each do |learning_plea|
           %div{id: dom_id(learning_plea)}
-            = render(list.add(learning_plea.list)) do
+            - link_to_list = link_to_if(can?(:read, learning_plea.list), learning_plea.list, list_path(learning_plea.list))
+            = render(list.add(link_to_list)) do
               %div
               - if can? :edit, learning_plea
                 .ml-4.flex-shrink-0
