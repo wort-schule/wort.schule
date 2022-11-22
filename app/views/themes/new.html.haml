@@ -1,3 +1,16 @@
 %h1= t '.title'
 
-= render 'form'
+= simple_form_for @theme, html: { 'data-controller': 'code-editor reveal' } do |f|
+  - if @theme.name.blank?
+    = box padding: false, 'data-reveal-target': 'item' do
+      = box_content do
+        = f.input :word_type, include_blank: false, input_html: { 'data-code-editor-target': 'wordType' }
+
+      = box_footer do
+        %button.button.primary(type="button" data-action='click->reveal#toggle click->code-editor#insert')= t 'actions.continue'
+
+    .hidden(data-reveal-target="item")
+      = render 'form'
+
+  - else
+    = render 'form'

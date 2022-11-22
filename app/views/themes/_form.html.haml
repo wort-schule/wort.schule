@@ -3,7 +3,6 @@
     = box_content do
       = f.input :name, autofocus: true
       = f.input :description
-      = f.input :word_type, include_blank: false, input_html: { 'data-code-editor-target': 'wordType' }
       = f.input :template, input_html: { 'data-code-editor-target': 'input' }
       %button.text-xs.text-gray-500(class="!mt-0" type="button" data-action="code-editor#insert")= t('.replace_with_default_theme.action')
       = f.input :visibility, include_blank: false

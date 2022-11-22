@@ -104,6 +104,7 @@ RSpec.describe "themes for words" do
     it "does not allow JavaScript content", js: true do
       visit public_send("#{klass.model_name.plural}_path")
       click_on t("#{klass.model_name.plural}.index.new")
+      click_on t("actions.continue")
 
       fill_in "#{klass.model_name.singular}[name]", with: "Neuer Name"
       find(".cm-editor").click

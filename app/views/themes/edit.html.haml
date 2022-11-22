@@ -1,4 +1,5 @@
 = title_with_actions t('.title') do
   = button_to t('actions.delete'), theme_path(@theme), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @theme.name) } if can?(:destroy, @theme)
 
-= render 'form'
+= simple_form_for @theme, html: { 'data-controller': 'code-editor reveal' } do |f|
+  = render 'form'
