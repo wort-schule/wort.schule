@@ -196,4 +196,8 @@
   .dropzone {
     @apply bg-gray-300;
   }
+
+  .cm-scroller, .cm-content {
+    min-height: 10rem !important;
+  }
 }
