@@ -63,4 +63,31 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abstrakt"
     end
   end
+
+  describe "add filtered words to list" do
+    let!(:noun) { create :noun, name: "Abend" }
+    let!(:verb) { create :verb, name: "abbauen" }
+    let!(:adjective) { create :adjective, name: "abstrakt" }
+    let(:student) { create :student }
+    let!(:list) { create :list, user: student }
+
+    before do
+      login_as student
+      visit search_path
+      fill_in t("filter.wordstarts"), with: "ab"
+    end
+
+    it "filters a specific word type", js: true do
+      expect(list.words).to be_empty
+
+      expect(page).to have_content "Abend"
+      expect(page).to have_content "abbauen"
+      expect(page).to have_content "abstrakt"
+
+      click_on t("filter.add_words_to_list")
+      click_on t("words.show.lists.add")
+
+      expect(list.words).to match_array [noun, verb, adjective]
+    end
+  end
 end

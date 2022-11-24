@@ -32,3 +32,7 @@ de:
     irregular_declination: Unregelmäßige Deklination
     absolute: Absolut (nicht steigerbar)
     irregular_comparison: Unregelmäßige Komparation
+    add_words_to_list: Gefundene Wörter einer Wortliste anfügen
+    added_words_to_list:
+      one: '%{count} Wort hinzugefügt'
+      other: '%{count} Wörter hinzugefügt'

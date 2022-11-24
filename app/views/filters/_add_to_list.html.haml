@@ -1,0 +1,18 @@
+- content = capture do
+  = yield
+
+.mt-4(data-controller="reveal")
+  %button.flex.ml-4.md:ml-0.mb-2.link.items-center.gap-1(data-action="click->reveal#toggle")
+    = heroicon 'chevron-right', options: { class: content.blank? ? '' : 'hidden', 'data-reveal-target': 'item' }
+    = heroicon 'chevron-down', options: { class: content.present? ? '' : 'hidden', 'data-reveal-target': 'item' }
+    = t('filter.add_words_to_list')
+
+  %div(data-reveal-target="item"){ class: content.present? ? '' : 'hidden' }
+    - lists = List.of_user(current_user).sort_by(&:name)
+    - if lists.present?
+      = box class: 'mt-4' do
+        = form_tag send("add_to_list_#{params[:controller]}_path", params.permit(filterrific:{})), class: 'flex gap-2' do
+          = select_tag :list_id, options_from_collection_for_select(lists, :id, :name), class: 'mt-0'
+          %button.button(type="submit")= t('words.show.lists.add')
+
+        = content
