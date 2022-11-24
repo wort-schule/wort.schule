@@ -1,5 +1,6 @@
 = title_with_actions @list.name do
-  = link_to t('actions.edit'), edit_list_path(@list), class: 'button primary'
+  - if can? :edit, @list
+    = link_to t('actions.edit'), edit_list_path(@list), class: 'button primary'
 
 = two_column_card List.model_name.human, "", first: true do
   = box padding: false do
