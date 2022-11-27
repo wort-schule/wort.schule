@@ -1,9 +1,6 @@
 = title_with_actions t('.title')
 
-%div(data-controller="flashcard-drag" data-action="dragstart->flashcard-drag#dragstart dragover->flashcard-drag#dragover dragenter->flashcard-drag#dragenter dragleave->flashcard-drag#dragleave drop->flashcard-drag#drop dragend->flashcard-drag#dragend")
+%div
   - @lists.each.with_index do |list, index|
     = two_column_card list, '', first: index == 0 do
-      .grid.gap-4.md:grid-cols-3.p-3{'data-list-id': list.id, style: 'min-height: 3rem'}
-        - list.words.each do |word|
-          = box class: 'h-full', draggable: true, 'data-word-id': word.id, 'data-list-id': list.id do
-            = link_to word.name, word
+      = render 'flashcards/words', list:

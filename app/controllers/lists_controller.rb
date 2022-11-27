@@ -80,7 +80,15 @@ class ListsController < ApplicationController
       target_list.words << word
     end
 
-    head :ok
+    respond_to do |format|
+      format.turbo_stream do
+        @lists = student.flashcard_lists
+        @old_list = current_list
+        @new_list = target_list
+        @word = word
+      end
+      format.html { redirect_to flashcards_path }
+    end
   end
 
   private

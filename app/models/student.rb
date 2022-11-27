@@ -6,7 +6,7 @@ class Student < User
 
   has_many :learning_group_memberships, dependent: :destroy
   has_many :learning_groups, through: :learning_group_memberships
-  has_many :flashcard_lists, -> { where.not(flashcard_section: nil) }, class_name: "List", foreign_key: :user_id
+  has_many :flashcard_lists, -> { where.not(flashcard_section: nil).order(:flashcard_section) }, class_name: "List", foreign_key: :user_id
 
   after_create :setup_flashcards
 

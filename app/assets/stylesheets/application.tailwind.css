@@ -200,4 +200,16 @@
   .cm-scroller, .cm-content {
     min-height: 10rem !important;
   }
+
+  .bg-confetti-animated {
+    background-repeat: repeat-x;
+    background-position: top -10px center;
+    background-image: url("confetti.svg");
+  }
+
+  @media (prefers-reduced-motion) {
+    .bg-confetti-animated {
+      background-image: url("confetti-static.svg");
+    }
+  }
 }

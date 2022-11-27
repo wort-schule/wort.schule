@@ -269,3 +269,8 @@ de:
   flashcards:
     index:
       title: Wörterklinik
+    word:
+      move_word_to_first_section: 'in %{first_section} schieben'
+      move_word_to_next_section: ins nächste Fach schieben
+      show_word: Wort anzeigen
+      show_actions: Aktionen anzeigen

@@ -1,0 +1,3 @@
+.grid.gap-4.md:grid-cols-3.p-3{id: dom_id(list)}
+  - list.words.ordered_lexigraphically.each do |word|
+    = render 'flashcards/word', list:, word:, confetti: false
