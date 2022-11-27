@@ -1,20 +1,3 @@
 .grid.gap-4.md:grid-cols-3.p-3{id: dom_id(list)}
   - list.words.ordered_lexigraphically.each do |word|
-    = box class: 'h-full hover:shadow-lg hover:cursor-pointer relative', 'data-controller': 'reveal', 'data-action': 'click->reveal#toggle' do
-      - menu_id = "menu-#{word.id}"
-      - show_actions_label = t('.show_actions')
-
-      .flex.justify-between
-        = word.name
-        %button.text-gray-500(data-action="reveal#toggle" aria-haspopup="menu" aria-controls=menu_id title=show_actions_label)
-          = heroicon :'ellipsis-horizontal'
-
-      .hidden.flex.flex-col.gap-1.absolute.left-0.bg-white.w-full.z-50.p-2.rounded-lg.shadow-lg(id=menu_id role="menu" data-reveal-target="item")
-        - if list != @lists.first
-          = button_to t('.move_word_to_first_section'), move_word_list_path(@lists.first, word_id: word.id), method: :patch, class: 'button text-xs w-full'
-
-        - next_section_list = @lists.find_by(flashcard_section: list.flashcard_section + 1)
-        - if next_section_list.present?
-          = button_to t('.move_word_to_next_section'), move_word_list_path(next_section_list, word_id: word.id), method: :patch, class: 'button primary !text-xs w-full'
-
-        = link_to t('.show_word'), word, class: 'button text-xs text-center w-full'
+    = render 'flashcards/word', list:, word:, confetti: false

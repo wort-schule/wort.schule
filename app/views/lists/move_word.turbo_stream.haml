@@ -1,2 +1,5 @@
 = turbo_stream.replace @old_list, partial: 'flashcards/words', locals: { list: @old_list }
 = turbo_stream.replace @new_list, partial: 'flashcards/words', locals: { list: @new_list }
+
+- if @new_list != @lists.first
+  = turbo_stream.replace @word, partial: 'flashcards/word', locals: { list: @new_list, word: @word, confetti: true }

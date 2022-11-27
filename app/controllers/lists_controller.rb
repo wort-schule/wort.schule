@@ -85,6 +85,7 @@ class ListsController < ApplicationController
         @lists = student.flashcard_lists
         @old_list = current_list
         @new_list = target_list
+        @word = word
       end
       format.html { redirect_to flashcards_path }
     end
