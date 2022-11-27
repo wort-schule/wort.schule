@@ -1,5 +1,5 @@
 .grid.gap-4.md:grid-cols-3.p-3{id: dom_id(list)}
-  - list.words.each do |word|
+  - list.words.ordered_lexigraphically.each do |word|
     = box class: 'h-full hover:shadow-lg hover:cursor-pointer relative', 'data-word-id': word.id, 'data-list-id': list.id, 'data-controller': 'reveal', 'data-action': 'click->reveal#toggle' do
       - menu_id = "menu-#{word.id}"
       - show_actions_label = t('.show_actions')
