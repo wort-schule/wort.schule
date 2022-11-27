@@ -3,8 +3,9 @@
 class NounsController < PublicController
   include OpenGraph
   include Themeable
+  include ListAddable
 
-  load_and_authorize_resource
+  load_and_authorize_resource except: :add_to_list
 
   before_action :set_open_graph_tags, only: :show
 

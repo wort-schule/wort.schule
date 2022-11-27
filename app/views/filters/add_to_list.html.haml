@@ -1,0 +1,3 @@
+= turbo_frame_tag :add_words_to_list do
+  = render layout: 'filters/add_to_list' do
+    .mt-2.text-xs.text-gray-600= t 'filter.added_words_to_list', count: @filterrific.find.count

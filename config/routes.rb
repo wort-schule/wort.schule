@@ -10,11 +10,20 @@ Rails.application.routes.draw do
     get :theme, action: :theme
   end
 
+  concern :list_addable do
+    post :add_to_list, action: :add_to_list
+  end
+
   root to: "nouns#index"
 
   devise_for :users, path: "devise/users", controllers: {registrations: "registrations", sessions: "users/sessions"}
 
   resource :search, only: :show
+  resources :searches do
+    collection do
+      concerns :list_addable
+    end
+  end
 
   # Object routes
   resources :nouns, only: %i[index new create] do
@@ -22,13 +31,20 @@ Rails.application.routes.draw do
 
     collection do
       get "by_genus/:genus", to: "nouns#by_genus", as: :by_genus
+      concerns :list_addable
     end
   end
   resources :verbs, only: %i[index new create] do
     member { concerns :themeable }
+    collection do
+      concerns :list_addable
+    end
   end
   resources :adjectives, only: %i[index new create] do
     member { concerns :themeable }
+    collection do
+      concerns :list_addable
+    end
   end
   resources :users
   resources :schools do
