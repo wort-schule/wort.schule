@@ -80,7 +80,7 @@ class ListsController < ApplicationController
       target_list.words << word
     end
 
-    head :ok
+    redirect_to flashcards_path
   end
 
   private
