@@ -1,13 +1,13 @@
-= box class: 'h-full hover:shadow-lg hover:cursor-pointer relative', id: dom_id(word), 'data-controller': "reveal #{confetti ? 'confetti' : ''}", 'data-action': 'click->reveal#toggle' do
+= box class: 'h-full hover:shadow-lg hover:cursor-pointer relative', id: dom_id(word), 'data-controller': "dropdown #{confetti ? 'confetti' : ''}", 'data-action': 'click->dropdown#toggle click@window->dropdown#hide' do
   - menu_id = "menu-#{word.id}"
   - show_actions_label = t('.show_actions')
 
   .flex.justify-between
     = word.name
-    %button.text-gray-500(data-action="reveal#toggle" aria-haspopup="menu" aria-controls=menu_id title=show_actions_label)
+    %button.text-gray-500(data-action="dropdown#toggle" data-dropdown-target="button" aria-haspopup="menu" aria-controls=menu_id title=show_actions_label)
       = heroicon :'ellipsis-horizontal'
 
-  .hidden.flex.flex-col.gap-1.absolute.left-0.bg-white.w-full.z-50.p-2.rounded-lg.shadow-lg(id=menu_id role="menu" data-reveal-target="item")
+  .hidden.flex.flex-col.gap-1.absolute.left-0.bg-white.w-full.z-50.p-2.rounded-lg.shadow-lg(id=menu_id role="menu" data-dropdown-target="menu")
     - if list != @lists.first
       = button_to t('.move_word_to_first_section'), move_word_list_path(@lists.first, word_id: word.id), method: :patch, class: 'button text-xs w-full'
 
