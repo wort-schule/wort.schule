@@ -22,7 +22,8 @@
   = box padding: false, class: 'striped' do
     - @words.each do |word|
       .flex.justify-between.p-4{id: dom_id(word)}
-        = link_to word.name, word
+        = link_to word do
+          = with_article word
         - if can? :remove_word, @list
           = button_to remove_word_list_path(@list, word_id: word.id), method: :delete, title: t('actions.remove') do
             = heroicon 'trash', options: {class: 'text-gray-700'}
