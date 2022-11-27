@@ -3,7 +3,7 @@
   - show_actions_label = t('.show_actions')
 
   .flex.justify-between
-    = word.name
+    = with_article word
     %button.text-gray-500(data-action="dropdown#toggle" data-dropdown-target="button" aria-haspopup="menu" aria-controls=menu_id title=show_actions_label)
       = heroicon :'ellipsis-horizontal'
 

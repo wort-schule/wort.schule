@@ -42,4 +42,13 @@ module WordHelper
       model.public_send(attribute).present?
     end
   end
+
+  def with_article(word)
+    return word.name if !word.is_a?(Noun) || word.type != "Noun"
+
+    content_tag :div, "", class: "flex gap-1 items-baseline" do
+      concat content_tag(:div, word.article_definite(case_number: 1, singular: true), class: "text-sm text-gray-400")
+      concat content_tag(:span, word.name)
+    end
+  end
 end
