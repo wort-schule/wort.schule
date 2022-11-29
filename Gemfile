@@ -30,7 +30,7 @@ gem "propshaft"
 gem "puma", "~> 6.0"
 gem "rails-i18n"
 gem "rb-gravatar"
-gem "redis", "~> 4.8" # Use Redis for Action Cable
+gem "redis", "~> 5.0" # Use Redis for Action Cable
 gem "ruby-vips"
 gem "sanitize"
 gem "simple_form"
