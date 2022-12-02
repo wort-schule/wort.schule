@@ -67,35 +67,29 @@ RSpec.describe Word do
 
     it "adds a sentence" do
       expect(word.update(
-        example_sentences_attributes: [{
-          sentence: "Das Haus ist gross."
-        }]
+        example_sentences: ["Das Haus ist gross."]
       )).to be true
 
-      expect(word.example_sentences.map(&:sentence)).to match_array ["Das Haus ist gross."]
+      expect(word.example_sentences).to match_array ["Das Haus ist gross."]
     end
 
     it "ignores an empty sentence" do
       expect(word.update(
-        example_sentences_attributes: [{
-          sentence: "   "
-        }]
+        example_sentences: ["   "]
       )).to be true
 
       expect(word.example_sentences).to match_array []
     end
 
     context "with existing example sentence" do
-      let!(:example_sentence) { create :example_sentence, word: }
+      let!(:example_sentence) { Faker::Lorem.sentence }
 
       it "deletes a sentence" do
+        word.update!(example_sentences: [example_sentence])
         expect(word.example_sentences).to match_array [example_sentence]
 
         expect(word.update(
-          example_sentences_attributes: [{
-            id: example_sentence.id,
-            _destroy: true
-          }]
+          example_sentences: []
         )).to be true
 
         expect(word.example_sentences).to match_array []
@@ -327,8 +321,7 @@ RSpec.describe Word do
 
   describe "#filter_example_sentences" do
     it "finds words which have example sentences" do
-      example_sentence = build :example_sentence
-      word = create :noun, example_sentences: [example_sentence]
+      word = create :noun, example_sentences: [Faker::Lorem.sentence]
       create :noun
 
       expect(Noun.filter_example_sentences("1")).to match [word]
@@ -367,24 +360,6 @@ RSpec.describe Word do
       word = create :noun, name: "Äh-r  9eß"
 
       expect(word.consonant_vowel).to eq "VKKVK"
-    end
-  end
-
-  describe "tracks change history" do
-    subject(:word) { create :noun, name: "Adler" }
-
-    it "tracks a change of the name itself" do
-      word.update!(name: "Haus")
-
-      expect(word.versions.count).to eq 2
-
-      created_version = word.versions.find { |version| version.event == "create" }
-      updated_version = word.versions.find { |version| version.event == "update" }
-
-      expect(created_version.changeset).not_to be_empty
-      expect(updated_version.changeset).not_to be_empty
-
-      expect(updated_version.changeset.except("updated_at")).to eq({"consonant_vowel" => ["VKKVK", "KVVK"], "name" => ["Adler", "Haus"]})
     end
   end
 

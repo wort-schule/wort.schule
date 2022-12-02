@@ -59,8 +59,6 @@ class Word < ApplicationRecord
         super group unless include?(group)
       end
     end
-  has_many :example_sentences, dependent: :destroy
-  accepts_nested_attributes_for :example_sentences, reject_if: :all_blank, allow_destroy: true
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png
     attachable.variant :open_graph, resize_to_fill: [1080, nil], format: :png
@@ -74,6 +72,7 @@ class Word < ApplicationRecord
 
   before_save :set_consonant_vowel
   before_save :sanitize_slug
+  before_save :sanitize_example_sentences
 
   validates :slug, presence: true, uniqueness: true
 
@@ -99,7 +98,7 @@ class Word < ApplicationRecord
     opposite_ids: [],
     keyword_ids: [],
     rime_ids: [],
-    example_sentences_attributes: %i[id _destroy sentence]
+    example_sentences: []
   ]
 
   def syllables_count
@@ -155,5 +154,11 @@ class Word < ApplicationRecord
 
   def sanitize_slug
     slug.downcase!
+  end
+
+  def sanitize_example_sentences
+    example_sentences
+      .map!(&:strip)
+      .select!(&:present?)
   end
 end

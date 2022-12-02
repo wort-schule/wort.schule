@@ -191,8 +191,7 @@ module WordFilter
 
       where.not(
         "words.id": Word
-        .where
-        .missing(:example_sentences)
+        .where("example_sentences = '[]'")
       )
     }
 

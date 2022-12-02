@@ -33,7 +33,6 @@ class NounsController < PublicController
   end
 
   def new
-    @noun.example_sentences.build if @noun.example_sentences.blank?
   end
 
   def create
@@ -47,7 +46,6 @@ class NounsController < PublicController
   end
 
   def edit
-    @noun.example_sentences.build if @noun.example_sentences.blank?
   end
 
   def update

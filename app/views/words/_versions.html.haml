@@ -17,6 +17,19 @@
                 - version.changeset.except("updated_at").each do |attribute, values|
                   .flex.gap-1.items-center
                     .font-bold.text-md.mr-2= Word.human_attribute_name(attribute.to_sym)
-                    = values[0]
-                    = heroicon 'arrow-small-right'
-                    = values[1]
+                    .flex.gap-1.items-center.flex-wrap{ class: values[0]&.is_a?(Array) ? 'flex-col' : ''}
+                      - if values[0]&.is_a? Array
+                        .flex.flex-col.gap-1.grow
+                          - values[0].each do |item|
+                            %div= item
+                      - else
+                        = values[0]
+
+                      = heroicon 'arrow-small-right'
+
+                      - if values[1]&.is_a? Array
+                        .flex.flex-col.gap-1.grow
+                          - values[1].each do |item|
+                            %div= item
+                      - else
+                        = values[1]

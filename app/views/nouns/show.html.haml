@@ -65,7 +65,7 @@
   = two_column_card t('words.show.example_sentences.title'), t('words.show.example_sentences.description') do
     = box padding: false, class: 'striped' do
       - @noun.example_sentences.each do |sentence|
-        .p-4= sentence.sentence
+        .p-4= sentence
 
 = render 'words/general', word: @noun
 
