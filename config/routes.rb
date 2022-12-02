@@ -97,5 +97,5 @@ Rails.application.routes.draw do
     resource :email, only: :edit
   end
 
-  get "page/impressum"
+  get "seite/impressum", to: "pages#imprint", as: :imprint
 end
