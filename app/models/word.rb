@@ -73,6 +73,7 @@ class Word < ApplicationRecord
   before_save :set_consonant_vowel
   before_save :sanitize_slug
   before_save :sanitize_example_sentences
+  before_save :update_cologne_phonetics
 
   validates :slug, presence: true, uniqueness: true
 
@@ -160,5 +161,9 @@ class Word < ApplicationRecord
     example_sentences
       .map!(&:strip)
       .select!(&:present?)
+  end
+
+  def update_cologne_phonetics
+    self.cologne_phonetics = ColognePhonetics.encode(name)
   end
 end

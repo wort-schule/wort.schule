@@ -8,6 +8,7 @@ gem "active_storage_svg_sanitizer"
 gem "bootsnap", require: false
 gem "cancancan"
 gem "clamped"
+gem "cologne_phonetics"
 gem "devise"
 gem "devise-i18n"
 gem "draper"

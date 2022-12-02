@@ -381,4 +381,20 @@ RSpec.describe Word do
       end
     end
   end
+
+  describe "#cologne_phonetics" do
+    it "creates phonetics when creating a word" do
+      word = create :noun, name: "Adler"
+      expect(word.cologne_phonetics).to eq "0257"
+    end
+
+    it "updates phonetics when updating a word" do
+      word = create :noun, name: "Adler"
+      expect(word.cologne_phonetics).to eq "0257"
+
+      word.update!(name: "Haus")
+      word.reload
+      expect(word.cologne_phonetics).to eq "08"
+    end
+  end
 end
