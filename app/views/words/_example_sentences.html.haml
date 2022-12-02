@@ -1,10 +1,11 @@
 %template(data-nested-form-target="template")
-  = f.fields_for :example_sentences, ExampleSentence.new, child_index: 'NEW_RECORD' do |s|
-    = render 'example_sentences/form', f: s
+  = f.fields_for :example_sentences, OpenStruct.new, child_index: 'NEW_RECORD' do |s|
+    = render 'example_sentences/form', model: f.object.model_name.singular, sentence: ''
 
 = two_column_card t('words.show.example_sentences.title'), t('words.show.example_sentences.description') do
   = box do
     = f.fields_for :example_sentences do |s|
-      = render 'example_sentences/form', f: s
+      - f.object.example_sentences.each do |sentence|
+        = render 'example_sentences/form', model: f.object.model_name.singular, sentence:
     %div(data-nested-form-target="target")
     %button.text-gray-500.text-sm.mt-2(type="button" data-action="nested-form#add")= t 'words.show.example_sentences.new'

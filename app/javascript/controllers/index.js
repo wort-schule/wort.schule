@@ -13,9 +13,6 @@ eagerLoadControllersFrom("controllers", application)
 import Reveal from "stimulus-reveal-controller"
 application.register("reveal", Reveal)
 
-import NestedForm from 'stimulus-rails-nested-form'
-application.register('nested-form', NestedForm)
-
 import { Dropdown } from "tailwindcss-stimulus-components"
 application.register('dropdown', Dropdown)
 

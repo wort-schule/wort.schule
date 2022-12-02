@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_20_163440) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_02_092420) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -79,14 +79,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_163440) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "example_sentences", force: :cascade do |t|
-    t.string "sentence"
-    t.bigint "word_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["word_id"], name: "index_example_sentences_on_word_id"
   end
 
   create_table "function_words", force: :cascade do |t|
@@ -384,6 +376,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_163440) do
     t.boolean "irregular_comparison", default: false, null: false
     t.integer "function_type"
     t.string "type", null: false
+    t.jsonb "example_sentences", default: [], null: false
     t.index ["genus_feminine_id"], name: "index_words_on_genus_feminine_id"
     t.index ["genus_id"], name: "index_words_on_genus_id"
     t.index ["genus_masculine_id"], name: "index_words_on_genus_masculine_id"
@@ -396,7 +389,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_163440) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "example_sentences", "words"
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "learning_group_memberships", "learning_groups"
   add_foreign_key "learning_group_memberships", "users", column: "student_id"
