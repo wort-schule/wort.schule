@@ -33,5 +33,9 @@ module Wortschule
 
     # If true, blank attributes are hidden when showing words
     config.hide_blank_items = true
+
+    # All routes of the application are moved below this identifier. This is
+    # used to free up the root URLs for the words, e.g. `/adler`
+    config.default_app_namespace = "seite"
   end
 end

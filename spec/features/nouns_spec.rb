@@ -22,7 +22,7 @@ RSpec.describe "nouns" do
       expect(page).to have_selector "h1", text: "Adler"
     end
 
-    it "does not redirect more complex routes" do
+    it "does not redirect routes below the scope 'seite'" do
       expect do
         visit "/seite/IMPRESSUM"
       end.to raise_error ActionController::RoutingError
@@ -31,8 +31,22 @@ RSpec.describe "nouns" do
       visit "/seite/impressum"
       expect(page).to have_current_path "/seite/impressum"
 
-      visit "/NoUNs"
-      expect(page).to have_current_path "/nouns"
+      expect do
+        visit "/seite/NoUNs"
+      end.to raise_error ActionController::RoutingError
+      expect(page).to have_current_path "/seite/NoUNs"
+    end
+
+    it "distinguishes between the word 'Seite' and the scope" do
+      create :noun, name: "Seite"
+
+      visit "/seite"
+      expect(page).to have_current_path "/seite"
+      expect(page).to have_selector "h1", text: "Seite"
+
+      visit "/seite/nouns"
+      expect(page).to have_current_path "/seite/nouns"
+      expect(page).to have_selector "h1", text: Noun.model_name.human(count: 2)
     end
   end
 
