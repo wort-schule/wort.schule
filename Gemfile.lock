@@ -302,6 +302,8 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
+    route_downcaser (1.2.3)
+      activesupport (>= 3.2)
     rspec-core (3.12.0)
       rspec-support (~> 3.12.0)
     rspec-expectations (3.12.0)
@@ -439,6 +441,7 @@ DEPENDENCIES
   rails-i18n
   rb-gravatar
   redis (~> 5.0)
+  route_downcaser
   rspec-rails
   ruby-vips
   sanitize

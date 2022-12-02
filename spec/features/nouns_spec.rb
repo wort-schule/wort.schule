@@ -5,6 +5,37 @@ RSpec.describe "nouns" do
     it_behaves_like "CRUD", Noun
   end
 
+  describe "word URLs" do
+    let!(:noun) { create :noun, name: "Adler" }
+
+    it "matches word case insensitive" do
+      visit "/Adler"
+      expect(page).to have_current_path "/adler"
+      expect(page).to have_selector "h1", text: "Adler"
+
+      visit "/adler"
+      expect(page).to have_current_path "/adler"
+      expect(page).to have_selector "h1", text: "Adler"
+
+      visit "/AdLEr"
+      expect(page).to have_current_path "/adler"
+      expect(page).to have_selector "h1", text: "Adler"
+    end
+
+    it "does not redirect more complex routes" do
+      expect do
+        visit "/page/IMPRESSUM"
+      end.to raise_error ActionController::RoutingError
+      expect(page).to have_current_path "/page/IMPRESSUM"
+
+      visit "/page/impressum"
+      expect(page).to have_current_path "/page/impressum"
+
+      visit "/NoUNs"
+      expect(page).to have_current_path "/nouns"
+    end
+  end
+
   describe "change history" do
     let!(:word) { create :noun, name: "Buche" }
 
