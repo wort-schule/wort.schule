@@ -29,6 +29,7 @@
       = filter_text_field f, :wordcontains
       = filter_text_field f, :wordends
       = filter_text_field f, :syllablescontains
+      = filter_text_field f, :cologne_phonetics
       = filter_text_field f, :letters
       = filter_select_field f, :source, collection: Source.order(:name).map { |s| [s.name, s.id] }
       = filter_select_field f, :topic, collection: Topic.order(:name).map { |t| [t.name, t.id] }
