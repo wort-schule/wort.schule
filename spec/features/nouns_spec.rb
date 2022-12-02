@@ -24,12 +24,12 @@ RSpec.describe "nouns" do
 
     it "does not redirect more complex routes" do
       expect do
-        visit "/page/IMPRESSUM"
+        visit "/seite/IMPRESSUM"
       end.to raise_error ActionController::RoutingError
-      expect(page).to have_current_path "/page/IMPRESSUM"
+      expect(page).to have_current_path "/seite/IMPRESSUM"
 
-      visit "/page/impressum"
-      expect(page).to have_current_path "/page/impressum"
+      visit "/seite/impressum"
+      expect(page).to have_current_path "/seite/impressum"
 
       visit "/NoUNs"
       expect(page).to have_current_path "/nouns"
