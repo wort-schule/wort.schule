@@ -123,7 +123,7 @@ module WordFilter
     scope :filter_cologne_phonetics, lambda { |query|
       return if query.blank?
 
-      where(cologne_phonetics: ColognePhonetics.encode(query))
+      where("cologne_phonetics ILIKE ?", "#{ColognePhonetics.encode(query)}%")
     }
 
     scope :filter_letters, lambda { |query|

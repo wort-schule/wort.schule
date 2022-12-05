@@ -102,6 +102,9 @@ RSpec.describe "word filter" do
       expect(page).to have_content "Fahrrad" # 372
 
       fill_in t("filter.cologne_phonetics"), with: "Var" # 37
+      expect(page).to have_content "Fahrrad"
+
+      fill_in t("filter.cologne_phonetics"), with: "Hau" # 0
       expect(page).not_to have_content "Fahrrad"
 
       fill_in t("filter.cologne_phonetics"), with: "Vahrad" # 372
