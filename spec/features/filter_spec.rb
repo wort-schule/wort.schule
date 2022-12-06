@@ -53,8 +53,14 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abstrakt"
 
       choose t("activerecord.models.noun.one")
-      expect(page).to have_content "Abend"
+
+      # Opening/closing the filter is only necessary because Capybara doesn't
+      # wait for the search to complete
+      click_on "Filter"
+      click_on "Filter"
+
       expect(page).not_to have_content "abbauen"
+      expect(page).to have_content "Abend"
       expect(page).not_to have_content "abstrakt"
 
       choose t("filter.all")
@@ -99,6 +105,11 @@ RSpec.describe "word filter" do
     end
 
     it "filters phonetically", js: true do
+      # Opening/closing the filter is only necessary because Capybara doesn't
+      # wait for the search to complete
+      click_on "Filter"
+      click_on "Filter"
+
       expect(page).to have_content "Fahrrad" # 372
 
       fill_in t("filter.cologne_phonetics"), with: "Var" # 37
