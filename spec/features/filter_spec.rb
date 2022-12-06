@@ -25,6 +25,11 @@ RSpec.describe "word filter" do
 
       fill_in t("filter.wordstarts"), with: "a"
 
+      # Opening/closing the filter is only necessary because Capybara doesn't
+      # wait for the search to complete
+      click_on t("filter.title")
+      click_on t("filter.title")
+
       expect(page).to have_content "Abfall"
       expect(page).to have_content "Abend"
       expect(page).not_to have_content "Bach"
@@ -56,8 +61,8 @@ RSpec.describe "word filter" do
 
       # Opening/closing the filter is only necessary because Capybara doesn't
       # wait for the search to complete
-      click_on "Filter"
-      click_on "Filter"
+      click_on t("filter.title")
+      click_on t("filter.title")
 
       expect(page).not_to have_content "abbauen"
       expect(page).to have_content "Abend"
@@ -107,8 +112,8 @@ RSpec.describe "word filter" do
     it "filters phonetically", js: true do
       # Opening/closing the filter is only necessary because Capybara doesn't
       # wait for the search to complete
-      click_on "Filter"
-      click_on "Filter"
+      click_on t("filter.title")
+      click_on t("filter.title")
 
       expect(page).to have_content "Fahrrad" # 372
 
