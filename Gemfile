@@ -9,6 +9,7 @@ gem "bootsnap", require: false
 gem "cancancan"
 gem "clamped"
 gem "cologne_phonetics"
+gem "device_detector"
 gem "devise"
 gem "devise-i18n"
 gem "draper"
