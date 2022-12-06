@@ -1,7 +1,7 @@
 class Word < ApplicationRecord
   extend FriendlyId
 
-  has_paper_trail
+  has_paper_trail ignore: %i[hit_counter]
 
   include WordFilter
 
@@ -135,6 +135,16 @@ class Word < ApplicationRecord
 
   def accessible_lists(ability)
     List.accessible_by(ability).where(id: lists.pluck(:id))
+  end
+
+  def hit!(session)
+    session[:words_hit_counter] ||= {}
+    last_hit = session[:words_hit_counter][id.to_s]
+
+    return if last_hit.present? && DateTime.parse(last_hit) > 24.hours.ago
+
+    update_attribute(:hit_counter, hit_counter + 1)
+    session[:words_hit_counter][id.to_s] = Time.zone.now.iso8601
   end
 
   private

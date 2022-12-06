@@ -18,6 +18,8 @@ class AdjectivesController < PublicController
   end
 
   def show
+    @adjective.hit!(session)
+
     render ThemeComponent.new(word: @adjective, theme: current_user.theme_adjective) if current_user&.theme_adjective.present?
   end
 
