@@ -94,4 +94,22 @@ RSpec.describe NounsController, type: :request do
       ]
     end
   end
+
+  describe "images" do
+    before do
+      word.image.attach(
+        io: StringIO.new(File.read("spec/fixtures/files/avatar1.png")),
+        filename: "example.png"
+      )
+
+      ActiveStorage::Current.url_options = {host: "localhost"}
+    end
+
+    it "loads images correctly" do
+      expect(word.image).to be_attached
+
+      get word.image.url
+      expect(response).to be_successful
+    end
+  end
 end
