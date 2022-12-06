@@ -4,7 +4,7 @@
 
   .flex.justify-between
     = with_article word
-    %button.text-gray-500(data-action="dropdown#toggle" data-dropdown-target="button" aria-haspopup="menu" aria-controls=menu_id title=show_actions_label)
+    %span.text-gray-500(type="button" data-dropdown-target="button" aria-haspopup="menu" aria-controls=menu_id title=show_actions_label)
       = heroicon :'ellipsis-horizontal'
 
   .hidden.flex.flex-col.gap-1.absolute.left-0.bg-white.w-full.z-50.p-2.rounded-lg.shadow-lg(id=menu_id role="menu" data-dropdown-target="menu")
