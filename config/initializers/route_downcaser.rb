@@ -5,6 +5,7 @@ RouteDowncaser.configuration do |config|
   # We only want to redirect word URLs, i.e. URLs not containing a slash (`/`)
   # anywhere but the beginning
   config.exclude_patterns = [
-    /^\/seite\//i
+    /^\/seite\//i,
+    /^\/rails\//i
   ]
 end
