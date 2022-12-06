@@ -47,6 +47,7 @@ module WordFilter
         :filter_wordcontains,
         :filter_letters,
         :filter_syllablescontains,
+        :filter_cologne_phonetics,
         :filter_source,
         :filter_topic,
         :filter_hierarchy,
@@ -117,6 +118,12 @@ module WordFilter
         *syllables_terms,
         *written_syllables_terms
       )
+    }
+
+    scope :filter_cologne_phonetics, lambda { |query|
+      return if query.blank?
+
+      where("cologne_phonetics ILIKE ?", "#{ColognePhonetics.encode(query)}%")
     }
 
     scope :filter_letters, lambda { |query|

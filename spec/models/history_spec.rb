@@ -14,7 +14,11 @@ RSpec.describe "tracking change history" do
     expect(created_version.changeset).not_to be_empty
     expect(updated_version.changeset).not_to be_empty
 
-    expect(updated_version.changeset.except("updated_at")).to eq({"consonant_vowel" => ["VKKVK", "KVVK"], "name" => ["Adler", "Haus"]})
+    expect(updated_version.changeset.except("updated_at")).to eq({
+      "consonant_vowel" => ["VKKVK", "KVVK"],
+      "name" => ["Adler", "Haus"],
+      "cologne_phonetics" => ["0257", "08"]
+    })
   end
 
   it "tracks a change of an example sentence" do

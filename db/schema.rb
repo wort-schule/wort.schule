@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_02_092420) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_02_144813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -377,6 +377,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_02_092420) do
     t.integer "function_type"
     t.string "type", null: false
     t.jsonb "example_sentences", default: [], null: false
+    t.string "cologne_phonetics"
+    t.index ["cologne_phonetics"], name: "index_words_on_cologne_phonetics"
     t.index ["genus_feminine_id"], name: "index_words_on_genus_feminine_id"
     t.index ["genus_id"], name: "index_words_on_genus_id"
     t.index ["genus_masculine_id"], name: "index_words_on_genus_masculine_id"

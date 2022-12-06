@@ -90,4 +90,25 @@ RSpec.describe "word filter" do
       expect(list.words).to match_array [noun, verb, adjective]
     end
   end
+
+  describe "by cologne phonetics" do
+    let!(:noun) { create :noun, name: "Fahrrad" }
+
+    before do
+      visit search_path
+    end
+
+    it "filters phonetically", js: true do
+      expect(page).to have_content "Fahrrad" # 372
+
+      fill_in t("filter.cologne_phonetics"), with: "Var" # 37
+      expect(page).to have_content "Fahrrad"
+
+      fill_in t("filter.cologne_phonetics"), with: "Hau" # 0
+      expect(page).not_to have_content "Fahrrad"
+
+      fill_in t("filter.cologne_phonetics"), with: "Vahrad" # 372
+      expect(page).to have_content "Fahrrad"
+    end
+  end
 end
