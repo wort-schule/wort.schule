@@ -137,7 +137,9 @@ class Word < ApplicationRecord
     List.accessible_by(ability).where(id: lists.pluck(:id))
   end
 
-  def hit!(session)
+  def hit!(session, user_agent)
+    return if DeviceDetector.new(user_agent).bot?
+
     session[:words_hit_counter] ||= {}
     last_hit = session[:words_hit_counter][id.to_s]
 

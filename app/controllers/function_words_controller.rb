@@ -8,7 +8,7 @@ class FunctionWordsController < PublicController
   end
 
   def show
-    @function_word.hit!(session)
+    @function_word.hit!(session, request.user_agent)
 
     render ThemeComponent.new(word: @function_word, theme: current_user.theme_function_word) if current_user&.theme_function_word.present?
   end

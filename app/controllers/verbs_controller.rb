@@ -18,7 +18,7 @@ class VerbsController < PublicController
   end
 
   def show
-    @verb.hit!(session)
+    @verb.hit!(session, request.user_agent)
 
     render ThemeComponent.new(word: @verb, theme: current_user.theme_verb) if current_user&.theme_verb.present?
   end

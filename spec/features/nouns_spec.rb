@@ -148,5 +148,19 @@ RSpec.describe "nouns" do
       # We don't want to create a new PaperTrail version for every hit
       expect(noun.versions.count).to eq 1
     end
+
+    it "ignores hits from bots" do
+      # Bot user agent
+      page.driver.header("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)")
+      expect(noun.reload.hit_counter).to eq 0
+      visit noun_path(noun)
+      expect(noun.reload.hit_counter).to eq 0
+
+      # Normal user agent
+      page.driver.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+      expect(noun.reload.hit_counter).to eq 0
+      visit noun_path(noun)
+      expect(noun.reload.hit_counter).to eq 1
+    end
   end
 end
