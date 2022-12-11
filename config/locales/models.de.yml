@@ -106,6 +106,7 @@ de:
         compound_entities: Bausteine
       noun:
         name: Grundform
+        with_tts: Audio aktiviert
         singularetantum: Singularwort
         pluraletantum: Pluralwort
         genus_id: Geschlecht
@@ -177,6 +178,7 @@ de:
         theme_function_word: Theme für Funktionswörter
       adjective:
         name: Grundform
+        with_tts: Audio aktiviert
         absolute: Absolutes Adjektiv (nicht steigerbar)
         comparative: Komparativ
         irregular_comparison: Unregelmäßige Komparation
@@ -184,6 +186,7 @@ de:
         superlative: Superlativ
       verb:
         name: Grundform
+        with_tts: Audio aktiviert
         subjectless: Subjektloses Verb
         modal: Modalverb
         strong: Starkes Verb

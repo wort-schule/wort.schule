@@ -78,6 +78,8 @@ class Word < ApplicationRecord
   before_save :sanitize_example_sentences
   before_save :update_cologne_phonetics
 
+  after_save :maybe_remove_audio
+
   validates :slug, presence: true, uniqueness: true
 
   ATTRIBUTES = [
@@ -92,6 +94,7 @@ class Word < ApplicationRecord
     :prototype,
     :foreign,
     :compound,
+    :with_tts,
     :prefix_id,
     :postfix_id,
     topic_ids: [],
@@ -180,5 +183,11 @@ class Word < ApplicationRecord
 
   def update_cologne_phonetics
     self.cologne_phonetics = ColognePhonetics.encode(name)
+  end
+
+  def maybe_remove_audio
+    return if with_tts?
+
+    audio&.purge
   end
 end

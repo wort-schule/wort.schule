@@ -2,6 +2,7 @@
   = two_column_card t('words.show.noun.title'), t('words.show.noun.description') do
     = box do
       = f.input :name
+      = f.input :with_tts, as: :boolean
       = f.input :plural
       = f.association :genus
       = f.association :genus_neuter, collection: [f.object.genus_neuter].compact, input_html: {data: {controller: 'select', select_url_value: by_genus_nouns_path('Neutrum')}}
