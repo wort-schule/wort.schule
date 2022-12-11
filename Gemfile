@@ -48,6 +48,7 @@ group :development do
   gem "binding_of_caller"
   gem "letter_opener"
   gem "web-console"
+  gem "foreman"
 end
 
 group :test do
