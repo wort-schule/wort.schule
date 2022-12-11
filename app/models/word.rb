@@ -59,10 +59,13 @@ class Word < ApplicationRecord
         super group unless include?(group)
       end
     end
+
+  has_one_attached :audio
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png
     attachable.variant :open_graph, resize_to_fill: [1080, nil], format: :png
   end
+
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
   has_one :compound_entity, as: :part
