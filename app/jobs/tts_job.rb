@@ -12,19 +12,32 @@ class PrepareJob < ApplicationJob
   PAUSE = 1.second
 
 
-  def perform(address_import)
+  def perform
+    @logger = Logger.new(Rails.root.join('log', 'tts.log'))
+    @logger.info 'Starting TTS job'
+
     loop do
       word = find_next_word
-      return true unless word
 
-      word.audio.attach(
-        io: TtsGenerator.call(word.name),
-        filename: 'audio.mp3',
-        content_type: 'audio/mp3'
-      )
+      unless word
+        @logger.info 'Found no more words to process. Exiting.'
+        return true
+      end
 
+      generate_audio word
       sleep PAUSE
     end
+  end
+
+
+  private def generate_audio(word)
+    @logger.info "Processing word #{word.id} (#{word.name})"
+
+    word.audio.attach(
+      io: TtsGenerator.call(word.name),
+      filename: 'audio.mp3',
+      content_type: 'audio/mp3'
+    )
   end
 
 

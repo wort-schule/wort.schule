@@ -81,3 +81,22 @@ There is a `Dockerfile` and an example `docker-compose.yml.example` for a produc
 After installing Docker and `docker-compose`, run `docker-compose up` in this directory to start the application.
 
 To quickly test the application locally without customizing the `docker-compose.yml`, you may run `docker-compose -f docker-compose.yml.example up` in this directory.
+
+
+## Text to speech
+
+### Requirements
+
+- Activate Text to Speech API for the Google Cloud Account
+- Generate service credentials and download JSON file
+- Change path to credentials file in `config/tts.yml`
+
+### Processing
+
+- Processing happens in the background via `app/jobs/tts_job.rb`.
+- The `good_job` gem handles the job.
+- It's automatically started via cron config in `config/application.rb`.
+- It finds all words, without audio attachment and where `with_tts` is true.
+- The audio is generated via Google Cloud Text to Speech API and attached to the word.
+- There is a dedicated log file for the job in `log/tts.log`.
+- The voice is randomly selected form the list in the config file.
