@@ -99,4 +99,4 @@ To quickly test the application locally without customizing the `docker-compose.
 - It finds all words, without audio attachment and where `with_tts` is true.
 - The audio is generated via Google Cloud Text to Speech API and attached to the word.
 - There is a dedicated log file for the job in `log/tts.log`.
-- The voice is randomly selected form the list in the config file.
+- The voice is randomly selected from the list in the config file.
