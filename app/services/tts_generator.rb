@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'google/cloud/text_to_speech'
-require 'yaml'
-require 'stringio'
+require "google/cloud/text_to_speech"
+require "yaml"
+require "stringio"
 
 ## TODO: for queue job
 # return unless word.with_tts?
@@ -22,12 +22,10 @@ class TtsGenerator
     new.call input
   end
 
-
   def call(input)
     @config = Rails.application.config_for(:tts).symbolize_keys
     generate_mp3 input
   end
-
 
   private def generate_mp3(input)
     return if @config[:credentials_file].blank?
@@ -38,19 +36,17 @@ class TtsGenerator
     end
   end
 
-
   private def client
     ::Google::Cloud::TextToSpeech.text_to_speech do |config|
       config.credentials = @config[:credentials_file]
     end
   end
 
-
   private def request_for(input)
     ::Google::Cloud::TextToSpeech::V1::SynthesizeSpeechRequest.new.tap do |request|
       request.input = ::Google::Cloud::TextToSpeech::V1::SynthesisInput.new(text: input)
       request.voice = ::Google::Cloud::TextToSpeech::V1::VoiceSelectionParams.new(
-        language_code: 'de-DE', name: @config[:voices].sample
+        language_code: "de-DE", name: @config[:voices].sample
       )
       request.audio_config = ::Google::Cloud::TextToSpeech::V1::AudioConfig.new(
         audio_encoding: ::Google::Cloud::TextToSpeech::V1::AudioEncoding::MP3

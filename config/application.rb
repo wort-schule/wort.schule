@@ -46,8 +46,8 @@ module Wortschule
     config.good_job.cron = {
       # Every 5 minutes, run the TTS job
       tts: {
-        cron: '*/5 * * * *',
-        class: 'TtsJob'
+        cron: "*/5 * * * *",
+        class: "TtsJob"
       }
     }
   end

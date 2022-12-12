@@ -398,9 +398,9 @@ RSpec.describe Word do
     end
   end
 
-  describe 'audio attachment' do
-    it 'is automatically removed when with_tts is set to false' do
-      word = create(:noun, name: 'Adler')
+  describe "audio attachment" do
+    it "is automatically removed when with_tts is set to false" do
+      word = create(:noun, name: "Adler")
       word.audio.attach(fixture_file_upload("word.mp3", "audio/mpeg"))
       word.save!
 

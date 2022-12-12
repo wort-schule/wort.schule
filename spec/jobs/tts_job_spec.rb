@@ -11,7 +11,7 @@ RSpec.describe TtsJob, type: :job do
     clear_performed_jobs
   end
 
-  context 'when with_tts is false' do
+  context "when with_tts is false" do
     let(:with_tts) { false }
 
     it "doesn't generate the audio" do
@@ -20,7 +20,7 @@ RSpec.describe TtsJob, type: :job do
     end
   end
 
-  context 'when with_tts is true' do
+  context "when with_tts is true" do
     let(:with_tts) { true }
 
     it "doesn't generate the audio" do
