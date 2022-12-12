@@ -4,13 +4,12 @@
 # It iterates automatically through all words and ends, when there are no more words to process.
 # There should be a cronjob running this job every 5 minutes and avoid duplicates, to make sure, that the jobs
 # is always running.
-class PrepareJob < ApplicationJob
+class TtsJob < ApplicationJob
   queue_as :default
 
   # There is a rate limit for the TTS API. We shouldn't hit that limit even without pause, but to be
   # absolute sure, we wait a second after each request.
   PAUSE = 1.second
-
 
   def perform
     @logger = Logger.new(Rails.root.join('log', 'tts.log'))
@@ -29,7 +28,6 @@ class PrepareJob < ApplicationJob
     end
   end
 
-
   private def generate_audio(word)
     @logger.info "Processing word #{word.id} (#{word.name})"
 
@@ -39,7 +37,6 @@ class PrepareJob < ApplicationJob
       content_type: 'audio/mp3'
     )
   end
-
 
   private def find_next_word
     Word

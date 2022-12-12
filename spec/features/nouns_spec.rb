@@ -5,6 +5,8 @@ RSpec.describe "nouns" do
     it_behaves_like "CRUD", Noun
   end
 
+  it_behaves_like "TTS", Noun
+
   describe "word URLs" do
     let!(:noun) { create :noun, name: "Adler" }
 
