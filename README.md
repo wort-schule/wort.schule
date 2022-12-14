@@ -11,8 +11,8 @@ wort.schule uses [Ruby on Rails](https://rubyonrails.org/) as a framework and [P
  (e.g. use [asdf](https://asdf-vm.com/))])
 4. Install vips
  (e.g. `brew install vips` on macOS with [Homebrew](https://brew.sh))
-5. Run `bundle install`
-6. Run `bin/rails db:setup`
+5. Run `bin/setup` (der entsprechende User benötigt Superuser Rechte für diesen Schritt)
+6. Run `bin/rails db:create db:migrate`
  (do a `bin/rails db:drop` first if you want to delete an already existing database)
 7. Run `bin/rails 'word_images:import[db/seeds/word_images]'` to import images associated to words
 8. Run `bin/dev`
@@ -22,6 +22,7 @@ The initial data is loaded by a migration, so that the database schema can be ad
 
 ### Misc
 
+- Do not use `db:setup`, because that loads the schema without running all migrations.
 - Start the development server using `bin/dev`
 
 ## Tests
