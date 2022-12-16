@@ -23,7 +23,7 @@ RSpec.describe TtsJob, type: :job do
   context "when with_tts is true" do
     let(:with_tts) { true }
 
-    it "doesn't generate the audio" do
+    it "generates the audio" do
       expect(TtsGenerator).to receive(:call).with(word.name).and_return(StringIO.new)
       perform_enqueued_jobs { job }
     end
