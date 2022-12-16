@@ -1,5 +1,5 @@
 default: &default
-  credentials_file: config/wort-schule-371317-a7ac0879d2d8.json
+  credentials_file: config/google-tts-credentials.json
   voices:
       - de-DE-Standard-A
       - de-DE-Standard-B

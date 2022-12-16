@@ -4,14 +4,6 @@ require "google/cloud/text_to_speech"
 require "yaml"
 require "stringio"
 
-## TODO: for queue job
-# return unless word.with_tts?
-# word.audio.attach(
-#       io: TtsGenerator.call(word.name),
-#       filename: 'audio.mp3',
-#       content_type: 'audio/mp3'
-#     )
-
 # Generates a TTS mp3 file for a given string via Google Cloud Text to Speech service and returns
 # an StringIO object. Configuration in config/tts.yml
 #

@@ -96,6 +96,7 @@ To quickly test the application locally without customizing the `docker-compose.
 
 - Processing happens in the background via `app/jobs/tts_job.rb`.
 - The `good_job` gem handles the job.
+- Start via `bundle exec good_job`
 - It's automatically started via cron config in `config/application.rb`.
 - It finds all words, without audio attachment and where `with_tts` is true.
 - The audio is generated via Google Cloud Text to Speech API and attached to the word.
