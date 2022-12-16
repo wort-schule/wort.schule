@@ -3,6 +3,8 @@ class School < ApplicationRecord
   has_many :teachers, through: :teaching_assignments
   has_many :learning_groups
 
+  has_paper_trail
+
   validates_presence_of :name
   validates_presence_of :zip_code
   validates_presence_of :city

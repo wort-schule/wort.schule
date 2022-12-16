@@ -56,14 +56,6 @@ de:
     edit:
       title: Adjektiv bearbeiten
   words:
-    actions:
-      create: Erstellt
-      destroy: Gelöscht
-      update: Bearbeitet
-    versions:
-      title: Änderungshistorie
-      changed_by: '%{action} von %{username} am %{datetime}'
-      no_versions: Dieses Wort wurde noch nicht geändert.
     show:
       general:
         title: Bedeutung
@@ -275,3 +267,12 @@ de:
       move_word_to_next_section: ins nächste Fach schieben
       show_word: Wort anzeigen
       show_actions: Aktionen anzeigen
+  shared:
+    versions:
+      title: Änderungshistorie
+      changed_by: '%{action} von %{username} am %{datetime}'
+      no_versions: Dies wurde noch nicht geändert.
+      actions:
+        create: Erstellt
+        destroy: Gelöscht
+        update: Bearbeitet
