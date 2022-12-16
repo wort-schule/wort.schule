@@ -9,6 +9,7 @@ gem "bootsnap", require: false
 gem "cancancan"
 gem "clamped"
 gem "cologne_phonetics"
+gem "country_select"
 gem "device_detector"
 gem "devise"
 gem "devise-i18n"
@@ -28,6 +29,7 @@ gem "liquid"
 gem "meta-tags"
 gem "paper_trail"
 gem "pg", "~> 1.4"
+gem "phony_rails"
 gem "propshaft"
 gem "puma", "~> 6.0"
 gem "rails-i18n"
@@ -41,6 +43,7 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
+gem "validate_url"
 gem "view_component"
 
 group :development do

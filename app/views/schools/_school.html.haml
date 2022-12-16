@@ -1,3 +1,4 @@
 = link_if(can?(:show, school), school, id: dom_id(school)) do
   = box do
     .font-medium.text-md= school.name
+    .text-xs.text-gray-700= school.city_with_zip_code
