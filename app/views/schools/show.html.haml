@@ -7,6 +7,7 @@
         .flex.flex-col
           %span= @school.street
           %span= @school.city_with_zip_code
+          %span= @school.federal_state
           %span= @school.country_name
 
       = render(list.add(School.human_attribute_name(:homepage_url))) do

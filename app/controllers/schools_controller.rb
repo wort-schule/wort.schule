@@ -51,6 +51,7 @@ class SchoolsController < ApplicationController
       :street,
       :zip_code,
       :city,
+      :federal_state,
       :country,
       :homepage_url,
       :email,

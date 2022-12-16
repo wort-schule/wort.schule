@@ -172,6 +172,7 @@ de:
         street: Strasse und Nummer
         zip_code: Postleitzahl
         city: Ort
+        federal_state: Bundesland / Kanton
         country: Land
         homepage_url: Homepage
         email: E-Mail Adresse
