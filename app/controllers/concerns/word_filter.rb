@@ -78,8 +78,13 @@ module WordFilter
     }
 
     scope :filter_smart, lambda { |query|
+      return if query.blank?
+
+      term = replace_regex query
+
       Word.union(
         filter_wordquery("%#{query}%"),
+        where("plural ILIKE ?", term),
         filter_cologne_phonetics(query)
       )
     }

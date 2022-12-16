@@ -356,6 +356,12 @@ RSpec.describe Word do
 
       expect(Noun.filter_smart("var")).to match [word1, word2]
     end
+
+    it "finds plural form of noun" do
+      word = create :noun, name: "Kind", plural: "Kinder"
+
+      expect(Noun.filter_smart("kinder")).to match [word]
+    end
   end
 
   describe "#set_consonant_vowel" do
