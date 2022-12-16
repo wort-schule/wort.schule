@@ -42,6 +42,7 @@ module WordFilter
     filterrific(
       available_filters: [
         :filter_type,
+        :filter_smart,
         :filter_wordstarts,
         :filter_wordends,
         :filter_wordcontains,
@@ -74,6 +75,13 @@ module WordFilter
 
     scope :filter_type, lambda { |type|
       where(type: type.presence || "")
+    }
+
+    scope :filter_smart, lambda { |query|
+      Word.union(
+        filter_wordquery("%#{query}%"),
+        filter_cologne_phonetics(query)
+      )
     }
 
     scope :filter_wordquery, lambda { |query|

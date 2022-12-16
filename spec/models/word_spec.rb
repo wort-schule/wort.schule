@@ -349,6 +349,15 @@ RSpec.describe Word do
     end
   end
 
+  describe "#filter_smart" do
+    it "finds exact matches as well as phonetic ones" do
+      word1 = create :noun, name: "Fahrrad"
+      word2 = create :noun, name: "Havarie"
+
+      expect(Noun.filter_smart("var")).to match [word1, word2]
+    end
+  end
+
   describe "#set_consonant_vowel" do
     it "detects vowels and consonants" do
       word = create :noun, name: "Ähre"
