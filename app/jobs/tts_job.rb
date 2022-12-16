@@ -2,7 +2,7 @@
 
 # This jobs generates TTS audio attachments for all words with enabled TTS but without audio attachment.
 # It iterates automatically through all words and ends, when there are no more words to process.
-# There should be a cronjob running this job every 5 minutes and avoid duplicates, to make sure, that the jobs
+# There should be a cronjob running this job every 5 minutes and avoid duplicates, to make sure, that the job
 # is always running.
 class TtsJob < ApplicationJob
   queue_as :default
