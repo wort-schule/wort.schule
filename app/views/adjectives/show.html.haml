@@ -27,7 +27,7 @@
 
 = render 'words/general', word: @adjective
 
-= render 'words/versions', word: @adjective
+= render 'shared/versions', model: @adjective
 
 .pagination-with-actions
   = link_to t('actions.edit'), [:edit, @adjective], data: { turbo_frame: '_top' }, class: 'button primary' if can?(:edit, @adjective)

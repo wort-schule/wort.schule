@@ -47,5 +47,7 @@
     - @school.learning_groups.each do |learning_group|
       .p-4= link_to_if can?(:show, learning_group), learning_group.name, [@school, learning_group]
 
+= render 'shared/versions', model: @school
+
 .pagination-with-actions
   = link_to t('actions.edit'), edit_school_path(@school), class: 'button primary' if can? :edit, @school

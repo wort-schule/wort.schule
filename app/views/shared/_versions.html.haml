@@ -1,7 +1,7 @@
-- if can? :read_versions, word
+- if can? :read_versions, model
   = two_column_card t('.title'), '' do
     .flex.flex-col.gap-4
-      - versions = versions_with_changes word.versions
+      - versions = versions_with_changes model.versions
       - if versions.empty?
         = box do
           = t '.no_versions'
@@ -16,7 +16,7 @@
               .mt-2.md:mt-0
                 - version.changeset.except("updated_at").each do |attribute, values|
                   .flex.gap-1.items-center
-                    .font-bold.text-md.mr-2= Word.human_attribute_name(attribute.to_sym)
+                    .font-bold.text-md.mr-2= model.class.human_attribute_name(attribute.to_sym)
                     .flex.gap-1.items-center.flex-wrap{ class: values[0]&.is_a?(Array) ? 'flex-col' : ''}
                       - if values[0]&.is_a? Array
                         .flex.flex-col.gap-1.grow
