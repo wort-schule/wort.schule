@@ -362,6 +362,13 @@ RSpec.describe Word do
 
       expect(Noun.filter_smart("kinder")).to match [word]
     end
+
+    it "finds increasing forms of adjectives" do
+      word = create :adjective, name: "gut", comparative: "besser", superlative: "besten"
+
+      expect(Adjective.filter_smart("besser")).to match [word]
+      expect(Adjective.filter_smart("besten")).to match [word]
+    end
   end
 
   describe "#set_consonant_vowel" do

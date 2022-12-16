@@ -85,6 +85,8 @@ module WordFilter
       Word.union(
         filter_wordquery("%#{query}%"),
         where("plural ILIKE ?", term),
+        where("comparative ILIKE ?", term),
+        where("superlative ILIKE ?", term),
         filter_cologne_phonetics(query)
       )
     }
