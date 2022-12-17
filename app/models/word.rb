@@ -186,6 +186,8 @@ class Word < ApplicationRecord
   end
 
   def handle_audio_attachment
+    return true unless saved_change_to_with_tts?
+
     if with_tts?
       TtsJob.perform_later self
     else

@@ -400,7 +400,7 @@ RSpec.describe Word do
 
   describe "audio attachment" do
     it "is automatically generated when with_tts is set to true" do
-      word = create(:noun, name: "Adler")
+      word = create(:noun, name: "Adler", with_tts: false)
       expect(word.audio.attached?).to be false
 
       expect {

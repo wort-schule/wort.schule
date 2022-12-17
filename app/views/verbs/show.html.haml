@@ -1,5 +1,6 @@
 = title_with_actions @verb.name do
   = render "words/more_meanings", word: @verb
+  = render "words/tts", word: @verb
 
 
 = two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do

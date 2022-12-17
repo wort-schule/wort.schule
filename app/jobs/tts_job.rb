@@ -26,7 +26,6 @@ class TtsJob < ApplicationJob
     )
   end
 
-
   private def text(word)
     return word.name unless word.is_a?(Noun)
 
