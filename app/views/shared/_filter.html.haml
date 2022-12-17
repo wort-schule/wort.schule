@@ -3,7 +3,7 @@
     .relative.rounded-md.shadow-sm.mx-2.md:mx-0
       .absolute.inset-y-0.left-0.pl-3.flex.items-center.pointer-events-none
         = heroicon 'magnifying-glass', options: {class: 'text-gray-500 sm:text-sm'}
-      = f.text_field :filter_cologne_phonetics, data: {action: "input->form-submission#search"}, class: 'pl-12 pr-12 bg-gray-50', autofocus: true
+      = f.text_field :filter_smart, data: {action: "input->form-submission#search"}, class: 'pl-12 pr-12 bg-gray-50', autofocus: true
       .absolute.inset-y-0.right-0.flex.items-center
         = link_to reset_filterrific_url, class: 'pr-3 text-gray-500', title: t('filter.reset') do
           = heroicon 'x-mark'

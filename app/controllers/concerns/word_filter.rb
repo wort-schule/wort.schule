@@ -42,6 +42,7 @@ module WordFilter
     filterrific(
       available_filters: [
         :filter_type,
+        :filter_smart,
         :filter_wordstarts,
         :filter_wordends,
         :filter_wordcontains,
@@ -74,6 +75,20 @@ module WordFilter
 
     scope :filter_type, lambda { |type|
       where(type: type.presence || "")
+    }
+
+    scope :filter_smart, lambda { |query|
+      return if query.blank?
+
+      term = replace_regex query
+
+      Word.union(
+        filter_wordquery("%#{query}%"),
+        where("plural ILIKE ?", term),
+        where("comparative ILIKE ?", term),
+        where("superlative ILIKE ?", term),
+        filter_cologne_phonetics(query)
+      )
     }
 
     scope :filter_wordquery, lambda { |query|
