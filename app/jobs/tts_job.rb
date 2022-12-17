@@ -24,6 +24,8 @@ class TtsJob < ApplicationJob
       filename: "audio.mp3",
       content_type: "audio/mp3"
     )
+  rescue => e
+    @logger.error "Error while processing word: #{e.class.name} #{e.message}"
   end
 
   private def text(word)
