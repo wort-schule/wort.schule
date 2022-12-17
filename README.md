@@ -90,15 +90,13 @@ To quickly test the application locally without customizing the `docker-compose.
 
 - Activate Text to Speech API for the Google Cloud Account
 - Generate service credentials and download JSON file
-- Change path to credentials file in `config/tts.yml`
+- Place the JSON file in `config/google-tts-credentials.json`
 
 ### Processing
 
 - Processing happens in the background via `app/jobs/tts_job.rb`.
-- The `good_job` gem handles the job.
-- Start via `bundle exec good_job`
-- It's automatically started via cron config in `config/application.rb`.
-- It finds all words, without audio attachment and where `with_tts` is true.
+- The `good_job` gem handles the job. Start via `bundle exec good_job`
+- There is a `with_tts` flag on the word model, which determines whether an audio attachment should be generated.
 - The audio is generated via Google Cloud Text to Speech API and attached to the word.
 - There is a dedicated log file for the job in `log/tts.log`.
 - The voice is randomly selected from the list in the config file.

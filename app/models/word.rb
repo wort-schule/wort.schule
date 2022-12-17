@@ -78,7 +78,7 @@ class Word < ApplicationRecord
   before_save :sanitize_example_sentences
   before_save :update_cologne_phonetics
 
-  after_save :maybe_remove_audio
+  after_save :handle_audio_attachment
 
   validates :slug, presence: true, uniqueness: true
 
@@ -185,9 +185,11 @@ class Word < ApplicationRecord
     self.cologne_phonetics = ColognePhonetics.encode(name)
   end
 
-  def maybe_remove_audio
-    return if with_tts?
-
-    audio&.purge
+  def handle_audio_attachment
+    if with_tts?
+      TtsJob.perform_later self
+    else
+      audio&.purge
+    end
   end
 end

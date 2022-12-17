@@ -39,16 +39,5 @@ module Wortschule
     config.default_app_namespace = "seite"
 
     config.active_job.queue_adapter = :good_job
-
-    # Cronjob config
-    # See https://github.com/bensheldon/good_job#cron-style-repeatingrecurring-jobs
-    config.good_job.enable_cron = true
-    config.good_job.cron = {
-      # Every 5 minutes, run the TTS job
-      tts: {
-        cron: "*/5 * * * *",
-        class: "TtsJob"
-      }
-    }
   end
 end

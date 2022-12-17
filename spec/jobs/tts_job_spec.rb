@@ -3,8 +3,8 @@
 RSpec.describe TtsJob, type: :job do
   include ActiveJob::TestHelper
 
-  subject(:job) { described_class.perform_later }
   let(:word) { create(:noun, with_tts: with_tts) }
+  subject(:job) { described_class.perform_later(word) }
 
   after do
     clear_enqueued_jobs
@@ -24,7 +24,7 @@ RSpec.describe TtsJob, type: :job do
     let(:with_tts) { true }
 
     it "generates the audio" do
-      expect(TtsGenerator).to receive(:call).with(word.name).and_return(StringIO.new)
+      expect(TtsGenerator).to receive(:call).with("#{word.article_definite} #{word.name}").and_return(StringIO.new)
       perform_enqueued_jobs { job }
     end
   end
