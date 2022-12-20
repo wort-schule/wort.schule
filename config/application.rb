@@ -37,5 +37,7 @@ module Wortschule
     # All routes of the application are moved below this identifier. This is
     # used to free up the root URLs for the words, e.g. `/adler`
     config.default_app_namespace = "seite"
+
+    config.active_job.queue_adapter = :good_job
   end
 end

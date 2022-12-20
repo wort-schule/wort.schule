@@ -23,8 +23,7 @@ The initial data is loaded by a migration, so that the database schema can be ad
 ### Misc
 
 - Do not use `db:setup`, because that loads the schema without running all migrations.
-- Start the development server using
- `bin/dev`
+- Start the development server using `bin/dev`
 
 ## Tests
 
@@ -83,3 +82,21 @@ There is a `Dockerfile` and an example `docker-compose.yml.example` for a produc
 After installing Docker and `docker-compose`, run `docker-compose up` in this directory to start the application.
 
 To quickly test the application locally without customizing the `docker-compose.yml`, you may run `docker-compose -f docker-compose.yml.example up` in this directory.
+
+
+## Text to speech
+
+### Requirements
+
+- Activate Text to Speech API for the Google Cloud Account
+- Generate service credentials and download JSON file
+- Place the JSON file in `config/google-tts-credentials.json`
+
+### Processing
+
+- Processing happens in the background via `app/jobs/tts_job.rb`.
+- The `good_job` gem handles the job. Start via `bundle exec good_job`
+- There is a `with_tts` flag on the word model, which determines whether an audio attachment should be generated.
+- The audio is generated via Google Cloud Text to Speech API and attached to the word.
+- There is a dedicated log file for the job in `log/tts.log`.
+- The voice is randomly selected from the list in the config file.

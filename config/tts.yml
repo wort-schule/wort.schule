@@ -1,0 +1,26 @@
+default: &default
+  credentials_file: config/google-tts-credentials.json
+  voices:
+      - de-DE-Standard-A
+      - de-DE-Standard-B
+      - de-DE-Standard-C
+      - de-DE-Standard-D
+      - de-DE-Standard-E
+      - de-DE-Standard-F
+      - de-DE-Wavenet-F
+      - de-DE-Wavenet-A
+      - de-DE-Wavenet-B
+      - de-DE-Wavenet-C
+      - de-DE-Wavenet-D
+      - de-DE-Wavenet-E
+      - de-DE-Neural2-F
+      - de-DE-Neural2-D
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

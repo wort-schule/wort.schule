@@ -29,6 +29,7 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/google-tts-credentials.json
 
 /app/assets/builds/*
 !/app/assets/builds/.keep

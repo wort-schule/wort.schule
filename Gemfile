@@ -18,6 +18,8 @@ gem "draper"
 gem "enumerize"
 gem "filterrific", github: "metikular/filterrific", branch: "fix/nested-array"
 gem "friendly_id"
+gem "good_job"
+gem "google-cloud-text_to_speech"
 gem "haml"
 gem "haml-rails"
 gem "heroicon"
@@ -52,6 +54,7 @@ group :development do
   gem "binding_of_caller"
   gem "letter_opener"
   gem "web-console"
+  gem "foreman"
 end
 
 group :test do

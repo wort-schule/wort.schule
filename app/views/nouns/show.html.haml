@@ -5,6 +5,7 @@
     = @noun.name
 = title_with_actions(title) do
   = render "words/more_meanings", word: @noun
+  = render "words/tts", word: @noun
 
 = two_column_card t('words.show.noun.title'), t('words.show.noun.description'), first: true do
   = box padding: false do

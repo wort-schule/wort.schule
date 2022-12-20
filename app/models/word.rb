@@ -59,10 +59,13 @@ class Word < ApplicationRecord
         super group unless include?(group)
       end
     end
+
+  has_one_attached :audio
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png
     attachable.variant :open_graph, resize_to_fill: [1080, nil], format: :png
   end
+
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
   has_one :compound_entity, as: :part
@@ -74,6 +77,8 @@ class Word < ApplicationRecord
   before_save :sanitize_slug
   before_save :sanitize_example_sentences
   before_save :update_cologne_phonetics
+
+  after_save :handle_audio_attachment
 
   validates :slug, presence: true, uniqueness: true
 
@@ -89,6 +94,7 @@ class Word < ApplicationRecord
     :prototype,
     :foreign,
     :compound,
+    :with_tts,
     :prefix_id,
     :postfix_id,
     topic_ids: [],
@@ -177,5 +183,15 @@ class Word < ApplicationRecord
 
   def update_cologne_phonetics
     self.cologne_phonetics = ColognePhonetics.encode(name)
+  end
+
+  def handle_audio_attachment
+    return true unless saved_change_to_with_tts?
+
+    if with_tts?
+      TtsJob.perform_later self
+    else
+      audio&.purge
+    end
   end
 end
