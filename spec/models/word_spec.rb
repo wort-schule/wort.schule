@@ -354,7 +354,7 @@ RSpec.describe Word do
       word1 = create :noun, name: "Fahrrad"
       word2 = create :noun, name: "Havarie"
 
-      expect(Noun.filter_smart("var")).to match [word1, word2]
+      expect(Noun.filter_smart("var")).to match_array [word1, word2]
     end
 
     it "finds plural form of noun" do
