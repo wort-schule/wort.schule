@@ -16,6 +16,9 @@ RSpec.describe "schools" do
     click_on t("schools.index.new")
 
     fill_in School.human_attribute_name(:name), with: "Mittelschule Musterhausen"
+    fill_in School.human_attribute_name(:zip_code), with: "60400"
+    fill_in School.human_attribute_name(:city), with: "Frankfurt"
+    select ISO3166::Country["DE"].translations["de"], from: School.human_attribute_name(:country), match: :first
 
     expect do
       click_on t("helpers.submit.create")

@@ -77,7 +77,7 @@ RSpec.describe "nouns" do
       end
 
       it "shows change history" do
-        expect(page).to have_content t("words.versions.title")
+        expect(page).to have_content t("shared.versions.title")
       end
     end
   end

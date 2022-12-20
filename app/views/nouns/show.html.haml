@@ -70,7 +70,7 @@
 
 = render 'words/general', word: @noun
 
-= render 'words/versions', word: @noun
+= render 'shared/versions', model: @noun
 
 .pagination-with-actions
   = link_to t('actions.edit'), [:edit, @noun], data: { turbo_frame: '_top' }, class: 'button primary' if can?(:edit, @noun)

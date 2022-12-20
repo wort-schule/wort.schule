@@ -53,6 +53,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_record_extended (3.1.0)
+      activerecord (>= 5.2, < 7.1.0)
+      pg (< 3.0)
     active_storage_svg_sanitizer (0.1.0)
       rails (>= 5.2)
     activejob (7.0.4)
@@ -111,6 +114,10 @@ GEM
     cologne_phonetics (1.0.2)
     concurrent-ruby (1.1.10)
     connection_pool (2.3.0)
+    countries (5.2.0)
+      unaccent (~> 0.3)
+    country_select (8.0.0)
+      countries (~> 5.0)
     crass (1.0.6)
     cuprite (0.14.3)
       capybara (~> 3.0)
@@ -314,6 +321,10 @@ GEM
     parser (3.1.2.0)
       ast (~> 2.4.1)
     pg (1.4.5)
+    phony (2.20.1)
+    phony_rails (0.15.0)
+      activesupport (>= 3.0)
+      phony (>= 2.18.12)
     propshaft (0.6.4)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -450,11 +461,15 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    unaccent (0.4.0)
     unicode-display_width (2.1.0)
     unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
-    view_component (2.69.0)
+    validate_url (1.0.15)
+      activemodel (>= 3.0.0)
+      public_suffix
+    view_component (2.78.0)
       activesupport (>= 5.0.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -479,6 +494,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_record_extended
   active_storage_svg_sanitizer
   better_errors
   binding_of_caller
@@ -488,6 +504,7 @@ DEPENDENCIES
   capybara-screenshot
   clamped
   cologne_phonetics
+  country_select
   cuprite
   debug
   device_detector
@@ -517,6 +534,7 @@ DEPENDENCIES
   mina (= 1.2.4)
   paper_trail
   pg (~> 1.4)
+  phony_rails
   propshaft
   puma (~> 6.0)
   rails (~> 7.0.4)
@@ -535,6 +553,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   unicorn
+  validate_url
   view_component
   web-console
 

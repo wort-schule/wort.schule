@@ -1,6 +1,15 @@
 = box do
   = simple_form_for @school do |f|
     = f.input :name, autofocus: true
+    = f.input :street
+    = f.input :zip_code
+    = f.input :city
+    = f.input :federal_state
+    = f.input :country, priority: ['DE']
+    = f.input :homepage_url
+    = f.input :email
+    = f.input :phone_number
+    = f.input :fax_number
 
     = f.submit
     = cancel_button schools_path
