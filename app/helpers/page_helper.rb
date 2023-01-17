@@ -10,7 +10,7 @@ module PageHelper
 
       label
     when Adjective
-      label = "#{word.name}"
+      label = word.name.to_s
       label += ", #{word.comparative.name}" if word.comparative.present?
       label += ", #{word.superlative.name}" if word.superlative.present?
       label
@@ -21,7 +21,7 @@ module PageHelper
         past_singular_1 past_singular_2 past_singular_3 past_plural_1 past_plural_2 past_plural_3
       ]
 
-      label = "#{word.name}"
+      label = word.name.to_s
 
       forms.each do |form|
         label += ", #{word.send(form).name}" if word.send(form).present?
