@@ -276,3 +276,6 @@ de:
         create: Erstellt
         destroy: Gelöscht
         update: Bearbeitet
+  seo:
+    word_index:
+      title: Wort Index

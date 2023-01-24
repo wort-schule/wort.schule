@@ -1,0 +1,19 @@
+= title_with_actions("#{t('seo.word_index.title')}: #{@letter.upcase}")
+
+.pagination-with-actions.mt-4
+  %nav.pagination.relative.z-0.inline-flex.rounded-md.shadow-sm.-space-x-px.flex-wrap
+    - [*('a'..'z'), 'ä', 'ö', 'ü'].each do |letter|
+      - if letter == @letter
+        %span.page.z-10.bg-indigo-50.border-indigo-500.text-indigo-600.relative.inline-flex.items-center.px-4.py-2.border.text-sm.font-medium= letter.upcase
+      - else
+        = link_to letter.upcase, word_index_path(letter: letter), {class: "page bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-3 py-2 border text-sm font-medium"}
+
+
+= index_grid do
+  - @words.each do |word|
+    = link_to word do
+      = box class: 'h-full' do
+        = label_for(word)
+
+.pagination-with-actions
+  = paginate @words

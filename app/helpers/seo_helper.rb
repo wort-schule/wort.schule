@@ -1,18 +1,15 @@
-module PageHelper
+module SeoHelper
   def label_for(word)
     case word
     when Noun
       label = "#{word.article_definite(case_number: 1, singular: true)} #{word.name}"
-
-      if word.plural.present?
-        label += ", #{word.article_definite(case_number: 1, singular: false)} #{word.plural.name}"
-      end
+      label += ", #{word.article_definite(case_number: 1, singular: false)} #{word.plural}" if word.plural.present?
 
       label
     when Adjective
       label = word.name.to_s
-      label += ", #{word.comparative.name}" if word.comparative.present?
-      label += ", #{word.superlative.name}" if word.superlative.present?
+      label += ", #{word.comparative}" if word.comparative.present?
+      label += ", #{word.superlative}" if word.superlative.present?
       label
 
     when Verb
@@ -24,7 +21,7 @@ module PageHelper
       label = word.name.to_s
 
       forms.each do |form|
-        label += ", #{word.send(form).name}" if word.send(form).present?
+        label += ", #{word.send(form)}" if word.send(form).present?
       end
 
       label
