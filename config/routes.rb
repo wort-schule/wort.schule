@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     devise_for :users, path: "devise/users", controllers: {registrations: "registrations", sessions: "users/sessions"}
 
     get "impressum", to: "pages#imprint", as: :imprint
-    get "wort-index/:letter", to: "seo#word_index", as: :word_index, defaults: { letter: "a" }
+    get "wort-index/:letter", to: "seo#word_index", as: :word_index, defaults: {letter: "a"}
 
     resource :search, only: :show
     resources :searches do
