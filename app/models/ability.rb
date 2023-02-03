@@ -16,7 +16,7 @@ class Ability
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password], id: user.id
 
       case user.role
-      when "Student"
+      when "Guest"
         can %i[read accept_invitation], LearningGroup
         can :read, School
 
@@ -27,7 +27,7 @@ class Ability
         can %i[crud add_word remove_word move_word], List, {user_id: user.id}
         can :index, :flashcard
 
-      when "Teacher"
+      when "Lecturer"
         can :crud, Noun
         can :crud, Verb
         can :crud, Adjective

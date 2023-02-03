@@ -2,9 +2,8 @@ de:
   enumerize:
     user:
       role:
-        Guest: Keine
-        Student: Schüler*in
-        Teacher: Lehrer*in
+        Guest: Benutzer*in
+        Lecturer: Lektor*in
         Admin: Admin
     prefix:
       prefix_type:

@@ -13,6 +13,9 @@ de:
       teacher:
         one: Lehrer*in
         other: Lehrer*innen
+      user:
+        one: Benutzer*in
+        other: Benutzer*innen
       verb:
         one: Verb
         other: Verben

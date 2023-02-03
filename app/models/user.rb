@@ -18,7 +18,7 @@ class User < ApplicationRecord
   belongs_to :theme_adjective, class_name: "Theme", optional: true
   belongs_to :theme_function_word, class_name: "Theme", optional: true
 
-  enumerize :role, in: %w[Guest Student Teacher Admin]
+  enumerize :role, in: %w[Guest Lecturer Admin]
 
   def full_name
     [first_name, last_name].select(&:present?).join(" ")
@@ -29,10 +29,10 @@ class User < ApplicationRecord
   end
 
   def teacher?
-    role.Teacher?
+    false
   end
 
   def student?
-    role.Student?
+    false
   end
 end
