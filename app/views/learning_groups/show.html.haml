@@ -1,6 +1,6 @@
 = title_with_actions @learning_group.name do
   = link_to t('actions.edit'), edit_learning_group_path(@learning_group), class: 'button primary' if can? :edit, @learning_group
-  = link_to t('.request_access'), requests_learning_group_learning_group_memberships_path(@learning_group), method: :post, class: 'button primary' if can?(:create, :learning_group_membership_requests) && !LearningGroupMembership.exists?(learning_group: @learning_group, user: current_user)
+  = link_to t('.request_access'), requests_learning_group_learning_group_memberships_path(@learning_group), method: :post, class: 'button primary' if can?(:create_request, LearningGroupMembership.new) && !LearningGroupMembership.exists?(learning_group: @learning_group, user: current_user) && @learning_group.owner != current_user
 
 = two_column_card LearningGroup.model_name.human, "", first: true do
   = box padding: false do

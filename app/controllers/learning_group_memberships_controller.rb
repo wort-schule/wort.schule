@@ -4,7 +4,7 @@ class LearningGroupMembershipsController < ApplicationController
   load_and_authorize_resource :learning_group
   load_and_authorize_resource through: :learning_group
 
-  before_action :set_users, only: :new
+  before_action :set_users, only: %i[new create]
 
   def new
   end
@@ -33,13 +33,9 @@ class LearningGroupMembershipsController < ApplicationController
   private
 
   def learning_group_membership_params
-    if @learning_group.owner != current_user
-      {}
-    else
-      params.require(:learning_group_membership).permit(
-        :user_id
-      )
-    end
+    params.require(:learning_group_membership).permit(
+      :user_id
+    )
   end
 
   def set_users

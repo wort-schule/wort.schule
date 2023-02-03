@@ -6,7 +6,7 @@ module LearningGroupMemberships
     load_resource :learning_group_membership, through: :learning_group, parent: false, id_param: :learning_group_membership_id
 
     def create
-      authorize! :create, :learning_group_membership_requests
+      authorize! :create_request, @learning_group_membership
 
       @learning_group_membership.assign_attributes(
         user: current_user,
@@ -23,7 +23,7 @@ module LearningGroupMemberships
     end
 
     def accept
-      authorize! :accept, :learning_group_membership_requests
+      authorize! :accept_request, @learning_group_membership
 
       notice = if @learning_group_membership.update(access: "granted")
         t("notices.learning_group_memberships.accepted")
@@ -36,7 +36,7 @@ module LearningGroupMemberships
     end
 
     def reject
-      authorize! :reject, :learning_group_membership_requests
+      authorize! :reject_request, @learning_group_membership
 
       notice = if @learning_group_membership.update(access: "rejected")
         t("notices.learning_group_memberships.rejected")
