@@ -33,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def to_s
-    full_name
+    full_name.presence || email
   end
 
   def first_flashcard_list
