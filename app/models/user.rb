@@ -6,7 +6,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :validatable
+    :recoverable, :rememberable, :validatable, :confirmable
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [64, 64]
@@ -46,6 +46,12 @@ class User < ApplicationRecord
 
   def word_in_flashcards?(word)
     flashcard_lists.joins(:words).exists?("words.id": word.id)
+  end
+
+  def active_for_authentication?
+    send_confirmation_instructions if !confirmed? && confirmation_token.blank?
+
+    super
   end
 
   private
