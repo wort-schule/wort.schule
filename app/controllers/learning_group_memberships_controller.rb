@@ -19,6 +19,12 @@ class LearningGroupMembershipsController < ApplicationController
     end
   end
 
+  def update
+    @learning_group_membership.update!(learning_group_membership_params)
+
+    redirect_to @learning_group_membership.learning_group
+  end
+
   def destroy
     destroyed = @learning_group_membership.destroy
     notice = if destroyed
@@ -34,7 +40,8 @@ class LearningGroupMembershipsController < ApplicationController
 
   def learning_group_membership_params
     params.require(:learning_group_membership).permit(
-      :user_id
+      :user_id,
+      :role
     )
   end
 

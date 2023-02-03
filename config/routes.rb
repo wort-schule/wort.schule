@@ -56,7 +56,7 @@ Rails.application.routes.draw do
         resource :invitation, only: %i[show create destroy]
       end
 
-      resources :learning_group_memberships, only: %i[new create destroy] do
+      resources :learning_group_memberships, only: %i[new create update destroy] do
         scope module: :learning_group_memberships do
           post :requests, to: "requests#create", on: :collection
           post "requests/accept", to: "requests#accept"

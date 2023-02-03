@@ -29,7 +29,18 @@
             = render(list.add(membership.user)) do
               %div
               - if can? :edit, membership
-                .ml-4.flex-shrink-0
+                .ml-4.flex-shrink-0.flex.flex-wrap.gap-2
+                  - if can?(:change_group_admin, membership) && membership.access.granted?
+                    - if membership.role.group_admin?
+                      = simple_form_for [@learning_group, membership], method: :patch do |f|
+                        = f.input :user, as: :hidden
+                        = f.input :role, as: :hidden, input_html: { value: 'member' }
+                        = f.submit t('.remove_group_admin'), class: 'button outline'
+                    - else
+                      = simple_form_for [@learning_group, membership], method: :patch do |f|
+                        = f.input :user, as: :hidden
+                        = f.input :role, as: :hidden, input_html: { value: 'group_admin' }
+                        = f.submit t('.make_group_admin'), class: 'button outline'
                   - if membership.access.granted?
                     = button_to t('actions.remove'), learning_group_learning_group_membership_path(@learning_group, membership), method: :delete, class: 'button'
                   - else
