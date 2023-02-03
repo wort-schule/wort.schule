@@ -1,0 +1,12 @@
+= title_with_actions LearningGroup.model_name.human(count: 2)
+
+= two_column_card LearningGroup.model_name.human(count: 2), "" do
+  = box padding: false, class: 'striped' do
+    - if can? :create, LearningGroup.new(owner: current_user)
+      %div
+        .px-4.py-5.flex.justify-end
+          = link_to t('learning_groups.index.new'), new_learning_group_path, class: 'button primary'
+        %hr
+
+    - @learning_groups.each do |learning_group|
+      .p-4= link_to_if can?(:show, learning_group), learning_group.name, learning_group

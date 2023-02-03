@@ -1,7 +1,7 @@
 %h1= t '.title'
 
 = box padding: true do
-  = simple_form_for @user, url: profile_path do |f|
+  = simple_form_for @user, as: :user, url: profile_path do |f|
     = f.input :first_name, autofocus: true
     = f.input :last_name
     = f.input :avatar

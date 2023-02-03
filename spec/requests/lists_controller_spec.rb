@@ -5,8 +5,8 @@ RSpec.describe ListsController do
     sign_in user
   end
 
-  context "when logged in as a student" do
-    let(:user) { create :student }
+  context "when logged in as a user" do
+    let(:user) { create :guest }
 
     it "does not allow to create public lists" do
       post lists_path, params: {
@@ -25,8 +25,8 @@ RSpec.describe ListsController do
     end
   end
 
-  context "when logged in as a teacher" do
-    let(:user) { create :teacher }
+  context "when logged in as a lecturer" do
+    let(:user) { create :lecturer }
 
     it "allows to create public lists" do
       post lists_path, params: {

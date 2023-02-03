@@ -2,15 +2,14 @@
 
 module LearningGroupMemberships
   class RequestsController < ApplicationController
-    load_and_authorize_resource :school
-    load_and_authorize_resource :learning_group, through: :school
+    load_and_authorize_resource :learning_group
     load_resource :learning_group_membership, through: :learning_group, parent: false, id_param: :learning_group_membership_id
 
     def create
       authorize! :create, :learning_group_membership_requests
 
       @learning_group_membership.assign_attributes(
-        student: Student.find(current_user.id),
+        user: current_user,
         access: "requested"
       )
 
@@ -20,7 +19,7 @@ module LearningGroupMemberships
         t("notices.learning_group_memberships.access_requested_error")
       end
 
-      redirect_to [@school, @learning_group], notice:
+      redirect_to @learning_group, notice:
     end
 
     def accept
@@ -33,7 +32,7 @@ module LearningGroupMemberships
         t("notices.learning_group_memberships.accepted_error")
       end
 
-      redirect_to [@school, @learning_group], notice:
+      redirect_to @learning_group, notice:
     end
 
     def reject
@@ -45,7 +44,7 @@ module LearningGroupMemberships
         t("notices.learning_group_memberships.rejected_error")
       end
 
-      redirect_to [@school, @learning_group], notice:
+      redirect_to @learning_group, notice:
     end
   end
 end

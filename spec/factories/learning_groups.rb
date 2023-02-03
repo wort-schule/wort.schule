@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :learning_group do
     name { Faker::Team.name }
-    teacher
-    school
+    association :owner, factory: :user
   end
 end

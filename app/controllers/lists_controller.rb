@@ -71,7 +71,7 @@ class ListsController < ApplicationController
   def move_word
     target_list = List.unscoped.accessible_by(current_ability).find(params[:id])
     word = Word.find(params[:word_id])
-    current_list = student.flashcard_lists.find { |list| list.words.exists?(word.id) }
+    current_list = current_user.flashcard_lists.find { |list| list.words.exists?(word.id) }
 
     return head :unprocessable_entity if current_list == target_list
 
@@ -82,7 +82,7 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        @lists = student.flashcard_lists
+        @lists = current_user.flashcard_lists
         @old_list = current_list
         @new_list = target_list
         @word = word
@@ -97,9 +97,5 @@ class ListsController < ApplicationController
     params.require(:list).permit(
       :name, :description, :visibility
     )
-  end
-
-  def student
-    Student.find(current_user.id)
   end
 end

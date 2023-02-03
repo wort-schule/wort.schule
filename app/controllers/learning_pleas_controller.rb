@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class LearningPleasController < ApplicationController
-  load_and_authorize_resource :school
-  load_and_authorize_resource :learning_group, through: :school
+  load_and_authorize_resource :learning_group
   load_and_authorize_resource through: :learning_group
 
   before_action :set_lists, only: :new
@@ -14,7 +13,7 @@ class LearningPleasController < ApplicationController
     if @learning_plea.save
       Flashcards.add_list(@learning_group, @learning_plea.list)
 
-      redirect_to [@school, @learning_group], notice: t("notices.learning_pleas.created", name: @learning_plea.list)
+      redirect_to @learning_group, notice: t("notices.learning_pleas.created", name: @learning_plea.list)
     else
       render :new, status: :unprocessable_entity
     end
@@ -30,7 +29,7 @@ class LearningPleasController < ApplicationController
       {alert: t("alerts.learning_pleas.destroyed", name: @learning_plea.list)}
     end
 
-    redirect_to [@school, @learning_plea.learning_group], notice
+    redirect_to @learning_plea.learning_group, notice
   end
 
   private

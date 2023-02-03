@@ -1,27 +1,26 @@
 # frozen_string_literal: true
 
 RSpec.describe LearningGroup do
-  let!(:school) { create :school }
-  let!(:requested_student) { create :student }
-  let!(:granted_student) { create :student }
+  let!(:requested_user) { create :guest }
+  let!(:granted_user) { create :guest }
   let!(:learning_group) { create :learning_group }
-  let!(:granted_membership) { create :learning_group_membership, student: granted_student, learning_group:, access: "granted" }
-  let!(:requested_membership) { create :learning_group_membership, student: requested_student, learning_group:, access: "requested" }
+  let!(:granted_membership) { create :learning_group_membership, user: granted_user, learning_group:, access: "granted" }
+  let!(:requested_membership) { create :learning_group_membership, user: requested_user, learning_group:, access: "requested" }
 
   it "includes only granted memberships" do
-    expect(learning_group.students).to include granted_student
-    expect(learning_group.students).not_to include requested_student
+    expect(learning_group.users).to include granted_user
+    expect(learning_group.users).not_to include requested_user
   end
 
   describe "#destroy" do
     it "deletes all memberships" do
-      expect(granted_student.learning_groups).to match [learning_group]
-      expect(learning_group.students).to match_array [granted_student]
+      expect(granted_user.learning_groups).to match [learning_group]
+      expect(learning_group.users).to match_array [granted_user]
 
       learning_group.destroy
 
-      granted_student.reload
-      expect(granted_student.learning_groups).to eq []
+      granted_user.reload
+      expect(granted_user.learning_groups).to eq []
 
       expect { learning_group.reload }.to raise_error ActiveRecord::RecordNotFound
     end

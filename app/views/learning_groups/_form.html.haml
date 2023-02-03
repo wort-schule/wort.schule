@@ -1,9 +1,9 @@
 = box padding: false do
-  = simple_form_for [@school, @learning_group] do |f|
+  = simple_form_for @learning_group do |f|
     = box_content do
       = f.input :name, autofocus: true
-      - unless current_user.teacher?
-        = f.association :teacher
+      - if @learning_group.owner == current_user
+        = f.association :owner
       = f.association :theme_noun, include_blank: t('themes.show.standard')
       = f.association :theme_verb, include_blank: t('themes.show.standard')
       = f.association :theme_adjective, include_blank: t('themes.show.standard')
@@ -11,4 +11,4 @@
 
     = box_footer do
       = f.submit
-      = cancel_button school_path(@school)
+      = cancel_button learning_groups_path

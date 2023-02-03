@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-RSpec.describe "as a teacher" do
-  let(:teacher) { create :teacher }
-  let(:school) { create :school }
-  let!(:teaching_assignment) { create :teaching_assignment, teacher:, school: }
+RSpec.describe "as a lecturer" do
+  let(:lecturer) { create :lecturer }
 
   before do
-    login_as teacher
+    login_as lecturer
   end
 
   describe "learning groups" do
@@ -15,9 +13,8 @@ RSpec.describe "as a teacher" do
         visit root_path
 
         within ".ci-navigation" do
-          click_on School.model_name.human(count: 2), match: :first
+          click_on LearningGroup.model_name.human(count: 2), match: :first
         end
-        click_on school.name
       end
 
       it "creates a group" do
@@ -31,17 +28,16 @@ RSpec.describe "as a teacher" do
 
         learning_group = LearningGroup.last
         expect(learning_group.name).to eq "Sommercamp"
-        expect(learning_group.teacher).to eq teacher
-        expect(learning_group.school).to eq school
+        expect(learning_group.owner).to eq lecturer
       end
     end
 
     context "with an existing group" do
-      let!(:learning_group) { create :learning_group, teacher:, school: }
+      let!(:learning_group) { create :learning_group, owner: lecturer }
       let(:new_name) { "Neuer Gruppenname" }
 
       before do
-        visit school_path(school)
+        visit learning_groups_path
       end
 
       it "edits a group" do
@@ -69,38 +65,38 @@ RSpec.describe "as a teacher" do
         expect { learning_group.reload }.to raise_error ActiveRecord::RecordNotFound
       end
 
-      context "with students" do
-        let!(:student) { create :student }
+      context "with users" do
+        let!(:user) { create :guest }
 
-        it "adds a student" do
+        it "adds a user" do
           click_on learning_group.name
 
-          click_on t("learning_groups.show.assign_student")
+          click_on t("learning_groups.show.assign_user")
 
           expect do
-            within "##{dom_id(student)}" do
+            within "##{dom_id(user)}" do
               click_on t("learning_group_memberships.new.assign")
             end
           end.to change(LearningGroupMembership, :count).by 1
 
-          expect(student.learning_groups).to include learning_group
-          expect(learning_group.students).to include student
+          expect(user.learning_groups).to include learning_group
+          expect(learning_group.users).to include user
         end
 
-        context "when a student is a member" do
-          let!(:learning_group_membership) { create :learning_group_membership, learning_group:, student:, access: "granted" }
+        context "when a user is a member" do
+          let!(:learning_group_membership) { create :learning_group_membership, learning_group:, user:, access: "granted" }
 
-          it "removes a student" do
+          it "removes a user" do
             click_on learning_group.name
 
             expect do
-              within "##{dom_id(student)}" do
+              within "##{dom_id(user)}" do
                 click_on t("actions.remove")
               end
             end.to change(LearningGroupMembership, :count).by(-1)
 
-            expect(student.learning_groups).not_to include learning_group
-            expect(learning_group.students).not_to include student
+            expect(user.learning_groups).not_to include learning_group
+            expect(learning_group.users).not_to include user
           end
         end
       end

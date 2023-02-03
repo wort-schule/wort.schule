@@ -2,7 +2,7 @@
 
 = index_grid do
   - @users.each do |user|
-    = link_if(can?(:show, user), user, id: dom_id(user)) do
+    = link_if(can?(:show, user), user_path(user), id: dom_id(user)) do
       = box do
         .font-medium.text-md= user.decorate.display_name
         %div= user.role_text

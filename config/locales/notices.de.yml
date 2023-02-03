@@ -16,20 +16,13 @@ de:
       created: Die Benutzer*in mit der E-Mail Adresse %{email} wurde erstellt.
       updated: Die Benutzer*in mit der E-Mail Adresse %{email} wurde gespeichert.
       destroyed: Die Benutzer*in mit der E-Mail Adresse %{email} wurde gelöscht.
-    schools:
-      created: Die Schule %{name} wurde erstellt.
-      updated: Die Schule %{name} wurde gespeichert.
-      destroyed: Die Schule %{name} wurde gelöscht.
-    teaching_assignments:
-      created: Die Lehrer*in %{name} wurde hinzugefügt.
-      destroyed: Die Lehrer*in %{name} wurde entfernt.
     learning_group_memberships:
-      created: Die Schüler*in %{name} wurde hinzugefügt.
-      destroyed: Die Schüler*in %{name} wurde entfernt.
-      access_requested: Ein Antrag zum Gruppenbeitritt wurde gestellt. Die verantwortliche Lehrer*in muss diesen prüfen.
+      created: Die Benutzer*in %{name} wurde hinzugefügt.
+      destroyed: Die Benutzer*in %{name} wurde entfernt.
+      access_requested: Ein Antrag zum Gruppenbeitritt wurde gestellt. Die verantwortliche Benutzer*in muss diesen prüfen.
       access_requested_error: Der Antrag konnte nicht gestellt werden.
-      accepted: Anfrage akzeptiert. Die Schüler*in ist nun Teil der Lerngruppe.
-      accepted_error: Die Schüler*in konnte der Lerngruppe nicht hinzugefügt werden.
+      accepted: Anfrage akzeptiert. Die Benutzer*in ist nun Teil der Lerngruppe.
+      accepted_error: Die Benutzer*in konnte der Lerngruppe nicht hinzugefügt werden.
       rejected: Die Anfrage wurde abgelehnt.
       rejected_error: Die Anfrage konnte nicht abgelehnt werden.
     learning_pleas:
@@ -52,12 +45,8 @@ de:
       destroyed: Das Adjektiv %{adjective} konnte nicht gelöscht werden.
     users:
       destroyed: Die Benutzer*in mit der E-Mail Adresse %{email} konnte nicht gelöscht werden.
-    schools:
-      destroyed: Die Schule %{name} konnte nicht gelöscht werden.
-    teaching_assignments:
-      destroyed: Die Lehrer*in %{name} konnte nicht entfernt werden.
     learning_group_membership:
-      destroyed: Die Schüler*in %{name} konnte nicht entfernt werden.
+      destroyed: Die Benutzer*in %{name} konnte nicht entfernt werden.
     learning_plea:
       destroyed: Die Wörterliste %{name} konnte nicht entfernt werden.
     sources:
@@ -73,8 +62,6 @@ de:
       destroy: Soll das Adjektiv %{adjective} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
     users:
       destroy: Soll die Benutzer*in mit der E-Mail Adresse %{email} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
-    schools:
-      destroy: Soll die Schule %{name} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
     sources:
       destroy: Soll die Quelle %{name} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
     shared:

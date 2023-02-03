@@ -96,16 +96,6 @@ de:
         title: Wortlisten
         description: ''
         add: Hinzufügen
-  schools:
-    index:
-      new: Neue Schule
-    show:
-      assign_teacher: Lehrer*in hinzufügen
-      contact: Kontaktangaben
-    new:
-      title: Schule erstellen
-    edit:
-      title: Schule bearbeiten
   sources:
     index:
       new: Neue Quelle
@@ -113,13 +103,9 @@ de:
       title: Neue Quelle
     edit:
       title: Quelle bearbeiten
-  teaching_assignments:
-    new:
-      title: Lehrer*in hinzufügen
-      assign: Hinzufügen
   learning_group_memberships:
     new:
-      title: Schüler*in hinzufügen
+      title: Benutzer*in hinzufügen
       assign: Hinzufügen
   learning_pleas:
     new:
@@ -213,7 +199,7 @@ de:
     index:
       new: Neue Lerngruppe
     show:
-      assign_student: Schüler*in hinzufügen
+      assign_user: Benutzer*in hinzufügen
       request_access: Gruppe beitreten
       accept: Zulassen
       reject: Ablehnen
@@ -225,10 +211,10 @@ de:
     invitation:
       title: Link für Einladungen
       active: Aktiv
-      active_help: Der folgende Link kann von Schüler*innen verwendet werden um dieser Lerngruppe beizutreten.
-      inactive_html: Einladungen sind <b>deaktiviert</b>. Schüler*innen können einzeln von der Lehrer*in oder einer Administrator*in der Lerngruppe hinzugefügt werden.
+      active_help: Der folgende Link kann von Benutzer*innen verwendet werden um dieser Lerngruppe beizutreten.
+      inactive_html: Einladungen sind <b>deaktiviert</b>. Benutzer*innen können einzeln von der Benutzer*in oder einer Administrator*in der Lerngruppe hinzugefügt werden.
       activate: Aktivieren
-      activate_help: Das Aktivieren erstellt einen Link, der es jeder Schüler*in ermöglicht der Lerngruppe beizutreten. Dies kann jederzeit deaktiviert werden.
+      activate_help: Das Aktivieren erstellt einen Link, der es jeder Benutzer*in ermöglicht der Lerngruppe beizutreten. Dies kann jederzeit deaktiviert werden.
       deactivate: Deaktivieren
       copy: In Zwischenablage kopieren
       copied: Kopiert!

@@ -1,5 +1,5 @@
 = box do
-  = simple_form_for @user do |f|
+  = simple_form_for @user, as: :user, url: @user.new_record? ? users_path : user_path(@user) do |f|
     = f.input :first_name, autofocus: true
     = f.input :last_name
     = f.input :email

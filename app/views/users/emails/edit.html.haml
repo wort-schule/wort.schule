@@ -1,7 +1,7 @@
 %h1= t '.title'
 
 = box padding: true do
-  = simple_form_for(@user, url: registration_path(:user), html: { method: :put }) do |f|
+  = simple_form_for(@user, as: :user, url: registration_path(:user), html: { method: :put }) do |f|
     = f.error_notification
 
     = f.input :email, required: true, autofocus: true
