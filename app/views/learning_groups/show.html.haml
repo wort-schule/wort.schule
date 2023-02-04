@@ -32,7 +32,7 @@
               %div
               - if can? :edit, membership
                 .ml-4.flex-shrink-0.flex.flex-wrap.gap-2
-                  - if can?(:change_group_admin, membership) && membership.access.granted?
+                  - if can?(:change_group_admin, membership) && membership.user.may_become_group_admin?(membership)
                     - if membership.role.group_admin?
                       = simple_form_for [@learning_group, membership], method: :patch do |f|
                         = f.input :user, as: :hidden
