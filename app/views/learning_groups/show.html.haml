@@ -43,6 +43,8 @@
                         = f.input :user, as: :hidden
                         = f.input :role, as: :hidden, input_html: { value: 'group_admin' }
                         = f.submit t('.make_group_admin'), class: 'button outline'
+                  - if can?(:reset_password, membership) && membership.user.generated_account?
+                    = button_to t('.reset_password'), reset_password_learning_group_learning_group_membership_path(@learning_group, membership), method: :patch, class: 'button', data: { turbo: false }
                   - if membership.access.granted?
                     = button_to t('actions.remove'), learning_group_learning_group_membership_path(@learning_group, membership), method: :delete, class: 'button'
                   - else

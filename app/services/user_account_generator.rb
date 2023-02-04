@@ -21,6 +21,10 @@ class UserAccountGenerator
       .map { generate_account }
   end
 
+  def generate_password
+    generate_random(PASSWORD_CHARACTERS * 12 + SPECIAL_CHARCTERS, length: 12)
+  end
+
   private
 
   def generate_account
@@ -40,9 +44,5 @@ class UserAccountGenerator
 
   def generate_username
     generate_random(USERNAME_CHARACTERS, length: 8)
-  end
-
-  def generate_password
-    generate_random(PASSWORD_CHARACTERS * 12 + SPECIAL_CHARCTERS, length: 12)
   end
 end

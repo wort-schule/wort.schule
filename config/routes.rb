@@ -58,6 +58,8 @@ Rails.application.routes.draw do
       end
 
       resources :learning_group_memberships, only: %i[new create update destroy] do
+        patch :reset_password, on: :member
+
         scope module: :learning_group_memberships do
           post :requests, to: "requests#create", on: :collection
           post "requests/accept", to: "requests#accept"

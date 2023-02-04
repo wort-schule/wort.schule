@@ -36,6 +36,15 @@ class LearningGroupMembershipsController < ApplicationController
     redirect_to @learning_group_membership.learning_group, notice
   end
 
+  def reset_password
+    @user = @learning_group_membership.user
+
+    head :forbidden unless @user.generated_account?
+
+    @new_password = UserAccountGenerator.new.generate_password
+    @user.update!(password: @new_password)
+  end
+
   private
 
   def learning_group_membership_params

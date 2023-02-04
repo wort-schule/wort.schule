@@ -107,6 +107,12 @@ de:
     new:
       title: Benutzer*in hinzufügen
       assign: Hinzufügen
+    reset_password:
+      title: Passwort zurücksetzen
+      introduction: Das Passwort der unten stehenden Benutzer*in wurde zurückgesetzt.
+      email: E-Mail Adresse
+      password: Neues Passwort
+      back: Zurück zur Lerngruppe
   learning_pleas:
     new:
       title: Wortliste hinzufügen
@@ -207,6 +213,7 @@ de:
       make_group_admin: Zum Gruppenadmin befördern
       remove_group_admin: Gruppenadmin entfernen
       assign_list: Wortliste hinzufügen
+      reset_password: Passwort zurücksetzen
     new:
       title: Neue Lerngruppe
     edit:
