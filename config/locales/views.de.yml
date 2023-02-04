@@ -200,6 +200,7 @@ de:
       new: Neue Lerngruppe
     show:
       assign_user: Benutzer*in hinzufügen
+      generate_accounts: Konten generieren
       request_access: Gruppe beitreten
       accept: Zulassen
       reject: Ablehnen
@@ -221,6 +222,17 @@ de:
       copy: In Zwischenablage kopieren
       copied: Kopiert!
       accepted_html: Du bist der Lerngruppe &laquo;%{name}&raquo; beigetreten.
+    user_generations:
+      new:
+        title: Benutzungskonten generieren
+        amount: Wie viele Benutzungskonten sollen erstellt werden?
+      create:
+        title: Benutzungskonten generieren
+        introduction: Die folgenden Benutzungskonten wurden erstellt. Die Passwörter werden nur dieses eine Mal angezeigt. Bitte kopieren Sie sie oder drucken Sie diese Seite aus.
+        email: E-Mail Adresse
+        password: Passwort
+        print: Drucken
+        back: Zurück zur Lerngruppe
   searches:
     show:
       title: Suchen und Filtern

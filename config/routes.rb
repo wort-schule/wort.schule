@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     resources :learning_groups do
       scope module: :learning_groups do
         resource :invitation, only: %i[show create destroy]
+        resource :user_generation
       end
 
       resources :learning_group_memberships, only: %i[new create update destroy] do

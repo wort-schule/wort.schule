@@ -8,6 +8,7 @@ de:
     remove: Entfernen
     copy: Kopieren
     continue: Weiter
+    create: Erstellen
   helpers:
     submit:
       create: Erstellen

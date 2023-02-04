@@ -1,0 +1,11 @@
+= title_with_actions t('.title')
+
+= box padding: false do
+  = form_tag learning_group_user_generation_path(@learning_group), method: :post, data: { turbo: false } do |f|
+    = box_content do
+      = label_tag 'user_generation[amount]', t('.amount')
+      = number_field_tag 'user_generation[amount]', '', autofocus: true
+
+    = box_footer do
+      = submit_tag t('actions.create')
+      = cancel_button learning_group_path(@learning_group)

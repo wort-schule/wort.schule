@@ -17,7 +17,7 @@ class Ability
 
       can %i[read new create accept_invitation], LearningGroup
       can %i[read read_users read_lists], LearningGroup, users: {id: user.id}
-      can %i[crud invite read_users read_lists], LearningGroup.with_group_admin(user)
+      can %i[crud invite read_users read_lists generate_users], LearningGroup.with_group_admin(user)
 
       can :create_request, LearningGroupMembership
       can %i[crud accept_request reject_request], LearningGroupMembership, learning_group_id: LearningGroup.with_group_admin(user).pluck(:id)

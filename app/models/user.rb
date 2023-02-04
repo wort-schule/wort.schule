@@ -54,6 +54,10 @@ class User < ApplicationRecord
     super
   end
 
+  def generated_account?
+    email.ends_with?("@#{Rails.application.config.generated_account_domain}")
+  end
+
   private
 
   def setup_flashcards
