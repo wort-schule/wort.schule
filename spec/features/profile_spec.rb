@@ -101,6 +101,7 @@ RSpec.describe "user profile" do
       flow.change_email(new_email:, current_password: user.password)
 
       user.reload
+      user.confirm
       expect(user.email).to eq new_email
     end
 
@@ -114,6 +115,7 @@ RSpec.describe "user profile" do
       flow.change_email(new_email:, current_password: user.password)
 
       user.reload
+      user.confirm
       expect(user.email).to eq new_email
     end
   end

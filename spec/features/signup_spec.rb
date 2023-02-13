@@ -11,6 +11,8 @@ RSpec.describe "signup" do
   end
 
   it "signs up without role" do
+    expect(ActionMailer::Base.deliveries).to be_empty
+
     expect do
       flow.sign_up(email:, password:)
     end.to change(User, :count).by 1
@@ -19,6 +21,7 @@ RSpec.describe "signup" do
     expect(user.email).to eq email
     expect(user.valid_password?(password)).to be true
     expect(user.role).to eq "Guest"
+    expect(ActionMailer::Base.deliveries).to be_present
   end
 
   it "may fill out profile after sign up" do

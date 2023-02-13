@@ -5,6 +5,7 @@ FactoryBot.define do
     sequence(:email) { |n| "user_#{n}@example.com" }
     password { "secret123" }
     password_confirmation { "secret123" }
+    confirmed_at { 2.days.ago }
   end
 
   factory :admin, class: Admin, parent: :user do
