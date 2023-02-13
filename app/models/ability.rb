@@ -15,19 +15,23 @@ class Ability
     if user.present?
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password], id: user.id
 
+      # User management
+      can %i[read accept_invitation], LearningGroup
+      can %i[read read_users read_lists], LearningGroup, users: {id: user.id}
+      can %i[crud invite read_users read_lists], LearningGroup, user_id: user.id
+
+      can :create_request, LearningGroupMembership
+      can %i[crud accept_request reject_request], LearningGroupMembership, learning_group: {user_id: user.id}
+
+      can :crud, LearningPlea, learning_group: {user_id: user.id}
+      can %i[crud add_word remove_word move_word create_private], List, {user_id: user.id}
+      can :index, :flashcard
+
+      can :read, Theme, visibility: :public
+      can :crud, Theme, {user:}
+
       case user.role
-      when "Student"
-        can %i[read accept_invitation], LearningGroup
-        can :read, School
-
-        can %i[read read_students read_lists], LearningGroup, students: {id: user.id}
-        can :show, School, learning_groups: {students: {id: user.id}}
-        can :create, :learning_group_membership_requests
-
-        can %i[crud add_word remove_word move_word], List, {user_id: user.id}
-        can :index, :flashcard
-
-      when "Teacher"
+      when "Lecturer"
         can :crud, Noun
         can :crud, Verb
         can :crud, Adjective
@@ -47,17 +51,7 @@ class Ability
         can :crud, CompoundPhonemreduction
         can :crud, CompoundVocalalternation
 
-        can :read, Theme, visibility: :public
-        can :crud, Theme, {user:}
-        can %i[crud add_word remove_word create_private], List, {user_id: user.id}
-
-        # User management
-        can :read, User, role: "Student"
-        can %i[crud invite read_students read_lists], LearningGroup, teacher_id: user.id
-        can :crud, LearningGroupMembership, learning_group: {teacher_id: user.id}
-        can %i[read read_teachers], School, teaching_assignments: {teacher_id: user.id}
-        can %i[accept reject], :learning_group_membership_requests
-        can :crud, LearningPlea, learning_group: {teacher_id: user.id}
+        can :read, User
 
       when "Admin"
         can :manage, Noun
@@ -84,8 +78,6 @@ class Ability
 
         # User management
         can :manage, User
-        can :manage, School
-        can :manage, TeachingAssignment
         can :manage, LearningGroup
         can :manage, LearningGroupMembership
         can :manage, LearningPlea

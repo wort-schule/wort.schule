@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_16_163532) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_03_102042) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -149,19 +149,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_163532) do
 
   create_table "learning_group_memberships", force: :cascade do |t|
     t.bigint "learning_group_id", null: false
-    t.bigint "student_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "access"
-    t.index ["learning_group_id", "student_id"], name: "index_learning_group_membership_unique", unique: true
+    t.index ["learning_group_id", "user_id"], name: "index_learning_group_membership_unique", unique: true
     t.index ["learning_group_id"], name: "index_learning_group_memberships_on_learning_group_id"
-    t.index ["student_id"], name: "index_learning_group_memberships_on_student_id"
+    t.index ["user_id"], name: "index_learning_group_memberships_on_user_id"
   end
 
   create_table "learning_groups", force: :cascade do |t|
     t.string "name"
-    t.bigint "teacher_id", null: false
-    t.bigint "school_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "invitation_token"
@@ -171,12 +170,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_163532) do
     t.bigint "theme_adjective_id"
     t.bigint "theme_function_word_id"
     t.index ["invitation_token"], name: "index_learning_groups_on_invitation_token", unique: true
-    t.index ["school_id"], name: "index_learning_groups_on_school_id"
-    t.index ["teacher_id"], name: "index_learning_groups_on_teacher_id"
     t.index ["theme_adjective_id"], name: "index_learning_groups_on_theme_adjective_id"
     t.index ["theme_function_word_id"], name: "index_learning_groups_on_theme_function_word_id"
     t.index ["theme_noun_id"], name: "index_learning_groups_on_theme_noun_id"
     t.index ["theme_verb_id"], name: "index_learning_groups_on_theme_verb_id"
+    t.index ["user_id"], name: "index_learning_groups_on_user_id"
   end
 
   create_table "learning_pleas", force: :cascade do |t|
@@ -248,21 +246,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_163532) do
     t.index ["word_id", "rime_id"], name: "index_rimes_on_word_id_and_rime_id", unique: true
   end
 
-  create_table "schools", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "street"
-    t.string "zip_code"
-    t.string "city"
-    t.string "country"
-    t.string "homepage_url"
-    t.string "email"
-    t.string "phone_number"
-    t.string "fax_number"
-    t.string "federal_state"
-  end
-
   create_table "sources", force: :cascade do |t|
     t.string "name"
     t.string "author"
@@ -299,12 +282,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_163532) do
     t.integer "synonym_id"
     t.index ["synonym_id", "word_id"], name: "index_synonyms_on_synonym_id_and_word_id", unique: true
     t.index ["word_id", "synonym_id"], name: "index_synonyms_on_word_id_and_synonym_id", unique: true
-  end
-
-  create_table "teaching_assignments", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.bigint "teacher_id", null: false
-    t.index ["school_id", "teacher_id"], name: "index_teaching_assignments_on_school_id_and_teacher_id", unique: true
   end
 
   create_table "themes", force: :cascade do |t|
@@ -445,13 +422,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_163532) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "learning_group_memberships", "learning_groups"
-  add_foreign_key "learning_group_memberships", "users", column: "student_id"
-  add_foreign_key "learning_groups", "schools"
+  add_foreign_key "learning_group_memberships", "users"
   add_foreign_key "learning_groups", "themes", column: "theme_adjective_id"
   add_foreign_key "learning_groups", "themes", column: "theme_function_word_id"
   add_foreign_key "learning_groups", "themes", column: "theme_noun_id"
   add_foreign_key "learning_groups", "themes", column: "theme_verb_id"
-  add_foreign_key "learning_groups", "users", column: "teacher_id"
+  add_foreign_key "learning_groups", "users"
   add_foreign_key "learning_pleas", "learning_groups"
   add_foreign_key "learning_pleas", "lists"
   add_foreign_key "lists", "users"

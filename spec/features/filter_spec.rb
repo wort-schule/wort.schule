@@ -79,11 +79,11 @@ RSpec.describe "word filter" do
     let!(:noun) { create :noun, name: "Abend" }
     let!(:verb) { create :verb, name: "abbauen" }
     let!(:adjective) { create :adjective, name: "abstrakt" }
-    let(:student) { create :student }
-    let!(:list) { create :list, user: student }
+    let(:user) { create :guest }
+    let!(:list) { create :list, user: user }
 
     before do
-      login_as student
+      login_as user
       visit search_path
       fill_in t("filter.wordstarts"), with: "ab"
     end

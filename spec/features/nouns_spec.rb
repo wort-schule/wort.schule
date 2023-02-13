@@ -55,11 +55,11 @@ RSpec.describe "nouns" do
   describe "change history" do
     let!(:word) { create :noun, name: "Buche" }
 
-    context "when logged in as a teacher" do
-      let(:teacher) { create :teacher }
+    context "when logged in as a lecturer" do
+      let(:lecturer) { create :lecturer }
 
       before do
-        login_as teacher
+        login_as lecturer
         visit noun_path(word)
       end
 
@@ -116,7 +116,7 @@ RSpec.describe "nouns" do
 
   describe "hit counter" do
     let(:noun) { create :noun, name: "Ticken" }
-    let(:student) { create :student }
+    let(:user) { create :guest }
 
     it "updates the hit counter" do
       expect(noun.hit_counter).to eq 0
@@ -133,7 +133,7 @@ RSpec.describe "nouns" do
       # We need to reset sessions here to simulate another browser/user
       Capybara.reset_sessions!
 
-      login_as student
+      login_as user
       # Another user increases the counter again
       visit noun_path(noun)
       expect(noun.reload.hit_counter).to eq 2

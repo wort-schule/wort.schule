@@ -2,7 +2,7 @@ class LearningGroupMembership < ApplicationRecord
   extend Enumerize
 
   belongs_to :learning_group
-  belongs_to :student
+  belongs_to :user
 
   enumerize :access, in: %i[requested granted rejected], scope: true
 end

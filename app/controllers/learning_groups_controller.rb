@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class LearningGroupsController < ApplicationController
-  load_and_authorize_resource :school
-  load_and_authorize_resource through: :school
+  load_and_authorize_resource
+
+  def index
+  end
 
   def show
   end
@@ -11,10 +13,10 @@ class LearningGroupsController < ApplicationController
   end
 
   def create
-    @learning_group.teacher = Teacher.find(current_user.id) if current_user.teacher?
+    @learning_group.owner = current_user
 
     if @learning_group.save
-      redirect_to @school, notice: t("notices.shared.created", name: @learning_group.name, class_name: LearningGroup.model_name.human)
+      redirect_to @learning_group, notice: t("notices.shared.created", name: @learning_group.name, class_name: LearningGroup.model_name.human)
     else
       render :new, status: :unprocessable_entity
     end
@@ -25,7 +27,7 @@ class LearningGroupsController < ApplicationController
 
   def update
     if @learning_group.update(learning_group_params)
-      redirect_to @school, notice: t("notices.shared.updated", name: @learning_group.name, class_name: LearningGroup.model_name.human)
+      redirect_to @learning_group, notice: t("notices.shared.updated", name: @learning_group.name, class_name: LearningGroup.model_name.human)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,7 +41,7 @@ class LearningGroupsController < ApplicationController
       {alert: t("alerts.shared.destroyed", name: @learning_group.name)}
     end
 
-    redirect_to @school, notice
+    redirect_to learning_groups_path, notice
   end
 
   private
@@ -47,7 +49,7 @@ class LearningGroupsController < ApplicationController
   def learning_group_params
     params.require(:learning_group).permit(
       :name,
-      :teacher_id,
+      :user_id,
       :theme_noun_id,
       :theme_verb_id,
       :theme_adjective_id,

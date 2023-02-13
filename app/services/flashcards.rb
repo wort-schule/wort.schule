@@ -4,11 +4,11 @@ class Flashcards
   SECTIONS = (1..5).to_a
 
   def self.add_list(learning_group, list)
-    learning_group.students.find_each do |student|
+    learning_group.users.find_each do |user|
       list.words.each do |word|
-        next if student.word_in_flashcards?(word)
+        next if user.word_in_flashcards?(word)
 
-        student.first_flashcard_list.words << word
+        user.first_flashcard_list.words << word
       end
     end
   end
@@ -22,9 +22,9 @@ class Flashcards
   def self.remove_obsolete_words(learning_group)
     valid_word_ids = learning_group.lists.joins(:words).pluck("words.id")
 
-    learning_group.students.find_each do |student|
+    learning_group.users.find_each do |user|
       SECTIONS.each do |section|
-        list = student.flashcard_list(section)
+        list = user.flashcard_list(section)
 
         obsolete_word_ids = list.words.pluck(:id) - valid_word_ids
 

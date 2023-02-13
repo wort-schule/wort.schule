@@ -4,15 +4,12 @@ de:
       noun:
         one: Substantiv
         other: Substantive
-      school:
-        one: Schule
-        other: Schulen
       user:
         one: Benutzer*in
         other: Benutzer*innen
-      teacher:
-        one: Lehrer*in
-        other: Lehrer*innen
+      user:
+        one: Benutzer*in
+        other: Benutzer*innen
       verb:
         one: Verb
         other: Verben
@@ -64,9 +61,6 @@ de:
       learning_group:
         one: Lerngruppe
         other: Lerngruppen
-      student:
-        one: Schüler*in
-        other: Schüler*innen
       theme:
         one: Wortkarten-Variante
         other: Wortkarten-Varianten
@@ -168,22 +162,9 @@ de:
         name: Bezeichnung
       compound_vocalalternation:
         name: Bezeichnung
-      school:
-        name: Name der Schule
-        street: Strasse und Nummer
-        zip_code: Postleitzahl
-        city: Ort
-        federal_state: Bundesland / Kanton
-        country: Land
-        homepage_url: Homepage
-        email: E-Mail Adresse
-        phone_number: Telefonnummer
-        fax_number: Faxnummer
-        address: Adresse
       learning_group:
         name: Bezeichnung
-        teacher: Lehrer*in
-        school: Schule
+        user: Benutzer*in
         theme_noun: Theme für Substantive
         theme_verb: Theme für Verben
         theme_adjective: Theme für Adjektive

@@ -1,8 +1,7 @@
 class LearningGroup < ApplicationRecord
   default_scope { order(:name) }
 
-  belongs_to :teacher
-  belongs_to :school
+  belongs_to :owner, foreign_key: :user_id, class_name: "User"
 
   belongs_to :theme_noun, class_name: "Theme", optional: true
   belongs_to :theme_verb, class_name: "Theme", optional: true
@@ -11,7 +10,7 @@ class LearningGroup < ApplicationRecord
 
   has_many :learning_group_memberships, dependent: :destroy
   has_many :granted_learning_group_memberships, -> { with_access("granted") }, class_name: "LearningGroupMembership"
-  has_many :students, through: :granted_learning_group_memberships
+  has_many :users, through: :granted_learning_group_memberships
   has_many :learning_pleas
   has_many :lists, through: :learning_pleas
 
@@ -25,7 +24,7 @@ class LearningGroup < ApplicationRecord
 
   def update_themes
     Theme::WORD_TYPES.each do |word_type|
-      students.update_all("theme_#{word_type}_id": send("theme_#{word_type}_id")) if (previous_changes.keys & ["theme_#{word_type}_id"]).any?
+      users.update_all("theme_#{word_type}_id": send("theme_#{word_type}_id")) if (previous_changes.keys & ["theme_#{word_type}_id"]).any?
     end
   end
 end

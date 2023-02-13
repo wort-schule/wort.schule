@@ -11,11 +11,11 @@ FactoryBot.define do
     role { "Admin" }
   end
 
-  factory :teacher, class: Teacher, parent: :user do
-    role { "Teacher" }
+  factory :lecturer, class: Lecturer, parent: :user do
+    role { "Lecturer" }
   end
 
-  factory :student, class: Student, parent: :user do
-    role { "Student" }
+  factory :guest, class: Guest, parent: :user do
+    role { "Guest" }
   end
 end

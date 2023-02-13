@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
 RSpec.describe "learning groups" do
-  context "as a teacher" do
-    let(:teacher) { create :teacher }
-    let(:school) { create :school }
-    let!(:teaching_assignment) { create :teaching_assignment, teacher:, school: }
-    let!(:learning_group) { create :learning_group, teacher:, school: }
+  context "as a lecturer" do
+    let(:lecturer) { create :lecturer }
+    let!(:learning_group) { create :learning_group, owner: lecturer }
 
     before do
-      login_as teacher
+      login_as lecturer
     end
 
     it "activates invitations" do
       old_token = learning_group.invitation_token
       expect(learning_group.invitable).to be false
 
-      visit school_learning_group_path(school, learning_group)
+      visit learning_group_path(learning_group)
 
       click_on t("learning_groups.invitation.activate")
       expect(page).to have_content t("learning_groups.invitation.active")
@@ -27,12 +25,12 @@ RSpec.describe "learning groups" do
     end
 
     context "with active invitations" do
-      let!(:learning_group) { create :learning_group, teacher:, school:, invitable: true }
+      let!(:learning_group) { create :learning_group, owner: lecturer, invitable: true }
 
       it "deactivates invitations" do
         expect(learning_group.invitable).to be true
 
-        visit school_learning_group_path(school, learning_group)
+        visit learning_group_path(learning_group)
 
         click_on t("learning_groups.invitation.deactivate")
         expect(page).to have_content t("learning_groups.invitation.activate")
@@ -44,9 +42,9 @@ RSpec.describe "learning groups" do
     end
 
     it "adds a word list" do
-      word_list = create :list, user: teacher, visibility: :public
+      word_list = create :list, user: lecturer, visibility: :public
 
-      visit school_learning_group_path(school, learning_group)
+      visit learning_group_path(learning_group)
       click_on t("learning_groups.show.assign_list")
       expect(page).to have_content t("learning_pleas.new.title")
 
@@ -56,32 +54,30 @@ RSpec.describe "learning groups" do
     end
   end
 
-  context "as a student" do
-    let(:teacher) { create :teacher }
-    let(:school) { create :school }
-    let!(:teaching_assignment) { create :teaching_assignment, teacher:, school: }
-    let!(:learning_group) { create :learning_group, teacher:, school:, invitable: true }
-    let(:student) { create :student }
+  context "as a user" do
+    let(:lecturer) { create :lecturer }
+    let!(:learning_group) { create :learning_group, owner: lecturer, invitable: true }
+    let(:user) { create :guest }
 
     it "accepts an invitation" do
-      expect(learning_group.students).not_to include student
+      expect(learning_group.users).not_to include user
 
-      login_as teacher
-      visit school_learning_group_path(school, learning_group)
+      login_as lecturer
+      visit learning_group_path(learning_group)
 
       url = find('input[name="invitation_url"]').value
 
-      login_as student
+      login_as user
       visit url
 
       expect(page).to have_content learning_group.name
       learning_group.reload
-      expect(learning_group.students).to include student
+      expect(learning_group.users).to include user
     end
 
     it "requests access" do
-      login_as student
-      visit school_path(school)
+      login_as user
+      visit learning_groups_path
       click_on learning_group.name
 
       expect do
@@ -91,12 +87,12 @@ RSpec.describe "learning groups" do
       expect(page).to have_content t("notices.learning_group_memberships.access_requested")
       membership = LearningGroupMembership.last
       expect(membership.learning_group).to eq learning_group
-      expect(membership.student).to eq student
+      expect(membership.user).to eq user
       expect(membership.access).to eq "requested"
 
       # Accept membership
-      login_as teacher
-      visit school_learning_group_path(school, learning_group)
+      login_as lecturer
+      visit learning_group_path(learning_group)
       click_on t("learning_groups.show.accept")
 
       membership.reload

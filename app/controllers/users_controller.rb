@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     if @user.save
       @user.send_reset_password_instructions
 
-      redirect_to @user, notice: t("notices.users.created", email: @user.email)
+      redirect_to user_path(@user), notice: t("notices.users.created", email: @user.email)
     else
       render :new, status: :unprocessable_entity
     end
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update(user_params)
-      redirect_to @user, notice: t("notices.users.updated", email: @user.email)
+      redirect_to user_path(@user), notice: t("notices.users.updated", email: @user.email)
     else
       render :edit, status: :unprocessable_entity
     end

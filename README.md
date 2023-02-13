@@ -62,19 +62,6 @@ password = SecureRandom.hex
 Admin.create(email: 'muster@example.com', password:, password_confirmation: password)
 ```
 
-### Create a Learning Group
-
-The complete process of creating schools, teachers and learning groups is the following:
-
-1. Login as an administrator
-2. Create a teacher at http://localhost:3000/users/new. Use `Teacher` as the user's role.
-3. Create a school at http://wort.schule/schools/new
-4. While viewing that school, click on `Add teacher` to add a teacher to that school
-5. While viewing that school, click on `Add learning group`. Then choose the teacher created earlier.
-6. While viewing that school, click on the name of the just created learning group. You can then add students.
-
-Some of these features are also available to teachers.
-
 ## Docker Setup
 
 There is a `Dockerfile` and an example `docker-compose.yml.example` for a production setup of the application within Docker. Note that you should customize the `docker-compose.yml` before running it in production.
