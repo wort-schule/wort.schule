@@ -16,6 +16,13 @@ class LearningGroup < ApplicationRecord
 
   has_secure_token :invitation_token, length: 42
 
+  scope :with_group_admin, ->(user) {
+                             LearningGroup.union(
+                               where(owner: user),
+                               LearningGroup.where(id: includes(:learning_group_memberships).where(learning_group_memberships: {role: "group_admin", user:}).select(:id))
+                             )
+                           }
+
   validates_presence_of :name
 
   after_save :update_themes

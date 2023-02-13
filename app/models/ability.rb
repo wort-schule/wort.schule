@@ -15,13 +15,13 @@ class Ability
     if user.present?
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password], id: user.id
 
-      # User management
-      can %i[read accept_invitation], LearningGroup
+      can %i[read new create accept_invitation], LearningGroup
       can %i[read read_users read_lists], LearningGroup, users: {id: user.id}
-      can %i[crud invite read_users read_lists], LearningGroup, user_id: user.id
+      can %i[crud invite read_users read_lists], LearningGroup.with_group_admin(user)
 
       can :create_request, LearningGroupMembership
-      can %i[crud accept_request reject_request], LearningGroupMembership, learning_group: {user_id: user.id}
+      can %i[crud accept_request reject_request], LearningGroupMembership, learning_group_id: LearningGroup.with_group_admin(user).pluck(:id)
+      can :change_group_admin, LearningGroupMembership, learning_group: LearningGroup.with_group_admin(user)
 
       can :crud, LearningPlea, learning_group: {user_id: user.id}
       can %i[crud add_word remove_word move_word create_private], List, {user_id: user.id}

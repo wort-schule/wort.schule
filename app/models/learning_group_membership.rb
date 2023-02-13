@@ -5,4 +5,5 @@ class LearningGroupMembership < ApplicationRecord
   belongs_to :user
 
   enumerize :access, in: %i[requested granted rejected], scope: true
+  enumerize :role, in: %i[member group_admin], scope: true
 end

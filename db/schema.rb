@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_03_142751) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_03_150017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -153,6 +153,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_03_142751) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "access"
+    t.string "role", default: "member"
     t.index ["learning_group_id", "user_id"], name: "index_learning_group_membership_unique", unique: true
     t.index ["learning_group_id"], name: "index_learning_group_memberships_on_learning_group_id"
     t.index ["user_id"], name: "index_learning_group_memberships_on_user_id"

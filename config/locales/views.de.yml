@@ -203,6 +203,8 @@ de:
       request_access: Gruppe beitreten
       accept: Zulassen
       reject: Ablehnen
+      make_group_admin: Zum Gruppenadmin befördern
+      remove_group_admin: Gruppenadmin entfernen
       assign_list: Wortliste hinzufügen
     new:
       title: Neue Lerngruppe
