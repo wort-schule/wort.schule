@@ -17,11 +17,11 @@ class Ability
 
       can %i[read new create accept_invitation], LearningGroup
       can %i[read read_users read_lists], LearningGroup, users: {id: user.id}
-      can %i[crud invite read_users read_lists], LearningGroup.with_group_admin(user)
+      can %i[crud invite read_users read_lists generate_users], LearningGroup.with_group_admin(user)
 
       can :create_request, LearningGroupMembership
       can %i[crud accept_request reject_request], LearningGroupMembership, learning_group_id: LearningGroup.with_group_admin(user).pluck(:id)
-      can :change_group_admin, LearningGroupMembership, learning_group: LearningGroup.with_group_admin(user)
+      can %i[change_group_admin reset_password], LearningGroupMembership, learning_group: LearningGroup.with_group_admin(user)
 
       can :crud, LearningPlea, learning_group: {user_id: user.id}
       can %i[crud add_word remove_word move_word create_private], List, {user_id: user.id}

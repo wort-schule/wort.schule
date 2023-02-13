@@ -44,7 +44,7 @@
     @apply block text-base font-medium text-gray-700;
   }
 
-  input[type="text"], input[type="email"], input[type="password"], .cm-scroller {
+  input[type="text"], input[type="email"], input[type="password"], input[type="number"], .cm-scroller {
     @apply mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md;
   }
 

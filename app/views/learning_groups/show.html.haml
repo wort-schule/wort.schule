@@ -19,9 +19,11 @@
 - if can? :read_users, @learning_group
   = two_column_card User.model_name.human(count: 2), "" do
     = box padding: false do
-      - if can? :create, LearningGroupMembership.new(learning_group: @learning_group)
-        .px-4.py-5.flex.justify-end
+      .px-4.py-5.flex.flex-wrap.gap-2.justify-end
+        - if can? :create, LearningGroupMembership.new(learning_group: @learning_group)
           = link_to t('.assign_user'), new_learning_group_learning_group_membership_path(@learning_group), class: 'button primary'
+        - if can? :generate_users, @learning_group
+          = link_to t('.generate_accounts'), new_learning_group_user_generation_path(@learning_group), class: 'button'
 
       = box_description_list do |list|
         - @learning_group.learning_group_memberships.with_access(:requested, :granted).order(access: 'desc').each do |membership|
@@ -30,7 +32,7 @@
               %div
               - if can? :edit, membership
                 .ml-4.flex-shrink-0.flex.flex-wrap.gap-2
-                  - if can?(:change_group_admin, membership) && membership.access.granted?
+                  - if can?(:change_group_admin, membership) && membership.user.may_become_group_admin?(membership)
                     - if membership.role.group_admin?
                       = simple_form_for [@learning_group, membership], method: :patch do |f|
                         = f.input :user, as: :hidden
@@ -41,6 +43,8 @@
                         = f.input :user, as: :hidden
                         = f.input :role, as: :hidden, input_html: { value: 'group_admin' }
                         = f.submit t('.make_group_admin'), class: 'button outline'
+                  - if can?(:reset_password, membership) && membership.user.generated_account?
+                    = button_to t('.reset_password'), reset_password_learning_group_learning_group_membership_path(@learning_group, membership), method: :patch, class: 'button', data: { turbo: false }
                   - if membership.access.granted?
                     = button_to t('actions.remove'), learning_group_learning_group_membership_path(@learning_group, membership), method: :delete, class: 'button'
                   - else

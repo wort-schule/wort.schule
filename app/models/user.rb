@@ -33,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def to_s
-    full_name.presence || email
+    full_name.presence || email.gsub("@#{Rails.application.config.generated_account_domain}", "")
   end
 
   def first_flashcard_list
@@ -52,6 +52,14 @@ class User < ApplicationRecord
     send_confirmation_instructions if !confirmed? && confirmation_token.blank?
 
     super
+  end
+
+  def generated_account?
+    email.ends_with?("@#{Rails.application.config.generated_account_domain}")
+  end
+
+  def may_become_group_admin?(membership)
+    membership.access.granted? && !generated_account?
   end
 
   private

@@ -1,0 +1,18 @@
+= title_with_actions t('.title')
+
+= box do
+  = box_content do
+    .p-2= t('.introduction')
+
+    .grid.grid-cols-2.my-4
+      .font-bold.p-2= t '.email'
+      .font-bold.p-2= t '.password'
+
+      - @accounts.each.with_index do |account, index|
+        .p-2{ class: index.odd? ? "bg-gray-100" : "" }= account[:email]
+        .p-2{ class: index.odd? ? "bg-gray-100" : "" }= account[:password]
+
+  .print:hidden
+    = box_footer do
+      %a.button{ onClick: "window.print()" }= t('.print')
+      = link_to t('.back'), learning_group_path(@learning_group), class: 'button primary'

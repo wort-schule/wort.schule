@@ -39,5 +39,8 @@ module Wortschule
     config.default_app_namespace = "seite"
 
     config.active_job.queue_adapter = :good_job
+
+    # Generated accounts use the following domain for their email address
+    config.generated_account_domain = "user.wort.schule"
   end
 end
