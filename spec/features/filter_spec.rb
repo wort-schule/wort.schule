@@ -24,11 +24,7 @@ RSpec.describe "word filter" do
       end
 
       fill_in t("filter.wordstarts"), with: "a"
-
-      # Opening/closing the filter is only necessary because Capybara doesn't
-      # wait for the search to complete
-      click_on t("filter.title")
-      click_on t("filter.title")
+      find_button(t("filter.apply"), visible: false).trigger("click")
 
       expect(page).to have_content "Abfall"
       expect(page).to have_content "Abend"
@@ -50,6 +46,7 @@ RSpec.describe "word filter" do
     before do
       visit search_path
       fill_in t("filter.wordstarts"), with: "ab"
+      find_button(t("filter.apply"), visible: false).trigger("click")
     end
 
     it "filters a specific word type", js: true do
@@ -58,11 +55,7 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abstrakt"
 
       choose t("activerecord.models.noun.one")
-
-      # Opening/closing the filter is only necessary because Capybara doesn't
-      # wait for the search to complete
-      click_on t("filter.title")
-      click_on t("filter.title")
+      find_button(t("filter.apply"), visible: false).trigger("click")
 
       expect(page).not_to have_content "abbauen"
       expect(page).to have_content "Abend"
@@ -86,6 +79,7 @@ RSpec.describe "word filter" do
       login_as user
       visit search_path
       fill_in t("filter.wordstarts"), with: "ab"
+      find_button(t("filter.apply"), visible: false).trigger("click")
     end
 
     it "filters a specific word type", js: true do
