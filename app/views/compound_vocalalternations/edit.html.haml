@@ -1,4 +1,4 @@
 = title_with_actions t('.title') do
-  = button_to t('actions.delete'), compound_vocalalternation_path(@compound_vocalalternation), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @compound_vocalalternation.name) } if can?(:destroy, @compound_vocalalternation)
+  = button_to t('actions.delete'), compound_vocalalternation_path(@compound_vocalalternation), class: 'button danger', method: :delete, 'data-turbo-confirm': t('confirmations.shared.destroy', name: @compound_vocalalternation.name) if can?(:destroy, @compound_vocalalternation)
 
 = render 'form'

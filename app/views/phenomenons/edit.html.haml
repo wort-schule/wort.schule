@@ -1,4 +1,4 @@
 = title_with_actions t('.title') do
-  = button_to t('actions.delete'), phenomenon_path(@phenomenon), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @phenomenon.name) } if can?(:destroy, @phenomenon)
+  = button_to t('actions.delete'), phenomenon_path(@phenomenon), class: 'button danger', method: :delete, 'data-turbo-confirm': t('confirmations.shared.destroy', name: @phenomenon.name) if can?(:destroy, @phenomenon)
 
 = render 'form'

@@ -1,4 +1,4 @@
 = title_with_actions t('.title') do
-  = button_to t('actions.delete'), prefix_path(@prefix), class: 'button danger', method: :delete, data: { confirm: t('confirmations.shared.destroy', name: @prefix.name) } if can?(:destroy, @prefix)
+  = button_to t('actions.delete'), prefix_path(@prefix), class: 'button danger', method: :delete, 'data-turbo-confirm': t('confirmations.shared.destroy', name: @prefix.name) if can?(:destroy, @prefix)
 
 = render 'form'
