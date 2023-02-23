@@ -286,3 +286,8 @@ de:
   seo:
     word_index:
       title: Wort Index
+  homes:
+    show:
+      show_x_results:
+        one: '%{count} Ergebnis zeigen'
+        other: '%{count} Ergebnisse zeigen'

@@ -1,0 +1,13 @@
+.mt-6
+  = form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission home-search', 'home-search-path-value': search_path } } do |f|
+    .relative.rounded-md.shadow-sm.mx-2.md:mx-0
+      .absolute.inset-y-0.left-0.pl-3.flex.items-center.pointer-events-none
+        = heroicon 'magnifying-glass', options: {class: 'text-gray-500 sm:text-sm'}
+      = f.text_field :filter_home, data: {action: "input->form-submission#search keydown->home-search#input", 'home-search-target': 'input'}, class: 'pl-12 pr-12 bg-gray-50', autofocus: true
+      .absolute.inset-y-0.right-0.flex.items-center
+        = link_to reset_filterrific_url, class: 'pr-3 text-gray-500', title: t('filter.reset') do
+          = heroicon 'x-mark'
+        = link_to '#', class: 'pr-3 text-gray-500', title: t('.show_x_results', count: @words.total_count), data: {action: 'click->home-search#goToSearchResults'} do
+          = heroicon 'arrow-right'
+
+    .sr-only= button_tag t('filter.apply'), type: 'submit', title: t('filter.apply')
