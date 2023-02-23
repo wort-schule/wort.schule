@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     post :add_to_list, action: :add_to_list
   end
 
-  root to: "nouns#index"
+  root to: "homes#show"
 
   scope Rails.configuration.default_app_namespace do
     devise_for :users, path: "devise/users", controllers: {registrations: "registrations", sessions: "users/sessions"}

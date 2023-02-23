@@ -1,0 +1,13 @@
+%h1 
+.flex.justify-center
+  = image_tag 'logo_transparent.svg', alt: '', class: 'max-w-md'
+
+= render 'search_form'
+
+= turbo_frame_tag 'words' do
+  - if @words.present?
+    .bg-white.pt-4
+      = render partial: 'search_result', collection: @words, as: :word
+
+      .p-2.text-center
+        = link_to t('.show_x_results', count: @words.total_count), search_path(request.params), 'data-turbo-frame': '_top'
