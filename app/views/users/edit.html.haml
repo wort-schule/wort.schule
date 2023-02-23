@@ -1,4 +1,4 @@
 = title_with_actions t('.title') do
-  = link_to t('actions.delete'), user_path(@user), method: :delete, class: 'button danger', data: { confirm: t('confirmations.users.destroy', email: @user.email) }
+  = button_to t('actions.delete'), user_path(@user), method: :delete, class: 'button danger', 'data-turbo-confirm': t('confirmations.users.destroy', email: @user.email)
 
 = render 'form'
