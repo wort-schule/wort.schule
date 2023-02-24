@@ -77,7 +77,7 @@
   }
 
   .button.breaker {
-    @apply px-5 py-3 bg-orange-400 text-gray-100 rounded-md hover:bg-orange-500 hover:shadow;
+    @apply px-3 py-1 bg-white text-primary font-bold rounded-full hover:bg-gray-100;
   }
 
   .form-actions {
@@ -215,5 +215,13 @@
     .bg-confetti-animated {
       background-image: url("confetti-static.svg");
     }
+  }
+
+  .miscellaneous a.navigation {
+    @apply text-black;
+  }
+
+  .miscellaneous div[data-dropdown-target="button"] span {
+    @apply text-black;
   }
 }

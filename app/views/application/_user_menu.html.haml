@@ -1,2 +1,3 @@
 = user_menu_link params[:controller].to_sym == :user, t('profiles.show.title'), profile_path if local_assigns[:profile].nil? || profile
+= user_menu_link false, t('navigation.miscellaneous'), navigation_path
 = user_menu_link false, t('navigation.logout'), destroy_user_session_path, 'data-turbo-method': :delete

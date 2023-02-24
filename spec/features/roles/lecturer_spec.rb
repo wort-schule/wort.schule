@@ -12,9 +12,8 @@ RSpec.describe "as a lecturer" do
       before do
         visit root_path
 
-        within ".ci-navigation" do
-          click_on LearningGroup.model_name.human(count: 2), match: :first
-        end
+        visit navigation_path
+        click_on LearningGroup.model_name.human(count: 2), match: :first
       end
 
       it "creates a group" do

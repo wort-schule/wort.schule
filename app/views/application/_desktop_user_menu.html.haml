@@ -1,7 +1,4 @@
 .hidden.md:flex.items-center
-  = link_to search_path, class: "navigation #{params[:controller] == 'searches' ? 'active' : ''}", title: t('navigation.search') do
-    = heroicon 'magnifying-glass'
-
   - if current_user.blank?
     = link_to t('navigation.login'), new_user_session_path, class: 'button breaker ml-4'
   - else
