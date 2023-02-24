@@ -10,9 +10,8 @@ RSpec.describe "users" do
     end
 
     it "creates a user" do
-      within ".ci-navigation" do
-        click_on User.model_name.human(count: 2)
-      end
+      visit navigation_path
+      click_on User.model_name.human(count: 2)
 
       click_on t("users.index.new")
 
@@ -36,9 +35,8 @@ RSpec.describe "users" do
       let!(:user) { create :user, first_name: "Sarah" }
 
       it "shows all users" do
-        within ".ci-navigation" do
-          click_on User.model_name.human(count: 2)
-        end
+        visit navigation_path
+        click_on User.model_name.human(count: 2)
 
         expect(page).to have_selector "h1", text: User.model_name.human(count: 2)
         expect(page).to have_content user.full_name
@@ -47,9 +45,8 @@ RSpec.describe "users" do
       it "edits a user" do
         expect(user.first_name).to eq "Sarah"
 
-        within ".ci-navigation" do
-          click_on User.model_name.human(count: 2)
-        end
+        visit navigation_path
+        click_on User.model_name.human(count: 2)
 
         expect(page).to have_selector "h1", text: User.model_name.human(count: 2)
         find("##{dom_id(user)}").click
@@ -64,9 +61,8 @@ RSpec.describe "users" do
       end
 
       it "deletes a user" do
-        within ".ci-navigation" do
-          click_on User.model_name.human(count: 2)
-        end
+        visit navigation_path
+        click_on User.model_name.human(count: 2)
 
         expect(page).to have_selector "h1", text: User.model_name.human(count: 2)
         find("##{dom_id(user)}").click
