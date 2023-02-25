@@ -3,17 +3,31 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="home-search"
 export default class extends Controller {
   static targets = [
-    "input"
+    "input",
+    "logo"
   ]
 
   static values = {
     path: String
   }
 
+  connect() {
+    this.updateLogoVisibility(false)
+  }
+
   input(event) {
     if (event.key === 'Enter') {
       this.goToSearchResults()
+      return
     }
+
+    this.updateLogoVisibility(true)
+  }
+
+  updateLogoVisibility(reposition) {
+    var hasQuery = this.inputTarget.value.length > 0
+    this.logoTarget.style.display = hasQuery ? 'none' : 'block'
+    if(reposition) this.inputTarget.scrollIntoView()
   }
 
   goToSearchResults() {
