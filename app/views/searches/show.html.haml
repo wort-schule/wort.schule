@@ -3,5 +3,8 @@
 = form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
   = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
 
-  = render 'filters/form', f:
-= render 'words/index', words: @words
+  .flex.flex-col.xl:flex-row
+    %div(class="xl:max-w-[30vh]")
+      = render 'filters/form', f:
+    .p-6
+      = render 'words/index', words: @words
