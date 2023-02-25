@@ -15,7 +15,7 @@ class SearchesController < PublicController
       .page(params[:page])
 
     @counts = {
-      all: @words.total_count,
+      all: count_for(""),
       nouns: count_for("Noun"),
       verbs: count_for("Verb"),
       adjectives: count_for("Adjective"),
