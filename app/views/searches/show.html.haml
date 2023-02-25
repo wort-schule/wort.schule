@@ -1,6 +1,3 @@
-.content
-  %h1= t '.title'
-
 = form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words_filter', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
   = hidden_field_tag :is_filter_open, params[:is_filter_open]
 
