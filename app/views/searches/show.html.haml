@@ -2,7 +2,7 @@
   = hidden_field_tag :is_filter_open, params[:is_filter_open]
 
   .content.pb-0
-    .my-10.mx-auto(class="max-w-[50vw]")
+    .my-10.mx-auto(class="md:max-w-[50vw]")
       .flex.flex-wrap.gap-4
         .flex-grow
           = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
