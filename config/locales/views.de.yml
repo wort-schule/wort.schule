@@ -240,9 +240,6 @@ de:
         password: Passwort
         print: Drucken
         back: Zurück zur Lerngruppe
-  searches:
-    show:
-      title: Suchen und Filtern
   themes:
     index:
       new: Neue Wortkarten-Variante

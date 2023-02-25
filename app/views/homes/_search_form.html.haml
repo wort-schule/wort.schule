@@ -1,5 +1,6 @@
 .mt-6
   = form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission home-search', 'home-search-path-value': search_path } } do |f|
-    = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: false)
+    .mx-auto(class="max-w-[50vw]")
+      = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: false)
 
     .sr-only= button_tag t('filter.apply'), type: 'submit', title: t('filter.apply')

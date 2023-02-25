@@ -7,7 +7,7 @@ module FilterHelper
 
     return input_field if inline
 
-    content_tag :div, class: "input" do
+    content_tag :div, class: "input grow" do
       concat form.label form_attribute, I18n.t("filter.#{attribute}")
       concat input_field
     end

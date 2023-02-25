@@ -1,10 +1,10 @@
-.relative.rounded-md.shadow-sm.mx-2.md:mx-0
+.relative.rounded-full.shadow.mx-2.md:mx-0
   .absolute.inset-y-0.left-0.pl-3.flex.items-center.pointer-events-none
     = heroicon 'magnifying-glass', options: {class: 'text-gray-500 sm:text-sm'}
-  = form.text_field :filter_home, data: input_data_attribute, class: 'pl-12 pr-12 bg-gray-50', autofocus: true, autocomplete: :off
+  = form.text_field :filter_home, data: input_data_attribute, class: 'pl-12 pr-12 bg-gray-50 !rounded-full', autofocus: true, autocomplete: :off
   .absolute.inset-y-0.right-0.flex.items-center
     = link_to reset_filterrific_url, class: 'pr-3 text-gray-500', title: t('filter.reset') do
       = heroicon 'x-mark'
-    - unless on_search_page?
-      = link_to '#', class: 'pr-3 text-gray-500', title: t('.show_x_results', count: words.total_count), data: {action: 'click->home-search#goToSearchResults'} do
-        = heroicon 'arrow-right'
+
+    = link_to '#', class: 'p-3 text-white bg-primary rounded-full', title: t('.show_x_results', count: words.total_count), data: {action: 'click->home-search#goToSearchResults'} do
+      = heroicon 'arrow-right'

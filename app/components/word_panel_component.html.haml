@@ -1,5 +1,5 @@
 = link_to word, data: { turbo_frame: '_top' }, id: dom_id(word) do
-  = box padding: false, class: 'h-full overflow-hidden' do
+  = box padding: false, class: 'h-full' do
     .flex.justify-between.h-full
       .px-4.py-5.sm:px-6
         .flex.items-baseline.gap-1
@@ -7,8 +7,8 @@
           .text-xl.font-bold= word.name
         .uppercase.text-xs.font-light.mt-3= word.model_name.human
 
-      .p-1.pr-4
+      .p-1.pr-4.flex.items-center.object-cover
         - if word.image.attached?
-          = image_tag word.image.variant(:thumb), class: 'w-24 h-24'
+          = image_tag word.image.variant(:thumb), class: 'w-24 h-full object-cover'
         - else
           .w-24.h-24

@@ -5,6 +5,10 @@
 @tailwind utilities;
 
 @layer components {
+  .content {
+    @apply max-w-7xl mx-auto py-6 sm:px-6 lg:px-8;
+  }
+
   h1 {
     @apply mt-6 text-3xl font-extrabold text-gray-900 ml-4 md:ml-0;
   }
@@ -71,7 +75,7 @@
   }
 
   .button {
-    @apply md:inline-block md:w-auto relative w-full flex justify-center py-2 px-4 border border-gray-400 text-sm font-medium rounded-md text-gray-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400;
+    @apply md:inline-block md:w-auto relative w-full flex justify-center py-2 px-4 border-2 border-primary text-sm rounded-3xl text-primary bg-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400;
   }
 
   .button.danger {
