@@ -23,16 +23,15 @@ RSpec.describe "word filter" do
         expect(page).to have_content word
       end
 
-      fill_in t("filter.wordstarts"), with: "a"
+      click_on t("filter.open")
+      fill_in "filterrific[filter_wordstarts]", with: "a"
       find_button(t("filter.apply"), visible: false).trigger("click")
 
       expect(page).to have_content "Abfall"
       expect(page).to have_content "Abend"
       expect(page).not_to have_content "Bach"
 
-      within ".ci-filter" do
-        click_on t("filter.reset")
-      end
+      click_on t("filter.reset")
 
       words.each do |word|
         expect(page).to have_content word
@@ -47,7 +46,8 @@ RSpec.describe "word filter" do
 
     before do
       visit search_path
-      fill_in t("filter.wordstarts"), with: "ab"
+      click_on t("filter.open")
+      fill_in "filterrific[filter_wordstarts]", with: "ab"
       find_button(t("filter.apply"), visible: false).trigger("click")
     end
 
@@ -56,14 +56,14 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abbauen"
       expect(page).to have_content "abstrakt"
 
-      choose t("activerecord.models.noun.one")
+      find(:label, text: t("filter.results.nouns", count: 1)).click
       find_button(t("filter.apply"), visible: false).trigger("click")
 
       expect(page).not_to have_content "abbauen"
       expect(page).to have_content "Abend"
       expect(page).not_to have_content "abstrakt"
 
-      choose t("filter.all")
+      find(:label, text: t("filter.results.all", count: 3)).click
       expect(page).to have_content "Abend"
       expect(page).to have_content "abbauen"
       expect(page).to have_content "abstrakt"
@@ -80,7 +80,8 @@ RSpec.describe "word filter" do
     before do
       login_as user
       visit search_path
-      fill_in t("filter.wordstarts"), with: "ab"
+      click_on t("filter.open")
+      fill_in "filterrific[filter_wordstarts]", with: "ab"
       find_button(t("filter.apply"), visible: false).trigger("click")
     end
 
@@ -105,7 +106,8 @@ RSpec.describe "word filter" do
       visit search_path
     end
 
-    it "filters phonetically", js: true do
+    # This spec is currently skipped as phonetic search has ben temporarily disabled
+    it "filters phonetically", js: true, skip: true do
       # Opening/closing the filter is only necessary because Capybara doesn't
       # wait for the search to complete
       click_on t("filter.title")
