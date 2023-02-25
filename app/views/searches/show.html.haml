@@ -28,7 +28,7 @@
   .flex.flex-col.xl:flex-row
     .mt-6.hidden(class="xl:max-w-[30vh]" data-reveal-target="item")
       = render 'filters/form', f:
-    .p-6
+    .p-6.grow
       = render 'words/index', words: @words
 
 = turbo_frame_tag :add_words_to_list do

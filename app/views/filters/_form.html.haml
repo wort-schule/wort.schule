@@ -24,15 +24,15 @@
   = filter_check_box_field f, :compound
   = filter_check_box_field f, :example_sentences
 
-  .mt-2.md:col-span-3
+  .mt-4
     .hidden(data-filter-target="noun")
-      .md:grid.md:grid-cols-3.md:gap-2
+      .flex.flex-col.gap-1
         = render "filters/noun", f:
     .hidden(data-filter-target="verb")
-      .md:grid.md:grid-cols-3.md:gap-2
+      .flex.flex-col.gap-1
         = render "filters/verb", f:
     .hidden(data-filter-target="adjective")
-      .md:grid.md:grid-cols-3.md:gap-2
+      .flex.flex-col.gap-1
         = render "filters/adjective", f:
 
   = button_tag t('filter.apply'), type: 'submit', class: 'sr-only', title: t('filter.apply')
