@@ -1,12 +1,14 @@
 %h1= t '.title'
 
-= form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words_filter', turbo_action: 'advance', controller: 'form-submission filter reveal' } } do |f|
+= form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words_filter', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
+  = hidden_field_tag :is_filter_open, params[:is_filter_open]
   .flex.flex-wrap.gap-4
     .flex-grow
       = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
-    %button.flex.button.items-center.gap-1(data-action="click->reveal#toggle" data-reveal-target="item" type="button")
-      = heroicon 'sparkles'
-      = t('filter.open')
+    - unless @is_filter_open
+      = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex button items-center gap-1' do
+        = heroicon 'sparkles'
+        = t('filter.open')
 
   .px-6.mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
     .flex.items-center.gap-2
@@ -26,7 +28,7 @@
       = f.label :filter_type, t('filter.results.function_words', count: @counts[:function_words]), value: 'FunctionWord'
 
   .flex.flex-col.xl:flex-row
-    .mt-6.hidden(class="xl:max-w-[30vh]" data-reveal-target="item")
+    .mt-6(class="xl:max-w-[30vh] #{@is_filter_open ? '' : 'hidden'}")
       = render 'filters/form', f:
     .p-6.grow
       = render 'words/index', words: @words

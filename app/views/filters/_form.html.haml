@@ -1,6 +1,6 @@
 = box class: 'ci-filter' do
   .flex.justify-center
-    %button.hidden.flex.mb-6.button.items-center.gap-1(data-action="click->reveal#toggle" data-reveal-target="item")
+    = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex mb-6 button items-center gap-1' do
       = heroicon 'x-mark'
       = t('filter.close')
 

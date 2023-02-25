@@ -21,6 +21,8 @@ class SearchesController < PublicController
       adjectives: count_for("Adjective"),
       function_words: count_for("FunctionWord")
     }
+
+    @is_filter_open = params[:is_filter_open] == "true"
   end
 
   private
