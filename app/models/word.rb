@@ -60,7 +60,7 @@ class Word < ApplicationRecord
       end
     end
 
-  has_one_attached :audio
+  has_many_attached :audios
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png
     attachable.variant :open_graph, resize_to_fill: [1080, nil], format: :png
@@ -78,7 +78,7 @@ class Word < ApplicationRecord
   before_save :sanitize_example_sentences
   before_save :update_cologne_phonetics
 
-  after_save :handle_audio_attachment
+  after_save :handle_audio_attachments
 
   validates :slug, presence: true, uniqueness: true
 
@@ -155,6 +155,22 @@ class Word < ApplicationRecord
     session[:words_hit_counter][id.to_s] = Time.zone.now.iso8601
   end
 
+  # Generates a unique slug for the given example sentence. This is used to give the attachments a deterministic name.
+  def slug_for_example_sentence(sentence)
+    Digest::SHA256.hexdigest(sentence).first(6)
+  end
+
+  # Returns the audio attachment for the word itself.
+  def audio_for_word
+    audios.all.find { |a| a.filename == "audio.mp3" }
+  end
+
+  # Returns the audio attachment for the given example sentence.
+  def audio_for_example_sentence(sentence)
+    slug = slug_for_example_sentence(sentence)
+    audios.all.find { |a| a.filename == "#{slug}.mp3" }
+  end
+
   private
 
   def set_consonant_vowel
@@ -185,13 +201,14 @@ class Word < ApplicationRecord
     self.cologne_phonetics = ColognePhonetics.encode(name)
   end
 
-  def handle_audio_attachment
+  # Hooks to react to changes in the with_tts attribute and purge or generate audio attachments.
+  def handle_audio_attachments
     return true unless saved_change_to_with_tts?
 
     if with_tts?
       TtsJob.perform_later self
     else
-      audio&.purge
+      audios&.purge
     end
   end
 end

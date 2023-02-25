@@ -1,2 +1,4 @@
-- if word&.audio&.attached?
-  %audio(src="#{url_for word.audio}" controls)
+- sentence ||= nil
+- if word&.audios&.attached?
+  - audio = sentence.present? ? word.audio_for_example_sentence(sentence) : word.audio_for_word
+  %audio(src="#{url_for audio}" controls)
