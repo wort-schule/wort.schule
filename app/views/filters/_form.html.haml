@@ -1,63 +1,67 @@
-.mt-6(data-controller="reveal")
-  %button.flex.ml-4.md:ml-0.mb-2.link.items-center.gap-1(data-action="click->reveal#toggle")
-    = heroicon 'chevron-right', options: { class: 'hidden', 'data-reveal-target': 'item' }
-    = heroicon 'chevron-down', options: { 'data-reveal-target': 'item' }
-    = t('filter.title')
-  = form_for_filterrific @filterrific, html: { data: { reveal_target: 'item', turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
-    = box class: 'mb-6 md:grid md:grid-cols-3 md:gap-2' do
-      .md:col-span-3
-        %label= t 'activerecord.attributes.word.type'
-        .flex.flex-col.md:flex-row.md:gap-4
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
-            = f.label :filter_type, t('filter.all'), value: ''
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
-            = f.label :filter_type, t('activerecord.models.noun.one'), value: 'Noun'
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
-            = f.label :filter_type, t('activerecord.models.verb.one'), value: 'Verb'
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
-            = f.label :filter_type, t('activerecord.models.adjective.one'), value: 'Adjective'
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
-            = f.label :filter_type, t('activerecord.models.function_word.one'), value: 'FunctionWord'
+= form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
+  = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
 
-      .mt-4.input
-        = filter_text_field f, :wordstarts
-      = filter_text_field f, :wordcontains
-      = filter_text_field f, :wordends
-      = filter_text_field f, :syllablescontains
-      = filter_text_field f, :cologne_phonetics
-      = filter_text_field f, :letters
-      = filter_select_field f, :source, collection: Source.order(:name).map { |s| [s.name, s.id] }
-      = filter_select_field f, :topic, collection: Topic.order(:name).map { |t| [t.name, t.id] }
-      = filter_select_field f, :hierarchy, collection: Hierarchy.order(:name).map { |h| [h.name, h.id] }
-      = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase'
-      = filter_select_field_with_and_or f, :phenomenons, collection: Phenomenon.as_collection
-      = filter_select_field_with_and_or f, :strategies, collection: Strategy.as_collection
-      = filter_select_field_with_and_or f, :keywords, collection: Word.as_collection
-      = filter_check_box_field f, :foreign
-      = filter_check_box_field f, :prototype
-      = filter_check_box_field f, :compound
-      = filter_check_box_field f, :example_sentences
+  .mt-6.ci-filter(data-controller="reveal")
+    %button.flex.ml-4.md:ml-0.mb-2.link.items-center.gap-1(data-action="click->reveal#toggle")
+      = heroicon 'chevron-right', options: { class: 'hidden', 'data-reveal-target': 'item' }
+      = heroicon 'chevron-down', options: { 'data-reveal-target': 'item' }
+      = t('filter.title')
 
-      .mt-2.md:col-span-3
-        .hidden(data-filter-target="noun")
-          .md:grid.md:grid-cols-3.md:gap-2
-            = render "filters/noun", f:
-        .hidden(data-filter-target="verb")
-          .md:grid.md:grid-cols-3.md:gap-2
-            = render "filters/verb", f:
-        .hidden(data-filter-target="adjective")
-          .md:grid.md:grid-cols-3.md:gap-2
-            = render "filters/adjective", f:
+    %div{data: { reveal_target: 'item' }}
+      = box class: 'mb-6 md:grid md:grid-cols-3 md:gap-2' do
+        .md:col-span-3
+          %label= t 'activerecord.attributes.word.type'
+          .flex.flex-col.md:flex-row.md:gap-4
+            .flex.items-center.gap-2
+              = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
+              = f.label :filter_type, t('filter.all'), value: ''
+            .flex.items-center.gap-2
+              = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
+              = f.label :filter_type, t('activerecord.models.noun.one'), value: 'Noun'
+            .flex.items-center.gap-2
+              = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
+              = f.label :filter_type, t('activerecord.models.verb.one'), value: 'Verb'
+            .flex.items-center.gap-2
+              = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
+              = f.label :filter_type, t('activerecord.models.adjective.one'), value: 'Adjective'
+            .flex.items-center.gap-2
+              = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
+              = f.label :filter_type, t('activerecord.models.function_word.one'), value: 'FunctionWord'
 
-      .mt-2
-        .flex.gap-2
-          = button_tag t('filter.apply'), type: 'submit', class: 'sr-only', title: t('filter.apply')
-          = link_to reset_filterrific_url, class: 'button mt-4' do
-            .flex.gap-2
-              = heroicon 'x-mark'
-              = t('filter.reset')
+        .mt-4.input
+          = filter_text_field f, :wordstarts
+        = filter_text_field f, :wordcontains
+        = filter_text_field f, :wordends
+        = filter_text_field f, :syllablescontains
+        = filter_text_field f, :cologne_phonetics
+        = filter_text_field f, :letters
+        = filter_select_field f, :source, collection: Source.order(:name).map { |s| [s.name, s.id] }
+        = filter_select_field f, :topic, collection: Topic.order(:name).map { |t| [t.name, t.id] }
+        = filter_select_field f, :hierarchy, collection: Hierarchy.order(:name).map { |h| [h.name, h.id] }
+        = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase'
+        = filter_select_field_with_and_or f, :phenomenons, collection: Phenomenon.as_collection
+        = filter_select_field_with_and_or f, :strategies, collection: Strategy.as_collection
+        = filter_select_field_with_and_or f, :keywords, collection: Word.as_collection
+        = filter_check_box_field f, :foreign
+        = filter_check_box_field f, :prototype
+        = filter_check_box_field f, :compound
+        = filter_check_box_field f, :example_sentences
+
+        .mt-2.md:col-span-3
+          .hidden(data-filter-target="noun")
+            .md:grid.md:grid-cols-3.md:gap-2
+              = render "filters/noun", f:
+          .hidden(data-filter-target="verb")
+            .md:grid.md:grid-cols-3.md:gap-2
+              = render "filters/verb", f:
+          .hidden(data-filter-target="adjective")
+            .md:grid.md:grid-cols-3.md:gap-2
+              = render "filters/adjective", f:
+
+        .mt-2
+          .flex.gap-2
+            = button_tag t('filter.apply'), type: 'submit', class: 'sr-only', title: t('filter.apply')
+            = link_to reset_filterrific_url, class: 'button mt-4' do
+              .flex.gap-2
+                = heroicon 'x-mark'
+                = t('filter.reset')
