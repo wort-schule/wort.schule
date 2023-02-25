@@ -66,9 +66,10 @@
   = two_column_card t('words.show.example_sentences.title'), t('words.show.example_sentences.description') do
     = box padding: false, class: 'striped' do
       - @noun.example_sentences.each do |sentence|
-        .p-4
+        .p-4.flex.flex-wrap.justify-between.gap-4.items-center
           = sentence
-          .align-middle.inline-block.ml-5= render 'words/tts', word: @noun, sentence: sentence
+          = render 'words/tts', word: @noun, sentence: sentence
+
 
 = render 'words/general', word: @noun
 
