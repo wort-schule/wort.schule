@@ -5,13 +5,14 @@
   = hidden_field_tag :is_filter_open, params[:is_filter_open]
 
   .content.pb-0
-    .flex.flex-wrap.gap-4
-      .flex-grow
-        = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
-      - unless @is_filter_open
-        = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex button items-center gap-1' do
-          = heroicon 'sparkles'
-          = t('filter.open')
+    .my-10.mx-auto(class="max-w-[50vw]")
+      .flex.flex-wrap.gap-4
+        .flex-grow
+          = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
+        - unless @is_filter_open
+          = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex button items-center gap-1' do
+            = heroicon 'sparkles'
+            = t('filter.open')
 
     .px-6.mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
       .flex.items-center.gap-2
