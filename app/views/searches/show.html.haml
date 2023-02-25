@@ -1,10 +1,10 @@
 %h1= t '.title'
 
-= form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission filter reveal' } } do |f|
+= form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words_filter', turbo_action: 'advance', controller: 'form-submission filter reveal' } } do |f|
   .flex.flex-wrap.gap-4
     .flex-grow
       = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
-    %button.flex.button.items-center.gap-1(data-action="click->reveal#toggle" data-reveal-target="item")
+    %button.flex.button.items-center.gap-1(data-action="click->reveal#toggle" data-reveal-target="item" type="button")
       = heroicon 'sparkles'
       = t('filter.open')
 
