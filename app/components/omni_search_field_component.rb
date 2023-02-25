@@ -22,7 +22,7 @@ class OmniSearchFieldComponent < ViewComponent::Base
       }
     else
       {
-        action: "input->form-submission#search keydown->home-search#input",
+        action: "input->form-submission#search keyup->home-search#input",
         "home-search-target": "input"
       }
     end

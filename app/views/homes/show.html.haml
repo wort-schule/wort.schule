@@ -1,13 +1,13 @@
-%h1 
-.flex.justify-center
-  = image_tag 'logo_transparent.svg', alt: '', class: 'max-w-md'
+%div(data-controller="home-search")
+  .flex.justify-center
+    = image_tag 'logo_transparent.svg', alt: '', class: 'max-w-md', 'data-home-search-target': 'logo'
 
-= render 'search_form'
+  = render 'search_form'
 
-= turbo_frame_tag 'words' do
-  - if @words.present?
-    .bg-white.pt-6.rounded-3xl.rounded-tl-none.rounded-tr-none.mx-auto(class="md:max-w-[50vw]" style="margin-top: -0.5rem")
-      = render partial: 'search_result', collection: @words, as: :word
+  = turbo_frame_tag 'words' do
+    - if @words.present?
+      .bg-white.pt-4.rounded-3xl.rounded-tl-none.rounded-tr-none.mx-auto(class="md:max-w-[50vw]" style="margin-top: -0.5rem")
+        = render partial: 'search_result', collection: @words, as: :word
 
-      .p-6.text-center
-        = link_to t('.show_x_results', count: @words.total_count), search_path(request.params), 'data-turbo-frame': '_top', class: 'button'
+        .p-6.text-center
+          = link_to t('.show_x_results', count: @words.total_count), search_path(request.params), 'data-turbo-frame': '_top', class: 'button'
