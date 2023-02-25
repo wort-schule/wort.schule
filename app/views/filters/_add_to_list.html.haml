@@ -4,7 +4,7 @@
 
 - if can?(:add_word, List) && lists.present?
   .mt-4(data-controller="reveal")
-    %button.flex.ml-4.md:ml-0.mb-2.link.items-center.gap-1(data-action="click->reveal#toggle")
+    %button.flex.ml-4.md:ml-0.mb-2.link.items-center.gap-1(data-action="click->reveal#toggle" type="button")
       = heroicon 'chevron-right', options: { class: content.blank? ? '' : 'hidden', 'data-reveal-target': 'item' }
       = heroicon 'chevron-down', options: { class: content.present? ? '' : 'hidden', 'data-reveal-target': 'item' }
       = t('filter.add_words_to_list')

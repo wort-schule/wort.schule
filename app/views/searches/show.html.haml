@@ -30,3 +30,6 @@
       = render 'filters/form', f:
     .p-6
       = render 'words/index', words: @words
+
+= turbo_frame_tag :add_words_to_list do
+  = render 'filters/add_to_list'

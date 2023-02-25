@@ -1,7 +1,4 @@
 = turbo_frame_tag 'words' do
-  = turbo_frame_tag :add_words_to_list do
-    = render 'filters/add_to_list'
-
   = index_grid do
     - words.each do |word|
       = render word
