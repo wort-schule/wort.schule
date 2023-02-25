@@ -5,33 +5,15 @@
     = t('filter.title')
 
   %div{data: { reveal_target: 'item' }}
-    = box class: 'mb-6 md:grid md:grid-cols-3 md:gap-2' do
-      .md:col-span-3
-        %label= t 'activerecord.attributes.word.type'
-        .flex.flex-col.md:flex-row.md:gap-4
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
-            = f.label :filter_type, t('filter.all'), value: ''
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
-            = f.label :filter_type, t('activerecord.models.noun.one'), value: 'Noun'
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
-            = f.label :filter_type, t('activerecord.models.verb.one'), value: 'Verb'
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
-            = f.label :filter_type, t('activerecord.models.adjective.one'), value: 'Adjective'
-          .flex.items-center.gap-2
-            = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
-            = f.label :filter_type, t('activerecord.models.function_word.one'), value: 'FunctionWord'
-
-      .mt-4.input
-        = filter_text_field f, :wordstarts
-      = filter_text_field f, :wordcontains
-      = filter_text_field f, :wordends
-      = filter_text_field f, :syllablescontains
-      = filter_text_field f, :cologne_phonetics
-      = filter_text_field f, :letters
+    = box do
+      %div= t 'filter.word_contains'
+      .flex.gap-2
+        = filter_text_field f, :wordstarts, inline: true, label: false, placeholder: t('filter.wordstarts')
+        = filter_text_field f, :wordcontains, inline: true, label: false, placeholder: t('filter.wordcontains')
+        = filter_text_field f, :wordends, inline: true, label: false, placeholder: t('filter.wordends')
+      .flex.gap-2.items-end
+        = filter_text_field f, :syllablescontains
+        = filter_text_field f, :letters
       = filter_select_field f, :source, collection: Source.order(:name).map { |s| [s.name, s.id] }
       = filter_select_field f, :topic, collection: Topic.order(:name).map { |t| [t.name, t.id] }
       = filter_select_field f, :hierarchy, collection: Hierarchy.order(:name).map { |h| [h.name, h.id] }

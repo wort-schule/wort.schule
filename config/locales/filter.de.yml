@@ -6,12 +6,13 @@ de:
     all: Alle
     and: und
     or: oder
-    wordstarts: Wortanfang
-    wordcontains: Wort enthält
-    wordends: Wortende
+    word_contains: Wort enthält
+    wordstarts: Anfang
+    wordcontains: Mitte
+    wordends: Ende
     syllablescontains: Silben
     cologne_phonetics: Phonetisch
-    letters: verwendete Buchstaben
+    letters: Buchstaben
     source: Quelle
     topic: Thema
     hierarchy: Kategorie

@@ -3,6 +3,23 @@
 = form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
   = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
 
+  .flex.flex-col.md:flex-row.md:gap-4
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
+      = f.label :filter_type, t('filter.all'), value: ''
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
+      = f.label :filter_type, t('activerecord.models.noun.one'), value: 'Noun'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
+      = f.label :filter_type, t('activerecord.models.verb.one'), value: 'Verb'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
+      = f.label :filter_type, t('activerecord.models.adjective.one'), value: 'Adjective'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
+      = f.label :filter_type, t('activerecord.models.function_word.one'), value: 'FunctionWord'
+
   .flex.flex-col.xl:flex-row
     %div(class="xl:max-w-[30vh]")
       = render 'filters/form', f:

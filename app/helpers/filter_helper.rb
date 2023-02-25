@@ -2,9 +2,14 @@ module FilterHelper
   def filter_text_field(form, attribute, **input_options)
     form_attribute = "filter_#{attribute}"
 
+    inline = input_options.delete(:inline)
+    input_field = form.text_field form_attribute, input_options.deep_merge(data: {action: "input->form-submission#search"})
+
+    return input_field if inline
+
     content_tag :div, class: "input" do
       concat form.label form_attribute, I18n.t("filter.#{attribute}")
-      concat form.text_field form_attribute, input_options.deep_merge(data: {action: "input->form-submission#search"})
+      concat input_field
     end
   end
 
@@ -22,9 +27,11 @@ module FilterHelper
 
     content_tag :div, class: "input" do
       concat form.label form_attribute, I18n.t("filter.#{attribute}")
-      concat(form.fields_for(form_attribute) do |fields|
-        concat fields.select :conjunction, [[I18n.t("filter.and"), "and"], [I18n.t("filter.or"), "or"]], {}, data: {action: "input->form-submission#search"}
-        concat fields.select attribute, collection, {include_blank: true, selected: @filterrific.public_send(form_attribute)}, multiple: true, data: {action: "input->form-submission#search", controller: "select"}, class: "select default-input w-full flex-grow"
+      concat(content_tag(:div, class: "flex gap-2 items-start") do
+        concat(form.fields_for(form_attribute) do |fields|
+          concat fields.select :conjunction, [[I18n.t("filter.and"), "and"], [I18n.t("filter.or"), "or"]], {}, data: {action: "input->form-submission#search"}, style: "flex-shrink: 3"
+          concat fields.select attribute, collection, {include_blank: true, selected: @filterrific.public_send(form_attribute)}, multiple: true, data: {action: "input->form-submission#search", controller: "select"}, class: "select default-input w-full flex-grow", style: "flex-shrink: 1"
+        end)
       end)
     end
   end
