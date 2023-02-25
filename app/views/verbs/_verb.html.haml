@@ -1,10 +1,1 @@
-= link_to verb, data: { turbo_frame: '_top' }, id: dom_id(verb) do
-  = box padding: false, class: 'h-full' do
-    .flex.h-full
-      - if verb.image.attached?
-        = image_tag verb.image.variant(:thumb), class: 'w-24 h-24'
-      - else
-        .bg-gray-50.w-24.h-24
-      .px-4.py-5.sm:px-6
-        .text-xl.font-medium= verb.name
-        .text-md= verb.syllables
+= render WordPanelComponent.new(word: verb)
