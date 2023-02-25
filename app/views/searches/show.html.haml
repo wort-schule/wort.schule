@@ -8,7 +8,7 @@
       = heroicon 'sparkles'
       = t('filter.open')
 
-  .mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
+  .px-6.mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
     .flex.items-center.gap-2
       = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
       = f.label :filter_type, t('filter.results.all', count: @counts[:all]), value: ''
