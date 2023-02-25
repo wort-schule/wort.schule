@@ -1,3 +1,5 @@
+@import 'components/tabbed_radio_buttons' layer(components);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

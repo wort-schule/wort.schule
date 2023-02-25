@@ -6,12 +6,13 @@ de:
     all: Alle
     and: und
     or: oder
-    wordstarts: Wortanfang
-    wordcontains: Wort enthält
-    wordends: Wortende
+    word_contains: Wort enthält
+    wordstarts: Anfang
+    wordcontains: Mitte
+    wordends: Ende
     syllablescontains: Silben
     cologne_phonetics: Phonetisch
-    letters: verwendete Buchstaben
+    letters: Buchstaben
     source: Quelle
     topic: Thema
     hierarchy: Kategorie
@@ -37,3 +38,21 @@ de:
     added_words_to_list:
       one: '%{count} Wort hinzugefügt'
       other: '%{count} Wörter hinzugefügt'
+    close: Suchfilter schließen
+    open: Suchfilter
+    results:
+      all:
+        one: '%{count} Ergebnis'
+        other: '%{count} Ergebnisse'
+      nouns:
+        one: '%{count} Substantiv'
+        other: '%{count} Substantive'
+      verbs:
+        one: '%{count} Verb'
+        other: '%{count} Verben'
+      adjectives:
+        one: '%{count} Adjektiv'
+        other: '%{count} Adjektive'
+      function_words:
+        one: '%{count} Funktionswort'
+        other: '%{count} Funktionswörter'

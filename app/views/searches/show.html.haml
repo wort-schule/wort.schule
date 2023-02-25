@@ -1,4 +1,37 @@
 %h1= t '.title'
 
-= render 'filters/form'
-= render 'words/index', words: @words
+= form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words_filter', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
+  = hidden_field_tag :is_filter_open, params[:is_filter_open]
+  .flex.flex-wrap.gap-4
+    .flex-grow
+      = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
+    - unless @is_filter_open
+      = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex button items-center gap-1' do
+        = heroicon 'sparkles'
+        = t('filter.open')
+
+  .px-6.mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
+      = f.label :filter_type, t('filter.results.all', count: @counts[:all]), value: ''
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
+      = f.label :filter_type, t('filter.results.nouns', count: @counts[:nouns]), value: 'Noun'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
+      = f.label :filter_type, t('filter.results.verbs', count: @counts[:verbs]), value: 'Verb'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
+      = f.label :filter_type, t('filter.results.adjectives', count: @counts[:adjectives]), value: 'Adjective'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
+      = f.label :filter_type, t('filter.results.function_words', count: @counts[:function_words]), value: 'FunctionWord'
+
+  .flex.flex-col.xl:flex-row
+    .mt-6(class="xl:max-w-[30vh] #{@is_filter_open ? '' : 'hidden'}")
+      = render 'filters/form', f:
+    .p-6.grow
+      = render 'words/index', words: @words
+
+= turbo_frame_tag :add_words_to_list do
+  = render 'filters/add_to_list'

@@ -1,0 +1,11 @@
+.tabbed-radio-buttons input[type="radio"] {
+  @apply hidden;
+}
+
+.tabbed-radio-buttons input[type="radio"] + label {
+  @apply pb-2 border-transparent border-b-4 cursor-pointer;
+}
+
+.tabbed-radio-buttons input[type="radio"]:checked + label {
+  @apply font-bold border-primary;
+}
