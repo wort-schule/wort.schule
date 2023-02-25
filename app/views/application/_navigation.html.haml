@@ -3,9 +3,8 @@
     .flex.items-center.justify-between.h-16
       .flex.items-center
         .flex-shrink-0
-          .h-10.w-10.flex.items-center.justify-center
-            = link_to root_path do
-              = image_tag 'logo.svg', class: 'h-8 w-8', alt: 'Wort.Schule Logo'
+          .flex.items-center.justify-center
+            = link_to t('navigation.site_title'), root_path, class: 'text-white font-bold text-3xl uppercase'
 
       = render 'desktop_user_menu'
 
