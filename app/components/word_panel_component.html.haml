@@ -7,8 +7,8 @@
           .text-xl.font-bold= word.name
         .uppercase.text-xs.font-light.mt-3= word.model_name.human
 
-      .p-1.pr-4
+      .p-1.pr-4.flex.items-center.object-cover
         - if word.image.attached?
-          = image_tag word.image.variant(:thumb), class: 'w-24 h-24'
+          = image_tag word.image.variant(:thumb), class: 'w-24 h-full object-cover'
         - else
           .w-24.h-24

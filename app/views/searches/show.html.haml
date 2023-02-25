@@ -31,10 +31,10 @@
         = f.label :filter_type, t('filter.results.function_words', count: @counts[:function_words]), value: 'FunctionWord'
 
   .bg-gray-background.border-t.border-gray-border
-    .pt-0.flex.flex-col.xl:flex-row
-      %div(class="xl:max-w-[30vh] #{@is_filter_open ? '' : 'hidden'}")
+    .pt-0.flex.flex-col.md:flex-row
+      %div(class="md:max-w-[40vh] #{@is_filter_open ? '' : 'hidden'}")
         = render 'filters/form', f:
-      .p-6.grow
+      .p-6.pt-0.grow
         = render 'words/index', words: @words
 
 .content
