@@ -1,0 +1,17 @@
+.hidden.md:block
+  .px-6.mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
+      = f.label :filter_type, t('filter.results.all', count: number_with_delimiter(@counts[:all])), value: ''
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
+      = f.label :filter_type, t('filter.results.nouns', count: number_with_delimiter(@counts[:nouns])), value: 'Noun'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
+      = f.label :filter_type, t('filter.results.verbs', count: number_with_delimiter(@counts[:verbs])), value: 'Verb'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
+      = f.label :filter_type, t('filter.results.adjectives', count: number_with_delimiter(@counts[:adjectives])), value: 'Adjective'
+    .flex.items-center.gap-2
+      = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
+      = f.label :filter_type, t('filter.results.function_words', count: number_with_delimiter(@counts[:function_words])), value: 'FunctionWord'

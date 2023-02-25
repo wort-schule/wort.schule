@@ -1,5 +1,5 @@
 !!!
-%html.h-full(class=background_color)
+%html.h-full
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     - app_name = "wort.schule"
@@ -20,7 +20,7 @@
     %meta{:content => "#00aba9", :name => "msapplication-TileColor"}/
     %meta{:content => "#ffffff", :name => "theme-color"}/
 
-  %body.h-full
+  %body.h-full(class=background_color)
     .min-h-full.flex.flex-col.justify-between
       %div
         = render 'navigation'

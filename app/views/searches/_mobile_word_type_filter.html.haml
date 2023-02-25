@@ -1,0 +1,22 @@
+.md:hidden
+  - word_type = (params.dig(:filterrific, :filter_type).presence || :all).to_sym.clamped([:all, :Noun, :Verb, :Adjective, :FunctionWord])
+
+  .p-6.pb-0.flex.items-center.justify-between
+    = t('filter.results.all', count: number_with_delimiter(@words.total_count))
+
+    .text-black.font-bold.px-3.py-2
+      .relative(data-controller="dropdown reveal")
+        .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
+          %span.appearance-none.flex.items-center.inline-block.gap-1
+            - if word_type == :all
+              = t('filter.results.all_results')
+            - else
+              - word_class = word_type.to_s.constantize
+              = word_class.model_name.human(count: 2)
+            = heroicon 'chevron-down'
+
+        .absolute.right-0.mt-2.hidden.z-50(data-dropdown-target="menu")
+          .shadow.rounded-md.border.overflow-hidden.bg-white
+            = link_to t('filter.results.all_results'), url_for(request.params.merge('filterrific[filter_type]': '')), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
+            - [Noun, Verb, Adjective, FunctionWord].each do |type|
+              = link_to type.model_name.human(count: 2), url_for(request.params.merge('filterrific[filter_type]': type.model_name.name)), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'

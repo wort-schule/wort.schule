@@ -2,33 +2,21 @@
   = hidden_field_tag :is_filter_open, params[:is_filter_open]
 
   .content.pb-0
-    .my-10.mx-auto(class="max-w-[50vw]")
-      .flex.flex-wrap.gap-4
+    .md:my-10.mx-auto(class="lg:max-w-[50vw]")
+      .flex.flex-wrap.gap-4.justify-center.items-end.px-8.md:py-8
         .flex-grow
           = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
-        - unless @is_filter_open
-          = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex button items-center gap-1' do
-            = heroicon 'sparkles'
-            = t('filter.open')
+        %div
+          - unless @is_filter_open
+            = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'button' do
+              .flex.items-center.gap-1
+                = heroicon 'sparkles'
+                = t('filter.open')
 
-    .px-6.mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
-      .flex.items-center.gap-2
-        = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
-        = f.label :filter_type, t('filter.results.all', count: @counts[:all]), value: ''
-      .flex.items-center.gap-2
-        = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
-        = f.label :filter_type, t('filter.results.nouns', count: @counts[:nouns]), value: 'Noun'
-      .flex.items-center.gap-2
-        = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
-        = f.label :filter_type, t('filter.results.verbs', count: @counts[:verbs]), value: 'Verb'
-      .flex.items-center.gap-2
-        = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
-        = f.label :filter_type, t('filter.results.adjectives', count: @counts[:adjectives]), value: 'Adjective'
-      .flex.items-center.gap-2
-        = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
-        = f.label :filter_type, t('filter.results.function_words', count: @counts[:function_words]), value: 'FunctionWord'
+    = render 'mobile_word_type_filter', f:
+    = render 'desktop_word_type_filter', f:
 
-  .bg-gray-background.border-t.border-gray-border
+  .bg-gray-background.border-t-4.border-primary.md:border-t.md:border-gray-border
     .pt-0.flex.flex-col.md:flex-row
       %div(class="md:max-w-[40vh] #{@is_filter_open ? '' : 'hidden'}")
         = render 'filters/form', f:
