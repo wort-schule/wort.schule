@@ -1,4 +1,7 @@
 %h1= t '.title'
 
-= render 'filters/form'
+= form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance', controller: 'form-submission filter' } } do |f|
+  = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: true)
+
+  = render 'filters/form', f:
 = render 'words/index', words: @words
