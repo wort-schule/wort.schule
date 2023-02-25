@@ -30,7 +30,9 @@ RSpec.describe "word filter" do
       expect(page).to have_content "Abend"
       expect(page).not_to have_content "Bach"
 
-      click_on t("filter.reset")
+      within ".ci-filter" do
+        click_on t("filter.reset")
+      end
 
       words.each do |word|
         expect(page).to have_content word
