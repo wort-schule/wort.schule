@@ -40,3 +40,19 @@ de:
       other: '%{count} Wörter hinzugefügt'
     close: Suchfilter schließen
     open: Suchfilter
+    results:
+      all:
+        one: '%{count} Ergebnis'
+        other: '%{count} Ergebnisse'
+      nouns:
+        one: '%{count} Substantiv'
+        other: '%{count} Substantive'
+      verbs:
+        one: '%{count} Verb'
+        other: '%{count} Verben'
+      adjectives:
+        one: '%{count} Adjektiv'
+        other: '%{count} Adjektive'
+      function_words:
+        one: '%{count} Funktionswort'
+        other: '%{count} Funktionswörter'

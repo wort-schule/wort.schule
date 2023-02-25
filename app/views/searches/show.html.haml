@@ -8,22 +8,22 @@
       = heroicon 'sparkles'
       = t('filter.open')
 
-  .flex.flex-col.md:flex-row.md:gap-4
+  .mt-12.flex.flex-col.justify-center.md:flex-row.gap-2.md:gap-8.tabbed-radio-buttons
     .flex.items-center.gap-2
       = f.radio_button :filter_type, '', data: {action: "input->form-submission#search click->filter#hideAll"}
-      = f.label :filter_type, t('filter.all'), value: ''
+      = f.label :filter_type, t('filter.results.all', count: @counts[:all]), value: ''
     .flex.items-center.gap-2
       = f.radio_button :filter_type, 'Noun', data: {action: "input->form-submission#search click->filter#showNoun"}
-      = f.label :filter_type, t('activerecord.models.noun.one'), value: 'Noun'
+      = f.label :filter_type, t('filter.results.nouns', count: @counts[:nouns]), value: 'Noun'
     .flex.items-center.gap-2
       = f.radio_button :filter_type, 'Verb', data: {action: "input->form-submission#search click->filter#showVerb"}
-      = f.label :filter_type, t('activerecord.models.verb.one'), value: 'Verb'
+      = f.label :filter_type, t('filter.results.verbs', count: @counts[:verbs]), value: 'Verb'
     .flex.items-center.gap-2
       = f.radio_button :filter_type, 'Adjective', data: {action: "input->form-submission#search click->filter#showAdjective"}
-      = f.label :filter_type, t('activerecord.models.adjective.one'), value: 'Adjective'
+      = f.label :filter_type, t('filter.results.adjectives', count: @counts[:adjectives]), value: 'Adjective'
     .flex.items-center.gap-2
       = f.radio_button :filter_type, 'FunctionWord', data: {action: "input->form-submission#search click->filter#showFunctionWord"}
-      = f.label :filter_type, t('activerecord.models.function_word.one'), value: 'FunctionWord'
+      = f.label :filter_type, t('filter.results.function_words', count: @counts[:function_words]), value: 'FunctionWord'
 
   .flex.flex-col.xl:flex-row
     .mt-6.hidden(class="xl:max-w-[30vh]" data-reveal-target="item")
