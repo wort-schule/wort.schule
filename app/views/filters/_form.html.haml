@@ -1,4 +1,4 @@
-= box class: 'ci-filter' do
+.ci-filter.p-5.bg-gray-background-highlight
   .flex.justify-center
     = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex mb-6 button items-center gap-1' do
       = heroicon 'x-mark'

@@ -1,5 +1,5 @@
 !!!
-%html.h-full.bg-gray-100
+%html.h-full(class=background_color)
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     - app_name = "wort.schule"
@@ -32,7 +32,7 @@
                 = message
 
         %main
-          .max-w-7xl.mx-auto.py-6.sm:px-6.lg:px-8
+          %div{ class: full_width? ? '' : 'content' }
             = yield
 
       = render 'footer'

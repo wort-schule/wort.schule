@@ -33,4 +33,12 @@ class SearchesController < PublicController
       (params[:filterrific] || {}).merge(filter_type: word_type)
     ).find.count
   end
+
+  def background_color
+    "bg-white"
+  end
+
+  def full_width?
+    true
+  end
 end
