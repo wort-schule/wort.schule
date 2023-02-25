@@ -14,7 +14,7 @@ module ComponentsHelper
 
     classes += padding ? " px-4 py-5 sm:px-6" : ""
 
-    content_tag "div", options.merge(class: "box bg-white shadow sm:rounded-lg #{classes}") do
+    content_tag "div", options.merge(class: "box bg-white shadow rounded-3xl #{classes}") do
       yield
     end
   end
