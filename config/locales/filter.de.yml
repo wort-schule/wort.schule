@@ -38,3 +38,5 @@ de:
     added_words_to_list:
       one: '%{count} Wort hinzugefügt'
       other: '%{count} Wörter hinzugefügt'
+    close: Suchfilter schließen
+    open: Suchfilter
