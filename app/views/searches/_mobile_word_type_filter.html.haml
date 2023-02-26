@@ -4,7 +4,7 @@
   .p-6.pb-0.flex.items-center.justify-between
     = t('filter.results.all', count: number_with_delimiter(@words.total_count))
 
-    .text-black.font-bold.px-3.py-2
+    .text-black.px-3.py-2
       .relative(data-controller="dropdown reveal")
         .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
           %span.appearance-none.flex.items-center.inline-block.gap-1
