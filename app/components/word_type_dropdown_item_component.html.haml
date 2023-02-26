@@ -1,0 +1,4 @@
+- if has_results?
+  = link_to link_title, filter_url, 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
+- else
+  .block.text-gray-300.px-8.py-3.hover:text-primary= link_title

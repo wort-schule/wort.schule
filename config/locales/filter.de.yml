@@ -41,7 +41,7 @@ de:
     close: Suchfilter schließen
     open: Suchfilter
     results:
-      all_results: Alle Wortarten
+      all_results: Wortarten
       all:
         one: '%{count} Ergebnis'
         other: '%{count} Ergebnisse'

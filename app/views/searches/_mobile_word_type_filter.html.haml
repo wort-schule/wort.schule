@@ -4,7 +4,7 @@
   .p-6.pb-0.flex.items-center.justify-between
     = t('filter.results.all', count: number_with_delimiter(@words.total_count))
 
-    .text-black.font-bold.px-3.py-2
+    .text-black.px-3.py-2
       .relative(data-controller="dropdown reveal")
         .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
           %span.appearance-none.flex.items-center.inline-block.gap-1
@@ -17,6 +17,4 @@
 
         .absolute.right-0.mt-2.hidden.z-50(data-dropdown-target="menu")
           .shadow.rounded-md.border.overflow-hidden.bg-white
-            = link_to t('filter.results.all_results'), url_for(request.params.deep_merge('filterrific': {filter_type: ''})), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
-            - [Noun, Verb, Adjective, FunctionWord].each do |type|
-              = link_to type.model_name.human(count: 2), url_for(request.params.deep_merge('filterrific': {filter_type: type.model_name.name})), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
+            = render WordTypeDropdownItemComponent.with_collection([:all, Noun, Verb, Adjective, FunctionWord], counts: @counts)
