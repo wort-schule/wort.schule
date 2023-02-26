@@ -62,14 +62,7 @@
                   = @noun.public_send("case_#{index}_plural")
                 .text-sm.text-gray-400= t Noun.human_attribute_name(:plural)
 
-- if @noun.example_sentences.present?
-  = two_column_card t('words.show.example_sentences.title'), t('words.show.example_sentences.description') do
-    = box padding: false, class: 'striped' do
-      - @noun.example_sentences.each do |sentence|
-        .p-4.flex.flex-wrap.justify-between.gap-4.items-center
-          = sentence
-          = render 'words/tts', word: @noun, sentence: sentence
-
+= render 'example_sentences/list', word: @noun
 
 = render 'words/general', word: @noun
 
