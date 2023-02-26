@@ -430,6 +430,30 @@ RSpec.describe Word do
       }.to have_enqueued_job(TtsJob).with(word)
     end
 
+    it "is automatically regenerated when the example sentences or the name of the word changes" do
+      word = create(:noun, name: "Adler", with_tts: true)
+
+      expect {
+        word.update!(name: "Geier")
+      }.to have_enqueued_job(TtsJob).with(word)
+
+      expect {
+        word.update!(example_sentences: ["Beispiel-Satz 1"])
+      }.to have_enqueued_job(TtsJob).with(word)
+
+      expect {
+        word.update!(example_sentences: ["Beispiel-Satz 1", "Beispiel-Satz 2"])
+      }.to have_enqueued_job(TtsJob).with(word)
+    end
+
+    it "is not automatically regenerated when neither the example sentences nor the name of the word changes" do
+      word = create(:noun, name: "Adler", with_tts: true, example_sentences: ["Beispiel-Satz 1"])
+
+      expect {
+        word.update!(plural: "Adlers")
+      }.not_to have_enqueued_job(TtsJob).with(word)
+    end
+
     it "is automatically removed when with_tts is set to false" do
       word = create(:noun, name: "Adler")
       word.audios.attach(fixture_file_upload("audio.mp3", "audio/mpeg"))
