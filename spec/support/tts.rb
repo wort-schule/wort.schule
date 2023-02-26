@@ -5,7 +5,7 @@ RSpec.shared_examples "TTS" do |klass|
 
   context "when audio is attached" do
     it "displays the audio player" do
-      word.audio.attach(fixture_file_upload("word.mp3", "audio/mpeg"))
+      word.audios.attach(fixture_file_upload("audio.mp3", "audio/mpeg"))
 
       visit send("#{klass.model_name.singular}_path", word)
       expect(page).to have_selector("audio")

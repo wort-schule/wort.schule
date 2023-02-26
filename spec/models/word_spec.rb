@@ -423,22 +423,46 @@ RSpec.describe Word do
   describe "audio attachment" do
     it "is automatically generated when with_tts is set to true" do
       word = create(:noun, name: "Adler", with_tts: false)
-      expect(word.audio.attached?).to be false
+      expect(word.audios.attached?).to be false
 
       expect {
         word.update!(with_tts: true)
       }.to have_enqueued_job(TtsJob).with(word)
     end
 
+    it "is automatically regenerated when the example sentences or the name of the word changes" do
+      word = create(:noun, name: "Adler", with_tts: true)
+
+      expect {
+        word.update!(name: "Geier")
+      }.to have_enqueued_job(TtsJob).with(word)
+
+      expect {
+        word.update!(example_sentences: ["Beispiel-Satz 1"])
+      }.to have_enqueued_job(TtsJob).with(word)
+
+      expect {
+        word.update!(example_sentences: ["Beispiel-Satz 1", "Beispiel-Satz 2"])
+      }.to have_enqueued_job(TtsJob).with(word)
+    end
+
+    it "is not automatically regenerated when neither the example sentences nor the name of the word changes" do
+      word = create(:noun, name: "Adler", with_tts: true, example_sentences: ["Beispiel-Satz 1"])
+
+      expect {
+        word.update!(plural: "Adlers")
+      }.not_to have_enqueued_job(TtsJob).with(word)
+    end
+
     it "is automatically removed when with_tts is set to false" do
       word = create(:noun, name: "Adler")
-      word.audio.attach(fixture_file_upload("word.mp3", "audio/mpeg"))
+      word.audios.attach(fixture_file_upload("audio.mp3", "audio/mpeg"))
       word.save!
 
-      expect(word.audio.attached?).to be true
+      expect(word.audios.attached?).to be true
 
       word.update!(with_tts: false)
-      expect(word.audio.attached?).to be false
+      expect(word.audios.attached?).to be false
     end
   end
 end

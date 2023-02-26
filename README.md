@@ -81,9 +81,9 @@ To quickly test the application locally without customizing the `docker-compose.
 
 ### Processing
 
-- Processing happens in the background via `app/jobs/tts_job.rb`.
+- Processing happens in the background via `app/jobs/tts_job.rb`. This can be triggeredy manually via `TtsJob.perform_now(word)`.
 - The `good_job` gem handles the job. Start via `bundle exec good_job`
-- There is a `with_tts` flag on the word model, which determines whether an audio attachment should be generated.
+- There is a `with_tts` flag on the word model, which determines whether an audio attachment for both the word itself and it's example sentences should be generated.
 - The audio is generated via Google Cloud Text to Speech API and attached to the word.
 - There is a dedicated log file for the job in `log/tts.log`.
 - The voice is randomly selected from the list in the config file.
