@@ -17,6 +17,6 @@
 
         .absolute.right-0.mt-2.hidden.z-50(data-dropdown-target="menu")
           .shadow.rounded-md.border.overflow-hidden.bg-white
-            = link_to t('filter.results.all_results'), url_for(request.params.merge('filterrific[filter_type]': '')), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
+            = link_to t('filter.results.all_results'), url_for(request.params.deep_merge('filterrific': {filter_type: ''})), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
             - [Noun, Verb, Adjective, FunctionWord].each do |type|
-              = link_to type.model_name.human(count: 2), url_for(request.params.merge('filterrific[filter_type]': type.model_name.name)), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
+              = link_to type.model_name.human(count: 2), url_for(request.params.deep_merge('filterrific': {filter_type: type.model_name.name})), 'data-action': 'click->dropdown#toggle', class: 'no-underline block px-8 py-3 hover:text-primary'
