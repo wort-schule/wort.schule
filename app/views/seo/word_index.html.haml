@@ -8,12 +8,12 @@
       - else
         = link_to letter.upcase, word_index_path(letter: letter), {class: "page bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-3 py-2 border text-sm font-medium"}
 
-
-= index_grid do
+%ul.grid.gap-4.my-5.grid-cols-1.md:grid-cols-2.lg:grid-cols-3
   - @words.each do |word|
-    = link_to word do
-      = box class: 'h-full' do
+    %li
+      = link_to word do
         = label_for(word)
+      %span.text-sm= t("activerecord.models.#{word.class.name.downcase}.one")
 
 .pagination-with-actions
   = paginate @words

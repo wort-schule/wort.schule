@@ -2,10 +2,11 @@ module SeoHelper
   def label_for(word)
     case word
     when Noun
-      label = "#{word.article_definite(case_number: 1, singular: true)} #{word.name}"
-      label += ", #{word.article_definite(case_number: 1, singular: false)} #{word.plural}" if word.plural.present?
-
+      article_singular = word.article_definite(case_number: 1, singular: true)
+      label = "#{word.name}#{article_singular.present? ? ", #{article_singular}" : ''}"
+      label += " - #{word.plural}, #{word.article_definite(case_number: 1, singular: false)}" if word.plural.present?
       label
+
     when Adjective
       label = word.name.to_s
       label += ", #{word.comparative}" if word.comparative.present?
