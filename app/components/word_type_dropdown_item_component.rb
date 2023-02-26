@@ -10,6 +10,10 @@ class WordTypeDropdownItemComponent < ViewComponent::Base
     @counts = counts
   end
 
+  def link_title
+    "#{label}&nbsp;(#{formatted_count})".html_safe
+  end
+
   def label
     case word_type
     when :all
@@ -20,9 +24,13 @@ class WordTypeDropdownItemComponent < ViewComponent::Base
   end
 
   def formatted_count
+    number_with_delimiter count
+  end
+
+  def count
     count_type = word_type == :all ? :all : word_type.model_name.plural.to_sym
 
-    number_with_delimiter counts[count_type]
+    counts[count_type]
   end
 
   def filter_url
@@ -31,5 +39,9 @@ class WordTypeDropdownItemComponent < ViewComponent::Base
     url_for(
       request.params.deep_merge(filterrific: {filter_type: new_filter})
     )
+  end
+
+  def has_results?
+    count > 0
   end
 end
