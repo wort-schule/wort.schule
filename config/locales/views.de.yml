@@ -283,6 +283,32 @@ de:
   seo:
     word_index:
       title: Wort Index
+      of: von
+      fields:
+        # Nouns
+        plural: Pluralform des Substantivs
+
+        # Verbs
+        imperative_singular: Imperativform Singular
+        imperative_plural: Imperativform Plural
+        participle: Partizip 1
+        past_participle: Partizip 2
+        present_singular_1: Präsens Singular, 1. Person
+        present_singular_2: Präsens Singular, 2. Person
+        present_singular_3: Präsens Singular, 3. Person
+        present_plural_1: Präsens Plural, 1. Person
+        present_plural_2: Präsens Plural, 2. Person
+        present_plural_3: Präsens Plural, 3. Person
+        past_singular_1: Präteritum Singular, 1. Person
+        past_singular_2: Präteritum Singular, 2. Person
+        past_singular_3: Präteritum Singular, 3. Person
+        past_plural_1: Präteritum Plural, 1. Person
+        past_plural_2: Präteritum Plural, 2. Person
+        past_plural_3: Präteritum Plural, 3. Person
+
+        # Adjectives
+        comparative_html: Komparativform
+        superlative_html: Superlativform
   homes:
     show:
       show_x_results:

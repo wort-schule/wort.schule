@@ -5,7 +5,7 @@ class SeoController < PublicController
   end
 
   # Returns all words in the database that start with the given letter, including all variants like plural,
-  # comparative, etc. and sorted by the word itself.
+  # comparative, etc. and sorted by the word itself. Also ensures that the same word is not included multiple times.
   private def words_with_variants
     # TODO: case_X singular and plural?
     %i[
@@ -17,6 +17,7 @@ class SeoController < PublicController
     ]
       .map { |field| Word.where("#{field} ILIKE ?", "#{@letter}%").map { |w| build_word_hash(w, field) } }
       .flatten
+      .uniq { |w| w[:label] }
       .sort_by { |w| w[:label].downcase }
   end
 
@@ -37,13 +38,12 @@ class SeoController < PublicController
     }
   end
 
-  # TODO: Better translations
   # Generates a human readable label for the given word type.
   private def word_type_label(word, field)
     if field == :name
       t("activerecord.models.#{word.class.name.downcase}.one")
     else
-      t("theme.descriptions.#{field}_html") + " von #{word.name}"
+      "#{t("seo.word_index.fields.#{field}")} #{t("seo.word_index.of")} #{word.name}"
     end
   end
 end
