@@ -16,15 +16,9 @@ class OmniSearchFieldComponent < ViewComponent::Base
   end
 
   def input_data_attribute
-    if on_search_page?
-      {
-        action: "input->form-submission#search"
-      }
-    else
-      {
-        action: "input->form-submission#search keyup->home-search#input",
-        "home-search-target": "input"
-      }
-    end
+    {
+      action: "input->form-submission#search keyup->home-search#input",
+      "home-search-target": "input"
+    }
   end
 end
