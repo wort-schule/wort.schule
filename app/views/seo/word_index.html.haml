@@ -9,11 +9,7 @@
         = link_to letter.upcase, word_index_path(letter: letter), {class: "page bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-3 py-2 border text-sm font-medium"}
 
 %ul.grid.gap-4.my-5.grid-cols-1.md:grid-cols-2.lg:grid-cols-3
-  - @words.each do |word|
-    - variants_for(word).each do |variant|
-      %li
-        = link_to variant, word
-        %span.text-sm= t("activerecord.models.#{word.class.name.downcase}.one")
-
-.pagination-with-actions
-  = paginate @words
+  - @words.each do |word_hash|
+    %li
+      = link_to word_hash[:label], word_hash[:base_record]
+      %span.text-sm.bg-grey-50= word_hash[:word_type_label]
