@@ -1,33 +1,24 @@
 module SeoHelper
   def label_for(word)
-    case word
-    when Noun
-      article_singular = word.article_definite(case_number: 1, singular: true)
-      label = "#{word.name}#{article_singular.present? ? ", #{article_singular}" : ''}"
-      label += " - #{word.plural}, #{word.article_definite(case_number: 1, singular: false)}" if word.plural.present?
-      label
+    return word.name unless word.name === Noun
 
-    when Adjective
-      label = word.name.to_s
-      label += ", #{word.comparative}" if word.comparative.present?
-      label += ", #{word.superlative}" if word.superlative.present?
-      label
+    article_singular = word.article_definite(case_number: 1, singular: true)
+    "#{word.name}#{article_singular.present? ? ", #{article_singular}" : ""}"
+  end
 
-    when Verb
-      forms = %i[
-        present_singular_1 present_singular_2 present_singular_3 present_plural_1 present_plural_2 present_plural_3
-        past_singular_1 past_singular_2 past_singular_3 past_plural_1 past_plural_2 past_plural_3
-      ]
+  def variants_for(word)
+    variant_fields = %i[
+      comparative superlative
+      present_singular_1 present_singular_2 present_singular_3 present_plural_1 present_plural_2 present_plural_3
+      past_singular_1 past_singular_2 past_singular_3 past_plural_1 past_plural_2 past_plural_3
+    ]
 
-      label = word.name.to_s
+    variants = [label_for(word)]
+    variants << variant_fields.map { |v| word.send(v) }.reject(&:blank?)
 
-      forms.each do |form|
-        label += ", #{word.send(form)}" if word.send(form).present?
-      end
+    # Plural needs special treatment due to the article
+    variants << "#{word.plural}, #{word.article_definite(case_number: 1, singular: false)}" if word.plural.present?
 
-      label
-
-    else word.name
-    end
+    variants.flatten
   end
 end

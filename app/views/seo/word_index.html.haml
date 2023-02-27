@@ -10,10 +10,10 @@
 
 %ul.grid.gap-4.my-5.grid-cols-1.md:grid-cols-2.lg:grid-cols-3
   - @words.each do |word|
-    %li
-      = link_to word do
-        = label_for(word)
-      %span.text-sm= t("activerecord.models.#{word.class.name.downcase}.one")
+    - variants_for(word).each do |variant|
+      %li
+        = link_to variant, word
+        %span.text-sm= t("activerecord.models.#{word.class.name.downcase}.one")
 
 .pagination-with-actions
   = paginate @words
