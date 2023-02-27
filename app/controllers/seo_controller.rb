@@ -10,7 +10,9 @@ class SeoController < PublicController
     # TODO: case_X singular and plural?
     %i[
       name
-      plural comparative superlative
+      case_1_singular case_2_singular case_3_singular case_4_singular case_1_plural case_2_plural case_3_plural
+      case_4_plural plural
+      comparative superlative
       imperative_singular imperative_plural participle past_participle
       present_singular_1 present_singular_2 present_singular_3 present_plural_1 present_plural_2 present_plural_3
       past_singular_1 past_singular_2 past_singular_3 past_plural_1 past_plural_2 past_plural_3
