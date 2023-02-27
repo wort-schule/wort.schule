@@ -1,0 +1,7 @@
+- if word.example_sentences.present?
+  = two_column_card t('words.show.example_sentences.title'), t('words.show.example_sentences.description') do
+    = box padding: false, class: 'striped' do
+      - word.example_sentences.each do |sentence|
+        .p-4.flex.flex-wrap.justify-between
+          = sentence
+          = render 'words/tts', word: word, sentence: sentence

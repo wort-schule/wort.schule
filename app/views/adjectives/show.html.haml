@@ -26,6 +26,8 @@
       = render(list.add(Adjective.human_attribute_name(:irregular_declination))) do
         = @adjective.irregular_declination.humanize
 
+= render 'example_sentences/list', word: @adjective
+
 = render 'words/general', word: @adjective
 
 = render 'shared/versions', model: @adjective
