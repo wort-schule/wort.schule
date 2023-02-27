@@ -97,6 +97,20 @@ RSpec.describe Word do
     end
   end
 
+  describe "#filter_home" do
+    it "filters words" do
+      word = create :noun, name: "Ähre"
+      expect(Noun.filter_home("ähre")).to include word
+    end
+
+    it "ignores whitespaces" do
+      word1 = create :noun, name: "Ähre"
+      word2 = create :noun, name: "American Football"
+      expect(Noun.filter_home("ähre ")).to include word1
+      expect(Noun.filter_home("american  football ")).to include word2
+    end
+  end
+
   describe "#filter_letters" do
     it "matches umlauts" do
       word = create :noun, name: "Ähre"

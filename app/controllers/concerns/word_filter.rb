@@ -5,9 +5,13 @@ module WordFilter
 
   class_methods do
     def replace_regex(query)
-      query
+      squeeze query
         .tr("*", "%")
         .tr("?", "_")
+    end
+
+    def squeeze(query)
+      query.squeeze(" ").strip
     end
 
     def filter_with_conjunction(attribute, options)
@@ -81,6 +85,7 @@ module WordFilter
     scope :filter_smart, lambda { |query|
       return if query.blank?
 
+      query = squeeze query
       term = replace_regex query
 
       Word.union(
@@ -95,6 +100,7 @@ module WordFilter
     scope :filter_home, lambda { |query|
       return if query.blank?
 
+      query = squeeze query
       term = replace_regex query
 
       # The additional query for `id` is necessary, because `union` does not
@@ -114,6 +120,7 @@ module WordFilter
     scope :filter_wordquery, lambda { |query|
       return if query.blank?
 
+      query = squeeze query
       term = replace_regex query
       where("name ILIKE ?", term)
     }
@@ -133,6 +140,7 @@ module WordFilter
     scope :filter_syllablescontains, lambda { |query|
       return if query.blank?
 
+      query = squeeze query
       query = replace_regex query
       syllables_terms = [
         "#{query}-%",
@@ -158,12 +166,14 @@ module WordFilter
     scope :filter_cologne_phonetics, lambda { |query|
       return if query.blank?
 
+      query = squeeze query
       where("cologne_phonetics ILIKE ?", "#{ColognePhonetics.encode(query)}%")
     }
 
     scope :filter_letters, lambda { |query|
       return if query.blank?
 
+      query = squeeze query
       letters = query
         .gsub(/[^[:alpha:]]/, "")
         .chars
