@@ -25,6 +25,8 @@ export default class extends Controller {
   }
 
   updateLogoVisibility(reposition) {
+    if(window.innerWidth > 768) return
+
     var hasQuery = this.inputTarget.value.length > 0
     this.logoTarget.style.display = hasQuery ? 'none' : 'block'
     if(reposition) this.inputTarget.scrollIntoView()
