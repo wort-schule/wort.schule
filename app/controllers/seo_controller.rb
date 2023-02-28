@@ -27,8 +27,10 @@ class SeoController < PublicController
   private def build_word_hash(word, field)
     suffix = if field == :plural
       ", die"
-    elsif word.is_a?(Noun) && field == :name
-      ", #{word.article_definite(case_number: 1, singular: true)}"
+    elsif word.is_a?(Noun)
+      case_number = field.starts_with?("case_") ? field.to_s.split("_")[1].to_i : 1
+      singular = field.ends_with?("singular") || field == :name
+      ", #{word.article_definite(case_number: case_number, singular: singular)}"
     else
       ""
     end
