@@ -87,3 +87,5 @@ To quickly test the application locally without customizing the `docker-compose.
 - The audio is generated via Google Cloud Text to Speech API and attached to the word.
 - There is a dedicated log file for the job in `log/tts.log`.
 - The voice is randomly selected from the list in the config file.
+
+To process all words, do: `Word.where(with_tts: true).each { |w| TtsJob.perform_later(w) }` (or perform_now when there is no job runner).
