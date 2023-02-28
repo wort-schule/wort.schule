@@ -315,8 +315,8 @@ de:
         past_plural_3: Präteritum Plural, 3. Person
 
         # Adjectives
-        comparative_html: Komparativform
-        superlative_html: Superlativform
+        comparative: Komparativform
+        superlative: Superlativform
   homes:
     show:
       show_x_results:
