@@ -287,6 +287,14 @@ de:
       fields:
         # Nouns
         plural: Pluralform des Substantivs
+        case_1_singular: Form des 1. Falls, Singular
+        case_2_singular: Form des 2. Falls, Singular
+        case_3_singular: Form des 3. Falls, Singular
+        case_4_singular: Form des 4. Falls, Singular
+        case_1_plural: Form des 1. Falls, Plural
+        case_2_plural: Form des 2. Falls, Plural
+        case_3_plural: Form des 3. Falls, Plural
+        case_4_plural: Form des 4. Falls, Plural
 
         # Verbs
         imperative_singular: Imperativform Singular
