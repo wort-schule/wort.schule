@@ -6,7 +6,7 @@ class SearchesController < PublicController
   def show
     @filterrific = initialize_filterrific(
       Word,
-      params[:filterrific]
+      (params[:filterrific] || {}).merge(filter_type: params.dig(:filterrific, :filter_type).presence || "")
     ) or return
 
     @words = @filterrific
