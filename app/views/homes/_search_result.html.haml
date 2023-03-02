@@ -5,9 +5,9 @@
     - else
       %div
 
-    .py-2.flex.gap-1
+    .py-2
       - if word.is_a? Noun
-        = word.article_definite
-      .font-bold= word.name
+        %span= "#{word.article_definite} "
+      %span.font-bold= word.name
 
   .uppercase.text-xs.py-2= word.model_name.human
