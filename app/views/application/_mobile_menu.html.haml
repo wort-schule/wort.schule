@@ -1,9 +1,7 @@
 #mobile-menu.hidden(data-reveal-target="item")
   .pt-4.pb-3.border-t.border-gray-200
 
-  - if current_user.blank?
-    = link_to t('navigation.login'), new_user_session_path, class: 'button breaker inline-block  ml-4 mb-4' if current_user.blank?
-  - else
+  - if current_user.present?
     = link_to profile_path do
       .flex.items-center.px-5
         .flex-shrink-0
