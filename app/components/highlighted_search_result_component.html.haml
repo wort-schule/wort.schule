@@ -1,0 +1,4 @@
+.flex.items-baseline
+  - parts.each do |part|
+    %span{ class: part.match?(/#{query}/i) ? 'bg-search-highlight' : '' }
+      = part
