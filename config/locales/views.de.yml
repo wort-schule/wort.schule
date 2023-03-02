@@ -317,8 +317,3 @@ de:
         # Adjectives
         comparative: Komparativform
         superlative: Superlativform
-  homes:
-    show:
-      show_x_results:
-        one: '%{count} Ergebnis zeigen'
-        other: '%{count} Ergebnisse zeigen'

@@ -2,3 +2,7 @@ de:
   theme_select_component:
     currently_selected: Momentan ausgewählt
     select: Auswählen
+  omni_search_field_component:
+    show_x_results:
+      one: '%{count} Ergebnis zeigen'
+      other: '%{count} Ergebnisse zeigen'
