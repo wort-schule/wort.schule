@@ -8,7 +8,12 @@
 
       = render 'desktop_user_menu'
 
-      .-mr-2.flex.md:hidden
-        = render 'mobile_menu_button'
+      - if current_user.present?
+        .-mr-2.flex.md:hidden
+          = render 'mobile_menu_button'
+      - else
+        .md:hidden
+          = link_to new_user_session_path, title: t('navigation.login'), class: 'text-white' do
+            = heroicon 'user'
 
   = render 'mobile_menu'
