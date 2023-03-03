@@ -15,6 +15,8 @@ export default class extends Controller {
   }
 
   goToSearchResults() {
-    window.location = `${this.pathValue}?filterrific[filter_home]=${this.inputTarget.value}`
+    if (this.inputTarget.value.trim().length > 0) {
+      window.location = `${this.pathValue}?filterrific[filter_home]=${this.inputTarget.value}`
+    }
   }
 }
