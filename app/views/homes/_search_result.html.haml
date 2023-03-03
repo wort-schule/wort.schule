@@ -5,9 +5,10 @@
     - else
       %div
 
-    .py-2
+    .py-2.flex.items-baseline.gap-1
       - if word.is_a? Noun
-        %span= "#{word.article_definite} "
-      %span.font-bold= word.name
+        = word.article_definite
+      .font-bold
+        = render HighlightedSearchResultComponent.new(result: word.name, query: params.dig(:filterrific, :filter_home))
 
   .uppercase.text-xs.py-2= word.model_name.human
