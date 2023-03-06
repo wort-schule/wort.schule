@@ -30,7 +30,7 @@ module FilterHelper
       concat(content_tag(:div, class: "flex gap-2 items-start") do
         concat(form.fields_for(form_attribute) do |fields|
           concat fields.select :conjunction, [[I18n.t("filter.and"), "and"], [I18n.t("filter.or"), "or"]], {}, data: {action: "input->form-submission#search"}, style: "flex-shrink: 3"
-          concat fields.select attribute, collection, {include_blank: true, selected: @filterrific.public_send(form_attribute)}, multiple: true, data: {action: "input->form-submission#search", controller: "select"}, class: "select default-input w-full flex-grow", style: "flex-shrink: 1"
+          concat fields.select attribute, collection, {include_blank: true, selected: @filterrific.public_send(form_attribute)&.dig(attribute)}, multiple: true, data: {action: "input->form-submission#search", controller: "select"}, class: "select default-input w-full flex-grow", style: "flex-shrink: 1"
         end)
       end)
     end
