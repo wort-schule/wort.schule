@@ -230,4 +230,8 @@
   .miscellaneous div[data-dropdown-target="button"] span {
     @apply text-black;
   }
+
+  .active[data-search-result] {
+    @apply bg-blue-100;
+  }
 }
