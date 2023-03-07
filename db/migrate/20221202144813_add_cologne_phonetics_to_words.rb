@@ -6,7 +6,7 @@ class AddColognePhoneticsToWords < ActiveRecord::Migration[7.0]
     reversible do |change|
       change.up do
         Word.find_each do |word|
-          word.update_attribute(:cologne_phonetics, ColognePhonetics.encode(word.name))
+          word.update_column(:cologne_phonetics, ColognePhonetics.encode(word.name))
         end
       end
     end
