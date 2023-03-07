@@ -10,4 +10,4 @@
         = render partial: 'search_result', collection: @words, as: :word
 
         .p-6.text-center
-          = link_to t('.show_x_results', count: @words.total_count), search_path(request.params), 'data-turbo-frame': '_top', class: 'button'
+          = link_to t('omni_search_field_component.show_x_results', count: @words.total_count), search_path(request.params), 'data-turbo-frame': '_top', class: 'button'
