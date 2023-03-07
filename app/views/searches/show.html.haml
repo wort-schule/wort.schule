@@ -18,7 +18,7 @@
 
   .bg-gray-background.border-t-4.border-primary.md:border-t.md:border-gray-border
     .pt-0.flex.flex-col.md:flex-row
-      %div(class="md:max-w-[40vh] #{@is_filter_open ? '' : 'hidden'}")
+      %div(class="md:min-w-[25rem] md:max-w-[30vw] #{@is_filter_open ? '' : 'hidden'}")
         = render 'filters/form', f:
       .p-6.pt-0.grow
         = render 'words/index', words: @words
