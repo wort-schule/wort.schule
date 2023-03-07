@@ -1,16 +1,5 @@
-class Word < ApplicationRecord
-  has_many :related_example_sentences, class_name: 'ExampleSentence', foreign_key: :word_id
-end
-
-class Noun < Word
-  has_many :related_example_sentences, class_name: 'ExampleSentence', foreign_key: :word_id
-end
-
-class Verb < Word
-  has_many :related_example_sentences, class_name: 'ExampleSentence', foreign_key: :word_id
-end
-
-class Adjective < Word
+class LegacyWord < ApplicationRecord
+  self.table_name = 'words'
   has_many :related_example_sentences, class_name: 'ExampleSentence', foreign_key: :word_id
 end
 
@@ -23,9 +12,11 @@ class AddExampleSentencesToWords < ActiveRecord::Migration[7.0]
     add_column :words, :example_sentences, :jsonb, null: false, default: []
 
     Word.find_each do |word|
-      word.update_attribute(
+      legacy_word = LegacyWord.find(word.id)
+
+      word.update_column(
         :example_sentences,
-        word.related_example_sentences.map(&:sentence)
+        legacy_word.related_example_sentences.map(&:sentence).to_json
       )
     end
 

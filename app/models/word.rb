@@ -75,10 +75,10 @@ class Word < ApplicationRecord
 
   before_save :set_consonant_vowel
   before_save :sanitize_slug
-  before_save :sanitize_example_sentences
-  before_save :update_cologne_phonetics
+  before_save :sanitize_example_sentences, if: -> { respond_to?(:example_sentences) }
+  before_save :update_cologne_phonetics, if: -> { respond_to?(:cologne_phonetics) }
 
-  after_save :handle_audio_attachments
+  after_save :handle_audio_attachments, if: -> { respond_to?(:with_tts) }
 
   validates :slug, presence: true, uniqueness: true
 
@@ -192,6 +192,8 @@ class Word < ApplicationRecord
   end
 
   def sanitize_example_sentences
+    return unless example_sentences.is_a? Array
+
     example_sentences
       .map!(&:strip)
       .select!(&:present?)
