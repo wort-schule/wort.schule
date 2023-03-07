@@ -8,8 +8,9 @@
       - else
         = link_to letter.upcase, word_index_path(letter: letter), {class: "page bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-3 py-2 border text-sm font-medium"}
 
-%ul.grid.gap-4.my-5.mx-5.grid-cols-1.md:grid-cols-2.lg:grid-cols-3
+%ul.grid.gap-4.my-5.mx-5.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.list-disc
   - @words.each do |word_hash|
     %li
       = link_to word_hash[:label], word_hash[:base_record]
-      %span.text-sm.text-slate-500= word_hash[:word_type_label]
+      %br
+      %span.text-xs.text-slate-500= word_hash[:word_type_label]
