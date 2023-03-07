@@ -12,9 +12,15 @@ export default class extends Controller {
     this.currentResultPosition = -1
   }
 
+  noop(event) {
+    event.preventDefault()
+  }
+
   input(event) {
     switch(event.key) {
       case "Enter":
+        event.preventDefault()
+
         if(this.currentResultPosition >= 0) {
           this.goToActiveSearchResult()
         } else {
@@ -32,6 +38,8 @@ export default class extends Controller {
         this.setActiveSearchResult()
         return
     }
+
+    event.target.form.requestSubmit()
   }
 
   goToSearchResults() {
@@ -66,6 +74,6 @@ export default class extends Controller {
   goToActiveSearchResult() {
     const searchResults = this.getSearchResults()
 
-    searchResults[this.currentResultPosition].click()
+    Turbo.visit(searchResults[this.currentResultPosition].href)
   }
 }
