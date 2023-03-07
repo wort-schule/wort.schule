@@ -2,3 +2,7 @@
 - if word&.audios&.attached?
   - audio = sentence.present? ? word.audio_for_example_sentence(sentence) : word.audio_for_word
   %audio(src="#{url_for audio}" controls)
+
+-# On Safari the audio player does not load when Turbo is used. We have to force a full page reload.
+= content_for :turbo_meta do
+  %meta(name="turbo-visit-control" content="reload")
