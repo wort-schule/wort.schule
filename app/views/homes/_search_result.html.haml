@@ -1,4 +1,4 @@
-= link_to word, class: 'flex justify-between px-4 border-b', 'data-search-result': true do
+= link_to word, class: 'flex justify-between px-4 border-b', 'data-search-result': true, 'data-turbo-frame': '_top' do
   .grid.grid-cols-2.gap-2(style="grid-template-columns: 3rem 1fr")
     - if word.image.attached?
       = image_tag word.image.variant(:thumb), style: 'max-height: 100%'
