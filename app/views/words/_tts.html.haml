@@ -1,4 +1,5 @@
 - sentence ||= nil
 - if word&.audios&.attached?
   - audio = sentence.present? ? word.audio_for_example_sentence(sentence) : word.audio_for_word
-  %audio(src="#{url_for audio}" controls)
+  %div(data-controller="medium")
+    %audio(src="#{url_for audio}" controls data-medium-target="mediaElement")
