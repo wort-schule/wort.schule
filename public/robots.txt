@@ -1,6 +1,8 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
 
 User-Agent: *
-Disallow: /nouns
-Disallow: /verbs
-Disallow: /adjectives
+Disallow: /seite/nouns
+Disallow: /seite/verbs
+Disallow: /seite/adjectives
+Disallow: /seite/search
+Disallow: /seite/searches
