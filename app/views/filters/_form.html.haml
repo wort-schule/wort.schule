@@ -1,3 +1,7 @@
+- sources = params.dig(:filterrific, :filter_home).blank? ? Source.all : Source.where(id: @words.joins(:sources).pluck('sources.id'))
+- topics = params.dig(:filterrific, :filter_home).blank? ? Topic.all : Topic.where(id: @words.joins(:topics).pluck('topics.id'))
+- hierarchies = params.dig(:filterrific, :filter_home).blank? ? Hierarchy.all : Hierarchy.where(id: @words.pluck(:hierarchy_id))
+
 .ci-filter.p-5.bg-gray-background-highlight
   .flex.justify-center
     = link_to url_for(request.params.merge(is_filter_open: !@is_filter_open)), class: 'flex mb-6 button items-center gap-1' do
@@ -12,9 +16,10 @@
   .flex.gap-2.items-end
     = filter_text_field f, :syllablescontains
     = filter_text_field f, :letters
-  = filter_select_field f, :source, collection: Source.order(:name).map { |s| [s.name, s.id] }
-  = filter_select_field f, :topic, collection: Topic.order(:name).map { |t| [t.name, t.id] }
-  = filter_select_field f, :hierarchy, collection: Hierarchy.order(:name).map { |h| [h.name, h.id] }
+  .mt-4
+  = filter_select_field f, :source, collection: sources.order(:name).map { |s| [s.name, s.id] }
+  = filter_select_field f, :topic, collection: topics.order(:name).map { |t| [t.name, t.id] }
+  = filter_select_field f, :hierarchy, collection: hierarchies.order(:name).map { |h| [h.name, h.id] }
   = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase'
   = filter_select_field_with_and_or f, :phenomenons, collection: Phenomenon.as_collection
   = filter_select_field_with_and_or f, :strategies, collection: Strategy.as_collection
