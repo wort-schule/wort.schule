@@ -4,16 +4,22 @@ class LearningGroupMembershipsController < ApplicationController
   load_and_authorize_resource :learning_group
   load_and_authorize_resource through: :learning_group
 
-  before_action :set_users, only: %i[new create]
-
   def new
   end
 
   def create
-    @learning_group_membership.access = "granted"
+    email_or_username = params[:learning_group_membership][:email]
+    email = if email_or_username.include?("@")
+      email_or_username
+    else
+      "#{email_or_username}@user.wort.schule"
+    end
+
+    @learning_group_membership.user = User.find_by(email:)
+    @learning_group_membership.access = "invited"
 
     if @learning_group_membership.save
-      redirect_to @learning_group, notice: t("notices.learning_group_memberships.created", name: @learning_group_membership.user)
+      redirect_to @learning_group, notice: t("notices.learning_group_memberships.invited")
     else
       render :new, status: :unprocessable_entity
     end
@@ -52,11 +58,5 @@ class LearningGroupMembershipsController < ApplicationController
       :user_id,
       :role
     )
-  end
-
-  def set_users
-    @users = User
-      .accessible_by(current_ability)
-      .where.not(id: @learning_group.users.to_a)
   end
 end

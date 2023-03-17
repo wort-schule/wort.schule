@@ -106,6 +106,7 @@ de:
   learning_group_memberships:
     new:
       title: Benutzer*in hinzufügen
+      email_or_username: E-Mail Adresse oder Benutzername
       assign: Hinzufügen
     reset_password:
       title: Passwort zurücksetzen

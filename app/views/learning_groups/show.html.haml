@@ -26,7 +26,9 @@
           = link_to t('.generate_accounts'), new_learning_group_user_generation_path(@learning_group), class: 'button'
 
       = box_description_list do |list|
-        - @learning_group.learning_group_memberships.with_access(:requested, :granted).order(access: 'desc').each do |membership|
+        - @learning_group.learning_group_memberships.with_access(:requested, :invited, :granted).order(access: 'desc').each do |membership|
+          - next if membership.access.invited? && !can?(:read_invitations, membership)
+
           %div{id: dom_id(membership.user)}
             = render(list.add(membership.user)) do
               %div
@@ -45,7 +47,7 @@
                         = f.submit t('.make_group_admin'), class: 'button outline'
                   - if can?(:reset_password, membership) && membership.user.generated_account?
                     = button_to t('.reset_password'), reset_password_learning_group_learning_group_membership_path(@learning_group, membership), method: :patch, class: 'button', data: { turbo: false }
-                  - if membership.access.granted?
+                  - if membership.access.granted? || membership.access.invited?
                     = button_to t('actions.remove'), learning_group_learning_group_membership_path(@learning_group, membership), method: :delete, class: 'button'
                   - else
                     .flex.gap-1

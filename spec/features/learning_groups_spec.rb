@@ -41,6 +41,39 @@ RSpec.describe "learning groups" do
       end
     end
 
+    it "invites a user by email address" do
+      new_user = create :user
+
+      visit learning_group_path(learning_group)
+      click_on t("learning_groups.show.assign_user")
+
+      fill_in t("learning_group_memberships.new.email_or_username"), with: new_user.email
+      expect do
+        click_on t("learning_group_memberships.new.assign")
+      end.to change(learning_group.learning_group_memberships, :count).by(1)
+
+      expect(page).to have_current_path learning_group_path(learning_group)
+      expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "invited"
+      expect(page).to have_content new_user.full_name
+    end
+
+    it "invites a user by username" do
+      username = "abcd"
+      new_user = create :user, email: "#{username}@user.wort.schule"
+
+      visit learning_group_path(learning_group)
+      click_on t("learning_groups.show.assign_user")
+
+      fill_in t("learning_group_memberships.new.email_or_username"), with: username
+      expect do
+        click_on t("learning_group_memberships.new.assign")
+      end.to change(learning_group.learning_group_memberships, :count).by(1)
+
+      expect(page).to have_current_path learning_group_path(learning_group)
+      expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "invited"
+      expect(page).to have_content new_user.full_name
+    end
+
     it "adds a word list" do
       word_list = create :list, user: lecturer, visibility: :public
 

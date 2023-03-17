@@ -67,21 +67,6 @@ RSpec.describe "as a lecturer" do
       context "with users" do
         let!(:user) { create :guest }
 
-        it "adds a user" do
-          click_on learning_group.name
-
-          click_on t("learning_groups.show.assign_user")
-
-          expect do
-            within "##{dom_id(user)}" do
-              click_on t("learning_group_memberships.new.assign")
-            end
-          end.to change(LearningGroupMembership, :count).by 1
-
-          expect(user.learning_groups).to include learning_group
-          expect(learning_group.users).to include user
-        end
-
         context "when a user is a member" do
           let!(:learning_group_membership) { create :learning_group_membership, learning_group:, user:, access: "granted" }
 
