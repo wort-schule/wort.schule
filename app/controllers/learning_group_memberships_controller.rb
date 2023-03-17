@@ -9,7 +9,7 @@ class LearningGroupMembershipsController < ApplicationController
   end
 
   def create
-    email_or_username = learning_group_membership_params[:user_id]
+    email_or_username = learning_group_membership_params[:user_id]&.strip
     email = if email_or_username.include?("@")
       email_or_username
     else
@@ -20,10 +20,12 @@ class LearningGroupMembershipsController < ApplicationController
     @learning_group_membership.access = "invited"
 
     if @learning_group_membership.save
-      LearningGroupMailer.with(
-        learning_group_name: @learning_group_membership.learning_group.name,
-        user: @learning_group_membership.user
-      ).invite.deliver_later
+      if email == email_or_username
+        LearningGroupMailer.with(
+          learning_group_name: @learning_group_membership.learning_group.name,
+          user: @learning_group_membership.user
+        ).invite.deliver_later
+      end
 
       redirect_to @learning_group, notice: t("notices.learning_group_memberships.invited")
     else
