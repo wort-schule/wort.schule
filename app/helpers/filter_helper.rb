@@ -18,7 +18,7 @@ module FilterHelper
 
     content_tag :div, class: "input" do
       concat form.label form_attribute, I18n.t("filter.#{attribute}")
-      concat form.select form_attribute, collection, {include_blank: true, selected: @filterrific.public_send(form_attribute)}, data: {action: "input->form-submission#search"}, class: "w-full"
+      concat form.select form_attribute, collection, {include_blank: true, selected: @filterrific.public_send(form_attribute)}, data: {action: "input->form-submission#search"}, class: "w-full", disabled: collection.empty?
     end
   end
 
