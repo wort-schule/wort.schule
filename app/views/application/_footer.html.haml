@@ -1,0 +1,22 @@
+%footer.bg-white.print:hidden
+  .px-4.py-12.mx-auto.overflow-hidden.max-w-7xl.sm:px-6.lg:px-8
+    %nav.flex.flex-wrap.justify-center.-mx-5.-my-2{"aria-label" => "Footer"}
+      .px-5.py-2
+        %a.text-base.text-gray-500.hover:text-gray-900{:href => imprint_path} Impressum
+      .px-5.py-2
+        %a.text-base.text-gray-500.hover:text-gray-900{:href => "https://github.com/wort-schule/wort.schule"} Quellcode auf GitHub
+      .px-5.py-2
+        %a.text-base.text-gray-500.hover:text-gray-900{:href => "https://github.com/wort-schule/wort.schule/wiki"} Wiki
+      .px-5.py-2
+        %a.text-base.text-gray-500.hover:text-gray-900{:href => "mailto:inhalt@wort.schule?subject=wort.schule%20Fehler%20oder%20Optimierung%20melden=Guten%20Tag,%0D%0A%0D%0Azur%20Webseite%20#{request.original_url}%20möchte%20ich%20folgenden%20Fehler%20melden:"} Inhaltlichen Fehler melden
+      .px-5.py-2
+        %a.text-base.text-gray-500.hover:text-gray-900{:href => "https://github.com/wort-schule/wort.schule/issues/new"} Technischen Fehler melden
+      .px-5.py-2
+        = link_to t('seo.word_index.title'), word_index_path, class: "text-base text-gray-500 hover:text-gray-900"
+    %a.mt-8.flex.flex-wrap.gap-2.justify-center{:href => "https://creativecommons.org/publicdomain/zero/1.0/", :rel => "noopener noreferrer", :target => "_blank"}
+      = image_tag "cc.svg", class: "h-10", alt: "CC0"
+      = image_tag "zero.svg", class: "h-10", alt: ""
+    .mt-8.flex.flex-wrap.justify-center.gap-6
+      %a{:href => "https://www.aktion-mensch.de", :rel => "noopener noreferrer", :target => "_blank"}= image_tag "aktion-mensch.png", class: "h-16", alt: "Aktion Mensch"
+      %a{:href => "https://www.sophie-scholl-schulen.de", :rel => "noopener noreferrer", :target => "_blank"}= image_tag "sophie-scholl-schulen.png", class: "h-16", alt: "Sophie Scholl Schulen"
+      %a{:href => "https://www.uni-bremen.de/fb12/arbeitsbereiche/abteilung-c-inklusive-paedagogik/inklusive-paedagogik-geistige-entwicklung-und-lernen", :rel => "noopener noreferrer", :target => "_blank"}= image_tag "uni-bremen.png", class: "h-16", alt: "Universität Bremen"
