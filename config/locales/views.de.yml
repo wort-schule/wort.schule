@@ -5,6 +5,8 @@ de:
       change_password: Passwort ändern
       change_email: E-Mail Adresse ändern
       learning_groups: Meine Lerngruppen
+      accept: Annehmen
+      reject: Löschen
     edit:
       title: Mein Profil bearbeiten
     themes:

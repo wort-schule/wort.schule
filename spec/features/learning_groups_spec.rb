@@ -55,6 +55,17 @@ RSpec.describe "learning groups" do
       expect(page).to have_current_path learning_group_path(learning_group)
       expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "invited"
       expect(page).to have_content new_user.full_name
+      expect(new_user.reload.learning_groups).to include(learning_group)
+
+      # Accept as invited user
+      login_as new_user
+      visit profile_path
+      within "#learning_groups" do
+        expect(page).to have_content learning_group.name
+
+        click_on t("profiles.show.accept")
+        expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "granted"
+      end
     end
 
     it "invites a user by username" do

@@ -21,6 +21,7 @@ class Ability
 
       can :create_request, LearningGroupMembership
       can %i[crud accept_request reject_request], LearningGroupMembership, learning_group_id: LearningGroup.with_group_admin(user).pluck(:id)
+      can %i[crud accept_request reject_request], LearningGroupMembership, user_id: user.id
       can %i[change_group_admin reset_password read_invitations], LearningGroupMembership, learning_group: LearningGroup.with_group_admin(user)
 
       can :crud, LearningPlea, learning_group: {user_id: user.id}
