@@ -61,7 +61,6 @@ group :test do
   gem "capybara"
   gem "capybara-screenshot"
   gem "cuprite"
-  gem "faker"
   gem "simplecov", require: false
 end
 
@@ -69,6 +68,7 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot"
   gem "factory_bot_rails"
+  gem "faker"
   gem "rspec-rails"
   gem "standardrb"
   gem "mina", "1.2.4"

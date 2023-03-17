@@ -1,0 +1,5 @@
+= t('.salutation', full_name: @full_name)
+
+%p= t('.invited_to', name: @learning_group_name)
+
+= link_to t('.accept'), profile_url(@user)

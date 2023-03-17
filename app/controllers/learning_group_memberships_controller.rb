@@ -20,6 +20,11 @@ class LearningGroupMembershipsController < ApplicationController
     @learning_group_membership.access = "invited"
 
     if @learning_group_membership.save
+      LearningGroupMailer.with(
+        learning_group_name: @learning_group_membership.learning_group.name,
+        user: @learning_group_membership.user
+      ).invite.deliver_later
+
       redirect_to @learning_group, notice: t("notices.learning_group_memberships.invited")
     else
       @learning_group_membership.user_id = learning_group_membership_params[:user_id]
