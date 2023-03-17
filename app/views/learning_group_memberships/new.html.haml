@@ -1,8 +1,8 @@
 %h1= t '.title'
 
 = box do
-  = form_with url: learning_group_learning_group_memberships_path(@learning_group) do |f|
-    = f.label 'learning_group_membership[email]', t('.email_or_username')
-    = f.text_field 'learning_group_membership[email]', autofocus: true
+  = simple_form_for [@learning_group, @learning_group_membership] do |f|
+    = f.association :user, as: :string, autofocus: true
+
     = button_tag :submit, class: 'button primary mt-4' do
       = t('.assign')

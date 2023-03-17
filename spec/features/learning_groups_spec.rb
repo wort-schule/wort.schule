@@ -47,7 +47,7 @@ RSpec.describe "learning groups" do
       visit learning_group_path(learning_group)
       click_on t("learning_groups.show.assign_user")
 
-      fill_in t("learning_group_memberships.new.email_or_username"), with: new_user.email
+      fill_in LearningGroupMembership.human_attribute_name(:user), with: new_user.email
       expect do
         click_on t("learning_group_memberships.new.assign")
       end.to change(learning_group.learning_group_memberships, :count).by(1)
@@ -64,7 +64,7 @@ RSpec.describe "learning groups" do
       visit learning_group_path(learning_group)
       click_on t("learning_groups.show.assign_user")
 
-      fill_in t("learning_group_memberships.new.email_or_username"), with: username
+      fill_in LearningGroupMembership.human_attribute_name(:user), with: username
       expect do
         click_on t("learning_group_memberships.new.assign")
       end.to change(learning_group.learning_group_memberships, :count).by(1)
@@ -72,6 +72,21 @@ RSpec.describe "learning groups" do
       expect(page).to have_current_path learning_group_path(learning_group)
       expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "invited"
       expect(page).to have_content new_user.full_name
+    end
+
+    it "does not invite a user already in the learning group" do
+      user = create :user
+      learning_group.learning_group_memberships.create(user:, access: :granted)
+
+      visit learning_group_path(learning_group)
+      click_on t("learning_groups.show.assign_user")
+
+      fill_in LearningGroupMembership.human_attribute_name(:user), with: user.email
+      expect do
+        click_on t("learning_group_memberships.new.assign")
+      end.not_to change(learning_group.learning_group_memberships, :count)
+
+      expect(page).to have_content t("errors.messages.taken")
     end
 
     it "adds a word list" do

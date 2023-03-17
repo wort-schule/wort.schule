@@ -5,10 +5,11 @@ class LearningGroupMembershipsController < ApplicationController
   load_and_authorize_resource through: :learning_group
 
   def new
+    @learning_group_membership.user_id = nil
   end
 
   def create
-    email_or_username = params[:learning_group_membership][:email]
+    email_or_username = learning_group_membership_params[:user_id]
     email = if email_or_username.include?("@")
       email_or_username
     else
@@ -21,6 +22,8 @@ class LearningGroupMembershipsController < ApplicationController
     if @learning_group_membership.save
       redirect_to @learning_group, notice: t("notices.learning_group_memberships.invited")
     else
+      @learning_group_membership.user_id = learning_group_membership_params[:user_id]
+
       render :new, status: :unprocessable_entity
     end
   end

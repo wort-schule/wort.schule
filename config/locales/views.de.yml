@@ -105,9 +105,8 @@ de:
       title: Quelle bearbeiten
   learning_group_memberships:
     new:
-      title: Benutzer*in hinzufügen
-      email_or_username: E-Mail Adresse oder Benutzername
-      assign: Hinzufügen
+      title: Benutzer*in einladen
+      assign: Einladen
     reset_password:
       title: Passwort zurücksetzen
       introduction: Das Passwort der unten stehenden Benutzer*in wurde zurückgesetzt.
