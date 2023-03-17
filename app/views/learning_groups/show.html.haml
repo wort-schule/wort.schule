@@ -26,7 +26,7 @@
           = link_to t('.generate_accounts'), new_learning_group_user_generation_path(@learning_group), class: 'button'
 
       = box_description_list do |list|
-        - @learning_group.learning_group_memberships.with_access(:requested, :invited, :granted).order(access: 'desc').each do |membership|
+        - @learning_group.learning_group_memberships.includes(:user).with_access(:requested, :invited, :granted).order(access: 'desc').each do |membership|
           - next if membership.access.invited? && !can?(:read_invitations, membership)
 
           %div{id: dom_id(membership.user)}
