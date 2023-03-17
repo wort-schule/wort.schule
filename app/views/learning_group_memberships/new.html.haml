@@ -1,11 +1,8 @@
 %h1= t '.title'
 
-= index_grid do
-  - @users.each do |user|
-    = box do
-      .flex.justify-between.items-center{id: dom_id(user)}
-        = user
-        = form_with url: learning_group_learning_group_memberships_path(@learning_group) do |f|
-          = f.hidden_field 'learning_group_membership[user_id]', value: user.id
-          = button_tag :submit, class: 'button' do
-            = t('.assign')
+= box do
+  = simple_form_for [@learning_group, @learning_group_membership] do |f|
+    = f.association :user, as: :string, autofocus: true
+
+    = button_tag :submit, class: 'button primary mt-4' do
+      = t('.assign')

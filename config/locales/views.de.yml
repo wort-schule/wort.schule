@@ -5,6 +5,8 @@ de:
       change_password: Passwort ändern
       change_email: E-Mail Adresse ändern
       learning_groups: Meine Lerngruppen
+      accept: Annehmen
+      reject: Löschen
     edit:
       title: Mein Profil bearbeiten
     themes:
@@ -105,8 +107,8 @@ de:
       title: Quelle bearbeiten
   learning_group_memberships:
     new:
-      title: Benutzer*in hinzufügen
-      assign: Hinzufügen
+      title: Benutzer*in einladen
+      assign: Einladen
     reset_password:
       title: Passwort zurücksetzen
       introduction: Das Passwort der unten stehenden Benutzer*in wurde zurückgesetzt.

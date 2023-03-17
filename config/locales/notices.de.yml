@@ -17,6 +17,7 @@ de:
       updated: Die Benutzer*in mit der E-Mail Adresse %{email} wurde gespeichert.
       destroyed: Die Benutzer*in mit der E-Mail Adresse %{email} wurde gelöscht.
     learning_group_memberships:
+      invited: Die Benutzer*in wurde eingeladen.
       created: Die Benutzer*in %{name} wurde hinzugefügt.
       destroyed: Die Benutzer*in %{name} wurde entfernt.
       access_requested: Ein Antrag zum Gruppenbeitritt wurde gestellt. Die verantwortliche Benutzer*in muss diesen prüfen.

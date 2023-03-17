@@ -41,6 +41,65 @@ RSpec.describe "learning groups" do
       end
     end
 
+    it "invites a user by email address" do
+      new_user = create :user
+
+      visit learning_group_path(learning_group)
+      click_on t("learning_groups.show.assign_user")
+
+      fill_in LearningGroupMembership.human_attribute_name(:user), with: new_user.email
+      expect do
+        click_on t("learning_group_memberships.new.assign")
+      end.to change(learning_group.learning_group_memberships, :count).by(1)
+
+      expect(page).to have_current_path learning_group_path(learning_group)
+      expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "invited"
+      expect(page).to have_content new_user.full_name
+      expect(new_user.reload.learning_groups).to include(learning_group)
+
+      # Accept as invited user
+      login_as new_user
+      visit profile_path
+      within "#learning_groups" do
+        expect(page).to have_content learning_group.name
+
+        click_on t("profiles.show.accept")
+        expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "granted"
+      end
+    end
+
+    it "invites a user by username" do
+      username = "abcd"
+      new_user = create :user, email: "#{username}@user.wort.schule"
+
+      visit learning_group_path(learning_group)
+      click_on t("learning_groups.show.assign_user")
+
+      fill_in LearningGroupMembership.human_attribute_name(:user), with: username
+      expect do
+        click_on t("learning_group_memberships.new.assign")
+      end.to change(learning_group.learning_group_memberships, :count).by(1)
+
+      expect(page).to have_current_path learning_group_path(learning_group)
+      expect(learning_group.learning_group_memberships.find_by(user: new_user).access).to eq "invited"
+      expect(page).to have_content new_user.full_name
+    end
+
+    it "does not invite a user already in the learning group" do
+      user = create :user
+      learning_group.learning_group_memberships.create(user:, access: :granted)
+
+      visit learning_group_path(learning_group)
+      click_on t("learning_groups.show.assign_user")
+
+      fill_in LearningGroupMembership.human_attribute_name(:user), with: user.email
+      expect do
+        click_on t("learning_group_memberships.new.assign")
+      end.not_to change(learning_group.learning_group_memberships, :count)
+
+      expect(page).to have_content t("errors.messages.taken")
+    end
+
     it "adds a word list" do
       word_list = create :list, user: lecturer, visibility: :public
 

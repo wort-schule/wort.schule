@@ -1,0 +1,7 @@
+de:
+  learning_group_mailer:
+    invite:
+      subject: 'Einladung zur Lerngruppe "%{name}"'
+      salutation: 'Hallo %{full_name}'
+      invited_to: 'Sie wurden in die Lerngruppe "%{name}" eingeladen.'
+      accept: Zu meinen Lerngruppen-Einladungen
