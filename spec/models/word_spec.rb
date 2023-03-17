@@ -109,6 +109,18 @@ RSpec.describe Word do
       expect(Noun.filter_home("ähre ")).to include word1
       expect(Noun.filter_home("american  football ")).to include word2
     end
+
+    it "sorts results" do
+      words = %w[Polizeiauto Polizei Polizeihund]
+      objs = words.map { |name| create :noun, name: }
+
+      expect(Noun.filter_home("polizei").map(&:id)).to eq [objs[1].id, objs[0].id, objs[2].id]
+      expect(Noun.filter_home("polizei").map(&:name)).to eq %w[
+        Polizei
+        Polizeiauto
+        Polizeihund
+      ]
+    end
   end
 
   describe "#filter_letters" do

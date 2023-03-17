@@ -103,18 +103,24 @@ module WordFilter
       query = squeeze query
       term = replace_regex query
 
-      # The additional query for `id` is necessary, because `union` does not
+      # The additional `JOIN` query is necessary, because `union` does not
       # return unique elements because of the added `weights`. If a word
       # appears in a result with different weights, it appears twice. Therefore
-      # we add another query for the `id` to deduplicate them.
-      Word.where(id:
-        Word.union(
-          filter_wordquery("#{query}%").select("*, 1 as weight"),
-          filter_wordquery("%#{query}%").select("*, 2 as weight"),
-          where("plural ILIKE ?", term).select("*, 3 as weight"),
-          where("comparative ILIKE ?", term).select("*, 3 as weight"),
-          where("superlative ILIKE ?", term).select("*, 3 as weight")
-        ).order(:weight).pluck(:id))
+      # we add another query to deduplicate them. Take care though that
+      # `where(id: ..)` is not stable and we therefore need to enforce the
+      # original order.
+      ids = Word.union(
+        filter_wordquery(query).select("*, 1 as weight"),
+        filter_wordquery("#{query}%").select("*, 2 as weight"),
+        filter_wordquery("%#{query}%").select("*, 3 as weight"),
+        where("plural ILIKE ?", term).select("*, 4 as weight"),
+        where("comparative ILIKE ?", term).select("*, 4 as weight"),
+        where("superlative ILIKE ?", term).select("*, 4 as weight")
+      ).order(:weight, :name).ids.uniq
+
+      Word
+        .joins(Arel.sql("JOIN unnest('{#{ids.join(",")}}'::bigint[]) WITH ORDINALITY t(id, ord) USING (id)"))
+        .order(Arel.sql("t.ord"))
     }
 
     scope :filter_wordquery, lambda { |query|
