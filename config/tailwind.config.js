@@ -26,6 +26,7 @@ module.exports = {
         'gray-background': '#F3F4F6',
         'gray-border': '#E6E6E7',
         'gray-background-highlight': '#E6E6E6',
+        'gray-footer': '#FAFAFB',
         'search-highlight': '#FFE085'
       }
     },
