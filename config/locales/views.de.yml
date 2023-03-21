@@ -319,3 +319,7 @@ de:
         # Adjectives
         comparative: Komparativform
         superlative: Superlativform
+
+  homes:
+    show:
+      advanced_search: Erweiterte Suche

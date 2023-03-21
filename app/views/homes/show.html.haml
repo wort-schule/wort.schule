@@ -11,3 +11,10 @@
 
         .p-6.text-center
           = link_to t('omni_search_field_component.show_x_results', count: @words.total_count), search_path(request.params), 'data-turbo-frame': '_top', class: 'button'
+
+    - else
+      .mt-12.flex.justify-center
+        = link_to search_path, 'data-turbo-frame': '_top', class: 'button w-auto' do
+          .flex.items-center.gap-2
+            = heroicon 'magnifying-glass'
+            = t('.advanced_search')
