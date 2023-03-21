@@ -121,6 +121,21 @@ RSpec.describe Word do
         Polizeihund
       ]
     end
+
+    it "sorts results for hits not in base form" do
+      words = [
+        create(:noun, name: "Kindergarten"),
+        create(:noun, name: "Kindergärtner"),
+        create(:noun, name: "Kind", plural: "Kinder")
+      ]
+
+      expect(Noun.filter_home("kinder").map(&:id)).to eq [words[2].id, words[0].id, words[1].id]
+      expect(Noun.filter_home("kinder").map(&:name)).to eq %w[
+        Kind
+        Kindergarten
+        Kindergärtner
+      ]
+    end
   end
 
   describe "#filter_letters" do
