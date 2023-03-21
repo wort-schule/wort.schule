@@ -62,6 +62,10 @@ class VerbsController < PublicController
     redirect_to verbs_path, notice
   end
 
+  def background_color
+    "bg-white md:bg-gray-100"
+  end
+
   private
 
   def page_title

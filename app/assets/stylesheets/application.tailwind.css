@@ -1,4 +1,6 @@
 @import 'components/tabbed_radio_buttons' layer(components);
+@import 'components/syllables' layer(components);
+@import 'components/word_header';
 
 @tailwind base;
 @tailwind components;

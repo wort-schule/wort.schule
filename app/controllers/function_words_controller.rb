@@ -46,6 +46,10 @@ class FunctionWordsController < PublicController
     redirect_to function_words_url, notice
   end
 
+  def background_color
+    "bg-white md:bg-gray-100"
+  end
+
   private
 
   def page_title

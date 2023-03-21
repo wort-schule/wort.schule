@@ -1,14 +1,12 @@
-= title_with_actions @verb.name do
-  = render "words/more_meanings", word: @verb
-  = render "words/tts", word: @verb
+= render WordHeaderComponent.new(word: @verb) do |component|
+  - component.with_title do
+    %h1= @verb.name
 
+= render "words/more_meanings", word: @verb
 
 = two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do
   = box padding: false do
     = box_description_list do |list|
-      = render(list.add(Verb.human_attribute_name(:name))) do
-        = @verb.name
-
       = render(list.add(Verb.human_attribute_name(:subjectless))) do
         = @verb.subjectless.humanize
 
