@@ -1,4 +1,4 @@
-.grid.md:grid-cols-2.gap-12
+.flex.flex-col.gap-y-12.md:grid.md:grid-cols-2.md:gap-12
   = render WordHeaderComponent.new(word: @noun) do |component|
     - component.with_title do
       %h1.flex.items-baseline.gap-1.m-0
