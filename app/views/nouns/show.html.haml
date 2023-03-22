@@ -33,6 +33,7 @@
   = render 'nouns/cases'
   = render 'words/syntax', word: @noun
   = render 'words/lists', word: @noun
+  = render 'example_sentences/list', word: @noun
 
 
 = render "words/more_meanings", word: @noun
@@ -48,8 +49,6 @@
         = @noun.genus_feminine&.name
 
 
-
-= render 'example_sentences/list', word: @noun
 
 = render 'words/general', word: @noun
 

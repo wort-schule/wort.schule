@@ -17,6 +17,7 @@
   = render 'words/meaning', word: @verb
   = render 'words/syntax', word: @verb
   = render 'words/lists', word: @verb
+  = render 'example_sentences/list', word: @verb
 
 
 = render "words/more_meanings", word: @verb
@@ -138,7 +139,6 @@
                   = @verb.past_plural_3
                 .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
 
-= render 'example_sentences/list', word: @verb
 
 = render 'words/general', word: @verb
 
