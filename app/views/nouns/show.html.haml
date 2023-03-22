@@ -28,6 +28,8 @@
       %div= Noun.human_attribute_name(:pluraletantum)
       %div= @noun.pluraletantum&.humanize
 
+  = render 'words/meaning', word: @noun
+
 
 = render "words/more_meanings", word: @noun
 

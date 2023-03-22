@@ -1,34 +1,6 @@
-- if any_present?(word, %i[meaning meaning_long hierarchy topics]) || word.image.attached?
-  = two_column_card t('words.show.general.title'), t('words.show.general.description') do
-    = box padding: false do
-      = box_description_list do |list|
-        = render(list.add(Word.human_attribute_name(:type))) do
-          = word.class.model_name.human
-
-        - if word.image.attached?
-          = render(list.add(Word.human_attribute_name(:image))) do
-            = image_tag word.image
-
-        = render(list.add(Word.human_attribute_name(:meaning))) do
-          - if word.meaning.present? || word.meaning_long.present?
-            %div
-              = word.meaning
-              %p.text-sm.mt-2= word.meaning_long if word.meaning_long.present?
-
-        = render(list.add(Word.human_attribute_name(:hierarchy))) do
-          - if word.hierarchy.present?
-            .flex.flex-wrap= hierarchy_breadcrumbs word.hierarchy
-
-        = render(list.add(Word.human_attribute_name(:topics))) do
-          = separate word.topics do |topic|
-            = link_to_if can?(:read, topic), topic.name, topic
-
 = two_column_card t('words.show.word_properties.title'), t('words.show.word_properties.description') do
   = box padding: false do
     = box_description_list do |list|
-      = render(list.add(Word.human_attribute_name(:syllables))) do
-        = word.syllables
-
       = render(list.add(Word.human_attribute_name(:written_syllables))) do
         = word.written_syllables
 

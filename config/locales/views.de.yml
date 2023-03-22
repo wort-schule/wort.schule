@@ -99,6 +99,7 @@ de:
         description: ''
         add: Hinzufügen
       properties: Eigenschaften
+      meaning: Bedeutung
   sources:
     index:
       new: Neue Quelle

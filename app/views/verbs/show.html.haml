@@ -14,6 +14,8 @@
       %div= Verb.human_attribute_name(:strong)
       %div= @verb.strong.humanize
 
+  = render 'words/meaning', word: @verb
+
 
 = render "words/more_meanings", word: @verb
 
