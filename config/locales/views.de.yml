@@ -68,11 +68,16 @@ de:
       noun:
         title: Substantiv
         description: spezifische Eigenschaften des Substantivs
-      cases: Fälle / Kasus
+      cases:
+        title: Fälle / Kasus
+        description: ""
       example_sentences:
         title: Beispielsätze
+        description: ""
         new: Neuer Beispielsatz
-      relations: Wortbeziehungen
+      relations:
+        title: Wortbeziehungen
+        description: ""
       adjective:
         title: Adjektiv
         description: spezifische Eigenschaften des Adjektivs
@@ -91,6 +96,9 @@ de:
         title: Wortlisten
         add: Hinzufügen
       properties: Eigenschaften
+      word_properties:
+        title: Eigenschaften
+        description: ""
       meaning: Bedeutung
   sources:
     index:

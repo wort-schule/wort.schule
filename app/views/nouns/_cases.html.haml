@@ -1,5 +1,5 @@
 - if any_present?(@noun, (1..4).map { |index| ["case_#{index}_singular", "case_#{index}_plural"] }.flatten)
-  = render BoxComponent.new(title: t('words.show.cases')) do
+  = render BoxComponent.new(title: t('words.show.cases.title')) do
     = render BoxGridComponent.new(columns: 3) do
       - (1..4).each do |index|
         - case_label = capture do

@@ -1,5 +1,5 @@
 - if any_present? word, %i[synonyms opposites keywords rimes]
-  = render BoxComponent.new(title: t('words.show.relations')) do
+  = render BoxComponent.new(title: t('words.show.relations.title')) do
     = render BoxGridComponent.new do
       - if word.synonyms.present?
         %div= Word.human_attribute_name(:synonyms)
