@@ -11,6 +11,7 @@ class Ability
     can :read, Adjective
     can :read, FunctionWord
     can :read, List, visibility: :public
+    can :read, Source, visible: true
 
     if user.present?
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password], id: user.id

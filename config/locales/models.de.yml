@@ -123,6 +123,7 @@ de:
         licence: Lizenz
         source_url: Link zur Quelle
         comment: Kommentar
+        visible: Öffentlich einsehbar
       function_word:
         function_type: Worttyp
         function_types:
