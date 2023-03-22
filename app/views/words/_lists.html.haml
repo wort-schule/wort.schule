@@ -1,12 +1,15 @@
-= two_column_card t('words.show.lists.title'), t('words.show.lists.description') do
-  = box padding: false, class: 'striped' do
+= render BoxComponent.new(title: t('words.show.lists.title')) do
+  .flex.flex-wrap.gap-4
     - word.accessible_lists(current_ability).sort_by(&:name).each do |list|
-      .p-4= link_to list.name, list_path(list)
+      = link_to list_path(list), class: 'button' do
+        .flex.gap-2
+          = list.name
+          = heroicon 'chevron-right'
+
 
   - lists = (List.of_user(current_user) - word.lists).sort_by(&:name)
   - if lists.present?
-    = box class: 'mt-4' do
-      = form_tag list_add_word_path, class: 'flex gap-2' do
-        = hidden_field_tag :word_id, word.id
-        = select_tag :id, options_from_collection_for_select(lists, :id, :name), class: 'mt-0'
-        %button.button(type="submit")= t('words.show.lists.add')
+    = form_tag list_add_word_path, class: 'flex gap-2 mt-6' do
+      = hidden_field_tag :word_id, word.id
+      = select_tag :id, options_from_collection_for_select(lists, :id, :name), class: 'mt-0'
+      %button.button(type="submit")= t('words.show.lists.add')
