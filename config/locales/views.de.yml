@@ -62,9 +62,8 @@ de:
       general:
         title: Bedeutung
         description: Erklärung und thematische Einordnung
-        more_meanings:
-          one: '%{count} weitere Bedeutung'
-          other: '%{count} weitere Bedeutungen'
+      more_meaning: '%{count}. Bedeutung'
+      more_meanings: Weitere Bedeutungen
       syntax: Wortbildung
       noun:
         title: Substantiv

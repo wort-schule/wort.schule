@@ -135,8 +135,18 @@ class Word < ApplicationRecord
     end.compact
   end
 
-  def other_meanings_count
-    Word.where("name ILIKE ?", name).count - 1
+  def other_meanings
+    Word.where("name ILIKE ?", name).to_a - [self]
+  end
+
+  def name_with_meaning
+    if meaning.present?
+      "#{name} (#{meaning})"
+    elsif hierarchy.present?
+      "#{name} (#{hierarchy.name})"
+    else
+      name
+    end
   end
 
   def accessible_lists(ability)

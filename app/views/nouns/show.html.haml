@@ -34,9 +34,8 @@
   = render 'words/syntax', word: @noun
   = render 'words/lists', word: @noun
   = render 'example_sentences/list', word: @noun
+  = render 'words/more_meanings', word: @noun
 
-
-= render "words/more_meanings", word: @noun
 
 = two_column_card t('words.show.noun.title'), t('words.show.noun.description'), first: true do
   = box padding: false do

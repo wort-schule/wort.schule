@@ -18,9 +18,8 @@
   = render 'words/syntax', word: @verb
   = render 'words/lists', word: @verb
   = render 'example_sentences/list', word: @verb
+  = render 'words/more_meanings', word: @verb
 
-
-= render "words/more_meanings", word: @verb
 
 = two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do
   = box padding: false do

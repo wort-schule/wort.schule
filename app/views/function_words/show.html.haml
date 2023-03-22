@@ -14,8 +14,7 @@
       %div= Word.human_attribute_name(:written_syllables)
       %div= @function_word.written_syllables
 
-
-= render "words/more_meanings", word: @function_word
+  = render 'words/more_meanings', word: @function_word
 
 .pagination-with-actions.mt-12
   - if can? :edit, @function_word
