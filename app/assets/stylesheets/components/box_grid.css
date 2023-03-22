@@ -5,3 +5,7 @@
 .box-grid.grid-cols-3 > div:nth-child(3n + 1) {
   @apply font-bold;
 }
+
+.box-grid.grid-cols-4 > div:nth-child(4n + 1) {
+  @apply font-bold;
+}

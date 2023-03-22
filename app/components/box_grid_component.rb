@@ -12,6 +12,7 @@ class BoxGridComponent < ViewComponent::Base
     when 1 then ""
     when 2 then "grid-cols-2"
     when 3 then "grid-cols-3"
+    when 4 then "grid-cols-4"
     else ""
     end
   end

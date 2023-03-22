@@ -79,6 +79,7 @@ de:
       verb:
         title: Verb
         description: spezifische Eigenschaften des Verbs
+        forms: Formen
         tense:
           title: Zeitformen
           description: ""
