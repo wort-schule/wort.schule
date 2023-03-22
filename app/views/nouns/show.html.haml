@@ -1,14 +1,32 @@
-= render WordHeaderComponent.new(word: @noun) do |component|
-  - component.with_title do
-    %h1.flex.items-baseline.gap-1.m-0
-      - if @noun.genus.present?
-        .text-2xl.md:text-3xl.font-normal= @noun.article_definite(case_number: 1, singular: true)
-      = @noun.name
+.grid.md:grid-cols-2.gap-12
+  = render WordHeaderComponent.new(word: @noun) do |component|
+    - component.with_title do
+      %h1.flex.items-baseline.gap-1.m-0
+        - if @noun.genus.present?
+          .text-2xl.md:text-3xl.font-normal= @noun.article_definite(case_number: 1, singular: true)
+        = @noun.name
 
-  - component.with_property do
-    = render LabeledValueComponent.new(label: Noun.human_attribute_name(:plural), value: @noun.plural)
-  - component.with_property do
-    = render LabeledValueComponent.new(label: Noun.human_attribute_name(:genus_id), value: @noun.genus&.name)
+    - component.with_property do
+      = render LabeledValueComponent.new(label: Noun.human_attribute_name(:plural), value: @noun.plural)
+    - component.with_property do
+      = render LabeledValueComponent.new(label: Noun.human_attribute_name(:genus_id), value: @noun.genus&.name)
+
+  = render BoxComponent.new(title: t('words.show.properties')) do
+    = render BoxGridComponent.new do
+      %div= Word.human_attribute_name(:type)
+      %div= @noun.class.model_name.human
+
+      .md:hidden= Noun.human_attribute_name(:plural)
+      .md:hidden= @noun.plural
+
+      .md:hidden= Noun.human_attribute_name(:genus_id)
+      .md:hidden= @noun.genus&.name
+
+      %div= Noun.human_attribute_name(:singularetantum)
+      %div= @noun.singularetantum&.humanize
+
+      %div= Noun.human_attribute_name(:pluraletantum)
+      %div= @noun.pluraletantum&.humanize
 
 
 = render "words/more_meanings", word: @noun
@@ -16,22 +34,6 @@
 = two_column_card t('words.show.noun.title'), t('words.show.noun.description'), first: true do
   = box padding: false do
     = box_description_list do |list|
-      = render(list.add(Word.human_attribute_name(:name))) do
-        .w-full.grid.grid-cols-2
-          %div
-            .flex.gap-1
-              .text-sm.text-gray-400= @noun.article_definite(case_number: 1, singular: true)
-              = @noun.name
-            .text-sm.text-gray-400= Noun.human_attribute_name(:singular)
-          %div
-            .flex.gap-1
-              .text-sm.text-gray-400= @noun.article_definite(case_number: 1, singular: false)
-              = @noun.plural
-            .text-sm.text-gray-400= Noun.human_attribute_name(:plural)
-
-      = render(list.add(Noun.human_attribute_name(:genus_id))) do
-        = @noun.genus&.name
-
       = render(list.add(Noun.human_attribute_name(:genus_neuter))) do
         = @noun.genus_neuter&.name
       = render(list.add(Noun.human_attribute_name(:genus_masculine))) do
@@ -39,11 +41,6 @@
       = render(list.add(Noun.human_attribute_name(:genus_feminine))) do
         = @noun.genus_feminine&.name
 
-      = render(list.add(Noun.human_attribute_name(:singularetantum))) do
-        = @noun.singularetantum&.humanize
-
-      = render(list.add(Noun.human_attribute_name(:pluraletantum))) do
-        = @noun.pluraletantum&.humanize
 
 - if any_present?(@noun, (1..4).map { |index| ["case_#{index}_singular", "case_#{index}_plural"] }.flatten)
   = two_column_card t('words.show.cases.title'), t('words.show.cases.description') do

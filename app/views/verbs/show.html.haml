@@ -1,17 +1,25 @@
-= render WordHeaderComponent.new(word: @verb) do |component|
-  - component.with_title do
-    %h1= @verb.name
+.grid.md:grid-cols-2.gap-12
+  = render WordHeaderComponent.new(word: @verb) do |component|
+    - component.with_title do
+      %h1= @verb.name
+
+  = render BoxComponent.new(title: t('words.show.properties')) do
+    = render BoxGridComponent.new do
+      %div= Word.human_attribute_name(:type)
+      %div= @verb.class.model_name.human
+
+      %div= Verb.human_attribute_name(:subjectless)
+      %div= @verb.subjectless.humanize
+
+      %div= Verb.human_attribute_name(:strong)
+      %div= @verb.strong.humanize
+
 
 = render "words/more_meanings", word: @verb
 
 = two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do
   = box padding: false do
     = box_description_list do |list|
-      = render(list.add(Verb.human_attribute_name(:subjectless))) do
-        = @verb.subjectless.humanize
-
-      = render(list.add(Verb.human_attribute_name(:strong))) do
-        = @verb.strong.humanize
 
       = render(list.add(Verb.human_attribute_name(:imperative))) do
         - if @verb.imperative_singular.present? || @verb.imperative_plural.present?

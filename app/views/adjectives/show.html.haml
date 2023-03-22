@@ -1,25 +1,35 @@
-= render WordHeaderComponent.new(word: @adjective) do |component|
-  - component.with_title do
-    %h1= @adjective.name
+.grid.md:grid-cols-2.gap-12
+  = render WordHeaderComponent.new(word: @adjective) do |component|
+    - component.with_title do
+      %h1= @adjective.name
 
-  - component.with_property do
-    = render LabeledValueComponent.new(label: Adjective.human_attribute_name(:comparative), value: @adjective.comparative)
-  - component.with_property do
-    = render LabeledValueComponent.new(label: Adjective.human_attribute_name(:superlative), value: @adjective.superlative)
+    - component.with_property do
+      = render LabeledValueComponent.new(label: Adjective.human_attribute_name(:comparative), value: @adjective.comparative)
+    - component.with_property do
+      = render LabeledValueComponent.new(label: Adjective.human_attribute_name(:superlative), value: @adjective.superlative)
+
+  = render BoxComponent.new(title: t('words.show.properties')) do
+    = render BoxGridComponent.new do
+      %div= Word.human_attribute_name(:type)
+      %div= @adjective.class.model_name.human
+
+      .md:hidden= Adjective.human_attribute_name(:comparative)
+      .md:hidden= @adjective.comparative
+
+      .md:hidden= Adjective.human_attribute_name(:superlative)
+      .md:hidden= @adjective.superlative
+
+      %div= Adjective.human_attribute_name(:absolute)
+      %div= @adjective.absolute.humanize
+
+      %div= Adjective.human_attribute_name(:irregular_comparison)
+      %div= @adjective.irregular_comparison.humanize
+
+      %div= Adjective.human_attribute_name(:irregular_declination)
+      %div= @adjective.irregular_declination.humanize
+
 
 = render "words/more_meanings", word: @adjective
-
-= two_column_card t('words.show.adjective.title'), t('words.show.adjective.description'), first: true do
-  = box padding: false do
-    = box_description_list do |list|
-      = render(list.add(Adjective.human_attribute_name(:absolute))) do
-        = @adjective.absolute.humanize
-
-      = render(list.add(Adjective.human_attribute_name(:irregular_comparison))) do
-        = @adjective.irregular_comparison.humanize
-
-      = render(list.add(Adjective.human_attribute_name(:irregular_declination))) do
-        = @adjective.irregular_declination.humanize
 
 = render 'example_sentences/list', word: @adjective
 

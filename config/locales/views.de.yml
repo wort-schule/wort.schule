@@ -98,6 +98,7 @@ de:
         title: Wortlisten
         description: ''
         add: Hinzufügen
+      properties: Eigenschaften
   sources:
     index:
       new: Neue Quelle
