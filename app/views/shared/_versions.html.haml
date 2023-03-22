@@ -1,35 +1,32 @@
 - if can? :read_versions, model
-  = two_column_card t('.title'), '' do
-    .flex.flex-col.gap-4
+  = render BoxComponent.new(title: t('.title'), span: 2) do
+    = render BoxGridComponent.new do
       - versions = versions_with_changes model.versions
       - if versions.empty?
-        = box do
-          = t '.no_versions'
+        = t '.no_versions'
 
       - versions.reverse.each do |version|
-        = box do
-          .md:grid.grid-cols-2.gap-6
-            %div
-              .font-medium.text-md= "#{PaperTrail::Version.human_attribute_name(:index)} #{version.index + 1}"
-              %div= changed_by version
-            - if version.event != 'create'
-              .mt-2.md:mt-0
-                - version.changeset.except("updated_at").each do |attribute, values|
-                  .flex.gap-1.items-center
-                    .font-bold.text-md.mr-2= model.class.human_attribute_name(attribute.to_sym)
-                    .flex.gap-1.items-center.flex-wrap{ class: values[0]&.is_a?(Array) ? 'flex-col' : ''}
-                      - if values[0]&.is_a? Array
-                        .flex.flex-col.gap-1.grow
-                          - values[0].each do |item|
-                            %div= item
-                      - else
-                        = values[0]
+        %div
+          .text-md= "#{PaperTrail::Version.human_attribute_name(:index)} #{version.index + 1}"
+          %div= changed_by version
+        - if version.event != 'create'
+          .mt-2.md:mt-0
+            - version.changeset.except("updated_at").each do |attribute, values|
+              .flex.gap-1.items-center
+                .font-bold.text-md.mr-2= model.class.human_attribute_name(attribute.to_sym)
+                .flex.gap-1.items-center.flex-wrap{ class: values[0]&.is_a?(Array) ? 'flex-col' : ''}
+                  - if values[0]&.is_a? Array
+                    .flex.flex-col.gap-1.grow
+                      - values[0].each do |item|
+                        %div= item
+                  - else
+                    = values[0]
 
-                      = heroicon 'arrow-small-right'
+                  = heroicon 'arrow-small-right'
 
-                      - if values[1]&.is_a? Array
-                        .flex.flex-col.gap-1.grow
-                          - values[1].each do |item|
-                            %div= item
-                      - else
-                        = values[1]
+                  - if values[1]&.is_a? Array
+                    .flex.flex-col.gap-1.grow
+                      - values[1].each do |item|
+                        %div= item
+                  - else
+                    = values[1]

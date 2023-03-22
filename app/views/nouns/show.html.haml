@@ -47,9 +47,7 @@
   = render 'example_sentences/list', word: @noun
   = render 'words/more_meanings', word: @noun
   = render 'words/relations', word: @noun
+  = render 'shared/versions', model: @noun
 
-
-= render 'shared/versions', model: @noun
-
-.pagination-with-actions
+.pagination-with-actions.mt-12
   = link_to t('actions.edit'), [:edit, @noun], data: { turbo_frame: '_top' }, class: 'button primary' if can?(:edit, @noun)

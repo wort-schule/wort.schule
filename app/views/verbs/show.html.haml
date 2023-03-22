@@ -20,6 +20,7 @@
   = render 'example_sentences/list', word: @verb
   = render 'words/more_meanings', word: @verb
   = render 'words/relations', word: @verb
+  = render 'shared/versions', model: @verb
 
 
 = two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do
@@ -140,7 +141,5 @@
                 .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
 
 
-= render 'shared/versions', model: @verb
-
-.pagination-with-actions
+.pagination-with-actions.mt-12
   = link_to t('actions.edit'), [:edit, @verb], data: { turbo_frame: '_top' }, class: 'button primary' if can?(:edit, @verb)
