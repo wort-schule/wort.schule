@@ -22,6 +22,18 @@
       .md:hidden= Noun.human_attribute_name(:genus_id)
       .md:hidden= @noun.genus&.name
 
+      - if @noun.genus_neuter.present?
+        %div= Noun.human_attribute_name(:genus_neuter)
+        %div= @noun.genus_neuter&.name
+
+      - if @noun.genus_masculine.present?
+        %div= Noun.human_attribute_name(:genus_masculine)
+        %div= @noun.genus_masculine&.name
+
+      - if @noun.genus_feminine.present?
+        %div= Noun.human_attribute_name(:genus_feminine)
+        %div= @noun.genus_feminine&.name
+
       %div= Noun.human_attribute_name(:singularetantum)
       %div= @noun.singularetantum&.humanize
 
@@ -29,25 +41,12 @@
       %div= @noun.pluraletantum&.humanize
 
   = render 'words/meaning', word: @noun
-
   = render 'nouns/cases'
   = render 'words/syntax', word: @noun
   = render 'words/lists', word: @noun
   = render 'example_sentences/list', word: @noun
   = render 'words/more_meanings', word: @noun
   = render 'words/relations', word: @noun
-
-
-= two_column_card t('words.show.noun.title'), t('words.show.noun.description'), first: true do
-  = box padding: false do
-    = box_description_list do |list|
-      = render(list.add(Noun.human_attribute_name(:genus_neuter))) do
-        = @noun.genus_neuter&.name
-      = render(list.add(Noun.human_attribute_name(:genus_masculine))) do
-        = @noun.genus_masculine&.name
-      = render(list.add(Noun.human_attribute_name(:genus_feminine))) do
-        = @noun.genus_feminine&.name
-
 
 
 = render 'shared/versions', model: @noun
