@@ -65,9 +65,7 @@ de:
         more_meanings:
           one: '%{count} weitere Bedeutung'
           other: '%{count} weitere Bedeutungen'
-      word_properties:
-        title: Wortbildung
-        description: Silben und Klassifizierung
+      syntax: Wortbildung
       noun:
         title: Substantiv
         description: spezifische Eigenschaften des Substantivs
