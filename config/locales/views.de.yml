@@ -71,9 +71,7 @@ de:
       noun:
         title: Substantiv
         description: spezifische Eigenschaften des Substantivs
-      cases:
-        title: Fälle / Kasus
-        description: ""
+      cases: Fälle / Kasus
       example_sentences:
         title: Beispielsätze
         description: ""

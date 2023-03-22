@@ -30,6 +30,8 @@
 
   = render 'words/meaning', word: @noun
 
+  = render 'nouns/cases'
+
 
 = render "words/more_meanings", word: @noun
 
@@ -44,28 +46,6 @@
         = @noun.genus_feminine&.name
 
 
-- if any_present?(@noun, (1..4).map { |index| ["case_#{index}_singular", "case_#{index}_plural"] }.flatten)
-  = two_column_card t('words.show.cases.title'), t('words.show.cases.description') do
-    = box padding: false do
-      = box_description_list do |list|
-        - (1..4).each do |index|
-          - case_label = capture do
-            = content_tag :div do
-              = content_tag :div, Noun.human_attribute_name("case_#{index}".to_sym)
-              = content_tag :div, Noun.human_attribute_name("case_#{index}_question".to_sym), class: 'text-sm text-gray-400'
-
-          = render(list.add(case_label)) do
-            .w-full.grid.grid-cols-2
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= @noun.article_definite(case_number: index, singular: true)
-                  = @noun.public_send("case_#{index}_singular")
-                .text-sm.text-gray-400= t Noun.human_attribute_name(:singular)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= @noun.article_definite(case_number: index, singular: false)
-                  = @noun.public_send("case_#{index}_plural")
-                .text-sm.text-gray-400= t Noun.human_attribute_name(:plural)
 
 = render 'example_sentences/list', word: @noun
 
