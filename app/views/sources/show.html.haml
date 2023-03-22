@@ -18,6 +18,9 @@
       = render(list.add(Source.human_attribute_name(:comment))) do
         = @source.comment
 
+      = render(list.add(Source.human_attribute_name(:visible))) do
+        = @source.visible.humanize
+
 = render 'words/usages'
 
 .pagination-with-actions

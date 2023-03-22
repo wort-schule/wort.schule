@@ -52,7 +52,8 @@ class SourcesController < ApplicationController
       :author,
       :licence,
       :source_url,
-      :comment
+      :comment,
+      :visible
     )
   end
 end

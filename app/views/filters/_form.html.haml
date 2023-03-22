@@ -1,4 +1,4 @@
-- sources = params.dig(:filterrific, :filter_home).blank? ? Source.all : Source.where(id: @words.joins(:sources).pluck('sources.id'))
+- sources = params.dig(:filterrific, :filter_home).blank? ? Source.accessible_by(current_ability) : Source.accessible_by(current_ability).where(id: @words.joins(:sources).pluck('sources.id'))
 - topics = params.dig(:filterrific, :filter_home).blank? ? Topic.all : Topic.where(id: @words.joins(:topics).pluck('topics.id'))
 - hierarchies = params.dig(:filterrific, :filter_home).blank? ? Hierarchy.all : Hierarchy.where(id: @words.pluck(:hierarchy_id))
 
