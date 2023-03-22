@@ -35,6 +35,7 @@
   = render 'words/lists', word: @noun
   = render 'example_sentences/list', word: @noun
   = render 'words/more_meanings', word: @noun
+  = render 'words/relations', word: @noun
 
 
 = two_column_card t('words.show.noun.title'), t('words.show.noun.description'), first: true do
@@ -48,8 +49,6 @@
         = @noun.genus_feminine&.name
 
 
-
-= render 'words/general', word: @noun
 
 = render 'shared/versions', model: @noun
 

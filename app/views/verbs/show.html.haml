@@ -19,6 +19,7 @@
   = render 'words/lists', word: @verb
   = render 'example_sentences/list', word: @verb
   = render 'words/more_meanings', word: @verb
+  = render 'words/relations', word: @verb
 
 
 = two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do
@@ -138,8 +139,6 @@
                   = @verb.past_plural_3
                 .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
 
-
-= render 'words/general', word: @verb
 
 = render 'shared/versions', model: @verb
 

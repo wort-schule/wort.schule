@@ -72,9 +72,7 @@ de:
       example_sentences:
         title: Beispielsätze
         new: Neuer Beispielsatz
-      relations:
-        title: Wortbeziehungen
-        description: ""
+      relations: Wortbeziehungen
       adjective:
         title: Adjektiv
         description: spezifische Eigenschaften des Adjektivs

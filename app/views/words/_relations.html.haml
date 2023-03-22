@@ -1,19 +1,26 @@
 - if any_present? word, %i[synonyms opposites keywords rimes]
-  = two_column_card t('words.show.relations.title'), t('words.show.relations.description') do
-    = box padding: false do
-      = box_description_list do |list|
-        = render(list.add(Word.human_attribute_name(:synonyms))) do
+  = render BoxComponent.new(title: t('words.show.relations')) do
+    = render BoxGridComponent.new do
+      - if word.synonyms.present?
+        %div= Word.human_attribute_name(:synonyms)
+        %div
           = separate word.synonyms do |synonym|
             = link_to_if can?(:read, synonym), synonym.name, synonym
 
-        = render(list.add(Word.human_attribute_name(:opposites))) do
+      - if word.opposites.present?
+        %div= Word.human_attribute_name(:opposites)
+        %div
           = separate word.opposites do |opposite|
             = link_to_if can?(:read, opposite), opposite.name, opposite
 
-        = render(list.add(Word.human_attribute_name(:keywords))) do
+      - if word.keywords.present?
+        %div= Word.human_attribute_name(:keywords)
+        %div
           = separate word.keywords do |keyword|
             = link_to_if can?(:read, keyword), keyword.name, keyword
 
-        = render(list.add(Word.human_attribute_name(:rimes))) do
+      - if word.rimes.present?
+        %div= Word.human_attribute_name(:rimes)
+        %div
           = separate word.rimes do |rime|
             = link_to_if can?(:read, rime), rime.name, rime
