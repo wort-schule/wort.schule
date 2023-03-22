@@ -7,7 +7,7 @@
             = content_tag :div, Noun.human_attribute_name("case_#{index}".to_sym)
             = content_tag :div, Noun.human_attribute_name("case_#{index}_question".to_sym), class: 'text-sm font-normal'
 
-        %div= case_label
+        .col-span-2.lg:col-span-1= case_label
         %div
           .flex.gap-1.font-bold
             = @noun.article_definite(case_number: index, singular: true)

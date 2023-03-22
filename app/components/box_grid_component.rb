@@ -10,9 +10,9 @@ class BoxGridComponent < ViewComponent::Base
   def grid_class
     case columns_count
     when 1 then ""
-    when 2 then "grid-cols-2"
-    when 3 then "grid-cols-3"
-    when 4 then "grid-cols-4"
+    when 2 then "cols-2 grid-cols-2"
+    when 3 then "cols-3 grid-cols-2 lg:grid-cols-3"
+    when 4 then "cols-4 grid-cols-2 lg:grid-cols-4"
     else ""
     end
   end
