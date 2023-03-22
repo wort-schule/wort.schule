@@ -62,6 +62,10 @@ class AdjectivesController < PublicController
     redirect_to adjectives_path, notice
   end
 
+  def background_color
+    "bg-white md:bg-gray-100"
+  end
+
   private
 
   def page_title

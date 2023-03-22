@@ -1,2 +1,10 @@
-- if word.other_meanings_count > 0
-  = link_to t("words.show.general.more_meanings", count: word.other_meanings_count), search_path(filterrific: { filter_wordstarts: word.name }), class: 'text-sm text-gray-500'
+- if word.other_meanings.present?
+  = render BoxComponent.new(title: t('words.show.more_meanings')) do
+    = render BoxGridComponent.new do
+      - word.other_meanings.each.with_index do |other_word, index|
+        %div= t('words.show.more_meaning', count: index + 2)
+        %div
+          = link_to other_word, class: 'button inline-block' do
+            .flex.gap-2
+              = other_word.name_with_meaning
+              = heroicon 'chevron-right'

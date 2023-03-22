@@ -426,12 +426,12 @@ RSpec.describe Word do
     end
   end
 
-  describe "#other_meanings_count" do
+  describe "#other_meanings" do
     context "without other meanings" do
       let!(:noun) { create :noun, name: "Ticken" }
 
       it "has no other meanings" do
-        expect(noun.other_meanings_count).to eq 0
+        expect(noun.other_meanings.count).to eq 0
       end
     end
 
@@ -440,7 +440,7 @@ RSpec.describe Word do
       let!(:verb) { create :verb, name: "ticken" }
 
       it "has other meanings" do
-        expect(noun.other_meanings_count).to eq 1
+        expect(noun.other_meanings.count).to eq 1
       end
     end
   end

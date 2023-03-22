@@ -62,12 +62,9 @@ de:
       general:
         title: Bedeutung
         description: Erklärung und thematische Einordnung
-        more_meanings:
-          one: '%{count} weitere Bedeutung'
-          other: '%{count} weitere Bedeutungen'
-      word_properties:
-        title: Wortbildung
-        description: Silben und Klassifizierung
+      more_meaning: '%{count}. Bedeutung'
+      more_meanings: Weitere Bedeutungen
+      syntax: Wortbildung
       noun:
         title: Substantiv
         description: spezifische Eigenschaften des Substantivs
@@ -87,6 +84,7 @@ de:
       verb:
         title: Verb
         description: spezifische Eigenschaften des Verbs
+        forms: Formen
         tense:
           title: Zeitformen
           description: ""
@@ -96,8 +94,12 @@ de:
         show: Anzeigen
       lists:
         title: Wortlisten
-        description: ''
         add: Hinzufügen
+      properties: Eigenschaften
+      word_properties:
+        title: Eigenschaften
+        description: ""
+      meaning: Bedeutung
   sources:
     index:
       new: Neue Quelle

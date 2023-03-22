@@ -1,138 +1,28 @@
-= title_with_actions @verb.name do
-  = render "words/more_meanings", word: @verb
-  = render "words/tts", word: @verb
+.flex.flex-col.gap-y-12.md:grid.md:grid-cols-2.md:gap-12
+  = render WordHeaderComponent.new(word: @verb) do |component|
+    - component.with_title do
+      %h1= @verb.name
 
+  = render BoxComponent.new(title: t('words.show.properties')) do
+    = render BoxGridComponent.new do
+      %div= Word.human_attribute_name(:type)
+      %div= @verb.class.model_name.human
 
-= two_column_card t('words.show.verb.title'), t('words.show.verb.description'), first: true do
-  = box padding: false do
-    = box_description_list do |list|
-      = render(list.add(Verb.human_attribute_name(:name))) do
-        = @verb.name
+      %div= Verb.human_attribute_name(:subjectless)
+      %div= @verb.subjectless.humanize
 
-      = render(list.add(Verb.human_attribute_name(:subjectless))) do
-        = @verb.subjectless.humanize
+      %div= Verb.human_attribute_name(:strong)
+      %div= @verb.strong.humanize
 
-      = render(list.add(Verb.human_attribute_name(:strong))) do
-        = @verb.strong.humanize
+  = render 'words/meaning', word: @verb
+  = render 'verbs/forms'
+  = render 'verbs/conjugations'
+  = render 'words/syntax', word: @verb
+  = render 'words/lists', word: @verb
+  = render 'example_sentences/list', word: @verb
+  = render 'words/more_meanings', word: @verb
+  = render 'words/relations', word: @verb
+  = render 'shared/versions', model: @verb
 
-      = render(list.add(Verb.human_attribute_name(:imperative))) do
-        - if @verb.imperative_singular.present? || @verb.imperative_plural.present?
-          .w-full.grid.grid-cols-2
-            %div
-              = @verb.imperative_singular.presence || "&nbsp;".html_safe
-              .text-sm.text-gray-400= Verb.human_attribute_name(:singular)
-            %div
-              = @verb.imperative_plural.presence || "&nbsp;".html_safe
-              .text-sm.text-gray-400= Verb.human_attribute_name(:plural)
-
-      = render(list.add(Verb.human_attribute_name(:participle_both))) do
-        - if @verb.participle.present? || @verb.past_participle.present?
-          .w-full.grid.grid-cols-2
-            %div
-              = @verb.participle.presence || "&nbsp;".html_safe
-              .text-sm.text-gray-400= Verb.human_attribute_name(:participle)
-            %div
-              = @verb.past_participle.presence || "&nbsp;".html_safe
-              .text-sm.text-gray-400= Verb.human_attribute_name(:past_participle)
-
-      = render(list.add(Verb.human_attribute_name(:perfect))) do
-        .w-full.grid.grid-cols-2
-          %div
-            = @verb.perfect_haben.humanize.presence || "&nbsp;".html_safe
-            .text-sm.text-gray-400= Verb.human_attribute_name(:perfect_haben_short)
-          %div
-            = @verb.perfect_sein.humanize.presence || "&nbsp;".html_safe
-            .text-sm.text-gray-400= Verb.human_attribute_name(:perfect_sein_short)
-
-- if any_present?(@verb, (1..3).map { |index| ["present_singular_#{index}", "present_plural_#{index}", "past_singular_#{index}", "past_plural_#{index}"] }.flatten)
-  = two_column_card t('words.show.verb.tense.title'), t('words.show.verb.tense.description') do
-    = box padding: false do
-      = box_description_list do |list|
-        = render(list.add(Verb.human_attribute_name(:present))) do
-          .w-full.flex.flex-row.md:flex-col.gap-2
-            .w-full.grid.grid-cols-1.gap-2.md:grid-cols-3
-              .md:hidden.text-sm.text-gray-400= Verb.human_attribute_name(:singular)
-
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:singular_1_pronoun)
-                  = @verb.present_singular_1
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:singular)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:singular_2_pronoun)
-                  = @verb.present_singular_2
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:singular)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:singular_3_pronoun)
-                  = @verb.present_singular_3
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:singular)
-
-            .w-full.grid.grid-cols-1.gap-2.md:grid-cols-3
-              .md:hidden.text-sm.text-gray-400= Verb.human_attribute_name(:plural)
-
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:plural_1_pronoun)
-                  = @verb.present_plural_1
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:plural_2_pronoun)
-                  = @verb.present_plural_2
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:plural_3_pronoun)
-                  = @verb.present_plural_3
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
-
-        = render(list.add(Verb.human_attribute_name(:past))) do
-          .w-full.flex.flex-row.md:flex-col.gap-2
-            .w-full.grid.grid-cols-1.gap-2.md:grid-cols-3
-              .md:hidden.text-sm.text-gray-400= Verb.human_attribute_name(:singular)
-
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:singular_1_pronoun)
-                  = @verb.past_singular_1
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:singular)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:singular_2_pronoun)
-                  = @verb.past_singular_2
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:singular)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:singular_3_pronoun)
-                  = @verb.past_singular_3
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:singular)
-
-            .w-full.grid.grid-cols-1.gap-2.md:grid-cols-3
-              .md:hidden.text-sm.text-gray-400= Verb.human_attribute_name(:plural)
-
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:plural_1_pronoun)
-                  = @verb.past_plural_1
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:plural_2_pronoun)
-                  = @verb.past_plural_2
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
-              %div
-                .flex.gap-1
-                  .text-sm.text-gray-400= Verb.human_attribute_name(:plural_3_pronoun)
-                  = @verb.past_plural_3
-                .text-sm.text-gray-400.hidden.md:block= Verb.human_attribute_name(:plural)
-
-= render 'example_sentences/list', word: @verb
-
-= render 'words/general', word: @verb
-
-= render 'shared/versions', model: @verb
-
-.pagination-with-actions
+.pagination-with-actions.mt-12
   = link_to t('actions.edit'), [:edit, @verb], data: { turbo_frame: '_top' }, class: 'button primary' if can?(:edit, @verb)

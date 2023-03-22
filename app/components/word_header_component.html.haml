@@ -1,0 +1,17 @@
+.p-6.word-header.md:bg-white.md:shadow.md:rounded-3xl.md:col-span-2
+  %div(style="grid-area: name")
+    %div= title
+    .mt-4.text-lg.md:text-2xl= render SyllablesComponent.new(text: word.syllables)
+
+  .grid.md:grid-cols-2(style="grid-area: image")
+    .hidden.md:flex.flex-col.gap-4.justify-center
+      = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: word.class.model_name.human)
+
+      - properties.each do |property|
+        = property
+
+    - if word.image.attached?
+      = image_tag word.image
+
+  %div(style="grid-area: speech")
+    = render 'words/tts', word:

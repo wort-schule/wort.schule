@@ -1,0 +1,44 @@
+= render BoxComponent.new(title: t('words.show.syntax')) do
+  = render BoxGridComponent.new do
+    - if word.syllables.present?
+      %div= Word.human_attribute_name(:syllables)
+      %div= render SyllablesComponent.new(text: word.syllables)
+
+    - if word.written_syllables.present?
+      %div= Word.human_attribute_name(:written_syllables)
+      %div= render SyllablesComponent.new(text: word.written_syllables)
+
+    %div= Word.human_attribute_name(:prototype)
+    %div= word.prototype&.humanize
+
+    %div= Word.human_attribute_name(:foreign)
+    %div= word.foreign&.humanize
+
+    %div= Word.human_attribute_name(:compound)
+    %div= word.compound&.humanize
+
+    - if word.prefix.present?
+      %div= Word.human_attribute_name(:prefix_id)
+      %div= word.prefix&.name
+
+    - if word.postfix.present?
+      %div= Word.human_attribute_name(:postfix_id)
+      %div= word.postfix&.name
+
+    - if word.strategies.present?
+      %div= Word.human_attribute_name(:strategies)
+      %div
+        = separate word.strategies do |strategy|
+          = link_to_if can?(:read, strategy), strategy.name, strategy
+
+    - if word.phenomenons.present?
+      %div= Word.human_attribute_name(:phenomenons)
+      %div
+        = separate word.phenomenons do |phenomenon|
+          = link_to_if can?(:read, phenomenon), phenomenon.name, phenomenon
+
+    - if word.compound_entities.present?
+      %div= Word.human_attribute_name(:compound_entities)
+      %div
+        = separate word.compound_entities do |compound_entity|
+          = link_to_if can?(:read, compound_entity.part), compound_entity.part.name, compound_entity.part

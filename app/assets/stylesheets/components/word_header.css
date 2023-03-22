@@ -1,0 +1,21 @@
+.word-header {
+  @apply grid gap-4;
+
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+  "name image"
+  "speech speech";
+}
+
+@media(min-width: 640px) {
+  .word-header {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "name image"
+    "speech image";
+  }
+}
+
+.word-header h1 {
+  @apply m-0 font-medium md:font-bold md:text-4xl;
+}
