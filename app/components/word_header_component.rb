@@ -9,8 +9,4 @@ class WordHeaderComponent < ViewComponent::Base
   def initialize(word:)
     @word = word
   end
-
-  def syllables
-    word.syllables.split("-")
-  end
 end

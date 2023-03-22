@@ -1,0 +1,6 @@
+.syllables
+  - syllables.each.with_index do |syllable, index|
+    %span
+      = syllable
+      - if index < syllables.length - 1
+        = "-"
