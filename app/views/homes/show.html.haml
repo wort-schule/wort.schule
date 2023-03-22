@@ -14,7 +14,7 @@
 
     - else
       .mt-12.flex.justify-center
-        = link_to search_path, 'data-turbo-frame': '_top', class: 'button w-auto' do
+        = link_to search_path(is_filter_open: true), 'data-turbo-frame': '_top', class: 'button w-auto' do
           .flex.items-center.gap-2
             = heroicon 'magnifying-glass'
             = t('.advanced_search')
