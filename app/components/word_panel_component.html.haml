@@ -5,7 +5,7 @@
         .flex.items-baseline.gap-1
           = content
           .text-xl.font-bold= word.name
-        .uppercase.text-xs.font-light.mt-3= word.model_name.human
+        .text-xs.font-light.mt-3= word.meaning
 
       .p-1.pr-4.flex.items-center.object-cover
         - if word.image.attached?
