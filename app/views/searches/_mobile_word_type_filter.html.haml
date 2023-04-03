@@ -2,7 +2,7 @@
   - word_type = (params.dig(:filterrific, :filter_type).presence || :all).to_sym.clamped([:all, :Noun, :Verb, :Adjective, :FunctionWord])
 
   .p-6.pb-0.flex.items-center.justify-between
-    = t('filter.results.all', count: number_with_delimiter(@words.total_count))
+    = t('filter.results.all', count: number_with_delimiter(@counts[:all]))
 
     .text-black.px-3.py-2
       .relative(data-controller="dropdown reveal")

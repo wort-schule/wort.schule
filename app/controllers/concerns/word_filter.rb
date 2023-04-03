@@ -23,6 +23,7 @@ module WordFilter
           .where(attribute => {id: options[attribute]})
           .group("words.id")
           .having("COUNT(*) = #{options[attribute].length}")
+          .unscope(:order)
           .distinct
 
         where("words.id": filtered_words)
@@ -98,6 +99,9 @@ module WordFilter
     }
 
     scope :filter_home, lambda { |query|
+      count = !query&.is_a?(String) && query&.dig(:count)
+      query = query&.dig(:query) if count
+
       return if query.blank?
 
       query = squeeze query
@@ -124,7 +128,7 @@ module WordFilter
 
       Word
         .joins(Arel.sql("JOIN unnest('{#{ids.join(",")}}'::bigint[]) WITH ORDINALITY t(id, ord) USING (id)"))
-        .order(Arel.sql("t.ord"))
+        .order(count ? nil : Arel.sql("t.ord"))
     }
 
     scope :filter_wordquery, lambda { |query|

@@ -6,5 +6,5 @@
     = link_to reset_filterrific_url, class: 'pr-3 text-gray-500', title: t('filter.reset') do
       = heroicon 'x-mark'
 
-    = link_to '#', class: 'p-3 text-white bg-primary rounded-full', title: t('.show_x_results', count: words.total_count), data: {action: 'click->home-search#goToSearchResults'} do
+    = link_to '#', class: 'p-3 text-white bg-primary rounded-full', title: t('.show_x_results', count: total_count), data: {action: 'click->home-search#goToSearchResults'} do
       = heroicon 'arrow-right'

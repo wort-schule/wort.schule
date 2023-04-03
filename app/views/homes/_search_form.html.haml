@@ -1,6 +1,6 @@
 .mt-6
   = form_for_filterrific @filterrific, html: { data: { turbo_frame: 'words', turbo_action: 'advance' } } do |f|
     .mx-auto(class="md:max-w-[50vw]")
-      = render OmniSearchFieldComponent.new(form: f, words: @words, on_search_page: false)
+      = render OmniSearchFieldComponent.new(form: f, on_search_page: false, total_count: @counts[:all])
 
     .sr-only= button_tag t('filter.apply'), type: 'submit', title: t('filter.apply'), 'data-action': 'click->home-search#noop'
