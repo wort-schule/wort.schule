@@ -1,0 +1,6 @@
+de:
+  words:
+    full_name: ""
+    full_plural: "(Plural von %{base})"
+    comparative: "(Komparativ von %{base})"
+    superlative: "(Superlativ von %{base})"
