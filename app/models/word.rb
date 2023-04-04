@@ -149,6 +149,10 @@ class Word < ApplicationRecord
     end
   end
 
+  def full_name
+    name
+  end
+
   def accessible_lists(ability)
     List.accessible_by(ability).where(id: lists.pluck(:id))
   end

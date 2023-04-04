@@ -1,4 +1,6 @@
-.flex.items-baseline
-  - parts.each do |part|
-    %span{ class: part.match?(/#{query}/i) ? 'bg-search-highlight' : '' }
-      = part
+.flex.items-baseline.gap-1
+  .flex.items-baseline
+    - parts.each do |part|
+      %span{ class: part.match?(/#{query}/i) ? 'bg-search-highlight' : '' }
+        = part.html_safe
+  %span= t hit_in, scope: :words, base: result.full_name

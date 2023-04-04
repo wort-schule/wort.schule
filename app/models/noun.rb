@@ -45,6 +45,14 @@ class Noun < Word
     %w[ein eine ein ein/eine ein eine/ein ein/eine][genus_id] unless genus_id.nil?
   end
 
+  def full_name
+    [article_definite, name].select(&:present?).join(" ")
+  end
+
+  def full_plural
+    [article_definite(singular: false), plural].select(&:present?).join(" ")
+  end
+
   def self.dummy
     new(
       meaning: "",
