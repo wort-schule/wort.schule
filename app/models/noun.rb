@@ -50,6 +50,8 @@ class Noun < Word
   end
 
   def full_plural
+    return "" if plural.blank?
+
     [article_definite(singular: false), plural].select(&:present?).join(" ")
   end
 
