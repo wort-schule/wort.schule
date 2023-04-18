@@ -1,11 +1,8 @@
-= box class: 'h-full hover:shadow-lg hover:cursor-pointer relative', id: dom_id(word), 'data-controller': "dropdown #{confetti ? 'confetti' : ''}", 'data-action': 'click->dropdown#toggle click@window->dropdown#hide' do
+%div{class: 'h-full hover:shadow-lg hover:cursor-pointer relative !overflow-visible rounded-3xl', style: 'overflow: visible', id: dom_id(word), 'data-controller': "dropdown #{confetti ? 'confetti' : ''}", 'data-action': 'click->dropdown#toggle click@window->dropdown#hide'}
   - menu_id = "menu-#{word.id}"
   - show_actions_label = t('.show_actions')
 
-  .flex.justify-between
-    = with_article word
-    %span.text-gray-500(type="button" data-dropdown-target="button" aria-haspopup="menu" aria-controls=menu_id title=show_actions_label)
-      = heroicon :'ellipsis-horizontal'
+  = render WordPanelComponent.new(word:, menu: true)
 
   .hidden.flex.flex-col.gap-1.absolute.left-0.bg-white.w-full.z-50.p-2.rounded-lg.shadow-lg(id=menu_id role="menu" data-dropdown-target="menu")
     - if list != @lists.first

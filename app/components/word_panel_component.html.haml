@@ -1,4 +1,4 @@
-= link_to word, data: { turbo_frame: '_top' }, id: dom_id(word) do
+- box_content = capture do
   = box padding: false, class: 'h-full' do
     .flex.justify-between.h-full
       .px-4.py-5.sm:px-6
@@ -12,3 +12,9 @@
           = image_tag word.image.variant(:thumb), class: 'w-24 h-full object-cover'
         - else
           .w-24.h-24
+
+- unless menu
+  = link_to word, data: { turbo_frame: '_top' }, id: dom_id(word) do
+    = box_content
+- else
+  = box_content
