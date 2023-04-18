@@ -1,6 +1,4 @@
 = title_with_actions t('.title')
 
-%div
-  - @lists.each.with_index do |list, index|
-    = two_column_card list, '', first: index == 0 do
-      = render 'flashcards/words', list:
+= render 'flashcards/tabs', list: @list
+= render 'flashcards/words', list: @list

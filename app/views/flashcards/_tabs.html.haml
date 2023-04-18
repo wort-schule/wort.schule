@@ -1,0 +1,10 @@
+= turbo_frame_tag :flashcard_tabs, class: 'flex flex-wrap my-6 border-b', target: '_top' do
+  - current_user.flashcard_lists.each do |flashcard_list|
+    - words_count = flashcard_list.words.size
+
+    - if words_count > 0
+      .hover:bg-white.px-4.py-2{class: flashcard_list.flashcard_section == list.flashcard_section ? 'font-bold shadow border bg-white' : ''}
+        = link_to "#{flashcard_list} (#{words_count})", flashcards_path(list: flashcard_list.flashcard_section)
+    - else
+      .text-gray-500.px-4.py-2
+        = flashcard_list
