@@ -4,6 +4,12 @@ class FlashcardsController < ApplicationController
   authorize_resource class: false
 
   def index
-    @lists = current_user.flashcard_lists
+    first_list_id = Flashcards::SECTIONS.first
+    requested_list_id = params[:list].presence || first_list_id
+
+    @is_first_list = requested_list_id.to_s == first_list_id.to_s
+
+    @list = current_user.flashcard_list(requested_list_id)
+    raise ActionController::RoutingError, "Not Found" if @list.blank?
   end
 end

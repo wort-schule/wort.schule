@@ -3,3 +3,5 @@
 
 - if @new_list != @lists.first
   = turbo_stream.replace @word, partial: 'flashcards/word', locals: { list: @new_list, word: @word, confetti: true }
+
+= turbo_stream.replace :flashcard_tabs, partial: 'flashcards/tabs', locals: { list: @old_list }
