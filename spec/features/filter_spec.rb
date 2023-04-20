@@ -106,22 +106,16 @@ RSpec.describe "word filter" do
       visit search_path
     end
 
-    # This spec is currently skipped as phonetic search has ben temporarily disabled
-    it "filters phonetically", js: true, skip: true do
-      # Opening/closing the filter is only necessary because Capybara doesn't
-      # wait for the search to complete
-      click_on t("filter.title")
-      click_on t("filter.title")
-
+    it "filters phonetically", js: true do
       expect(page).to have_content "Fahrrad" # 372
 
-      fill_in t("filter.cologne_phonetics"), with: "Var" # 37
+      fill_in "filterrific[filter_home]", with: "Var" # 37
       expect(page).to have_content "Fahrrad"
 
-      fill_in t("filter.cologne_phonetics"), with: "Hau" # 0
+      fill_in "filterrific[filter_home]", with: "Hau" # 37
       expect(page).not_to have_content "Fahrrad"
 
-      fill_in t("filter.cologne_phonetics"), with: "Vahrad" # 372
+      fill_in "filterrific[filter_home]", with: "Vahrad" # 37
       expect(page).to have_content "Fahrrad"
     end
   end
