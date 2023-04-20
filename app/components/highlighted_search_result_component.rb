@@ -9,6 +9,7 @@ class HighlightedSearchResultComponent < ViewComponent::Base
   end
 
   def parts
+    return [] if query.blank?
     return [result.name] unless /^[[:alpha:]]*$/.match?(query)
 
     result

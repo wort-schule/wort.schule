@@ -3,8 +3,11 @@
     .flex.justify-between.h-full
       .px-4.py-5.sm:px-6
         .flex.items-baseline.gap-1
-          = content
-          .text-xl.font-bold= word.name
+          - if name?
+            = name
+          - else
+            = content
+            .text-xl.font-bold= word.name
         .text-xs.font-light.mt-3= word.meaning
 
       .p-1.pr-4.flex.items-center.object-cover
