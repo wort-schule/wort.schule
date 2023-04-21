@@ -118,7 +118,8 @@ module WordFilter
         where("comparative ILIKE ?", term).select("*, 1 as weight"),
         where("comparative ILIKE ?", "#{query}%").select("*, 2 as weight"),
         where("superlative ILIKE ?", term).select("*, 1 as weight"),
-        where("superlative ILIKE ?", "#{query}%").select("*, 2 as weight")
+        where("superlative ILIKE ?", "#{query}%").select("*, 2 as weight"),
+        filter_cologne_phonetics(query).select("*, 4 as weight")
       ).order(:weight, :name).ids.uniq
 
       Word

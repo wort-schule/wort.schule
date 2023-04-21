@@ -102,26 +102,23 @@ RSpec.describe "word filter" do
   describe "by cologne phonetics" do
     let!(:noun) { create :noun, name: "Fahrrad" }
 
-    before do
+    it "shows all words on initial load", js: true do
       visit search_path
+      expect(page).to have_content "Fahrrad" # 372
     end
 
-    # This spec is currently skipped as phonetic search has ben temporarily disabled
-    it "filters phonetically", js: true, skip: true do
-      # Opening/closing the filter is only necessary because Capybara doesn't
-      # wait for the search to complete
-      click_on t("filter.title")
-      click_on t("filter.title")
-
-      expect(page).to have_content "Fahrrad" # 372
-
-      fill_in t("filter.cologne_phonetics"), with: "Var" # 37
-      expect(page).to have_content "Fahrrad"
-
-      fill_in t("filter.cologne_phonetics"), with: "Hau" # 0
+    it "removes words phonetically", js: true do
+      visit search_path("filterrific[filter_home]": "Hau") # 0
       expect(page).not_to have_content "Fahrrad"
+    end
 
-      fill_in t("filter.cologne_phonetics"), with: "Vahrad" # 372
+    it "finds exact phonetic match", js: true do
+      visit search_path("filterrific[filter_home]": "Vahrad") # 372
+      expect(page).to have_content "Fahrrad"
+    end
+
+    it "finds partial phonetic match", js: true do
+      visit search_path("filterrific[filter_home]": "Var") # 37
       expect(page).to have_content "Fahrrad"
     end
   end

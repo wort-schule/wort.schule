@@ -3,7 +3,10 @@
 
   .grid.my-6.gap-4(class=columns)
     - words.each do |word|
-      = render word
+      = render WordPanelComponent.new(word:) do |component|
+        - component.with_name do
+          .font-bold
+            = render HighlightedSearchResultComponent.new(result: word, query: params.dig(:filterrific, :filter_home))
 
   .pagination-with-actions
     = paginate words
