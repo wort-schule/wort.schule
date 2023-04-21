@@ -102,20 +102,23 @@ RSpec.describe "word filter" do
   describe "by cologne phonetics" do
     let!(:noun) { create :noun, name: "Fahrrad" }
 
-    before do
+    it "shows all words on initial load", js: true do
       visit search_path
+      expect(page).to have_content "Fahrrad" # 372
     end
 
-    it "filters phonetically", js: true do
-      expect(page).to have_content "Fahrrad" # 372
-
-      fill_in "filterrific[filter_home]", with: "Var" # 37
-      expect(page).to have_content "Fahrrad"
-
-      fill_in "filterrific[filter_home]", with: "Hau" # 37
+    it "removes words phonetically", js: true do
+      visit search_path("filterrific[filter_home]": "Hau") # 0
       expect(page).not_to have_content "Fahrrad"
+    end
 
-      fill_in "filterrific[filter_home]", with: "Vahrad" # 37
+    it "finds exact phonetic match", js: true do
+      visit search_path("filterrific[filter_home]": "Vahrad") # 372
+      expect(page).to have_content "Fahrrad"
+    end
+
+    it "finds partial phonetic match", js: true do
+      visit search_path("filterrific[filter_home]": "Var") # 37
       expect(page).to have_content "Fahrrad"
     end
   end
