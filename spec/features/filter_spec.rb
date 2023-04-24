@@ -116,10 +116,5 @@ RSpec.describe "word filter" do
       visit search_path("filterrific[filter_home]": "Vahrad") # 372
       expect(page).to have_content "Fahrrad"
     end
-
-    it "finds partial phonetic match", js: true do
-      visit search_path("filterrific[filter_home]": "Var") # 37
-      expect(page).to have_content "Fahrrad"
-    end
   end
 end

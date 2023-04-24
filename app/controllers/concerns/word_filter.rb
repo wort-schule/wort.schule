@@ -177,7 +177,7 @@ module WordFilter
       return if query.blank?
 
       query = squeeze query
-      where("cologne_phonetics ILIKE ?", "#{ColognePhonetics.encode(query)}%")
+      where("cologne_phonetics ILIKE ?", ColognePhonetics.encode(query))
     }
 
     scope :filter_letters, lambda { |query|
