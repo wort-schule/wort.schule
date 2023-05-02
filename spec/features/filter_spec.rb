@@ -37,6 +37,28 @@ RSpec.describe "word filter" do
         expect(page).to have_content word
       end
     end
+
+    it "filters words and keywords", js: true do
+      words.each do |word|
+        expect(page).to have_content word
+      end
+
+      first_word = Word.find_by(name: "Abfall")
+      second_word = Word.find_by(name: "Bach")
+      first_word.keywords << second_word
+      expect(first_word.keywords).to match_array([second_word])
+
+      click_on t("filter.open")
+      fill_in "filterrific[filter_home]", with: "a"
+      select second_word.name, from: "filterrific[filter_keywords][keywords][]", visible: false
+      find_button(t("filter.apply"), visible: false).trigger("click")
+
+      within "#words" do
+        expect(page).to have_css '[data-name="Abfall"]'
+        expect(page).not_to have_css '[data-name="Abend"]'
+        expect(page).not_to have_css '[data-name="Bach"]'
+      end
+    end
   end
 
   describe "filter specific word types" do
