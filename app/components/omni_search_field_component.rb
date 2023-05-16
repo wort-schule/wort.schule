@@ -11,6 +11,10 @@ class OmniSearchFieldComponent < ViewComponent::Base
     @total_count = total_count
   end
 
+  def search_value
+    !!@on_search_page ? form.object.filter_home : params.dig(:filterrific, :filter_home)
+  end
+
   def search_input_id
     !!@on_search_page ? "advanced_search" : "homepage_search"
   end
