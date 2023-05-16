@@ -20,7 +20,7 @@
   = filter_select_field f, :source, collection: sources.order(:name).map { |s| [s.name, s.id] }
   = filter_select_field f, :topic, collection: topics.order(:name).map { |t| [t.name, t.id] }
   = filter_select_field f, :hierarchy, collection: hierarchies.order(:name).map { |h| [h.name, h.id] }
-  = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase'
+  = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase', oninput: "this.value = this.value.replace(/[^KVkv]/, '')"
   = filter_select_field_with_and_or f, :phenomenons, collection: Phenomenon.as_collection
   = filter_select_field_with_and_or f, :strategies, collection: Strategy.as_collection
   = filter_select_field_with_and_or f, :keywords, collection: Word.as_collection
