@@ -136,7 +136,7 @@ module WordFilter
 
       query = squeeze query
       term = replace_regex query
-      where("name ILIKE ?", term)
+      where("words.name ILIKE ?", term)
     }
 
     scope :filter_wordstarts, lambda { |query|

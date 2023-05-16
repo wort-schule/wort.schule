@@ -3,7 +3,7 @@ module FilterHelper
     form_attribute = "filter_#{attribute}"
 
     inline = input_options.delete(:inline)
-    input_field = form.text_field form_attribute, input_options.deep_merge(data: {action: "input->form-submission#search"})
+    input_field = form.text_field form_attribute, input_options.deep_merge(data: {action: "input->form-submission#search", "turbo-permanent": true})
 
     return input_field if inline
 
