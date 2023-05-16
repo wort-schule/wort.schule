@@ -11,8 +11,8 @@ class OmniSearchFieldComponent < ViewComponent::Base
     @total_count = total_count
   end
 
-  def on_search_page?
-    !!@on_search_page
+  def search_input_id
+    !!@on_search_page ? "advanced_search" : "homepage_search"
   end
 
   def input_data_attribute
