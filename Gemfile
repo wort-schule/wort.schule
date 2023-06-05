@@ -50,7 +50,7 @@ gem "validate_url"
 gem "view_component"
 
 group :development do
-  gem "better_errors"
+  gem "better_errors", "2.9.1"
   gem "binding_of_caller"
   gem "letter_opener"
   gem "web-console"
