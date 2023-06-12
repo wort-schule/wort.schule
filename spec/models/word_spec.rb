@@ -392,7 +392,7 @@ RSpec.describe Word do
 
   describe "#filter_smart" do
     it "finds exact matches as well as phonetic ones" do
-      word1 = create :noun, name: "Fahrrad"
+      word1 = create :noun, name: "Fahre"
       word2 = create :noun, name: "Havarie"
 
       expect(Noun.filter_smart("var")).to match_array [word1, word2]

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class HomesController < PublicController
+  include WordHelper
+
   def show
     @filterrific = initialize_filterrific(
       Word,
@@ -8,11 +10,17 @@ class HomesController < PublicController
     ) or return
 
     @words = if params.dig(:filterrific, :filter_home).blank?
+      @counts = {
+        all: 0
+      }
+
       Word.none
     else
-      @filterrific.find
-    end
+      @counts = {
+        all: word_count_for("")
+      }
 
-    @words = @words.page(params[:page]).per(8)
+      @filterrific.find.page(params[:page]).per(8)
+    end
   end
 end

@@ -51,4 +51,11 @@ module WordHelper
       concat content_tag(:span, word.name)
     end
   end
+
+  def word_count_for(word_type)
+    initialize_filterrific(
+      Word,
+      (params[:filterrific] || {}).merge(filter_type: word_type, filter_home: {count: true, query: params.dig(:filterrific, :filter_home)})
+    ).find.size
+  end
 end

@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.1.0"
 
-gem "rails", "~> 7.0.4"
+gem "rails", "~> 7.0.5"
 gem "active_record_extended"
 gem "active_storage_svg_sanitizer"
 gem "bootsnap", require: false
@@ -31,10 +31,10 @@ gem "kaminari"
 gem "liquid"
 gem "meta-tags"
 gem "paper_trail"
-gem "pg", "~> 1.4"
+gem "pg", "~> 1.5"
 gem "phony_rails"
 gem "propshaft"
-gem "puma", "~> 6.2"
+gem "puma", "~> 6.3"
 gem "rails-i18n"
 gem "rb-gravatar"
 gem "redis", "~> 5.0" # Use Redis for Action Cable
@@ -50,7 +50,7 @@ gem "validate_url"
 gem "view_component"
 
 group :development do
-  gem "better_errors"
+  gem "better_errors", "2.9.1"
   gem "binding_of_caller"
   gem "letter_opener"
   gem "web-console"
