@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: deployment
 
     steps:
       - name: Checkout code
@@ -15,7 +16,6 @@ jobs:
 
       - name: Set up SSH keys
         uses: webfactory/ssh-agent@v0.8.0
-        secrets: inherit
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
