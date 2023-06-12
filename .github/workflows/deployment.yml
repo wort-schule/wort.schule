@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Print SSH private key
+        run: echo ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Set up SSH keys
         uses: webfactory/ssh-agent@v0.8.0
         with:
