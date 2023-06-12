@@ -3,7 +3,7 @@ module FilterHelper
     form_attribute = "filter_#{attribute}"
 
     inline = input_options.delete(:inline)
-    input_field = form.text_field form_attribute, input_options.deep_merge(data: {action: "input->form-submission#search"})
+    input_field = form.text_field form_attribute, input_options.deep_merge(data: {action: "input->form-submission#search", "turbo-permanent": true})
 
     return input_field if inline
 
@@ -25,7 +25,7 @@ module FilterHelper
   def filter_select_field_with_and_or(form, attribute, collection:)
     form_attribute = "filter_#{attribute}"
 
-    content_tag :div, class: "input" do
+    content_tag :div, class: "input", id: "#{attribute}_multiselect", "data-turbo-permanent": true do
       concat form.label form_attribute, I18n.t("filter.#{attribute}")
       concat(content_tag(:div, class: "flex gap-2 items-start") do
         concat(form.fields_for(form_attribute) do |fields|
