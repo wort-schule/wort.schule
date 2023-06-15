@@ -195,5 +195,30 @@ RSpec.describe "flash cards" do
       expect(page).to have_content noun1.name
       expect(page).not_to have_content noun2.name
     end
+
+    it "adds words when generating a user" do
+      expect(learning_group.users).to be_empty
+
+      visit learning_group_path(learning_group)
+      click_on t("learning_groups.show.assign_list")
+      expect(page).to have_content t("learning_pleas.new.title")
+      click_on t("learning_pleas.new.assign")
+
+      expect(learning_group.lists).to match_array [word_list]
+
+      # Generate user
+      click_on t("learning_groups.show.generate_accounts")
+      fill_in t("learning_groups.user_generations.new.amount"), with: "1"
+      click_on t("actions.create")
+
+      generated_user = learning_group.users.first
+      expect(generated_user).to be_confirmed
+      expect(generated_user.flashcard_list(1).words).to match_array [noun1, noun2]
+
+      login_as generated_user
+      visit flashcards_path
+      expect(page).to have_content noun1.name
+      expect(page).to have_content noun2.name
+    end
   end
 end

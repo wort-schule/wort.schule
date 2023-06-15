@@ -26,6 +26,7 @@ module LearningGroups
           learning_group: @learning_group,
           access: "granted"
         )
+        Flashcards.add_user(@learning_group, user)
       end
     end
 
