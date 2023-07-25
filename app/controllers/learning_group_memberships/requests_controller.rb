@@ -26,6 +26,7 @@ module LearningGroupMemberships
       authorize! :accept_request, @learning_group_membership
 
       notice = if @learning_group_membership.update(access: "granted")
+        Flashcards.add_user(@learning_group_membership.learning_group, current_user)
         t("notices.learning_group_memberships.accepted")
 
       else
