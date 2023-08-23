@@ -85,4 +85,13 @@ class Noun < Word
       singularetantum: false
     )
   end
+
+  private
+
+  def cologne_phonetics_terms
+    [
+      name,
+      plural
+    ]
+  end
 end

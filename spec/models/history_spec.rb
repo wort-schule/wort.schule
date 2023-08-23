@@ -17,7 +17,7 @@ RSpec.describe "tracking change history" do
     expect(updated_version.changeset.except("updated_at")).to eq({
       "consonant_vowel" => ["VKKVK", "KVVK"],
       "name" => ["Adler", "Haus"],
-      "cologne_phonetics" => ["0257", "08"]
+      "cologne_phonetics" => [["0257"], ["08"]]
     })
   end
 
