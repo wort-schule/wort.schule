@@ -26,6 +26,8 @@ class HighlightedSearchResultComponent < ViewComponent::Base
     return :full_plural if result.plural&.match?(/#{query}/i)
     return :comparative if result.comparative&.match?(/#{query}/i)
     return :superlative if result.superlative&.match?(/#{query}/i)
-    return :full_name if result.cologne_phonetics&.match?(ColognePhonetics.encode(query))
+    return :full_name if result.cologne_phonetics&.any? do |term|
+      term.match?(ColognePhonetics.encode(query))
+    end
   end
 end

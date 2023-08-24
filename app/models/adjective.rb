@@ -21,4 +21,14 @@ class Adjective < Word
       irregular_comparison: false
     )
   end
+
+  private
+
+  def cologne_phonetics_terms
+    [
+      name,
+      comparative,
+      superlative
+    ]
+  end
 end

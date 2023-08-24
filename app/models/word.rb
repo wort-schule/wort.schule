@@ -213,8 +213,14 @@ class Word < ApplicationRecord
       .select!(&:present?)
   end
 
+  def cologne_phonetics_terms
+    [name]
+  end
+
   def update_cologne_phonetics
-    self.cologne_phonetics = ColognePhonetics.encode(name)
+    self.cologne_phonetics = cologne_phonetics_terms.filter_map do |term|
+      ColognePhonetics.encode(term).presence
+    end
   end
 
   # Hooks to react to changes in the with_tts, name and example_sentences attributes and purge or (re)generate audio

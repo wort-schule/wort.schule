@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_22_183240) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_23_174305) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -411,10 +411,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_22_183240) do
     t.integer "function_type"
     t.string "type", null: false
     t.jsonb "example_sentences", default: [], null: false
-    t.string "cologne_phonetics"
     t.bigint "hit_counter", default: 0, null: false
     t.boolean "with_tts", default: true, null: false
-    t.index ["cologne_phonetics"], name: "index_words_on_cologne_phonetics"
+    t.string "cologne_phonetics", default: [], array: true
     t.index ["genus_feminine_id"], name: "index_words_on_genus_feminine_id"
     t.index ["genus_id"], name: "index_words_on_genus_id"
     t.index ["genus_masculine_id"], name: "index_words_on_genus_masculine_id"
