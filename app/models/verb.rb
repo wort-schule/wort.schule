@@ -37,4 +37,26 @@ class Verb < Word
       strong: false
     )
   end
+
+  private
+
+  def cologne_phonetics_terms
+    [
+      name,
+      participle,
+      past_participle,
+      present_singular_1,
+      present_singular_2,
+      present_singular_3,
+      present_plural_1,
+      present_plural_2,
+      present_plural_3,
+      past_singular_1,
+      past_singular_2,
+      past_singular_3,
+      past_plural_1,
+      past_plural_2,
+      past_plural_3
+    ]
+  end
 end
