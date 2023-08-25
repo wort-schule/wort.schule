@@ -109,7 +109,7 @@ GEM
     capybara-screenshot (1.0.26)
       capybara (>= 1.0, < 4)
       launchy
-    clamped (1.0.0)
+    clamped (1.0.1)
     cologne_phonetics (1.0.2)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
