@@ -459,6 +459,11 @@ RSpec.describe Word do
       word.reload
       expect(word.cologne_phonetics).to eq ["08"]
     end
+
+    it "only stores unique phonetics" do
+      word = create :noun, name: "Adler", plural: "Adler"
+      expect(word.cologne_phonetics).to eq ["0257"]
+    end
   end
 
   describe "audio attachment" do
