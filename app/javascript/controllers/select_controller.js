@@ -6,6 +6,8 @@ export default class extends Controller {
   static values = {url: String}
 
   connect() {
+    if (this.element.tomselect) return
+
     let options = {
       onItemAdd:function(){
         this.setTextboxValue('');
