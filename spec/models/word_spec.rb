@@ -408,11 +408,25 @@ RSpec.describe Word do
       expect(Noun.filter_smart("kinder")).to match [word]
     end
 
-    it "finds increasing forms of adjectives" do
-      word = create :adjective, name: "gut", comparative: "besser", superlative: "besten"
+    it "finds word types" do
+      noun = create :noun
+      verb = create :verb
+      adjective = create :adjective
 
-      expect(Adjective.filter_smart("besser")).to match [word]
-      expect(Adjective.filter_smart("besten")).to match [word]
+      expect(Word.filter_type("Noun")).to match [noun]
+      expect(Word.filter_type("Verb")).to match [verb]
+      expect(Word.filter_type("Adjective")).to match [adjective]
+      expect(Word.filter_type("")).to match_array [noun, verb, adjective]
+    end
+  end
+
+  describe "#filter_example_sentences" do
+    it "finds words which have example sentences" do
+      word = create :noun, example_sentences: [Faker::Lorem.sentence]
+      create :noun
+
+      expect(Noun.filter_example_sentences("yes")).to match [word]
+      expect(Word.filter_example_sentences("yes")).to match [word]
     end
   end
 

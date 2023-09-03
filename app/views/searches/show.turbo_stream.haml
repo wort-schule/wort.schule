@@ -1,0 +1,13 @@
+= turbo_stream.update :omni_search do
+  - fields_for @filterrific do |f|
+    = render 'omni_search', f:
+
+= turbo_stream.update :word_type_filter do
+  = render 'word_type_filter'
+
+= turbo_stream.update :words do
+  = render 'words/index', words: @words
+
+= turbo_stream.update :advanced_search_fields do
+  - fields_for @filterrific do |f|
+    = render 'filters/form', f:

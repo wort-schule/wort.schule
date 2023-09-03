@@ -5,9 +5,10 @@ class SearchesController < PublicController
   include WordHelper
 
   def show
+    @filter_type = params.dig(:filterrific, :filter_type).presence || ""
     @filterrific = initialize_filterrific(
       Word,
-      (params[:filterrific] || {}).merge(filter_type: params.dig(:filterrific, :filter_type).presence || "")
+      (params[:filterrific] || {}).merge(filter_type: @filter_type)
     ) or return
 
     @words = @filterrific
@@ -23,7 +24,7 @@ class SearchesController < PublicController
       function_words: word_count_for("FunctionWord")
     }
 
-    @is_filter_open = params[:is_filter_open] == "true"
+    @mode = FilterMode.new(mode: params[:mode])
   end
 
   private

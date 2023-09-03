@@ -83,7 +83,9 @@ module WordFilter
     )
 
     scope :filter_type, lambda { |type|
-      where(type: type.presence || "")
+      return if type.blank?
+
+      where(type:)
     }
 
     scope :filter_smart, lambda { |query|
