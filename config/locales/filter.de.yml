@@ -6,6 +6,10 @@ de:
     all: Alle
     and: und
     or: oder
+    boolean:
+      all: Alle
+      'yes': Ja
+      'no': Nein
     word_contains: Wort enthält
     wordstarts: Anfang
     wordcontains: Mitte

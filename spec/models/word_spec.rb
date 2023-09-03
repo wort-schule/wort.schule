@@ -333,10 +333,14 @@ RSpec.describe Word do
   describe "#filter_foreign" do
     it "finds words which are foreign" do
       word = create :noun, foreign: true
-      create :noun, foreign: false
+      not_foreign = create :noun, foreign: false
 
-      expect(Noun.filter_foreign("1")).to match [word]
-      expect(Word.filter_foreign("1")).to match [word]
+      expect(Noun.filter_foreign("yes")).to match [word]
+      expect(Word.filter_foreign("yes")).to match [word]
+      expect(Noun.filter_foreign("no")).to match [not_foreign]
+      expect(Word.filter_foreign("no")).to match [not_foreign]
+      expect(Noun.filter_foreign("")).to match_array [word, not_foreign]
+      expect(Word.filter_foreign("")).to match_array [word, not_foreign]
     end
   end
 
@@ -345,8 +349,8 @@ RSpec.describe Word do
       word = create :noun, prototype: true
       create :noun, prototype: false
 
-      expect(Noun.filter_prototype("1")).to match [word]
-      expect(Word.filter_prototype("1")).to match [word]
+      expect(Noun.filter_prototype("yes")).to match [word]
+      expect(Word.filter_prototype("yes")).to match [word]
     end
   end
 
@@ -355,8 +359,8 @@ RSpec.describe Word do
       word = create :noun, compound: true
       create :noun, compound: false
 
-      expect(Noun.filter_compound("1")).to match [word]
-      expect(Word.filter_compound("1")).to match [word]
+      expect(Noun.filter_compound("yes")).to match [word]
+      expect(Word.filter_compound("yes")).to match [word]
     end
   end
 
@@ -365,8 +369,8 @@ RSpec.describe Word do
       word = create :noun, example_sentences: [Faker::Lorem.sentence]
       create :noun
 
-      expect(Noun.filter_example_sentences("1")).to match [word]
-      expect(Word.filter_example_sentences("1")).to match [word]
+      expect(Noun.filter_example_sentences("yes")).to match [word]
+      expect(Word.filter_example_sentences("yes")).to match [word]
     end
   end
 
@@ -375,8 +379,8 @@ RSpec.describe Word do
       word = create :noun, singularetantum: true
       create :noun, singularetantum: false
 
-      expect(Noun.filter_singularetantum("1")).to match [word]
-      expect(Word.filter_singularetantum("1")).to match [word]
+      expect(Noun.filter_singularetantum("yes")).to match [word]
+      expect(Word.filter_singularetantum("yes")).to match [word]
     end
   end
 
@@ -385,8 +389,8 @@ RSpec.describe Word do
       word = create :noun, pluraletantum: true
       create :noun, pluraletantum: false
 
-      expect(Noun.filter_pluraletantum("1")).to match [word]
-      expect(Word.filter_pluraletantum("1")).to match [word]
+      expect(Noun.filter_pluraletantum("yes")).to match [word]
+      expect(Word.filter_pluraletantum("yes")).to match [word]
     end
   end
 

@@ -38,12 +38,15 @@ module FilterHelper
 
   def filter_check_box_field(form, attribute)
     form_attribute = "filter_#{attribute}"
+    collection = [
+      [I18n.t("filter.boolean.all"), ""],
+      [I18n.t("filter.boolean.yes"), "yes"],
+      [I18n.t("filter.boolean.no"), "no"]
+    ]
 
-    content_tag :div, class: "input boolean" do
-      form.label form_attribute, class: "boolean checkbox" do
-        concat form.check_box form_attribute, data: {action: "input->form-submission#search"}, class: "boolean default-input"
-        concat content_tag :span, I18n.t("filter.#{attribute}")
-      end
+    content_tag :div, class: "input" do
+      concat form.label form_attribute, I18n.t("filter.#{attribute}")
+      concat form.select form_attribute, collection, {}, data: {action: "input->form-submission#search"}
     end
   end
 end

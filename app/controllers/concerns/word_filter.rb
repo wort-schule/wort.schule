@@ -37,9 +37,12 @@ module WordFilter
 
     def filter_boolean(attribute, query, join_table: nil)
       return if query.blank?
-      return if query.to_s != "1"
 
-      where(attribute => true)
+      if query.to_s == "yes"
+        where(attribute => true)
+      elsif query.to_s == "no"
+        where(attribute => false)
+      end
     end
   end
 
@@ -253,12 +256,18 @@ module WordFilter
 
     scope :filter_example_sentences, lambda { |query|
       return if query.blank?
-      return if query.to_s != "1"
 
-      where.not(
-        "words.id": Word
-        .where("example_sentences = '[]'")
-      )
+      if query.to_s == "yes"
+        where.not(
+          "words.id": Word
+          .where("example_sentences = '[]'")
+        )
+      elsif query.to_s == "no"
+        where(
+          "words.id": Word
+          .where("example_sentences = '[]'")
+        )
+      end
     }
 
     scope :filter_singularetantum, lambda { |query|
