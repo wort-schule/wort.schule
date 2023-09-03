@@ -39,6 +39,8 @@ de:
       one: '%{count} Wort hinzugefügt'
       other: '%{count} Wörter hinzugefügt'
     close: Suchfilter schließen
+    more: Weitere Filter anzeigen
+    less: Weniger Filter anzeigen
     open: Suchfilter
     results:
       all_results: Wortarten

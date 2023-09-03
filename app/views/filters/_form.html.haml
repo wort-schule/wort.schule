@@ -13,31 +13,37 @@
     = filter_text_field f, :wordstarts, inline: true, label: false, placeholder: t('filter.wordstarts')
     = filter_text_field f, :wordcontains, inline: true, label: false, placeholder: t('filter.wordcontains')
     = filter_text_field f, :wordends, inline: true, label: false, placeholder: t('filter.wordends')
-  .flex.gap-2.items-end
-    = filter_text_field f, :syllablescontains
-    = filter_text_field f, :letters
   .mt-4
-  = filter_select_field f, :source, collection: sources.order(:name).map { |s| [s.name, s.id] }
+  = filter_text_field f, :syllablescontains
   = filter_select_field f, :topic, collection: topics.order(:name).map { |t| [t.name, t.id] }
   = filter_select_field f, :hierarchy, collection: hierarchies.order(:name).map { |h| [h.name, h.id] }
-  = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase', oninput: "this.value = this.value.replace(/[^KVkv]/, '')"
-  = filter_select_field_with_and_or f, :phenomenons, collection: Phenomenon.as_collection
-  = filter_select_field_with_and_or f, :strategies, collection: Strategy.as_collection
   = filter_select_field_with_and_or f, :keywords, collection: Word.as_collection
-  = filter_check_box_field f, :foreign
-  = filter_check_box_field f, :prototype
-  = filter_check_box_field f, :compound
-  = filter_check_box_field f, :example_sentences
 
-  .mt-4
-    .hidden(data-filter-target="noun")
-      .flex.flex-col.gap-1
-        = render "filters/noun", f:
-    .hidden(data-filter-target="verb")
-      .flex.flex-col.gap-1
-        = render "filters/verb", f:
-    .hidden(data-filter-target="adjective")
-      .flex.flex-col.gap-1
-        = render "filters/adjective", f:
+  .mt-4(data-controller="reveal" data-reveal-hidden-class="hidden")
+    %button.button(type="button" data-reveal-target="item" data-action="click->reveal#toggle")= t('filter.more')
+
+    .hidden(data-reveal-target="item")
+      = filter_text_field f, :letters
+      = filter_select_field f, :source, collection: sources.order(:name).map { |s| [s.name, s.id] }
+      = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase', oninput: "this.value = this.value.replace(/[^KVkv]/, '')"
+      = filter_select_field_with_and_or f, :phenomenons, collection: Phenomenon.as_collection
+      = filter_select_field_with_and_or f, :strategies, collection: Strategy.as_collection
+      = filter_check_box_field f, :foreign
+      = filter_check_box_field f, :prototype
+      = filter_check_box_field f, :compound
+      = filter_check_box_field f, :example_sentences
+
+      .mt-4
+        .hidden(data-filter-target="noun")
+          .flex.flex-col.gap-1
+            = render "filters/noun", f:
+        .hidden(data-filter-target="verb")
+          .flex.flex-col.gap-1
+            = render "filters/verb", f:
+        .hidden(data-filter-target="adjective")
+          .flex.flex-col.gap-1
+            = render "filters/adjective", f:
+
+    %button.button.hidden(type="button" data-reveal-target="item" data-action="click->reveal#toggle")= t('filter.less')
 
   = button_tag t('filter.apply'), type: 'submit', class: 'sr-only', title: t('filter.apply')
