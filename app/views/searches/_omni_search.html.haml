@@ -4,7 +4,7 @@
       = render OmniSearchFieldComponent.new(form: f, on_search_page: true, total_count: @counts[:all])
     %div
       - unless @mode.show_panel?
-        = link_to url_for(request.params.merge(mode: :advanced)), class: 'button', 'data-turbo-frame': '_top' do
+        = link_to url_for(params.permit!.merge(mode: :advanced)), class: 'button', 'data-turbo-frame': '_top' do
           .flex.items-center.gap-1
             = heroicon 'sparkles'
             = t('filter.open')
