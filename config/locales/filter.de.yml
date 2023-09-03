@@ -49,17 +49,17 @@ de:
     results:
       all_results: Wortarten
       all:
-        one: '%{count} Ergebnis'
-        other: '%{count} Ergebnisse'
+        one: 'Ergebnis (%{count})'
+        other: 'Alle Ergebnisse (%{count})'
       nouns:
-        one: '%{count} Substantiv'
-        other: '%{count} Substantive'
+        one: 'Substantiv (%{count})'
+        other: 'Substantive (%{count})'
       verbs:
-        one: '%{count} Verb'
-        other: '%{count} Verben'
+        one: 'Verb (%{count})'
+        other: 'Verben (%{count})'
       adjectives:
-        one: '%{count} Adjektiv'
-        other: '%{count} Adjektive'
+        one: 'Adjektiv (%{count})'
+        other: 'Adjektive (%{count})'
       function_words:
-        one: '%{count} Funktionswort'
-        other: '%{count} Funktionswörter'
+        one: 'Funktionswort (%{count})'
+        other: 'Funktionswörter (%{count})'
