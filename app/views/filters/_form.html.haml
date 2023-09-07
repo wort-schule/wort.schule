@@ -24,7 +24,7 @@
 
       .mt-4
         - unless @mode.show_power_options?
-          = link_to t('filter.more'), url_for(params.permit!.merge(mode: :power)), class: 'button'
+          = link_to t('filter.more'), url_for(params.permit!.merge(mode: :power)), class: 'button', 'data-turbo': false
 
         - if @mode.show_power_options?
           = filter_text_field f, :letters
@@ -49,6 +49,7 @@
               .flex.flex-col.gap-1
                 = render "filters/adjective", f:
 
-          = link_to t('filter.less'), url_for(params.permit!.merge(mode: :advanced)), class: 'button'
+          .mt-4
+            = link_to t('filter.less'), url_for(params.permit!.merge(mode: :advanced)), class: 'button', 'data-turbo': false
 
       = button_tag t('filter.apply'), type: 'submit', class: 'sr-only', title: t('filter.apply')
