@@ -1,8 +1,9 @@
 - if @mode.show_panel?
   %div(class="md:min-w-[25rem] md:max-w-[30vw]")
-    - sources = params.dig(:filterrific, :filter_home).blank? ? Source.accessible_by(current_ability) : Source.accessible_by(current_ability).where(id: @words.joins(:sources).pluck('sources.id'))
-    - topics = params.dig(:filterrific, :filter_home).blank? ? Topic.all : Topic.where(id: @words.joins(:topics).pluck('topics.id'))
-    - hierarchies = params.dig(:filterrific, :filter_home).blank? ? Hierarchy.all : Hierarchy.where(id: @words.pluck(:hierarchy_id))
+    - sources = params.dig(:filterrific, :filter_home).blank? ? Source.accessible_by(current_ability) : Source.accessible_by(current_ability).where(id: @all_words.joins(:sources).pluck('sources.id'))
+    - topics = params.dig(:filterrific, :filter_home).blank? ? Topic.all : Topic.where(id: @all_words.joins(:topics).pluck('topics.id'))
+    - hierarchies = params.dig(:filterrific, :filter_home).blank? ? Hierarchy.all : Hierarchy.where(id: @all_words.pluck(:hierarchy_id))
+    - keywords = @all_words.count == Word.count ? Word.all : Word.where(id: Keyword.where(word_id: @all_words.pluck(:id)).pluck(:keyword_id))
 
     .ci-filter.p-5.bg-gray-background-highlight
       .flex.justify-center
@@ -17,9 +18,9 @@
         = filter_text_field f, :wordends, inline: true, label: false, placeholder: t('filter.wordends')
       .mt-4
       = filter_text_field f, :syllablescontains
-      = filter_select_field f, :topic, collection: topics.order(:name).map { |t| [t.name, t.id] }
-      = filter_select_field f, :hierarchy, collection: hierarchies.order(:name).map { |h| [h.name, h.id] }
-      = filter_select_field_with_and_or f, :keywords, collection: Word.as_collection
+      = filter_select_field f, :topic, collection: topics.as_collection
+      = filter_select_field f, :hierarchy, collection: hierarchies.as_collection
+      = filter_select_field_with_and_or f, :keywords, collection: keywords.as_collection
 
       .mt-4
         - unless @mode.show_power_options?

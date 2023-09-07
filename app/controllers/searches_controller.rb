@@ -12,9 +12,11 @@ class SearchesController < PublicController
       (filter_params || {}).merge(filter_type: @filter_type)
     ) or return
 
-    @words = @filterrific
+    @all_words = @filterrific
       .find
       .ordered_lexigraphically
+
+    @words = @all_words
       .page(params[:page])
 
     @counts = {
