@@ -1,7 +1,7 @@
 .md:my-10.mx-auto(class="lg:max-w-[50vw]")
   .flex.flex-wrap.gap-4.justify-center.items-end.px-8.md:py-8
     .flex-grow
-      = render OmniSearchFieldComponent.new(form: f, on_search_page: true, total_count: @counts[:all])
+      = render OmniSearchFieldComponent.new(on_search_page: true, total_count: @counts[:all])
     %div
       - unless @mode.show_panel?
         = link_to url_for(params.permit!.merge(mode: :advanced)), class: 'button', 'data-turbo-frame': '_top' do

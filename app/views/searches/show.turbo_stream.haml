@@ -1,9 +1,4 @@
-= turbo_stream.update :omni_search do
-  - fields_for @filterrific do |f|
-    = render 'omni_search', f:
-
-= turbo_stream.update :word_type_filter do
-  = render 'word_type_filter'
+= turbo_stream.update :word_type_filter, partial: 'word_type_filter'
 
 = turbo_stream.update :words do
   = render 'words/index', words: @words

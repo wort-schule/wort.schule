@@ -1,9 +1,9 @@
-= form_for_filterrific @filterrific, html: { data: { turbo_frame: '_top', turbo_action: 'advance', controller: 'form-submission' } } do |f|
+= form_for_filterrific @filterrific, html: { data: { controller: 'form-submission' } } do |f|
   = hidden_field_tag :mode, params[:mode]
 
   .content.pb-0
     = turbo_frame_tag :omni_search do
-      = render 'omni_search', f:
+      = render 'omni_search'
 
     = turbo_frame_tag :word_type_filter do
       = render 'word_type_filter'
