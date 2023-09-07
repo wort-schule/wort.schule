@@ -78,7 +78,8 @@ module WordFilter
         :filter_strong,
         :filter_irregular_declination,
         :filter_absolute,
-        :filter_irregular_comparison
+        :filter_irregular_comparison,
+        :filter_images
       ]
     )
 
@@ -132,7 +133,7 @@ module WordFilter
       ).order(:weight, :name).ids.uniq
 
       Word
-        .joins(Arel.sql("JOIN unnest('{#{ids.join(",")}}'::bigint[]) WITH ORDINALITY t(id, ord) USING (id)"))
+        .joins(Arel.sql("JOIN unnest('{#{ids.join(",")}}'::bigint[]) WITH ORDINALITY t(id, ord) ON t.id = words.id"))
         .order(count ? nil : Arel.sql("t.ord"))
     }
 
@@ -310,6 +311,16 @@ module WordFilter
 
     scope :filter_irregular_comparison, lambda { |query|
       filter_boolean :irregular_comparison, query, join_table: :adjectives
+    }
+
+    scope :filter_images, lambda { |query|
+      return if query.blank?
+
+      if query.to_s == "yes"
+        joins(:image_attachment)
+      elsif query.to_s == "no"
+        where.missing(:image_attachment)
+      end
     }
   end
 end

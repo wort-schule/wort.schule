@@ -76,6 +76,7 @@ class SearchesController < PublicController
       filter_irregular_declination
       filter_absolute
       filter_irregular_comparison
+      filter_images
     ]
 
     case @mode.mode
