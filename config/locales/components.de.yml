@@ -6,3 +6,4 @@ de:
     show_x_results:
       one: '%{count} Ergebnis zeigen'
       other: '%{count} Ergebnisse zeigen'
+    show_results: 'Ergebnisse zeigen'

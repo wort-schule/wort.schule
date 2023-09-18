@@ -3,10 +3,10 @@
 .relative.rounded-full.shadow.mx-2.md:mx-0
   .absolute.inset-y-0.left-0.pl-3.flex.items-center.pointer-events-none
     = heroicon 'magnifying-glass', options: {class: 'text-gray-500 sm:text-sm'}
-  = form.text_field :filter_home, id: search_input_id, data: input_data_attribute, class: 'pl-12 pr-12 bg-gray-50 !rounded-full', autofocus:, autocomplete: :off, 'data-turbo-permanent': true, 'data-controller': 'reset-search', value: search_value
+  = text_field_tag 'filterrific[filter_home]', search_value, id: search_input_id, data: input_data_attribute, class: 'pl-12 pr-12 bg-gray-50 !rounded-full', autocomplete: :off
   .absolute.inset-y-0.right-0.flex.items-center
-    = link_to reset_filterrific_url, class: 'pr-3 text-gray-500', title: t('filter.reset') do
+    = link_to reset_filterrific_url, class: 'pr-3 text-gray-500', title: t('filter.reset'), 'data-turbo-frame': '_top' do
       = heroicon 'x-mark'
 
-    = link_to '#', class: 'p-3 text-white bg-primary rounded-full', title: t('.show_x_results', count: total_count), data: {action: 'click->home-search#goToSearchResults'} do
+    = link_to '#', class: 'p-3 text-white bg-primary rounded-full', title: t('.show_results'), data: {action: 'click->home-search#goToSearchResults'} do
       = heroicon 'arrow-right'

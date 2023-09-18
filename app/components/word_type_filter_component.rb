@@ -3,12 +3,12 @@
 class WordTypeFilterComponent < ViewComponent::Base
   with_collection_parameter :word_type
 
-  attr_reader :word_type, :counts, :form
+  attr_reader :word_type, :counts, :current_word_type
 
-  def initialize(word_type:, counts:, f:)
+  def initialize(word_type:, counts:, current_word_type:)
     @word_type = word_type
     @counts = counts
-    @form = f
+    @current_word_type = current_word_type.to_s
   end
 
   def label
@@ -36,15 +36,6 @@ class WordTypeFilterComponent < ViewComponent::Base
       ""
     else
       word_type.model_name.name
-    end
-  end
-
-  def filter_callback
-    case word_type
-    when :all
-      "hideAll"
-    else
-      "show#{word_type.model_name.name}"
     end
   end
 

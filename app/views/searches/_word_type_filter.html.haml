@@ -1,0 +1,2 @@
+.px-6.mt-12.flex.flex-row.flex-wrap.md:justify-center.gap-2.md:gap-8.tabbed-radio-buttons
+  = render WordTypeFilterComponent.with_collection([:all, Noun, Verb, Adjective, FunctionWord], counts: @counts, current_word_type: @filter_type)

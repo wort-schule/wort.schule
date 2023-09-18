@@ -37,9 +37,12 @@ module WordFilter
 
     def filter_boolean(attribute, query, join_table: nil)
       return if query.blank?
-      return if query.to_s != "1"
 
-      where(attribute => true)
+      if query.to_s == "yes"
+        where(attribute => true)
+      elsif query.to_s == "no"
+        where(attribute => false)
+      end
     end
   end
 
@@ -75,12 +78,15 @@ module WordFilter
         :filter_strong,
         :filter_irregular_declination,
         :filter_absolute,
-        :filter_irregular_comparison
+        :filter_irregular_comparison,
+        :filter_images
       ]
     )
 
     scope :filter_type, lambda { |type|
-      where(type: type.presence || "")
+      return if type.blank?
+
+      where(type:)
     }
 
     scope :filter_smart, lambda { |query|
@@ -127,7 +133,7 @@ module WordFilter
       ).order(:weight, :name).ids.uniq
 
       Word
-        .joins(Arel.sql("JOIN unnest('{#{ids.join(",")}}'::bigint[]) WITH ORDINALITY t(id, ord) USING (id)"))
+        .joins(Arel.sql("JOIN unnest('{#{ids.join(",")}}'::bigint[]) WITH ORDINALITY t(id, ord) ON t.id = words.id"))
         .order(count ? nil : Arel.sql("t.ord"))
     }
 
@@ -253,12 +259,18 @@ module WordFilter
 
     scope :filter_example_sentences, lambda { |query|
       return if query.blank?
-      return if query.to_s != "1"
 
-      where.not(
-        "words.id": Word
-        .where("example_sentences = '[]'")
-      )
+      if query.to_s == "yes"
+        where.not(
+          "words.id": Word
+          .where("example_sentences = '[]'")
+        )
+      elsif query.to_s == "no"
+        where(
+          "words.id": Word
+          .where("example_sentences = '[]'")
+        )
+      end
     }
 
     scope :filter_singularetantum, lambda { |query|
@@ -299,6 +311,16 @@ module WordFilter
 
     scope :filter_irregular_comparison, lambda { |query|
       filter_boolean :irregular_comparison, query, join_table: :adjectives
+    }
+
+    scope :filter_images, lambda { |query|
+      return if query.blank?
+
+      if query.to_s == "yes"
+        joins(:image_attachment)
+      elsif query.to_s == "no"
+        where.missing(:image_attachment)
+      end
     }
   end
 end

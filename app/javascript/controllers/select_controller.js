@@ -6,6 +6,18 @@ export default class extends Controller {
   static values = {url: String}
 
   connect() {
+    if (this.element.tomselect) {
+      var item;
+      for(item of this.element.tomselect.items) {
+        var option = this.element.tomselect.options[item].$option;
+        if(!this.element.tomselect.input.contains(option)) {
+          this.element.tomselect.removeItem(item,true);
+        }
+      }
+      this.element.tomselect.clearOptions();
+      this.element.tomselect.sync();
+    }
+
     let options = {
       onItemAdd:function(){
         this.setTextboxValue('');

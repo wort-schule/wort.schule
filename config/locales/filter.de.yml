@@ -6,6 +6,10 @@ de:
     all: Alle
     and: und
     or: oder
+    boolean:
+      all: Alle
+      'yes': Ja
+      'no': Nein
     word_contains: Wort enthält
     wordstarts: Anfang
     wordcontains: Mitte
@@ -34,26 +38,29 @@ de:
     irregular_declination: Unregelmäßige Deklination
     absolute: Absolut (nicht steigerbar)
     irregular_comparison: Unregelmäßige Komparation
+    images: Bild vorhanden
     add_words_to_list: Gefundene Wörter einer Wortliste anfügen
     added_words_to_list:
       one: '%{count} Wort hinzugefügt'
       other: '%{count} Wörter hinzugefügt'
     close: Suchfilter schließen
+    more: Weitere Filter anzeigen
+    less: Weniger Filter anzeigen
     open: Suchfilter
     results:
       all_results: Wortarten
       all:
-        one: '%{count} Ergebnis'
-        other: '%{count} Ergebnisse'
+        one: 'Ergebnis (%{count})'
+        other: 'Alle Ergebnisse (%{count})'
       nouns:
-        one: '%{count} Substantiv'
-        other: '%{count} Substantive'
+        one: 'Substantiv (%{count})'
+        other: 'Substantive (%{count})'
       verbs:
-        one: '%{count} Verb'
-        other: '%{count} Verben'
+        one: 'Verb (%{count})'
+        other: 'Verben (%{count})'
       adjectives:
-        one: '%{count} Adjektiv'
-        other: '%{count} Adjektive'
+        one: 'Adjektiv (%{count})'
+        other: 'Adjektive (%{count})'
       function_words:
-        one: '%{count} Funktionswort'
-        other: '%{count} Funktionswörter'
+        one: 'Funktionswort (%{count})'
+        other: 'Funktionswörter (%{count})'
