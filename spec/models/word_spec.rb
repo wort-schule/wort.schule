@@ -485,6 +485,12 @@ RSpec.describe Word do
   end
 
   describe "audio attachment" do
+    it "is generated when a word is created" do
+      expect {
+        create(:noun, name: "Adler", with_tts: true)
+      }.to have_enqueued_job(TtsJob).with(Noun.last)
+    end
+
     it "is automatically generated when with_tts is set to true" do
       word = create(:noun, name: "Adler", with_tts: false)
       expect(word.audios.attached?).to be false
