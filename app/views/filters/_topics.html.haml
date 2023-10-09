@@ -1,0 +1,4 @@
+- topics = @all_words.count == Word.count ? Topic.all : Topic.where(id: @all_words.joins(:topics).pluck('topics.id'))
+
+= turbo_frame_tag :filter_topics, class: 'block input' do
+  = filter_select_field :topic, collection: topics.as_collection
