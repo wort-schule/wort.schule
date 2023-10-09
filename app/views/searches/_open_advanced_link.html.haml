@@ -1,0 +1,6 @@
+%div
+  - unless @mode.show_panel?
+    = link_to url_for(params.permit!.merge(mode: :advanced)), class: 'button', 'data-turbo-frame': '_top' do
+      .flex.items-center.gap-1
+        = heroicon 'sparkles'
+        = t('filter.open')
