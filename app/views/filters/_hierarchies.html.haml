@@ -1,0 +1,4 @@
+- hierarchies = @all_words.count == Word.count ? Hierarchy.all : Hierarchy.where(id: @all_words.pluck(:hierarchy_id))
+
+= turbo_frame_tag :filter_hierarchies, class: 'block input' do
+  = filter_select_field :hierarchy, collection: hierarchies.as_collection
