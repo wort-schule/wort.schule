@@ -229,7 +229,7 @@ GEM
     grpc (1.52.0-x86_64-linux)
       google-protobuf (~> 3.21)
       googleapis-common-protos-types (~> 1.0)
-    haml (6.1.2)
+    haml (6.2.3)
       temple (>= 0.8.2)
       thor
       tilt
@@ -458,9 +458,9 @@ GEM
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.30-x86_64-linux)
       railties (>= 6.0.0)
-    temple (0.10.2)
+    temple (0.10.3)
     thor (1.2.2)
-    tilt (2.2.0)
+    tilt (2.3.0)
     timeout (0.4.0)
     turbo-rails (1.4.0)
       actionpack (>= 6.0.0)
