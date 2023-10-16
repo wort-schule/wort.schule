@@ -71,7 +71,7 @@ group :development, :test do
   gem "faker"
   gem "rspec-rails"
   gem "standardrb"
-  gem "mina", "1.2.4"
+  gem "mina", "1.2.5"
 end
 
 group :production do
