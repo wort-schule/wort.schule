@@ -199,7 +199,7 @@ module WordFilter
         .chars
         .uniq
 
-      where("name ~* ?", letters.map { |letter| "(?=.*#{letter})" }.join)
+      where("words.name ~* ?", letters.map { |letter| "(?=.*#{letter})" }.join)
     }
 
     scope :filter_source, lambda { |source|
