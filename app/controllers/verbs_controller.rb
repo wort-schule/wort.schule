@@ -69,7 +69,7 @@ class VerbsController < PublicController
   private
 
   def page_title
-    instance_variable_defined?("@verb") ? @verb.name : super
+    instance_variable_defined?(:@verb) ? @verb.name : super
   end
 
   def verb_params

@@ -18,6 +18,6 @@ module OpenGraph
     resource_name = params[:controller].singularize
     return if %w[noun verb adjective].exclude?(resource_name)
 
-    instance_variable_get "@#{resource_name}"
+    instance_variable_get :"@#{resource_name}"
   end
 end

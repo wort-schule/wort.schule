@@ -25,7 +25,7 @@ class WordTypeFilterComponent < ViewComponent::Base
   end
 
   def count
-    count_type = word_type == :all ? :all : word_type.model_name.plural.to_sym
+    count_type = (word_type == :all) ? :all : word_type.model_name.plural.to_sym
 
     counts[count_type]
   end
