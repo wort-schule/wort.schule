@@ -17,6 +17,8 @@ class TtsJob < ApplicationJob
   end
 
   private def generate_audios(word)
+    word.audios.purge
+
     attach word, text(word), "audio.mp3"
 
     word.example_sentences&.each do |sentence|
