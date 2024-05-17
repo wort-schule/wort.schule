@@ -31,7 +31,7 @@ RSpec.describe TtsJob, type: :job do
     let(:with_tts) { true }
 
     it "generates the audio" do
-      expect(TtsGenerator).to receive(:call).with("#{word.article_definite} #{word.name}").and_return(StringIO.new)
+      expect(TtsGenerator).to receive(:call).with("#{word.article_definite} #{word.name}".strip).and_return(StringIO.new)
       expect(TtsGenerator).to receive(:call).with(word.example_sentences.first).and_return(StringIO.new)
       expect(TtsGenerator).to receive(:call).with(word.example_sentences.last).and_return(StringIO.new)
       perform_enqueued_jobs { job }
