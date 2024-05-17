@@ -1,4 +1,4 @@
-- keywords = @all_words.count == Word.count ? Word.all : Word.where(id: Keyword.where(word_id: @all_words.pluck(:id)).pluck(:keyword_id))
+- keywords = Word.where(id: Keyword.where(word_id: @all_words.pluck(:id)).pluck(:keyword_id))
 
 = turbo_frame_tag :filter_keywords, class: 'block input' do
   = filter_select_field_with_and_or :keywords, collection: keywords.as_collection
