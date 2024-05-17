@@ -1,11 +1,11 @@
 - if @mode.show_panel?
   %div(class="md:min-w-[25rem] md:max-w-[30vw]")
     .ci-filter.p-5.bg-gray-background-highlight
-      .flex.flex-wrap.gap-2.justify-center
-        = link_to url_for(params.permit!.merge(mode: :omni)), class: 'flex mb-6 button items-center gap-1', 'data-turbo-frame': '_top' do
+      .flex.flex-wrap.gap-2.justify-center.mb-6
+        = link_to url_for(params.permit!.merge(mode: :omni)), class: 'flex button items-center gap-1', 'data-turbo-frame': '_top' do
           = heroicon 'x-mark'
           = t('filter.close')
-        = link_to t('filter.reset'), reset_filterrific_url(mode: :advanced), class: 'flex mb-6 button items-center gap-1', 'data-turbo-frame': '_top'
+        = link_to t('filter.reset'), reset_filterrific_url(mode: :advanced), class: 'flex button items-center gap-1', 'data-turbo-frame': '_top'
 
       %div= t 'filter.word_contains'
       .flex.gap-2
