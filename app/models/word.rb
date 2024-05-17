@@ -226,7 +226,10 @@ class Word < ApplicationRecord
   # Hooks to react to changes in the with_tts, name and example_sentences attributes and purge or (re)generate audio
   # attachments.
   def handle_audio_attachments
-    return true unless saved_change_to_with_tts? || saved_change_to_example_sentences? || saved_change_to_name?
+    return true unless saved_change_to_with_tts? ||
+      saved_change_to_example_sentences? ||
+      saved_change_to_name? ||
+      saved_change_to_genus_id?
 
     if with_tts?
       TtsJob.perform_later self
