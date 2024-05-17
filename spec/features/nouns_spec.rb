@@ -25,17 +25,15 @@ RSpec.describe "nouns" do
     end
 
     it "does not redirect routes below the scope 'seite'" do
-      expect do
-        visit "/seite/IMPRESSUM"
-      end.to raise_error ActionController::RoutingError
+      visit "/seite/IMPRESSUM"
+      expect(page).to have_content "Routing Error"
       expect(page).to have_current_path "/seite/IMPRESSUM"
 
       visit "/seite/impressum"
       expect(page).to have_current_path "/seite/impressum"
 
-      expect do
-        visit "/seite/NoUNs"
-      end.to raise_error ActionController::RoutingError
+      visit "/seite/NoUNs"
+      expect(page).to have_content "Routing Error"
       expect(page).to have_current_path "/seite/NoUNs"
     end
 
