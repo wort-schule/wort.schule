@@ -23,7 +23,7 @@ class Word < ApplicationRecord
     association_foreign_key: :keyword_id do
       def <<(group)
         group -= self if group.respond_to?(:to_a)
-        super group unless include?(group)
+        super(group) unless include?(group)
       end
     end
   has_and_belongs_to_many :opposites,
@@ -34,7 +34,7 @@ class Word < ApplicationRecord
     association_foreign_key: :opposite_id do
       def <<(group)
         group -= self if group.respond_to?(:to_a)
-        super group unless include?(group)
+        super(group) unless include?(group)
       end
     end
   has_and_belongs_to_many :synonyms,
@@ -45,7 +45,7 @@ class Word < ApplicationRecord
     association_foreign_key: :synonym_id do
       def <<(group)
         group -= self if group.respond_to?(:to_a)
-        super group unless include?(group)
+        super(group) unless include?(group)
       end
     end
   has_and_belongs_to_many :rimes,
@@ -56,7 +56,7 @@ class Word < ApplicationRecord
     association_foreign_key: :rime_id do
       def <<(group)
         group -= self if group.respond_to?(:to_a)
-        super group unless include?(group)
+        super(group) unless include?(group)
       end
     end
 

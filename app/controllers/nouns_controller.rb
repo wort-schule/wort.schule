@@ -80,7 +80,7 @@ class NounsController < PublicController
   private
 
   def page_title
-    instance_variable_defined?("@noun") ? @noun.name : super
+    instance_variable_defined?(:@noun) ? @noun.name : super
   end
 
   def noun_params

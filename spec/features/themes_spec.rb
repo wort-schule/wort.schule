@@ -12,13 +12,13 @@ RSpec.describe "themes for words" do
     let!(:entry) { create klass.model_name.singular }
 
     it "shows existing entries" do
-      visit public_send("#{klass.model_name.plural}_path")
+      visit public_send(:"#{klass.model_name.plural}_path")
 
       expect(page).to have_content entry.name
     end
 
     it "edits an entry" do
-      visit public_send("#{klass.model_name.plural}_path")
+      visit public_send(:"#{klass.model_name.plural}_path")
 
       click_on entry.name
       click_on t("actions.edit")
@@ -30,7 +30,7 @@ RSpec.describe "themes for words" do
     end
 
     it "shows an error when invalid" do
-      visit public_send("#{klass.model_name.plural}_path")
+      visit public_send(:"#{klass.model_name.plural}_path")
 
       click_on entry.name
       click_on t("actions.edit")
@@ -44,7 +44,7 @@ RSpec.describe "themes for words" do
     end
 
     it "deletes an entry" do
-      visit public_send("#{klass.model_name.plural}_path")
+      visit public_send(:"#{klass.model_name.plural}_path")
 
       click_on entry.name
       click_on t("actions.edit")
@@ -76,7 +76,7 @@ RSpec.describe "themes for words" do
 
   context "without existing entries" do
     it "creates an entry" do
-      visit public_send("#{klass.model_name.plural}_path")
+      visit public_send(:"#{klass.model_name.plural}_path")
       click_on t("#{klass.model_name.plural}.index.new")
 
       fill_in "#{klass.model_name.singular}[name]", with: "Neuer Name"
@@ -91,7 +91,7 @@ RSpec.describe "themes for words" do
     end
 
     it "shows an error when invalid" do
-      visit public_send("#{klass.model_name.plural}_path")
+      visit public_send(:"#{klass.model_name.plural}_path")
       click_on t("#{klass.model_name.plural}.index.new")
 
       expect do
@@ -102,7 +102,7 @@ RSpec.describe "themes for words" do
     end
 
     it "does not allow JavaScript content", js: true do
-      visit public_send("#{klass.model_name.plural}_path")
+      visit public_send(:"#{klass.model_name.plural}_path")
       click_on t("#{klass.model_name.plural}.index.new")
       click_on t("actions.continue")
 

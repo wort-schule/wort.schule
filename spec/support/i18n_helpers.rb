@@ -2,8 +2,8 @@
 
 module Support
   module I18nHelpers
-    def t(key, **options)
-      I18n.t(key, **options)
+    def t(key, **)
+      I18n.t(key, **)
     end
   end
 end

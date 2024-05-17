@@ -69,7 +69,7 @@ class AdjectivesController < PublicController
   private
 
   def page_title
-    instance_variable_defined?("@adjective") ? @adjective.name : super
+    instance_variable_defined?(:@adjective) ? @adjective.name : super
   end
 
   def adjective_params

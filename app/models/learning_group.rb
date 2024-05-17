@@ -31,7 +31,7 @@ class LearningGroup < ApplicationRecord
 
   def update_themes
     Theme::WORD_TYPES.each do |word_type|
-      users.update_all("theme_#{word_type}_id": send("theme_#{word_type}_id")) if (previous_changes.keys & ["theme_#{word_type}_id"]).any?
+      users.update_all("theme_#{word_type}_id": send(:"theme_#{word_type}_id")) if (previous_changes.keys & ["theme_#{word_type}_id"]).any?
     end
   end
 end

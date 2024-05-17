@@ -32,6 +32,6 @@ class ThemeComponent < ViewComponent::Base
   end
 
   def params
-    ThemeVariables.public_send("#{word_type}_variables", @word, @word_image_url)
+    ThemeVariables.public_send(:"#{word_type}_variables", @word, @word_image_url)
   end
 end

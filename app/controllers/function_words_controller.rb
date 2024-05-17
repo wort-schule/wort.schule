@@ -53,7 +53,7 @@ class FunctionWordsController < PublicController
   private
 
   def page_title
-    instance_variable_defined?("@function_word") ? @function_word.name : super
+    instance_variable_defined?(:@function_word) ? @function_word.name : super
   end
 
   def function_word_params
