@@ -15,6 +15,7 @@ set :deploy_to, "/home/wortschule/app"
 set :repository, "git@github.com:wort-schule/wort.schule.git"
 set :branch, "main"
 set :rvm_use_path, "/etc/profile.d/rvm.sh"
+set :bundle_prefix, "env $(cat .env | xargs) bundle exec "
 
 # Optional settings:
 #   set :user, 'foobar'          # Username in the server to SSH to.
@@ -53,8 +54,13 @@ task :setup do
   timeout: 5000)
     command %(test -e #{path_database_yml} || echo "#{database_yml}" > #{path_database_yml})
 
+    # Create env file if it doesn't exist
+    path_env_file = ".env"
+    env_file = %(RAILS_ENV=production\nSECRET_KEY_BASE=#{`bundle exec rake secret`.strip})
+    command %(test -e #{path_env_file} || echo "#{env_file}" > #{path_env_file})
+
     # Remove others-permission for config directory and env file
-    command %(chmod -R o-rwx config)
+    command %(chmod -R o-rwx config .env)
   end
 end
 
