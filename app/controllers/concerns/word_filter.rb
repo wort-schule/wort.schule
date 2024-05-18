@@ -56,7 +56,6 @@ module WordFilter
         :filter_wordends,
         :filter_wordcontains,
         :filter_letters,
-        :filter_syllablescontains,
         :filter_cologne_phonetics,
         :filter_source,
         :filter_topic,
@@ -157,32 +156,6 @@ module WordFilter
 
     scope :filter_wordcontains, lambda { |query|
       filter_wordquery "%#{query}%"
-    }
-
-    scope :filter_syllablescontains, lambda { |query|
-      return if query.blank?
-
-      query = squeeze query
-      query = replace_regex query
-      syllables_terms = [
-        "#{query}-%",
-        "%-#{query}-%",
-        "%-#{query}"
-      ]
-      written_syllables_terms = [
-        "#{query}|%",
-        "%|#{query}|%",
-        "%|#{query}"
-      ]
-
-      where(
-        [
-          (["syllables ILIKE ?"] * syllables_terms.count).join(" OR "),
-          (["written_syllables ILIKE ?"] * written_syllables_terms.count).join(" OR ")
-        ].join(" OR "),
-        *syllables_terms,
-        *written_syllables_terms
-      )
     }
 
     scope :filter_letter_count, lambda { |query|

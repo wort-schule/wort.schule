@@ -15,7 +15,6 @@
       = render partial: 'filters/keywords'
       = render partial: 'filters/topics'
       = render partial: 'filters/hierarchies'
-      = filter_text_field f, :syllablescontains
       = filter_text_field f, :letter_count, type: :number, min: 0
       = filter_text_field f, :syllables_count, type: :number, min: 1
 

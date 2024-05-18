@@ -51,7 +51,6 @@ class SearchesController < PublicController
       filter_wordstarts
       filter_wordends
       filter_wordcontains
-      filter_syllablescontains
       filter_topic
       filter_hierarchy
       filter_keywords
