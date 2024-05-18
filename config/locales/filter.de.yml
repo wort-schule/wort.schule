@@ -40,6 +40,7 @@ de:
     irregular_comparison: Unregelmäßige Komparation
     images: Bild vorhanden
     letter_count: Anzahl Buchstaben
+    syllables_count: Anzahl Silben
     add_words_to_list: Gefundene Wörter einer Wortliste anfügen
     added_words_to_list:
       one: '%{count} Wort hinzugefügt'

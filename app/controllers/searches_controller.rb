@@ -56,6 +56,7 @@ class SearchesController < PublicController
       filter_hierarchy
       filter_keywords
       filter_letter_count
+      filter_syllables_count
     ]
     power_filters = %i[
       filter_letters
