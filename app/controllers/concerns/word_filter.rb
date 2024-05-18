@@ -79,7 +79,8 @@ module WordFilter
         :filter_irregular_declination,
         :filter_absolute,
         :filter_irregular_comparison,
-        :filter_images
+        :filter_images,
+        :filter_letter_count
       ]
     )
 
@@ -181,6 +182,12 @@ module WordFilter
         *syllables_terms,
         *written_syllables_terms
       )
+    }
+
+    scope :filter_letter_count, lambda { |query|
+      return if query.blank?
+
+      where("char_length(regexp_replace(words.name, '\s', '', 'g')) = ?", query)
     }
 
     scope :filter_cologne_phonetics, lambda { |query|

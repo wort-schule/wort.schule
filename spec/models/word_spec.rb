@@ -430,6 +430,16 @@ RSpec.describe Word do
     end
   end
 
+  describe "#filter_letter_count" do
+    it "finds words correctly" do
+      mouse = create :noun, name: "Maus"
+      red_card = create :noun, name: " Rote Karte"
+
+      expect(Noun.filter_letter_count("4")).to eq [mouse]
+      expect(Noun.filter_letter_count("9")).to eq [red_card]
+    end
+  end
+
   describe "#set_consonant_vowel" do
     it "detects vowels and consonants" do
       word = create :noun, name: "Ähre"

@@ -16,6 +16,7 @@
       = render partial: 'filters/topics'
       = render partial: 'filters/hierarchies'
       = render partial: 'filters/keywords'
+      = filter_text_field f, :letter_count, type: :number, min: 0
 
       .mt-4
         - unless @mode.show_power_options?
