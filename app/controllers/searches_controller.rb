@@ -51,10 +51,11 @@ class SearchesController < PublicController
       filter_wordstarts
       filter_wordends
       filter_wordcontains
-      filter_syllablescontains
       filter_topic
       filter_hierarchy
       filter_keywords
+      filter_letter_count
+      filter_syllables_count
     ]
     power_filters = %i[
       filter_letters

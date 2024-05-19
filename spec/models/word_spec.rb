@@ -430,6 +430,31 @@ RSpec.describe Word do
     end
   end
 
+  describe "#filter_letter_count" do
+    it "finds words correctly" do
+      mouse = create :noun, name: "Maus"
+      red_card = create :noun, name: " Rote Karte"
+
+      expect(Noun.filter_letter_count("4")).to eq [mouse]
+      expect(Noun.filter_letter_count("9")).to eq [red_card]
+    end
+  end
+
+  describe "#filter_syllables_count" do
+    it "finds words correctly" do
+      create :noun, syllables: ""
+      one = create :noun, syllables: "hoch"
+      two = create :noun, syllables: "höl-zern"
+      three = create :noun, syllables: "hilfs-be-reit"
+      four = create :noun, syllables: "hin-ter-häl-tig"
+
+      expect(Noun.filter_syllables_count("1")).to eq [one]
+      expect(Noun.filter_syllables_count("2")).to eq [two]
+      expect(Noun.filter_syllables_count("3")).to eq [three]
+      expect(Noun.filter_syllables_count("4")).to eq [four]
+    end
+  end
+
   describe "#set_consonant_vowel" do
     it "detects vowels and consonants" do
       word = create :noun, name: "Ähre"

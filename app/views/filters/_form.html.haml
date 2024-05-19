@@ -12,10 +12,11 @@
         = filter_text_field f, :wordcontains, inline: true, label: false, placeholder: t('filter.wordcontains')
         = filter_text_field f, :wordends, inline: true, label: false, placeholder: t('filter.wordends')
       .mt-4
-      = filter_text_field f, :syllablescontains
+      = render partial: 'filters/keywords'
       = render partial: 'filters/topics'
       = render partial: 'filters/hierarchies'
-      = render partial: 'filters/keywords'
+      = filter_text_field f, :letter_count, type: :number, min: 0
+      = filter_text_field f, :syllables_count, type: :number, min: 1
 
       .mt-4
         - unless @mode.show_power_options?
