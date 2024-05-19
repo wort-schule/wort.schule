@@ -17,6 +17,8 @@ class TtsJob < ApplicationJob
   end
 
   private def generate_audios(word)
+    word.audios.purge
+
     attach word, text(word), "audio.mp3"
 
     word.example_sentences&.each do |sentence|
@@ -39,6 +41,6 @@ class TtsJob < ApplicationJob
   private def text(word)
     return word.name unless word.is_a?(Noun)
 
-    "#{word.article_definite} #{word.name}"
+    "#{word.article_definite} #{word.name}".strip
   end
 end
