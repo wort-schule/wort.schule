@@ -31,7 +31,9 @@ RSpec.describe "word filter" do
       expect(page).to have_content "Abend"
       expect(page).not_to have_content "Bach"
 
-      click_on t("filter.reset")
+      within "#advanced_search_fields" do
+        click_on t("filter.reset")
+      end
 
       words.each do |word|
         expect(page).to have_content word
@@ -115,6 +117,7 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abstrakt"
 
       click_on t("filter.add_words_to_list")
+      expect(page).to have_select "list_id"
       click_on t("words.show.lists.add")
 
       expect(list.words).to match_array [noun, verb, adjective]

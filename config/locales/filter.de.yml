@@ -2,7 +2,7 @@ de:
   filter:
     title: Filter
     apply: Filtern
-    reset: Filter löschen
+    reset: Suchfilter löschen
     all: Alle
     and: und
     or: oder
