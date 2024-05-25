@@ -73,7 +73,3 @@ group :development, :test do
   gem "standardrb"
   gem "mina", "1.2.5"
 end
-
-group :production do
-  gem "unicorn"
-end

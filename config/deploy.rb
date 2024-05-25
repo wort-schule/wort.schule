@@ -28,7 +28,7 @@ set :user, "wortschule"
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 # set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
 set :shared_files, fetch(:shared_files, []).push("config/database.yml", ".env", "config/google-tts-credentials.json")
-set :shared_dirs, fetch(:shared_dirs, []).push("public/packs", "node_modules", "storage")
+set :shared_dirs, fetch(:shared_dirs, []).push("public/packs", "node_modules", "storage", "tmp/pids")
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
@@ -43,7 +43,7 @@ end
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
   in_path(fetch(:shared_path)) do
-    command %(mkdir -p config)
+    command %(mkdir -p config tmp/pids)
 
     # Create database.yml for Postgres if it doesn't exist
     path_database_yml = "config/database.yml"
