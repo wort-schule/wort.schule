@@ -37,10 +37,10 @@ task :remote_environment do
   raise "Couldn't determine Ruby version: Do you have a file .ruby-version in your project root?" if ruby_version.empty?
 
   # Load RVM and use the correct Ruby version
-  command %{
+  command %(
     source #{fetch(:rvm_use_path)}
     rvm use #{ruby_version} --default
-  }
+  )
 end
 
 # Put any custom commands you need to run at setup
