@@ -36,7 +36,11 @@ task :remote_environment do
   ruby_version = File.read(".ruby-version").strip
   raise "Couldn't determine Ruby version: Do you have a file .ruby-version in your project root?" if ruby_version.empty?
 
-  invoke :"rvm:use", ruby_version
+  # Load RVM and use the correct Ruby version
+  command %(
+    source #{fetch(:rvm_use_path)}
+    rvm use #{ruby_version} --default
+  )
 end
 
 # Put any custom commands you need to run at setup
@@ -83,7 +87,7 @@ task :deploy do
     end
   end
 
-  # you can use `run :local` to run tasks on local machine before of after the deploy scripts
+  # you can use `run :local` to run tasks on local machine before or after the deploy scripts
   # run(:local){ say 'done' }
 end
 
