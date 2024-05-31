@@ -11,9 +11,12 @@
         - properties.each do |property|
           = property
 
-      - if montessori_symbol.present?
-        .w-full.flex.flex-col.gap-4.items-end.lg:items-start
+      .w-full.flex.flex-col.gap-4.items-end.lg:items-start
+        - if montessori_symbol.present?
           = image_tag montessori_symbol, class: "word-symbol"
+        - word.strategies.each do |strategy|
+          - if strategy.fresch_symbol.attached?
+            = image_tag strategy.fresch_symbol, class: "word-symbol"
 
   .m-6.max-w-96(style="grid-area: image")
     - if word.image.attached?
