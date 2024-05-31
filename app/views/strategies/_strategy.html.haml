@@ -1,3 +1,10 @@
 = link_if(can?(:show, strategy), strategy, id: dom_id(strategy)) do
   = box class: 'h-full' do
-    = strategy.name
+    .flex.justify-between.h-full
+      = strategy.name
+
+      .flex.items-center.object-cover
+        - if strategy.fresch_symbol.attached?
+          = image_tag strategy.fresch_symbol, class: 'w-24 h-full object-cover'
+        - else
+          .w-24.h-24

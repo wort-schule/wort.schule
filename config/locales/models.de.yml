@@ -153,6 +153,7 @@ de:
       strategy:
         name: Bezeichnung
         description: Beschreibung
+        fresch_symbol: Fresch Symbol
       compound_interfix:
         name: Bezeichnung
       compound_preconfix:
