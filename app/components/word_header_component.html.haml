@@ -1,17 +1,23 @@
-.p-6.word-header.md:bg-white.md:shadow.md:rounded-3xl.md:col-span-2
-  %div(style="grid-area: name")
+.word-header.md:bg-white.md:shadow.md:rounded-3xl.md:col-span-2.gap-4.lg:gap-12
+  .m-6(style="grid-area: name")
     %div= title
     .mt-4.text-lg.md:text-2xl= render SyllablesComponent.new(text: word.syllables)
 
-  .grid.md:grid-cols-2(style="grid-area: image")
-    .hidden.md:flex.flex-col.gap-4.justify-center
-      = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: word.class.model_name.human)
+  %div(style="grid-area: properties")
+    .properties
+      .flex.flex-col.gap-4.justify-center
+        = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: word.class.model_name.human)
 
-      - properties.each do |property|
-        = property
+        - properties.each do |property|
+          = property
 
+      - if montessori_symbol.present?
+        .w-full.flex.flex-col.gap-4.items-end.lg:items-start
+          = image_tag montessori_symbol, class: "word-symbol"
+
+  .m-6.max-w-96(style="grid-area: image")
     - if word.image.attached?
       = image_tag word.image
 
-  %div(style="grid-area: speech")
+  .m-6(style="grid-area: speech")
     = render 'words/tts', word:
