@@ -62,6 +62,10 @@ class User < ApplicationRecord
     membership.access.granted? && !generated_account?
   end
 
+  def word_font
+    Fonts::AVAILABLE_FONTS.first
+  end
+
   private
 
   def setup_flashcards

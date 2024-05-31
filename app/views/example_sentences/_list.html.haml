@@ -2,6 +2,6 @@
   = render BoxComponent.new(title: t('words.show.example_sentences.title')) do
     = render BoxGridComponent.new(columns: 1) do
       - word.example_sentences.each do |sentence|
-        .flex.flex-wrap.justify-between
+        .flex.flex-wrap.justify-between.word-font
           = sentence
           = render 'words/tts', word: word, sentence: sentence
