@@ -3,7 +3,7 @@
 class LabeledValueComponent < ViewComponent::Base
   attr_reader :label, :value
 
-  def initialize(label:, value:)
+  def initialize(label:, value: nil)
     @label = label
     @value = value
   end

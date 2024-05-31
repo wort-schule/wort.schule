@@ -1,3 +1,7 @@
 %div
   = label
-  .font-bold.text-2xl= value
+  .font-bold.text-2xl
+    - if content?
+      = content
+    - else
+      = value

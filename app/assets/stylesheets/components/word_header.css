@@ -10,7 +10,7 @@
 
 @media(min-width: 1024px) {
   .word-header {
-    grid-template-columns: auto auto 25%;
+    grid-template-columns: auto 35% 25%;
     grid-template-areas:
     "name properties image"
     "speech properties image";
