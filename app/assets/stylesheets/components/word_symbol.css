@@ -1,0 +1,3 @@
+.word-symbol {
+  @apply max-w-40 shadow rounded-3xl;
+}

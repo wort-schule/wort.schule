@@ -9,7 +9,6 @@
 
 @media(min-width: 640px) {
   .word-header {
-    grid-template-columns: 1fr 1fr;
     grid-template-areas:
     "name image"
     "speech image";

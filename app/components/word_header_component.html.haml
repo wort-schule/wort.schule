@@ -4,11 +4,16 @@
     .mt-4.text-lg.md:text-2xl= render SyllablesComponent.new(text: word.syllables)
 
   .grid.md:grid-cols-2(style="grid-area: image")
-    .hidden.md:flex.flex-col.gap-4.justify-center
-      = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: word.class.model_name.human)
+    .flex.justify-between.gap-4
+      .hidden.md:flex.flex-col.gap-4.justify-center
+        = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: word.class.model_name.human)
 
-      - properties.each do |property|
-        = property
+        - properties.each do |property|
+          = property
+
+      - if montessori_symbol.present?
+        .w-full
+          = image_tag montessori_symbol, class: "word-symbol"
 
     - if word.image.attached?
       = image_tag word.image

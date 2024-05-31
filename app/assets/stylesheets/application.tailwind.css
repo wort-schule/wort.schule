@@ -2,6 +2,7 @@
 @import 'components/syllables' layer(components);
 @import 'components/word_header';
 @import 'components/box_grid';
+@import 'components/word_symbol' layer(components);
 
 @tailwind base;
 @tailwind components;
