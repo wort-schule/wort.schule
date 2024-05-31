@@ -48,7 +48,7 @@ class StrategiesController < ApplicationController
 
   def strategy_params
     params.require(:strategy).permit(
-      :name, :description
+      :name, :description, :fresch_symbol
     )
   end
 end

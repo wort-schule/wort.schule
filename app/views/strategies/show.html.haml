@@ -10,6 +10,10 @@
       = render(list.add(Strategy.human_attribute_name(:description))) do
         = @strategy.description
 
+      = render(list.add(Strategy.human_attribute_name(:fresch_symbol))) do
+        - if @strategy.fresch_symbol.attached?
+          = image_tag @strategy.fresch_symbol
+
 = render 'words/usages'
 
 .pagination-with-actions
