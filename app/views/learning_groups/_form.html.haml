@@ -8,6 +8,7 @@
       = f.association :theme_verb, include_blank: t('themes.show.standard')
       = f.association :theme_adjective, include_blank: t('themes.show.standard')
       = f.association :theme_function_word, include_blank: t('themes.show.standard')
+      = f.input :font, collection: Fonts.collection, include_blank: t('activerecord.attributes.learning_group.no_font')
 
     = box_footer do
       = f.submit

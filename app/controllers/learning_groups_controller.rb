@@ -53,7 +53,8 @@ class LearningGroupsController < ApplicationController
       :theme_noun_id,
       :theme_verb_id,
       :theme_adjective_id,
-      :theme_function_word_id
+      :theme_function_word_id,
+      :font
     )
   end
 end
