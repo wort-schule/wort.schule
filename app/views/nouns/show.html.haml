@@ -13,15 +13,6 @@
 
   = render BoxComponent.new(title: t('words.show.properties')) do
     = render BoxGridComponent.new do
-      %div= Word.human_attribute_name(:type)
-      %div= @noun.class.model_name.human
-
-      .md:hidden= Noun.human_attribute_name(:plural)
-      .md:hidden= @noun.plural
-
-      .md:hidden= Noun.human_attribute_name(:genus_id)
-      .md:hidden= @noun.genus&.name
-
       - if @noun.genus_neuter.present?
         %div= Noun.human_attribute_name(:genus_neuter)
         %div= @noun.genus_neuter&.name

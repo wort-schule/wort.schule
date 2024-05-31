@@ -1,20 +1,35 @@
 .word-header {
   @apply grid gap-4;
 
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 6fr 4fr;
   grid-template-areas:
   "name image"
-  "speech speech";
+  "speech speech"
+  "properties properties";
 }
 
-@media(min-width: 640px) {
+@media(min-width: 1024px) {
   .word-header {
+    grid-template-columns: auto auto 25%;
     grid-template-areas:
-    "name image"
-    "speech image";
+    "name properties image"
+    "speech properties image";
   }
 }
 
 .word-header h1 {
   @apply m-0 font-medium md:font-bold md:text-4xl;
+}
+
+.word-header .properties {
+  @apply grid gap-4 bg-gray-background p-6;
+
+  grid-template-columns: 6fr 4fr;
+}
+
+@media(min-width: 1024px) {
+  .word-header .properties {
+    @apply bg-white;
+    grid-template-columns: auto 40%;
+  }
 }

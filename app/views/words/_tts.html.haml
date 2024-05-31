@@ -2,4 +2,4 @@
 - if word&.audios&.attached?
   - audio = sentence.present? ? word.audio_for_example_sentence(sentence) : word.audio_for_word
   %div(data-controller="medium")
-    %audio(src="#{url_for audio}" controls data-medium-target="mediaElement")
+    %audio.w-full.lg:w-auto(src="#{url_for audio}" controls data-medium-target="mediaElement")
