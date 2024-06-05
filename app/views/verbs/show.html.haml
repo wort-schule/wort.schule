@@ -1,5 +1,5 @@
 .flex.flex-col.gap-y-12.md:grid.md:grid-cols-2.md:gap-12
-  = render WordHeaderComponent.new(word: @verb) do |component|
+  = render WordHeaderComponent.new(word: @verb, word_font: current_user&.word_font) do |component|
     - component.with_title do
       %h1= @verb.name
 

@@ -171,6 +171,8 @@ de:
         theme_verb: Theme für Verben
         theme_adjective: Theme für Adjektive
         theme_function_word: Theme für Funktionswörter
+        font: Schrift
+        no_font: Standardschrift
       adjective:
         name: Grundform
         with_tts: Audio aktiviert

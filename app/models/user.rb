@@ -62,6 +62,21 @@ class User < ApplicationRecord
     membership.access.granted? && !generated_account?
   end
 
+  def last_learning_group
+    learning_group_memberships
+      .with_access(:granted)
+      .order(updated_at: :desc)
+      .first
+      &.learning_group
+  end
+
+  def word_font
+    font = last_learning_group&.font
+    return if font.blank?
+
+    Fonts.by_key(font)
+  end
+
   private
 
   def setup_flashcards

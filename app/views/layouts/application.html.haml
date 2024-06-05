@@ -21,6 +21,8 @@
     %meta{:content => "#ffffff", :name => "theme-color"}/
 
   %body.h-full(class=background_color)
+    = render 'word_font'
+
     .min-h-full.flex.flex-col.justify-between
       %div
         = render 'navigation'
