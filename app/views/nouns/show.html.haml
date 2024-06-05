@@ -1,5 +1,5 @@
 .flex.flex-col.gap-y-12.md:grid.md:grid-cols-2.md:gap-12
-  = render WordHeaderComponent.new(word: @noun) do |component|
+  = render WordHeaderComponent.new(word: @noun, word_font: current_user&.word_font) do |component|
     - component.with_title do
       %h1.flex.items-baseline.gap-1.m-0
         - if @noun.genus.present?
@@ -9,7 +9,11 @@
     - component.with_property do
       = render LabeledValueComponent.new(label: Noun.human_attribute_name(:plural), value: @noun.full_plural)
     - component.with_property do
-      = render LabeledValueComponent.new(label: Noun.human_attribute_name(:genus_id), value: @noun.genus&.name)
+      = render LabeledValueComponent.new(label: Noun.human_attribute_name(:genus_id), value: 'test') do
+        .flex.gap-2.items-center
+          - if @noun.genus&.symbol&.attached?
+            = image_tag @noun.genus.symbol, class: 'max-w-6'
+          = @noun.genus&.name
 
   = render BoxComponent.new(title: t('words.show.properties')) do
     = render BoxGridComponent.new do

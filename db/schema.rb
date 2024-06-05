@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_17_152310) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -208,6 +208,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_17_152310) do
     t.bigint "theme_verb_id"
     t.bigint "theme_adjective_id"
     t.bigint "theme_function_word_id"
+    t.string "font"
     t.index ["invitation_token"], name: "index_learning_groups_on_invitation_token", unique: true
     t.index ["theme_adjective_id"], name: "index_learning_groups_on_theme_adjective_id"
     t.index ["theme_function_word_id"], name: "index_learning_groups_on_theme_function_word_id"

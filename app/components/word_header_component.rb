@@ -4,10 +4,11 @@ class WordHeaderComponent < ViewComponent::Base
   renders_one :title
   renders_many :properties
 
-  attr_reader :word
+  attr_reader :word, :word_font
 
-  def initialize(word:)
+  def initialize(word:, word_font:)
     @word = word
+    @word_font = word_font
   end
 
   def montessori_symbol

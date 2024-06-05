@@ -1,0 +1,17 @@
+- if current_user&.word_font.present?
+  :css
+    @font-face {
+      font-family: "#{current_user.word_font[:filename]}";
+      font-weight: 400;
+      src: url("/fonts/#{current_user.word_font[:filename]}-Regular.woff") format("woff");
+    }
+
+    @font-face {
+      font-family: "#{current_user.word_font[:filename]}";
+      font-weight: 700;
+      src: url("/fonts/#{current_user.word_font[:filename]}-Bold.woff") format("woff");
+    }
+
+    .word-font {
+      font-family: "#{current_user.word_font[:filename]}";
+    }
