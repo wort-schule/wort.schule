@@ -352,7 +352,7 @@ GEM
     phony_rails (0.15.0)
       activesupport (>= 3.0)
       phony (>= 2.18.12)
-    propshaft (0.8.0)
+    propshaft (0.9.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack
