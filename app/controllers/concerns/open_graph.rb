@@ -6,12 +6,23 @@ module OpenGraph
   def set_open_graph_tags
     return unless resource&.is_a?(Word)
 
-    set_meta_tags og: {
-      title: resource.name,
-      description: resource.meaning_long,
-      url: url_for(resource),
-      image: resource.image.attached? ? url_for(resource.image.variant(:open_graph)) : nil
-    }
+    set_meta_tags(
+      og: {
+        title: resource.name,
+        description: resource.meaning_long,
+        url: url_for(resource),
+        image: resource.image.attached? ? url_for(resource.image.variant(:open_graph)) : nil
+      },
+      twitter: resource.image.attached? ? {
+        card: "summary_large_image",
+        title: resource.name,
+        image: {
+          _: url_for(resource.image.variant(:open_graph)),
+          width: 1200,
+          height: 630
+        }
+      } : nil
+    )
   end
 
   def resource
