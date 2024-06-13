@@ -6,4 +6,8 @@ class SyllablesComponent < ViewComponent::Base
   def initialize(text:)
     @syllables = text.split("-")
   end
+
+  def syllable_arc
+    @syllable_arc ||= SyllableArc.new(Rails.root.join("app/assets/fonts/#{helpers.current_font}-Regular.ttf"))
+  end
 end

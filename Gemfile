@@ -44,6 +44,7 @@ gem "sanitize"
 gem "simple_form"
 gem "stimulus-rails"
 gem "tailwindcss-rails"
+gem "ttfunk"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "validate_url"
