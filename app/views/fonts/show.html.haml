@@ -1,0 +1,19 @@
+.flex.gap-4
+  - Fonts.keys.each do |font|
+    = link_to font, url_for(font:)
+
+%h1= @font
+
+.mt-8.syllables-font
+  %table
+    %thead
+      %tr
+        %th Arc number (^xy)
+        %th Syllable
+        %th Calculated width
+    %tbody
+      - @calculations.each do |syllable, width|
+        %tr
+          %td.border.px-2.py-1= @syllable_arc.arc(syllable)&.gsub('^', '')
+          %td.border.px-2.py-1= "#{@syllable_arc.arc(syllable)}#{syllable}"
+          %td.border.px-2.py-1= width

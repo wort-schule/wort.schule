@@ -83,6 +83,8 @@ class Ability
         can :manage, LearningGroup
         can :manage, LearningGroupMembership
         can :manage, LearningPlea
+
+        can :manage, :font
       end
     end
   end
