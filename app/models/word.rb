@@ -63,7 +63,7 @@ class Word < ApplicationRecord
   has_many_attached :audios
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png
-    attachable.variant :open_graph, resize_to_fill: [1080, nil], format: :png
+    attachable.variant :open_graph, resize_to_fill: [1200, 630], format: :png
   end
 
   belongs_to :prefix, optional: true
