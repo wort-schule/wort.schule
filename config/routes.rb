@@ -101,5 +101,7 @@ Rails.application.routes.draw do
       resource :password, only: :edit
       resource :email, only: :edit
     end
+
+    resource :font, only: :show
   end
 end
