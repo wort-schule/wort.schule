@@ -24,6 +24,6 @@ class SyllableArc
     width_category = Fonts::SYLLABLE_ARCS.keys.find { |range| range.include?(syllable_width) }
     arc_number = Fonts::SYLLABLE_ARCS[width_category]
 
-    "^#{arc_number}"
+    "^#{arc_number}" if arc_number.present?
   end
 end
