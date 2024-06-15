@@ -31,6 +31,7 @@ class Ability
 
       can :read, Theme, visibility: :public
       can :crud, Theme, {user:}
+      can :read, WordViewSetting, visibility: :public
 
       case user.role
       when "Lecturer"
@@ -54,6 +55,8 @@ class Ability
         can :crud, CompoundVocalalternation
 
         can :read, User
+
+        can :crud, WordViewSetting, owner: user
 
       when "Admin"
         can :manage, Noun
@@ -85,6 +88,7 @@ class Ability
         can :manage, LearningPlea
 
         can :manage, :font
+        can :manage, WordViewSetting
       end
     end
   end

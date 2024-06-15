@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_15_153651) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -390,6 +390,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  create_table "word_view_settings", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "font"
+    t.string "visibility", default: "private"
+    t.bigint "owner_id", null: false
+    t.bigint "theme_noun_id"
+    t.bigint "theme_verb_id"
+    t.bigint "theme_adjective_id"
+    t.bigint "theme_function_word_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_word_view_settings_on_owner_id"
+    t.index ["theme_adjective_id"], name: "index_word_view_settings_on_theme_adjective_id"
+    t.index ["theme_function_word_id"], name: "index_word_view_settings_on_theme_function_word_id"
+    t.index ["theme_noun_id"], name: "index_word_view_settings_on_theme_noun_id"
+    t.index ["theme_verb_id"], name: "index_word_view_settings_on_theme_verb_id"
+  end
+
   create_table "words", force: :cascade do |t|
     t.bigint "hierarchy_id"
     t.datetime "created_at", null: false
@@ -481,6 +499,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
   add_foreign_key "users", "themes", column: "theme_function_word_id"
   add_foreign_key "users", "themes", column: "theme_noun_id"
   add_foreign_key "users", "themes", column: "theme_verb_id"
+  add_foreign_key "word_view_settings", "themes", column: "theme_adjective_id"
+  add_foreign_key "word_view_settings", "themes", column: "theme_function_word_id"
+  add_foreign_key "word_view_settings", "themes", column: "theme_noun_id"
+  add_foreign_key "word_view_settings", "themes", column: "theme_verb_id"
+  add_foreign_key "word_view_settings", "users", column: "owner_id"
   add_foreign_key "words", "hierarchies"
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"

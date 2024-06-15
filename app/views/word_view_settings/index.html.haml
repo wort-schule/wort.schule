@@ -1,0 +1,8 @@
+= title_with_actions WordViewSetting.model_name.human(count: 2) do
+  - if can? :create, WordViewSetting
+    = link_to t('.new'), new_word_view_setting_path, class: 'button primary'
+
+= index_grid do
+  = render @word_view_settings
+
+= paginate @word_view_settings
