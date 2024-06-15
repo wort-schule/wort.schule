@@ -4,7 +4,7 @@ class SyllablesComponent < ViewComponent::Base
   attr_reader :syllables
 
   def initialize(text:)
-    @syllables = text.split("-")
+    @syllables = parse_syllables(text)
   end
 
   def syllables_with_arcs
@@ -19,5 +19,17 @@ class SyllablesComponent < ViewComponent::Base
 
   def syllable_arc
     @syllable_arc ||= SyllableArc.new(Rails.root.join("app/assets/fonts/#{helpers.current_font}-Regular.ttf"))
+  end
+
+  def parse_syllables(text)
+    if text.include?("-")
+      text.split("-")
+    elsif text.include?("|")
+      text.split("|")
+    elsif text.strip.include?(" ")
+      text.split(" ")
+    else
+      [text]
+    end
   end
 end
