@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class SyllableArc
-  attr_reader :font
+  attr_reader :font, :font_settings
 
   def initialize(font)
+    @font_settings = font
     @font = TTFunk::File.open(font.ttf_filepath)
   end
 
@@ -21,8 +22,8 @@ class SyllableArc
 
   def arc(syllable)
     syllable_width = width(syllable)
-    width_category = Fonts::SYLLABLE_ARCS.keys.find { |range| range.include?(syllable_width) }
-    arc_number = Fonts::SYLLABLE_ARCS[width_category]
+    width_category = font_settings.arc_settings.keys.find { |range| range.include?(syllable_width) }
+    arc_number = font_settings.arc_settings[width_category]
 
     "^#{arc_number}" if arc_number.present?
   end
