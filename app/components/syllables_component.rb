@@ -18,7 +18,7 @@ class SyllablesComponent < ViewComponent::Base
   private
 
   def syllable_arc
-    @syllable_arc ||= SyllableArc.new(Rails.root.join("app/assets/fonts/#{helpers.current_font}-Regular.ttf"))
+    @syllable_arc ||= SyllableArc.new(helpers.current_font)
   end
 
   def parse_syllables(text)

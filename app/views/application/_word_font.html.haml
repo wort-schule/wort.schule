@@ -1,22 +1,22 @@
 :css
   @font-face {
-    font-family: "#{current_font}";
+    font-family: "#{current_font.key}";
     font-weight: 400;
-    src: url("/fonts/#{current_font}-Regular.woff") format("woff");
+    src: url("/fonts/#{current_font.key}-Regular.woff") format("woff");
   }
 
   @font-face {
-    font-family: "#{current_font}";
+    font-family: "#{current_font.key}";
     font-weight: 700;
-    src: url("/fonts/#{current_font}-Bold.woff") format("woff");
+    src: url("/fonts/#{current_font.key}-Bold.woff") format("woff");
   }
 
   .syllables-font {
-    font-family: "#{current_font}";
+    font-family: "#{current_font.key}";
   }
 
 - if current_user&.word_font.present?
   :css
     .word-font {
-      font-family: "#{current_user.word_font.dig(:filename)}";
+      font-family: "#{current_user.word_font.key}";
     }

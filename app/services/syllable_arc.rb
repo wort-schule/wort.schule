@@ -3,8 +3,8 @@
 class SyllableArc
   attr_reader :font
 
-  def initialize(font_path)
-    @font = TTFunk::File.open(font_path)
+  def initialize(font)
+    @font = TTFunk::File.open(font.ttf_filepath)
   end
 
   def width(syllable)
