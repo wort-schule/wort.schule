@@ -1,0 +1,31 @@
+= title_with_actions @word_view_setting.name do
+  - if can? :edit, @word_view_setting
+    = link_to t('actions.edit'), edit_word_view_setting_path(@word_view_setting), class: 'button primary'
+
+= two_column_card WordViewSetting.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(WordViewSetting.human_attribute_name(:name))) do
+        = @word_view_setting.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:owner))) do
+        = @word_view_setting.owner
+
+      = render(list.add(WordViewSetting.human_attribute_name(:font), "", hide_if_blank: false)) do
+        = Fonts.by_key(@word_view_setting.font)&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_noun), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_noun&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_verb), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_verb&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_adjective), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_adjective&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_function_word), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_function_word&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:visibility))) do
+        = @word_view_setting.visibility_text

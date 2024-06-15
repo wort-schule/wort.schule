@@ -23,3 +23,7 @@ de:
       visibility:
         private: Privat
         public: Öffentlich
+    word_view_setting:
+      visibility:
+        private: Privat
+        public: Öffentlich

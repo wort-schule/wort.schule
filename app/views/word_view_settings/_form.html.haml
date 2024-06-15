@@ -1,0 +1,15 @@
+= box padding: false do
+  = simple_form_for @word_view_setting do |f|
+    = box_content do
+      = f.input :name, autofocus: true
+      = f.input :font, collection: Fonts.collection, include_blank: t('activerecord.attributes.word_view_setting.no_font')
+      = f.association :theme_noun, include_blank: t('themes.show.standard')
+      = f.association :theme_verb, include_blank: t('themes.show.standard')
+      = f.association :theme_adjective, include_blank: t('themes.show.standard')
+      = f.association :theme_function_word, include_blank: t('themes.show.standard')
+      - if current_user.role.Admin?
+        = f.input :visibility, include_blank: false
+
+    = box_footer do
+      = f.submit
+      = cancel_button @word_view_setting

@@ -2,6 +2,7 @@
   %div= navigation_link params[:controller].to_sym == :sources, Source.model_name.human(count: 2), sources_path if can? :read, Source
   %div= navigation_link params[:controller].to_sym == :users, User.model_name.human(count: 2), users_path if can?(:index, User)
   %div= navigation_link params[:controller].to_sym == :learning_groups, LearningGroup.model_name.human(count: 2), learning_groups_path if can?(:index, LearningGroup)
+  = navigation_link params[:controller].to_sym == :word_view_settings, WordViewSetting.model_name.human(count: 2), word_view_settings_path if can?(:index, WordViewSetting)
   = navigation_link false, t('nouns.index.new'), new_noun_path if can?(:create, Noun)
   = navigation_link false, t('verbs.index.new'), new_verb_path if can?(:create, Verb)
   = navigation_link false, t('adjectives.index.new'), new_adjective_path if can?(:create, Adjective)

@@ -67,6 +67,9 @@ de:
       list:
         one: Wortliste
         other: Wortlisten
+      word_view_setting:
+        one: Ansichtseinstellung
+        other: Ansichtseinstellungen
 
     attributes:
       user:
@@ -226,3 +229,13 @@ de:
           5: Fach 5
       learning_group_membership:
         user: E-Mail Adresse oder Benutzername
+      word_view_setting:
+        name: Bezeichnung
+        owner: Benutzer*in
+        theme_noun: Theme für Substantive
+        theme_verb: Theme für Verben
+        theme_adjective: Theme für Adjektive
+        theme_function_word: Theme für Funktionswörter
+        font: Schrift
+        no_font: Standardschrift
+        visibility: Sichtbarkeit

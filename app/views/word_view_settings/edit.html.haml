@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = button_to t('actions.delete'), @word_view_setting, class: 'button danger', method: :delete, 'data-turbo-confirm': t('confirmations.shared.destroy', name: @word_view_setting.name) if can?(:destroy, @word_view_setting)
+
+= render 'form'
