@@ -238,5 +238,7 @@ de:
         show_montessori_symbols: Montessori Symbole anzeigen
         show_fresch_symbols: Fresch Symbole anzeigen
         show_gender_symbols: Symbole für Wortgeschlecht anzeigen
+        word_type_wording: Bezeichnung Worttypen
+        genus_wording: Bezeichnung Wortgeschlechter
         no_font: Standardschrift
         visibility: Sichtbarkeit
