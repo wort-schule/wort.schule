@@ -27,6 +27,27 @@
       = render(list.add(WordViewSetting.human_attribute_name(:theme_function_word), "", hide_if_blank: false)) do
         = @word_view_setting.theme_function_word&.name
 
+      = render(list.add(WordViewSetting.human_attribute_name(:show_house), "", hide_if_blank: false)) do
+        = @word_view_setting.show_house.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_syllable_arcs), "", hide_if_blank: false)) do
+        = @word_view_setting.show_syllable_arcs.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:color_syllables), "", hide_if_blank: false)) do
+        = @word_view_setting.color_syllables.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_horizontal_lines), "", hide_if_blank: false)) do
+        = @word_view_setting.show_horizontal_lines.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_montessori_symbols), "", hide_if_blank: false)) do
+        = @word_view_setting.show_montessori_symbols.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_fresch_symbols), "", hide_if_blank: false)) do
+        = @word_view_setting.show_fresch_symbols.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_gender_symbols), "", hide_if_blank: false)) do
+        = @word_view_setting.show_gender_symbols.humanize
+
       = render(list.add(WordViewSetting.human_attribute_name(:visibility))) do
         = @word_view_setting.visibility_text
 

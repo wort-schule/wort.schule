@@ -54,7 +54,14 @@ class WordViewSettingsController < ApplicationController
       :theme_verb_id,
       :theme_adjective_id,
       :theme_function_word_id,
-      :font
+      :font,
+      :show_house,
+      :show_syllable_arcs,
+      :color_syllables,
+      :show_horizontal_lines,
+      :show_montessori_symbols,
+      :show_fresch_symbols,
+      :show_gender_symbols
     )
   end
 end

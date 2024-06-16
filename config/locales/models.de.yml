@@ -231,5 +231,12 @@ de:
         theme_adjective: Theme für Adjektive
         theme_function_word: Theme für Funktionswörter
         font: Schrift
+        show_house: Haus im Schriftbild anzeigen
+        show_syllable_arcs: Silbenbögen anzeigen
+        color_syllables: Silbenbögen rot/blau einfärben
+        show_horizontal_lines: Lineaturen im Schriftbild anzeigen
+        show_montessori_symbols: Montessori Symbole anzeigen
+        show_fresch_symbols: Fresch Symbole anzeigen
+        show_gender_symbols: Symbole für Wortgeschlecht anzeigen
         no_font: Standardschrift
         visibility: Sichtbarkeit

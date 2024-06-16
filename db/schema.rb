@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_16_131957) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_16_133652) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -388,6 +388,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_131957) do
     t.bigint "theme_function_word_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "show_house", default: false, null: false
+    t.boolean "show_syllable_arcs", default: true, null: false
+    t.boolean "color_syllables", default: false, null: false
+    t.boolean "show_horizontal_lines", default: false, null: false
+    t.boolean "show_montessori_symbols", default: true, null: false
+    t.boolean "show_fresch_symbols", default: true, null: false
+    t.boolean "show_gender_symbols", default: true, null: false
     t.index ["owner_id"], name: "index_word_view_settings_on_owner_id"
     t.index ["theme_adjective_id"], name: "index_word_view_settings_on_theme_adjective_id"
     t.index ["theme_function_word_id"], name: "index_word_view_settings_on_theme_function_word_id"
