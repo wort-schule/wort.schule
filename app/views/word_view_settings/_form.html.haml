@@ -7,6 +7,13 @@
       = f.association :theme_verb, include_blank: t('themes.show.standard')
       = f.association :theme_adjective, include_blank: t('themes.show.standard')
       = f.association :theme_function_word, include_blank: t('themes.show.standard')
+      = f.input :show_house
+      = f.input :show_syllable_arcs
+      = f.input :color_syllables
+      = f.input :show_horizontal_lines
+      = f.input :show_montessori_symbols
+      = f.input :show_fresch_symbols
+      = f.input :show_gender_symbols
       - if current_user.role.Admin?
         = f.input :visibility, include_blank: false
 
