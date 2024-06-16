@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class SyllablesComponent < ViewComponent::Base
-  attr_reader :syllables
+  attr_reader :syllables, :word_view_setting
 
-  def initialize(text:)
+  def initialize(text:, word_view_setting:)
     @syllables = parse_syllables(text)
+    @word_view_setting = word_view_setting
   end
 
   def syllables_with_arcs

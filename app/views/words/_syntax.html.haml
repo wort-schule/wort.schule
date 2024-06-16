@@ -2,11 +2,11 @@
   = render BoxGridComponent.new do
     - if word.syllables.present?
       %div= Word.human_attribute_name(:syllables)
-      %div= render SyllablesComponent.new(text: word.syllables)
+      %div= render SyllablesComponent.new(text: word.syllables, word_view_setting: current_word_view_setting)
 
     - if word.written_syllables.present?
       %div= Word.human_attribute_name(:written_syllables)
-      %div= render SyllablesComponent.new(text: word.written_syllables)
+      %div= render SyllablesComponent.new(text: word.written_syllables, word_view_setting: current_word_view_setting)
 
     %div= Word.human_attribute_name(:prototype)
     %div= word.prototype&.humanize
