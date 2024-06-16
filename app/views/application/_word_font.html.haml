@@ -28,3 +28,9 @@
     .word-font {
       font-family: "#{current_user.word_font.key}";
     }
+
+- if current_word_view_setting.show_horizontal_lines
+  :css
+    .word-font {
+      font-feature-settings: "liga" 1, "hlig" 0, "calt" 0, "ss02" 1;
+    }
