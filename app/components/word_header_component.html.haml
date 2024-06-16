@@ -11,7 +11,7 @@
         = property
 
     .w-full.flex.flex-col.gap-4.items-end.lg:items-start
-      - if montessori_symbol.present?
+      - if montessori_symbol.present? && helpers.current_word_view_setting.show_montessori_symbols
         = image_tag montessori_symbol, class: "word-symbol"
       - word.strategies.each do |strategy|
         - if strategy.fresch_symbol.attached?
