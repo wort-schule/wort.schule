@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_16_113721) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_16_131957) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -204,17 +204,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_113721) do
     t.datetime "updated_at", null: false
     t.string "invitation_token"
     t.boolean "invitable", default: false, null: false
-    t.bigint "theme_noun_id"
-    t.bigint "theme_verb_id"
-    t.bigint "theme_adjective_id"
-    t.bigint "theme_function_word_id"
-    t.string "font"
     t.bigint "word_view_setting_id"
     t.index ["invitation_token"], name: "index_learning_groups_on_invitation_token", unique: true
-    t.index ["theme_adjective_id"], name: "index_learning_groups_on_theme_adjective_id"
-    t.index ["theme_function_word_id"], name: "index_learning_groups_on_theme_function_word_id"
-    t.index ["theme_noun_id"], name: "index_learning_groups_on_theme_noun_id"
-    t.index ["theme_verb_id"], name: "index_learning_groups_on_theme_verb_id"
     t.index ["user_id"], name: "index_learning_groups_on_user_id"
     t.index ["word_view_setting_id"], name: "index_learning_groups_on_word_view_setting_id"
   end
@@ -482,10 +473,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_113721) do
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "learning_group_memberships", "learning_groups"
   add_foreign_key "learning_group_memberships", "users"
-  add_foreign_key "learning_groups", "themes", column: "theme_adjective_id"
-  add_foreign_key "learning_groups", "themes", column: "theme_function_word_id"
-  add_foreign_key "learning_groups", "themes", column: "theme_noun_id"
-  add_foreign_key "learning_groups", "themes", column: "theme_verb_id"
   add_foreign_key "learning_groups", "users"
   add_foreign_key "learning_groups", "word_view_settings"
   add_foreign_key "learning_pleas", "learning_groups"
