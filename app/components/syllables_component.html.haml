@@ -1,5 +1,9 @@
 .mt-8.syllables-font
   - if word_view_setting.show_house
     = "`9 "
-  - syllables_with_arcs.each do |syllable|
-    %span>= syllable
+
+  - if word_view_setting.show_syllable_arcs
+    - syllables_with_arcs.each do |syllable|
+      %span>= syllable
+  - else
+    = syllables.join
