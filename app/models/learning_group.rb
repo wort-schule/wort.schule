@@ -7,6 +7,8 @@ class LearningGroup < ApplicationRecord
 
   belongs_to :owner, foreign_key: :user_id, class_name: "User"
 
+  belongs_to :word_view_setting, optional: true
+
   belongs_to :theme_noun, class_name: "Theme", optional: true
   belongs_to :theme_verb, class_name: "Theme", optional: true
   belongs_to :theme_adjective, class_name: "Theme", optional: true

@@ -29,3 +29,11 @@
 
       = render(list.add(WordViewSetting.human_attribute_name(:visibility))) do
         = @word_view_setting.visibility_text
+
+= two_column_card LearningGroup.model_name.human(count: 2), "" do
+  = box padding: false, class: 'striped' do
+    - if @word_view_setting.learning_groups.empty?
+      .p-4= t '.not_used_yet'
+    - else
+      - @word_view_setting.learning_groups.each do |learning_group|
+        .p-4= link_to learning_group.name, learning_group

@@ -10,6 +10,8 @@ class WordViewSetting < ApplicationRecord
   belongs_to :theme_adjective, class_name: "Theme", optional: true
   belongs_to :theme_function_word, class_name: "Theme", optional: true
 
+  has_many :learning_groups
+
   enumerize :visibility, in: %i[private public], default: :private
 
   validates :name, presence: true
