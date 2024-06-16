@@ -8,6 +8,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable, :confirmable
 
+  belongs_to :word_view_setting, optional: true
+
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [64, 64]
   end
@@ -18,11 +20,6 @@ class User < ApplicationRecord
   has_many :learning_group_memberships, dependent: :destroy
   has_many :learning_groups, through: :learning_group_memberships
   has_many :flashcard_lists, -> { where.not(flashcard_section: nil).order(:flashcard_section) }, class_name: "List", foreign_key: :user_id, dependent: :destroy
-
-  belongs_to :theme_noun, class_name: "Theme", optional: true
-  belongs_to :theme_verb, class_name: "Theme", optional: true
-  belongs_to :theme_adjective, class_name: "Theme", optional: true
-  belongs_to :theme_function_word, class_name: "Theme", optional: true
 
   enumerize :role, in: %w[Guest Lecturer Admin]
 

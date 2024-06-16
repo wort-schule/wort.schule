@@ -104,5 +104,6 @@ Rails.application.routes.draw do
     end
 
     resource :font, only: :show
+    get "ansicht/:word_view_setting_id", to: "homes#show"
   end
 end

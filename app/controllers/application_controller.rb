@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
+  include WordViewSettingsHelper
+
   before_action :authenticate_user!
   before_action :set_paper_trail_whodunnit
+  before_action :set_word_view_setting
 
   helper_method :page_title
   helper_method :background_color

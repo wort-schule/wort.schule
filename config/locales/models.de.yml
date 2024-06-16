@@ -7,9 +7,6 @@ de:
       user:
         one: Benutzer*in
         other: Benutzer*innen
-      user:
-        one: Benutzer*in
-        other: Benutzer*innen
       verb:
         one: Verb
         other: Verben
@@ -76,6 +73,7 @@ de:
         first_name: Vorname
         last_name: Nachname
         role: Rolle
+        word_view_setting: Ansichtseinstellung
       word:
         type: Wortart
         name: Wort
@@ -170,12 +168,8 @@ de:
       learning_group:
         name: Bezeichnung
         user: Benutzer*in
-        theme_noun: Theme für Substantive
-        theme_verb: Theme für Verben
-        theme_adjective: Theme für Adjektive
-        theme_function_word: Theme für Funktionswörter
-        font: Schrift
-        no_font: Standardschrift
+        owner: Benutzer*in
+        word_view_setting: Ansichtseinstellung
       adjective:
         name: Grundform
         with_tts: Audio aktiviert

@@ -278,6 +278,8 @@ de:
   word_view_settings:
     index:
       new: Neue Wort-Ansichtseinstellung
+    show:
+      not_used_yet: Diese Ansichtseinstellung wird in keiner Lerngruppe verwendet.
     new:
       title: Wort-Ansichtseinstellung erstellen
     edit:
