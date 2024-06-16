@@ -30,6 +30,7 @@ class LearningGroup < ApplicationRecord
                            }
 
   validates_presence_of :name
+  validate :accessible_word_view_setting
 
   after_save :update_themes
 
@@ -38,6 +39,12 @@ class LearningGroup < ApplicationRecord
   def update_themes
     Theme::WORD_TYPES.each do |word_type|
       users.update_all("theme_#{word_type}_id": send(:"theme_#{word_type}_id")) if (previous_changes.keys & ["theme_#{word_type}_id"]).any?
+    end
+  end
+
+  def accessible_word_view_setting
+    if word_view_setting&.visibility&.private? && word_view_setting&.owner != owner
+      errors.add(:word_view_setting_id, :invalid)
     end
   end
 end
