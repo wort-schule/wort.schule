@@ -48,6 +48,12 @@
       = render(list.add(WordViewSetting.human_attribute_name(:show_gender_symbols), "", hide_if_blank: false)) do
         = @word_view_setting.show_gender_symbols.humanize
 
+      = render(list.add(WordViewSetting.human_attribute_name(:word_type_wording), "", hide_if_blank: false)) do
+        = WordTypes.label_all(@word_view_setting.word_type_wording)
+
+      = render(list.add(WordViewSetting.human_attribute_name(:genus_wording), "", hide_if_blank: false)) do
+        = Genus.label_all(@word_view_setting.genus_wording)
+
       = render(list.add(WordViewSetting.human_attribute_name(:visibility))) do
         = @word_view_setting.visibility_text
 

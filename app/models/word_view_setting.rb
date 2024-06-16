@@ -13,6 +13,8 @@ class WordViewSetting < ApplicationRecord
   has_many :learning_groups
 
   enumerize :visibility, in: %i[private public], default: :private
+  enumerize :word_type_wording, in: WordTypes.keys, default: WordTypes.keys.first
+  enumerize :genus_wording, in: Genus.keys, default: Genus.keys.first
 
   validates :name, presence: true
   validate :public_visibility_only_for_admins

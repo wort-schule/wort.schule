@@ -61,7 +61,9 @@ class WordViewSettingsController < ApplicationController
       :show_horizontal_lines,
       :show_montessori_symbols,
       :show_fresch_symbols,
-      :show_gender_symbols
+      :show_gender_symbols,
+      :word_type_wording,
+      :genus_wording
     )
   end
 end

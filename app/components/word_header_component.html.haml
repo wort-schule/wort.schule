@@ -5,7 +5,7 @@
 
   .properties(style="grid-area: properties")
     .flex.flex-col.gap-4.justify-center
-      = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: word.class.model_name.human)
+      = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: WordTypes.label(helpers.current_word_view_setting.word_type_wording, word.class.model_name.name))
 
       - properties.each do |property|
         = property

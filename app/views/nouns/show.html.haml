@@ -13,7 +13,7 @@
         .flex.gap-2.items-center
           - if @noun.genus&.symbol&.attached? && current_word_view_setting.show_gender_symbols
             = image_tag @noun.genus.symbol, class: 'max-w-6'
-          = @noun.genus&.name
+          = @noun.genus&.label(current_word_view_setting.genus_wording)
 
   = render BoxComponent.new(title: t('words.show.properties')) do
     = render BoxGridComponent.new do
