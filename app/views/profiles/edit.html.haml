@@ -5,6 +5,7 @@
     = f.input :first_name, autofocus: true
     = f.input :last_name
     = f.input :avatar
+    = f.association :word_view_setting, collection: WordViewSetting.accessible_by(current_ability)
 
     .mt-4
       = f.submit

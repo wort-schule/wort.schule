@@ -7,9 +7,6 @@ de:
       user:
         one: Benutzer*in
         other: Benutzer*innen
-      user:
-        one: Benutzer*in
-        other: Benutzer*innen
       verb:
         one: Verb
         other: Verben
@@ -76,6 +73,7 @@ de:
         first_name: Vorname
         last_name: Nachname
         role: Rolle
+        word_view_setting: Ansichtseinstellung
       word:
         type: Wortart
         name: Wort
