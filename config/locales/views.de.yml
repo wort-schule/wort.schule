@@ -275,6 +275,15 @@ de:
       move_word_to_next_section: ins nächste Fach schieben
       show_word: Wort anzeigen
       show_actions: Aktionen anzeigen
+  word_view_settings:
+    index:
+      new: Neue Wort-Ansichtseinstellung
+    show:
+      not_used_yet: Diese Ansichtseinstellung wird in keiner Lerngruppe verwendet.
+    new:
+      title: Wort-Ansichtseinstellung erstellen
+    edit:
+      title: Wort-Ansichtseinstellung bearbeiten
   shared:
     versions:
       title: Änderungshistorie

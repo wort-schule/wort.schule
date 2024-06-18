@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
 class Fonts
-  AVAILABLE_FONTS = [
-    {name: "Druckschrift Buch", filename: "DRBuch"},
-    {name: "Druckschrift Hand", filename: "DRHand"},
-    {name: "Grundschrift", filename: "GS"},
-    {name: "Lateinische Ausgangsschrift", filename: "LA"},
-    {name: "Schulausgangsschrift", filename: "SAS"},
-    {name: "Vereinfachte Ausgangsschrift", filename: "VA"}
-  ].freeze
-
   SYLLABLE_ARCS = {
     (0..300) => "01",
     (301..550) => "04",
@@ -53,21 +44,80 @@ class Fonts
     (3601..3700) => "45",
     (3701..3800) => "46",
     (3801..3900) => "47"
-  }
+  }.freeze
+
+  VARIABLE_SYLLABLE_ARCS = {
+    (0..350) => "01",
+    (351..500) => "02",
+    (501..600) => "03",
+    (601..650) => "04",
+    (651..700) => "05",
+    (701..770) => "06",
+    (771..900) => "07",
+    (901..1000) => "08",
+    (1001..1020) => "09",
+    (1021..1100) => "10",
+    (1101..1250) => "11",
+    (1251..1300) => "12",
+    (1301..1400) => "13",
+    (1401..1450) => "14",
+    (1451..1500) => "15",
+    (1501..1600) => "16",
+    (1601..1750) => "17",
+    (1751..1800) => "18",
+    (1801..1900) => "19",
+    (1901..2000) => "20",
+    (2001..2100) => "21",
+    (2101..2200) => "22",
+    (2201..2400) => "23",
+    (2401..2500) => "24",
+    (2501..2600) => "25",
+    (2601..2650) => "26",
+    (2651..2700) => "27",
+    (2701..2800) => "28",
+    (2801..2900) => "29",
+    (2901..3000) => "30",
+    (3001..3100) => "31",
+    (3101..3200) => "32",
+    (3201..3300) => "33",
+    (3301..3350) => "34",
+    (3351..3400) => "35",
+    (3401..3500) => "36",
+    (3501..3600) => "37",
+    (3601..3700) => "38",
+    (3701..3800) => "39",
+    (3801..3850) => "40",
+    (3851..3900) => "41",
+    (3901..3950) => "42",
+    (3951..4000) => "43",
+    (4001..4050) => "44",
+    (4051..4100) => "45",
+    (4101..4150) => "46",
+    (4151..4500) => "47"
+  }.freeze
+
+  AVAILABLE_FONTS = [
+    Font.new(name: "Druckschrift Buch", filename: "DRBuch", arc_settings: SYLLABLE_ARCS),
+    Font.new(name: "Druckschrift Hand", filename: "DRHand", arc_settings: SYLLABLE_ARCS),
+    Font.new(name: "Grundschrift", filename: "GS", arc_settings: SYLLABLE_ARCS),
+    Font.new(name: "Lateinische Ausgangsschrift", filename: "LA", arc_settings: SYLLABLE_ARCS),
+    Font.new(name: "Schulausgangsschrift", filename: "SAS", arc_settings: SYLLABLE_ARCS),
+    Font.new(name: "Vereinfachte Ausgangsschrift", filename: "VA", arc_settings: VARIABLE_SYLLABLE_ARCS)
+  ].freeze
 
   def self.default
     AVAILABLE_FONTS.first
   end
 
   def self.keys
-    AVAILABLE_FONTS.map { |font| font[:filename] }
+    AVAILABLE_FONTS.map(&:key)
   end
 
   def self.by_key(key)
-    AVAILABLE_FONTS.find { |font| font[:filename] == key }
+    AVAILABLE_FONTS.find { |font| font.key == key }
   end
 
   def self.collection
-    AVAILABLE_FONTS.map { |font| [font[:name], font[:filename]] }
+    AVAILABLE_FONTS.map { |font| [font.name, font.key] }
   end
 end

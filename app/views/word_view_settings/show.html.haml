@@ -1,0 +1,66 @@
+= title_with_actions @word_view_setting.name do
+  - if can? :edit, @word_view_setting
+    = link_to t('actions.edit'), edit_word_view_setting_path(@word_view_setting), class: 'button primary'
+
+= two_column_card WordViewSetting.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(WordViewSetting.human_attribute_name(:name))) do
+        = @word_view_setting.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:owner))) do
+        = @word_view_setting.owner
+
+      = render(list.add(WordViewSetting.human_attribute_name(:font), "", hide_if_blank: false)) do
+        = Fonts.by_key(@word_view_setting.font)&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_noun), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_noun&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_verb), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_verb&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_adjective), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_adjective&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:theme_function_word), "", hide_if_blank: false)) do
+        = @word_view_setting.theme_function_word&.name
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_house), "", hide_if_blank: false)) do
+        = @word_view_setting.show_house.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_syllable_arcs), "", hide_if_blank: false)) do
+        = @word_view_setting.show_syllable_arcs.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:color_syllables), "", hide_if_blank: false)) do
+        = @word_view_setting.color_syllables.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_horizontal_lines), "", hide_if_blank: false)) do
+        = @word_view_setting.show_horizontal_lines.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_montessori_symbols), "", hide_if_blank: false)) do
+        = @word_view_setting.show_montessori_symbols.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_fresch_symbols), "", hide_if_blank: false)) do
+        = @word_view_setting.show_fresch_symbols.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:show_gender_symbols), "", hide_if_blank: false)) do
+        = @word_view_setting.show_gender_symbols.humanize
+
+      = render(list.add(WordViewSetting.human_attribute_name(:word_type_wording), "", hide_if_blank: false)) do
+        = WordTypes.label_all(@word_view_setting.word_type_wording)
+
+      = render(list.add(WordViewSetting.human_attribute_name(:genus_wording), "", hide_if_blank: false)) do
+        = Genus.label_all(@word_view_setting.genus_wording)
+
+      = render(list.add(WordViewSetting.human_attribute_name(:visibility))) do
+        = @word_view_setting.visibility_text
+
+= two_column_card LearningGroup.model_name.human(count: 2), "" do
+  = box padding: false, class: 'striped' do
+    - if @word_view_setting.learning_groups.empty?
+      .p-4= t '.not_used_yet'
+    - else
+      - @word_view_setting.learning_groups.each do |learning_group|
+        .p-4= link_to learning_group.name, learning_group

@@ -1,3 +1,9 @@
 .mt-8.syllables-font
-  - syllables.each do |syllable|
-    %span>= "#{syllable_arc.arc(syllable)}#{syllable}"
+  - if word_view_setting.show_house
+    = "`9 "
+
+  - if word_view_setting.show_syllable_arcs
+    - syllables_with_arcs.each do |syllable|
+      %span{ class: word_view_setting.color_syllables ? cycle('syllable-color1', 'syllable-color2') : nil }>= syllable
+  - else
+    = syllables.join

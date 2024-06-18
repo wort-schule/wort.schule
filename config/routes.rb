@@ -90,6 +90,7 @@ Rails.application.routes.draw do
     end
     post :list_add_word, to: "lists#add_word"
     resources :flashcards, only: :index
+    resources :word_view_settings
 
     # User's own routes
     resource :profile, only: %i[show edit update] do
@@ -103,5 +104,6 @@ Rails.application.routes.draw do
     end
 
     resource :font, only: :show
+    get "ansicht/:word_view_setting_id", to: "homes#show"
   end
 end

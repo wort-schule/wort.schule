@@ -1,0 +1,4 @@
+= link_if(can?(:show, word_view_setting), word_view_setting, id: dom_id(word_view_setting)) do
+  = box class: 'h-full' do
+    %div= word_view_setting.name
+    .text-gray-500.text-sm= word_view_setting.owner

@@ -118,7 +118,8 @@ RSpec.describe "themes for words" do
       expect(new_theme.name).to eq "Neuer Name"
       expect(new_theme.word_type).to eq "noun"
 
-      admin.update(theme_noun: new_theme)
+      new_settings = create(:word_view_setting, theme_noun: new_theme)
+      admin.update!(word_view_setting: new_settings)
 
       visit noun_path(create(:noun))
       expect(page).to have_content "Template"
@@ -127,82 +128,75 @@ RSpec.describe "themes for words" do
   end
 
   describe "set default theme in profile" do
+    let!(:word_view_setting) { create :word_view_setting, theme_noun: noun_theme, theme_verb: verb_theme, owner: admin }
     let!(:noun_theme) { create :theme, word_type: :noun, name: "Nomenkarte" }
     let!(:verb_theme) { create :theme, word_type: :verb, name: "Verbenkarte" }
 
     context "with a different theme set" do
       before do
-        admin.update!(theme_noun: noun_theme)
+        admin.update!(word_view_setting:)
       end
 
-      it "sets standard theme for nouns" do
-        expect(admin.theme_noun).not_to be_nil
-        expect(admin.theme_verb).to be_nil
+      it "sets standard settings" do
+        expect(admin.word_view_setting).not_to be_nil
 
         visit profile_path
 
-        within ".ci-theme-noun" do
+        expect(page).to have_content word_view_setting.name
+
+        within ".ci-word-view-setting" do
           click_on I18n.t("actions.change")
         end
 
-        expect(page).to have_content noun_theme.name
-        expect(page).not_to have_content verb_theme.name
-
-        within "#theme_0" do
-          click_on I18n.t("theme_select_component.select")
-        end
+        select "", from: User.human_attribute_name(:word_view_setting)
+        click_on t("helpers.submit.update")
 
         expect(page).to have_current_path profile_path
-        expect(admin.reload.theme_noun).to be_nil
+        expect(admin.reload.word_view_setting).to be_nil
       end
     end
 
     context "with default theme set" do
-      it "sets another theme for verbs" do
-        expect(admin.theme_noun).to be_nil
-        expect(admin.theme_verb).to be_nil
+      it "sets other settings" do
+        expect(admin.word_view_setting).to be_nil
 
         visit profile_path
 
-        within ".ci-theme-verb" do
+        expect(page).not_to have_content word_view_setting.name
+
+        within ".ci-word-view-setting" do
           click_on I18n.t("actions.change")
         end
 
-        expect(page).not_to have_content noun_theme.name
-        expect(page).to have_content verb_theme.name
-
-        within "##{dom_id(verb_theme)}" do
-          click_on I18n.t("theme_select_component.select")
-        end
+        select word_view_setting.name, from: User.human_attribute_name(:word_view_setting)
+        click_on t("helpers.submit.update")
 
         expect(page).to have_current_path profile_path
 
         admin.reload
-        expect(admin.theme_noun).to be_nil
-        expect(admin.theme_verb).to eq verb_theme
+        expect(admin.word_view_setting).to eq word_view_setting
       end
     end
   end
 
   describe "renders words according to theme in profile" do
-    let!(:theme) { create :theme, word_type: :noun, name: "Nomenkarte", template: "{{ meaning }}" }
+    let!(:theme) { create :theme, word_type: :noun, name: "Nomenkarte", template: "CurrentTheme {{ meaning }}" }
+    let!(:word_view_setting) { create :word_view_setting, theme_noun: theme }
     let(:noun) { create :noun, name: "Bauer", meaning: "Meine Bedeutung" }
+    let!(:other_word_view_setting) { create :word_view_setting, theme_noun: other_theme }
+    let!(:other_theme) { create :theme, word_type: :noun, name: "Neue Nomenkarte", template: "OtherTheme {{ meaning }}" }
 
     it "renders the correct theme" do
-      expect(admin.theme_noun).to be_nil
+      expect(admin.word_view_setting).to be_nil
 
       # Check if standard template is rendered
       visit noun_path(noun)
       expect(page).to have_content noun.name
 
       # Change template in profile
-      visit profile_path
-      within(".ci-theme-noun") { click_on I18n.t("actions.change") }
-      within "##{dom_id(theme)}" do
-        click_on I18n.t("theme_select_component.select")
-      end
+      admin.update!(word_view_setting:)
 
-      expect(admin.reload.theme_noun).to eq theme
+      expect(admin.reload.word_view_setting.theme_noun).to eq theme
 
       # Check if new theme is rendered
       visit noun_path(noun)
@@ -212,7 +206,7 @@ RSpec.describe "themes for words" do
 
     it "always renders the default template for guests" do
       # Template is rendered as admin
-      admin.update!(theme_noun: theme)
+      admin.update!(word_view_setting:)
       visit noun_path(noun)
       expect(page).not_to have_content noun.name
       expect(page).to have_content noun.meaning
@@ -222,12 +216,40 @@ RSpec.describe "themes for words" do
       visit noun_path(noun)
       expect(page).to have_content noun.name
     end
+
+    it "uses the settings in the homepage URL" do
+      admin.update!(word_view_setting:)
+      expect(admin.word_view_setting).to eq word_view_setting
+
+      visit noun_path(noun)
+      expect(page).to have_content "CurrentTheme"
+
+      visit "/seite/ansicht/#{other_word_view_setting.id}"
+      expect(admin.reload.word_view_setting).to eq other_word_view_setting
+
+      visit noun_path(noun)
+      expect(page).to have_content "OtherTheme"
+    end
+
+    it "uses the settings in the current page URL" do
+      admin.update!(word_view_setting:)
+      expect(admin.word_view_setting).to eq word_view_setting
+
+      visit noun_path(noun)
+      expect(page).to have_content "CurrentTheme"
+
+      visit noun_path(noun, word_view_setting_id: other_word_view_setting.id)
+      expect(page).to have_content "OtherTheme"
+
+      expect(admin.reload.word_view_setting).to eq other_word_view_setting
+    end
   end
 
   describe "update theme in learning group" do
     let(:learning_group) { create :learning_group }
     let(:user1) { create :guest }
     let!(:user2) { create :guest }
+    let!(:word_view_setting) { create :word_view_setting, theme_noun: noun_theme, owner: learning_group.owner }
     let!(:noun_theme) { create :theme, word_type: :noun }
     let!(:membership) do
       create(
@@ -239,9 +261,9 @@ RSpec.describe "themes for words" do
     end
 
     it "updates the theme for all users" do
-      expect(learning_group.reload.theme_noun).to be_nil
-      expect(user1.theme_noun).to be_nil
-      expect(user2.theme_noun).to be_nil
+      expect(learning_group.reload.word_view_setting).to be_nil
+      expect(user1.word_view_setting&.theme_noun).to be_nil
+      expect(user2.word_view_setting&.theme_noun).to be_nil
 
       visit learning_group_path(learning_group)
       expect(page).to have_content user1.full_name
@@ -249,12 +271,13 @@ RSpec.describe "themes for words" do
 
       click_on I18n.t("actions.edit")
 
-      select noun_theme.name, from: LearningGroup.human_attribute_name(:theme_noun)
+      select word_view_setting.name, from: LearningGroup.human_attribute_name(:word_view_setting)
       click_on I18n.t("actions.save")
 
-      expect(learning_group.reload.theme_noun).to eq noun_theme
-      expect(user1.reload.theme_noun).to eq noun_theme
-      expect(user2.reload.theme_noun).to be_nil
+      expect(learning_group.reload.word_view_setting).to eq word_view_setting
+      expect(user1.reload.word_view_setting).to eq word_view_setting
+      expect(user1.reload.word_view_setting.theme_noun).to eq noun_theme
+      expect(user2.reload.word_view_setting).to be_nil
     end
   end
 end

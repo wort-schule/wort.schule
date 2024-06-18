@@ -20,7 +20,7 @@ class AdjectivesController < PublicController
   def show
     @adjective.hit!(session, request.user_agent)
 
-    render ThemeComponent.new(word: @adjective, theme: current_user.theme_adjective) if current_user&.theme_adjective.present?
+    render ThemeComponent.new(word: @adjective, theme: current_word_view_setting.theme_adjective) if current_word_view_setting&.theme_adjective.present?
   end
 
   def new

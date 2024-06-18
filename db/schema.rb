@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_16_152222) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -91,6 +91,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "genus_keys", default: [], array: true
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -204,17 +205,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
     t.datetime "updated_at", null: false
     t.string "invitation_token"
     t.boolean "invitable", default: false, null: false
-    t.bigint "theme_noun_id"
-    t.bigint "theme_verb_id"
-    t.bigint "theme_adjective_id"
-    t.bigint "theme_function_word_id"
-    t.string "font"
+    t.bigint "word_view_setting_id"
     t.index ["invitation_token"], name: "index_learning_groups_on_invitation_token", unique: true
-    t.index ["theme_adjective_id"], name: "index_learning_groups_on_theme_adjective_id"
-    t.index ["theme_function_word_id"], name: "index_learning_groups_on_theme_function_word_id"
-    t.index ["theme_noun_id"], name: "index_learning_groups_on_theme_noun_id"
-    t.index ["theme_verb_id"], name: "index_learning_groups_on_theme_verb_id"
     t.index ["user_id"], name: "index_learning_groups_on_user_id"
+    t.index ["word_view_setting_id"], name: "index_learning_groups_on_word_view_setting_id"
   end
 
   create_table "learning_pleas", force: :cascade do |t|
@@ -362,21 +356,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
     t.string "first_name"
     t.string "last_name"
     t.string "role", default: "Guest"
-    t.bigint "theme_noun_id"
-    t.bigint "theme_verb_id"
-    t.bigint "theme_adjective_id"
-    t.bigint "theme_function_word_id"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
+    t.bigint "word_view_setting_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["theme_adjective_id"], name: "index_users_on_theme_adjective_id"
-    t.index ["theme_function_word_id"], name: "index_users_on_theme_function_word_id"
-    t.index ["theme_noun_id"], name: "index_users_on_theme_noun_id"
-    t.index ["theme_verb_id"], name: "index_users_on_theme_verb_id"
+    t.index ["word_view_setting_id"], name: "index_users_on_word_view_setting_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -388,6 +376,33 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
     t.jsonb "object"
     t.jsonb "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "word_view_settings", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "font"
+    t.string "visibility", default: "private"
+    t.bigint "owner_id", null: false
+    t.bigint "theme_noun_id"
+    t.bigint "theme_verb_id"
+    t.bigint "theme_adjective_id"
+    t.bigint "theme_function_word_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "show_house", default: false, null: false
+    t.boolean "show_syllable_arcs", default: true, null: false
+    t.boolean "color_syllables", default: false, null: false
+    t.boolean "show_horizontal_lines", default: false, null: false
+    t.boolean "show_montessori_symbols", default: true, null: false
+    t.boolean "show_fresch_symbols", default: true, null: false
+    t.boolean "show_gender_symbols", default: true, null: false
+    t.string "word_type_wording", default: "default", null: false
+    t.string "genus_wording", default: "default", null: false
+    t.index ["owner_id"], name: "index_word_view_settings_on_owner_id"
+    t.index ["theme_adjective_id"], name: "index_word_view_settings_on_theme_adjective_id"
+    t.index ["theme_function_word_id"], name: "index_word_view_settings_on_theme_function_word_id"
+    t.index ["theme_noun_id"], name: "index_word_view_settings_on_theme_noun_id"
+    t.index ["theme_verb_id"], name: "index_word_view_settings_on_theme_verb_id"
   end
 
   create_table "words", force: :cascade do |t|
@@ -468,19 +483,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_161042) do
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "learning_group_memberships", "learning_groups"
   add_foreign_key "learning_group_memberships", "users"
-  add_foreign_key "learning_groups", "themes", column: "theme_adjective_id"
-  add_foreign_key "learning_groups", "themes", column: "theme_function_word_id"
-  add_foreign_key "learning_groups", "themes", column: "theme_noun_id"
-  add_foreign_key "learning_groups", "themes", column: "theme_verb_id"
   add_foreign_key "learning_groups", "users"
+  add_foreign_key "learning_groups", "word_view_settings"
   add_foreign_key "learning_pleas", "learning_groups"
   add_foreign_key "learning_pleas", "lists"
   add_foreign_key "lists", "users"
   add_foreign_key "themes", "users"
-  add_foreign_key "users", "themes", column: "theme_adjective_id"
-  add_foreign_key "users", "themes", column: "theme_function_word_id"
-  add_foreign_key "users", "themes", column: "theme_noun_id"
-  add_foreign_key "users", "themes", column: "theme_verb_id"
+  add_foreign_key "users", "word_view_settings"
+  add_foreign_key "word_view_settings", "themes", column: "theme_adjective_id"
+  add_foreign_key "word_view_settings", "themes", column: "theme_function_word_id"
+  add_foreign_key "word_view_settings", "themes", column: "theme_noun_id"
+  add_foreign_key "word_view_settings", "themes", column: "theme_verb_id"
+  add_foreign_key "word_view_settings", "users", column: "owner_id"
   add_foreign_key "words", "hierarchies"
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"

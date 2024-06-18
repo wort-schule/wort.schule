@@ -1,10 +1,10 @@
-.flex.gap-4
-  - Fonts.keys.each do |font|
-    = link_to font, url_for(font:)
+.flex.flex-wrap.justify-center.gap-4
+  - Fonts::AVAILABLE_FONTS.each do |font|
+    = link_to font.name, url_for(font: font.key)
 
-%h1= @font
+%h1= @font.name
 
-.mt-8.syllables-font
+.mt-8
   %table
     %thead
       %tr
@@ -14,6 +14,7 @@
     %tbody
       - @calculations.each do |syllable, width|
         %tr
-          %td.border.px-2.py-1= @syllable_arc.arc(syllable)&.gsub('^', '')
-          %td.border.px-2.py-1= "#{@syllable_arc.arc(syllable)}#{syllable}"
-          %td.border.px-2.py-1= width
+          %td.border.px-2.py-1= link_to @syllable_arc.arc(syllable)&.gsub('^', ''), "##{width}"
+          %td.border.px-2.py-1.syllables-font= "#{@syllable_arc.arc(syllable)}#{syllable}"
+          %td.border.px-2.py-1
+            %a(name=width)= width

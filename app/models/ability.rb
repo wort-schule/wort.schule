@@ -14,7 +14,7 @@ class Ability
     can :read, Source, visible: true
 
     if user.present?
-      can %i[show edit update destroy], User, %i[first_name last_name avatar email password], id: user.id
+      can %i[show edit update destroy], User, %i[first_name last_name avatar email password word_view_setting_id], id: user.id
 
       can %i[read new create accept_invitation], LearningGroup
       can %i[read read_users read_lists], LearningGroup, users: {id: user.id}
@@ -31,6 +31,7 @@ class Ability
 
       can :read, Theme, visibility: :public
       can :crud, Theme, {user:}
+      can :read, WordViewSetting, visibility: :public
 
       case user.role
       when "Lecturer"
@@ -54,6 +55,8 @@ class Ability
         can :crud, CompoundVocalalternation
 
         can :read, User
+
+        can :crud, WordViewSetting, owner: user
 
       when "Admin"
         can :manage, Noun
@@ -85,6 +88,7 @@ class Ability
         can :manage, LearningPlea
 
         can :manage, :font
+        can :manage, WordViewSetting
       end
     end
   end

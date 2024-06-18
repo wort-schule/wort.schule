@@ -50,11 +50,7 @@ class LearningGroupsController < ApplicationController
     params.require(:learning_group).permit(
       :name,
       :user_id,
-      :theme_noun_id,
-      :theme_verb_id,
-      :theme_adjective_id,
-      :theme_function_word_id,
-      :font
+      :word_view_setting_id
     )
   end
 end

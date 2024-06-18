@@ -7,9 +7,6 @@ de:
       user:
         one: Benutzer*in
         other: Benutzer*innen
-      user:
-        one: Benutzer*in
-        other: Benutzer*innen
       verb:
         one: Verb
         other: Verben
@@ -67,12 +64,16 @@ de:
       list:
         one: Wortliste
         other: Wortlisten
+      word_view_setting:
+        one: Ansichtseinstellung
+        other: Ansichtseinstellungen
 
     attributes:
       user:
         first_name: Vorname
         last_name: Nachname
         role: Rolle
+        word_view_setting: Ansichtseinstellung
       word:
         type: Wortart
         name: Wort
@@ -167,12 +168,8 @@ de:
       learning_group:
         name: Bezeichnung
         user: Benutzer*in
-        theme_noun: Theme für Substantive
-        theme_verb: Theme für Verben
-        theme_adjective: Theme für Adjektive
-        theme_function_word: Theme für Funktionswörter
-        font: Schrift
-        no_font: Standardschrift
+        owner: Benutzer*in
+        word_view_setting: Ansichtseinstellung
       adjective:
         name: Grundform
         with_tts: Audio aktiviert
@@ -226,3 +223,22 @@ de:
           5: Fach 5
       learning_group_membership:
         user: E-Mail Adresse oder Benutzername
+      word_view_setting:
+        name: Bezeichnung
+        owner: Benutzer*in
+        theme_noun: Theme für Substantive
+        theme_verb: Theme für Verben
+        theme_adjective: Theme für Adjektive
+        theme_function_word: Theme für Funktionswörter
+        font: Schrift
+        show_house: Haus im Schriftbild anzeigen
+        show_syllable_arcs: Silbenbögen anzeigen
+        color_syllables: Silbenbögen rot/blau einfärben
+        show_horizontal_lines: Lineaturen im Schriftbild anzeigen
+        show_montessori_symbols: Montessori Symbole anzeigen
+        show_fresch_symbols: Fresch Symbole anzeigen
+        show_gender_symbols: Symbole für Wortgeschlecht anzeigen
+        word_type_wording: Bezeichnung Worttypen
+        genus_wording: Bezeichnung Wortgeschlechter
+        no_font: Standardschrift
+        visibility: Sichtbarkeit

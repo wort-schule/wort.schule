@@ -4,8 +4,8 @@ class FontsController < ApplicationController
   authorize_resource class: false
 
   def show
-    @font = (params[:font] || Fonts.keys.first).clamped(Fonts.keys, strict: false)
-    @syllable_arc = SyllableArc.new(Rails.root.join("app/assets/fonts/#{@font}-Regular.ttf"))
+    @font = Fonts.by_key(params[:font]) || Fonts.default
+    @syllable_arc = SyllableArc.new(@font)
 
     syllables = Word
       .pluck(:syllables)

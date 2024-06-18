@@ -1,21 +1,22 @@
 .word-header.md:bg-white.md:shadow.md:rounded-3xl.md:col-span-2.gap-4.lg:gap-12
   .m-6.word-font(style="grid-area: name")
     %div= title
-    .mt-4.text-lg.md:text-2xl= render SyllablesComponent.new(text: word.syllables)
+    .mt-4.text-lg.md:text-2xl= render SyllablesComponent.new(text: word.syllables, word_view_setting: helpers.current_word_view_setting)
 
   .properties(style="grid-area: properties")
     .flex.flex-col.gap-4.justify-center
-      = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: word.class.model_name.human)
+      = render LabeledValueComponent.new(label: Word.human_attribute_name(:type), value: WordTypes.label(helpers.current_word_view_setting.word_type_wording, word.class.model_name.name))
 
       - properties.each do |property|
         = property
 
     .w-full.flex.flex-col.gap-4.items-end.lg:items-start
-      - if montessori_symbol.present?
+      - if montessori_symbol.present? && helpers.current_word_view_setting.show_montessori_symbols
         = image_tag montessori_symbol, class: "word-symbol"
-      - word.strategies.each do |strategy|
-        - if strategy.fresch_symbol.attached?
-          = image_tag strategy.fresch_symbol, class: "word-symbol"
+      - if helpers.current_word_view_setting.show_fresch_symbols
+        - word.strategies.each do |strategy|
+          - if strategy.fresch_symbol.attached?
+            = image_tag strategy.fresch_symbol, class: "word-symbol"
 
   .m-6.max-w-96(style="grid-area: image")
     - if word.image.attached?

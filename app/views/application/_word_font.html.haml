@@ -1,22 +1,36 @@
 :css
   @font-face {
-    font-family: "#{current_font}";
+    font-family: "#{current_font.key}";
     font-weight: 400;
-    src: url("/fonts/#{current_font}-Regular.woff") format("woff");
+    src: url("/fonts/#{current_font.key}-Regular.woff") format("woff");
   }
 
   @font-face {
-    font-family: "#{current_font}";
+    font-family: "#{current_font.key}";
     font-weight: 700;
-    src: url("/fonts/#{current_font}-Bold.woff") format("woff");
+    src: url("/fonts/#{current_font.key}-Bold.woff") format("woff");
   }
 
   .syllables-font {
-    font-family: "#{current_font}";
+    font-family: "#{current_font.key}";
+  }
+
+  .syllable-color1 {
+    color: red;
+  }
+
+  .syllable-color2 {
+    color: blue;
   }
 
 - if current_user&.word_font.present?
   :css
     .word-font {
-      font-family: "#{current_user.word_font.dig(:filename)}";
+      font-family: "#{current_user.word_font.key}";
+    }
+
+- if current_word_view_setting.show_horizontal_lines
+  :css
+    .word-font {
+      font-feature-settings: "liga" 1, "hlig" 0, "calt" 0, "ss02" 1;
     }
