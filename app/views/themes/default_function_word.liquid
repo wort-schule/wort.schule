@@ -1,14 +1,13 @@
-<div class="p-4 bg-white" style="width: 15cm; height: 21cm">
-  <div class="flex justify-between">
-    <div>
-      <div><strong>{{ name }}</strong></div>
-    </div>
+<div class="flex flex-col gap-y-12 md:grid md:grid-cols-2 md:gap-12">
+  {{ header }}
 
-    <span>{{ word_type }}</span>
-  </div>
+  {% box Eigenschaften %}
+    {% box_grid %}
+      <div>Wortart</div><div>Funktionswort</div>
+      <div>Worttyp</div><div>{{ function_type }}</div>
+      <div>Schreibsilben</div><div>{{ written_syllables }}</div>
+    {% endbox_grid %}
+  {% endbox %}
 
-  <div class="grid" style="grid-template-columns: 30% 1fr">
-    <div class="text-right mr-2 mt-4">{{ labels.syllables }}</div>
-    <div>{{ syllables }}</div>
-  </div>
+  {{ other_meanings_box }}
 </div>

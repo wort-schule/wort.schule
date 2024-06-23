@@ -1,0 +1,2 @@
+= separate word.strategies do |strategy|
+  = link_to_if can?(:read, strategy), strategy.name, strategy

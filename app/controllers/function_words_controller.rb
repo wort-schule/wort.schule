@@ -10,7 +10,7 @@ class FunctionWordsController < PublicController
   def show
     @function_word.hit!(session, request.user_agent)
 
-    render ThemeComponent.new(word: @function_word, theme: current_word_view_setting.theme_function_word) if current_word_view_setting&.theme_function_word.present?
+    render ThemeComponent.new(word: @function_word, theme: current_word_view_setting.theme_function_word)
   end
 
   def new

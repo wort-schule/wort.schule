@@ -1,0 +1,22 @@
+{% if meaning != blank || meaning_long != blank || hierarchies != blank || topics != blank %}
+  {% box Bedeutung %}
+    {% box_grid %}
+      {% if meaning != blank || meaning_long != blank %}
+        <div>Bedeutung</div>
+        <div>
+          {{ meaning }}
+          {% if meaning_long != blank %}
+            <div class="text-sm mt-2">{{ meaning_long }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+      {% if hierarchies != blank %}
+        <div>Kategorie</div>
+        <div class="flex flex-wrap items-center">
+          {{ hierarchy_breadcrumbs }}
+        </div>
+      {% endif %}
+      <div>Themen</div><div>{{ topics_separated }}</div>
+    {% endbox_grid %}
+  {% endbox %}
+{% endif %}

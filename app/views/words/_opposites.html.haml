@@ -1,0 +1,2 @@
+= separate word.opposites do |opposite|
+  = link_to_if can?(:read, opposite), opposite.name, opposite

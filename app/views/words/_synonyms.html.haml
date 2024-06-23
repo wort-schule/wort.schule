@@ -1,0 +1,2 @@
+= separate word.synonyms do |synonym|
+  = link_to_if can?(:read, synonym), synonym.name, synonym

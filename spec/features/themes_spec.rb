@@ -108,7 +108,7 @@ RSpec.describe "themes for words" do
 
       fill_in "#{klass.model_name.singular}[name]", with: "Neuer Name"
       find(".cm-editor").click
-      page.driver.browser.keyboard.type "Template <script>document.write('hello world')</script>"
+      page.driver.browser.keyboard.type "JavaScriptTemplate <script>document.write('hello world')</script>"
 
       expect do
         click_on t("helpers.submit.create")
@@ -117,12 +117,13 @@ RSpec.describe "themes for words" do
       new_theme = klass.last
       expect(new_theme.name).to eq "Neuer Name"
       expect(new_theme.word_type).to eq "noun"
+      new_theme.update!(template: "JavaScriptTemplate <script>document.write('hello world')</script>")
+      expect(new_theme.template).to eq "JavaScriptTemplate <script>document.write('hello world')</script>"
 
       new_settings = create(:word_view_setting, theme_noun: new_theme)
-      admin.update!(word_view_setting: new_settings)
 
-      visit noun_path(create(:noun))
-      expect(page).to have_content "Template"
+      visit noun_path(create(:noun), word_view_setting_id: new_settings.id)
+      expect(page).to have_content "JavaScriptTemplate"
       expect(page).not_to have_content "hello world"
     end
   end

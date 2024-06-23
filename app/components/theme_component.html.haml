@@ -1,1 +1,8 @@
 = liquid_template
+
+- if helpers.can?(:edit, word) && !preview
+  .flex.flex-col.gap-12.mt-12
+    = render 'shared/versions', model: word
+
+    .pagination-with-actions
+      = link_to t('actions.edit'), [:edit, word], data: { turbo_frame: '_top' }, class: 'button primary'

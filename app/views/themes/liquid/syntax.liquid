@@ -1,0 +1,38 @@
+{% box Wortbildung %}
+  {% box_grid %}
+    {% if syllables != blank %}
+      <div>Sprechsilben</div>
+      <div>{{ syllables }}</div>
+    {% endif %}
+    {% if written_syllables != blank %}
+      <div>Sprechsilben</div>
+      <div>{{ written_syllables }}</div>
+    {% endif %}
+    <div>Modellwort</div>
+    <div>{{ prototype }}</div>
+    <div>Fremdwort</div>
+    <div>{{ foreign }}</div>
+    <div>Zusammensetzung</div>
+    <div>{{ compound }}</div>
+    {% if prefix != blank %}
+      <div>Vorsilbe</div>
+      <div>{{ prefix }}</div>
+    {% endif %}
+    {% if postfix != blank %}
+      <div>Endung</div>
+      <div>{{ postfix }}</div>
+    {% endif %}
+    {% if strategies_separated != blank %}
+      <div>Strategien</div>
+      <div>{{ strategies_separated }}</div>
+    {% endif %}
+    {% if phenomenons_separated != blank %}
+      <div>Phänomene</div>
+      <div>{{ phenomenons_separated }}</div>
+    {% endif %}
+    {% if compound_entities_separated != blank %}
+      <div>Bausteine</div>
+      <div>{{ compound_entities_separated }}</div>
+    {% endif %}
+  {% endbox_grid %}
+{% endbox %}

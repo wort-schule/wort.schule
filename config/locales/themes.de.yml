@@ -29,8 +29,26 @@ de:
       written_syllables_html: Schreibsilben
       topics_html: Themen
       hierarchies_html: Kategorien
+      hierarchy_breadcrumbs_html: Kategorien als verlinkte Liste
       synonyms_html: Synonyme
       rimes_html: Reimwörter
+      compound_html: Zusammensetzung, <code>Ja</code> oder <code>Nein</code>
+      compound_entities_separated_html: Bausteine als verlinkte Liste
+      example_sentences_box_html: Eine Box mit allen Beispielsätzen und eventuell dazugehörigen Audiodateien
+      foreign_html: Fremdwort, <code>Ja</code> oder <code>Nein</code>
+      header_html: Box mit allgemeinen Informationen, Symbolen und Bild
+      keywords_separated_html: Stichwörter als verlinkte Liste
+      lists_box_html: Box mit allen Wortlisten, die dieses Wort enthalten. Erlaubt das Wort auf eigene Wortlisten zu setzen.
+      opposites_separated_html: Gegenteile als verlinkte Liste
+      other_meanings_box_html: Box mit verlinkter Liste schreibgleicher Wörter mit anderer Bedeutung
+      phenomenons_separated_html: Phänomene als verlinkte Liste
+      postfix_html: Endung
+      prefix_html: Vorsilbe
+      prototype_html: Modellwort, <code>Ja</code> oder <code>Nein</code>
+      rimes_separated_html: Reimwörter als verlinkte Liste
+      strategies_separated_html: Strategien als verlinkte Liste
+      synonyms_separated_html: Synonyme als verlinkte Liste
+      topics_separated_html: Themen als verlinkte Liste
 
       # Shared across adjectives and function words
       name_html: Grundform
@@ -54,6 +72,11 @@ de:
       case_3_plural_article_html: Artikel des 3. Falls Plural, <code>den</code>
       case_4_plural_html: Form des 4. Falls, Plural, z.B. <code>Häuser</code>
       case_4_plural_article_html: Artikel des 4. Falls Plural, <code>die</code>
+      genus_feminine_html: Form (Feminimum)
+      genus_masculine_html: Form (Maskulinum)
+      genus_neuter_html: Form (Neutrum)
+      pluraletantum_html: Pluralwort, <code>Ja</code> oder <code>Nein</code>
+      singularetantum_html: Singularwort, <code>Ja</code> oder <code>Nein</code>
 
       # Verbs
       infinitive_html: Grundform des Verbes
@@ -75,6 +98,8 @@ de:
       past_plural_1_html: Präteritum Plural, 1. Person
       past_plural_2_html: Präteritum Plural, 2. Person
       past_plural_3_html: Präteritum Plural, 3. Person
+      strong_html: Starkes Verb, <code>Ja</code> oder <code>Nein</code>
+      subjectless_html: Subjektloses Verb, <code>Ja</code> oder <code>Nein</code>
 
       # Adjectives
       comparative_html: Komparativform
