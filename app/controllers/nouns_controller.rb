@@ -31,7 +31,7 @@ class NounsController < PublicController
   def show
     @noun.hit!(session, request.user_agent)
 
-    render ThemeComponent.new(word: @noun, theme: current_word_view_setting.theme_noun) if current_word_view_setting&.theme_noun.present?
+    render ThemeComponent.new(word: @noun, theme: current_word_view_setting.theme_noun)
   end
 
   def new

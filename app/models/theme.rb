@@ -15,6 +15,7 @@ class Theme < ApplicationRecord
   validates :word_type, presence: true
 
   def self.default_template(word_type:)
-    File.read(Rails.root.join("app/views/themes/default_#{word_type}.liquid"))
+    erb = File.read(Rails.root.join("app/views/themes/default_#{word_type}.liquid"))
+    ERB.new(erb).result
   end
 end

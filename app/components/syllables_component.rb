@@ -16,6 +16,10 @@ class SyllablesComponent < ViewComponent::Base
     end
   end
 
+  def render?
+    syllables.compact_blank.present?
+  end
+
   private
 
   def syllable_arc

@@ -1,0 +1,2 @@
+= separate word.topics do |topic|
+  = link_to_if can?(:read, topic), topic.name, topic

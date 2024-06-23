@@ -1,0 +1,2 @@
+= separate word.compound_entities do |compound_entity|
+  = link_to_if can?(:read, compound_entity.part), compound_entity.part.name, compound_entity.part

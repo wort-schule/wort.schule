@@ -1,0 +1,22 @@
+{% if synonyms != blank || opposites != blank || keywords != blank || rimes != blank %}
+  {% box Wortbeziehungen %}
+    {% box_grid %}
+      {% if synonyms_separated != blank %}
+        <div>Synonyme</div>
+        <div>{{ synonyms_separated }}</div>
+      {% endif %}
+      {% if opposites_separated != blank %}
+        <div>Gegenteile</div>
+        <div>{{ opposites_separated }}</div>
+      {% endif %}
+      {% if keywords_separated != blank %}
+        <div>Stichwörter</div>
+        <div>{{ keywords_separated }}</div>
+      {% endif %}
+      {% if rimes_separated != blank %}
+        <div>Reimwörter</div>
+        <div>{{ rimes_separated }}</div>
+      {% endif %}
+    {% endbox_grid %}
+  {% endbox %}
+{% endif %}

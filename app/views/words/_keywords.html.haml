@@ -1,0 +1,2 @@
+= separate word.keywords do |keyword|
+  = link_to_if can?(:read, keyword), keyword.name, keyword

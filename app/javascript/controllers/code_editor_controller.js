@@ -9,6 +9,7 @@ import { defaultKeymap } from "@codemirror/commands"
 // Connects to data-controller="code-editor"
 export default class extends Controller {
   static targets = ["input", "wordType"]
+  static values = { wordType: String }
 
   connect() {
     const language = new Compartment
@@ -36,7 +37,7 @@ export default class extends Controller {
   }
 
   setTemplate() {
-    const selectedWordType = this.wordTypeTarget.selectedOptions[0].value
+    const selectedWordType = this.hasWordTypeTarget ? this.wordTypeTarget.selectedOptions[0].value : this.wordTypeValue
     const template = window.defaultTemplates[selectedWordType]
 
     const transaction = this.view.state.update({changes: {from: 0, to: this.view.state.doc.length, insert: template}})
