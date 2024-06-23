@@ -11,7 +11,7 @@
     {% endbox_grid %}
   {% endbox %}
 
-  <%= erb Rails.root.join('app/views/themes/liquid/meaning.liquid') %>
+  <%= ERB.new(File.read(Rails.root.join('app/views/themes/liquid/meaning.liquid'))).result.html_safe %>
 
   {% if case_1_singular != blank || case_1_plural != blank || case_2_singular != blank || case_2_plural != blank || case_3_singular != blank || case_3_plural != blank || case_4_singular != blank || case_4_plural != blank %}
     {% box Fälle / Kasus %}
@@ -95,9 +95,9 @@
     {% endbox %}
   {% endif %}
 
-  <%= erb Rails.root.join('app/views/themes/liquid/syntax.liquid') %>
+  <%= ERB.new(File.read(Rails.root.join('app/views/themes/liquid/syntax.liquid'))).result.html_safe %>
   {{ lists_box }}
   {{ example_sentences_box }}
   {{ other_meanings_box }}
-  <%= erb Rails.root.join('app/views/themes/liquid/relations.liquid') %>
+  <%= ERB.new(File.read(Rails.root.join('app/views/themes/liquid/relations.liquid'))).result.html_safe %>
 </div>
