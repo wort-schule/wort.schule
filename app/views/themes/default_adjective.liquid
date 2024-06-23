@@ -12,10 +12,10 @@
     {% endbox_grid %}
   {% endbox %}
 
-  <%= erb Rails.root.join('app/views/themes/liquid/meaning.liquid') %>
-  <%= erb Rails.root.join('app/views/themes/liquid/syntax.liquid') %>
+  <%= ERB.new(File.read(Rails.root.join('app/views/themes/liquid/meaning.liquid'))).result %>
+  <%= ERB.new(File.read(Rails.root.join('app/views/themes/liquid/syntax.liquid'))).result %>
   {{ lists_box }}
   {{ example_sentences_box }}
   {{ other_meanings_box }}
-  <%= erb Rails.root.join('app/views/themes/liquid/relations.liquid') %>
+  <%= ERB.new(File.read(Rails.root.join('app/views/themes/liquid/relations.liquid'))).result %>
 </div>
