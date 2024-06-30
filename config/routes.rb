@@ -91,6 +91,7 @@ Rails.application.routes.draw do
     post :list_add_word, to: "lists#add_word"
     resources :flashcards, only: :index
     resources :word_view_settings
+    resources :keywords, only: :index
 
     # User's own routes
     resource :profile, only: %i[show edit update] do

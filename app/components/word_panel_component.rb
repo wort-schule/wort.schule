@@ -4,6 +4,7 @@ class WordPanelComponent < ViewComponent::Base
   include ComponentsHelper
 
   renders_one :name
+  renders_one :description
 
   attr_reader :word, :menu
 

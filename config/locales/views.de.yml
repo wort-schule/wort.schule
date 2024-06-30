@@ -334,3 +334,10 @@ de:
   homes:
     show:
       advanced_search: Erweiterte Suche
+
+  keywords:
+    index:
+      title: Stichwörter
+      words_count:
+        one: '%{count} Wort'
+        other: '%{count} Wörter'
