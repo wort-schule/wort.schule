@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HierarchiesController < ApplicationController
+class HierarchiesController < PublicController
   load_and_authorize_resource
 
   def index
@@ -44,11 +44,17 @@ class HierarchiesController < ApplicationController
     redirect_to hierarchies_url, notice
   end
 
+  def remove_image
+    @hierarchy.image.purge if @hierarchy.image.attached?
+
+    redirect_to @hierarchy
+  end
+
   private
 
   def hierarchy_params
     params.require(:hierarchy).permit(
-      :name, :top_hierarchy_id
+      :name, :top_hierarchy_id, :image
     )
   end
 end

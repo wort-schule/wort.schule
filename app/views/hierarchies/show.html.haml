@@ -1,16 +1,38 @@
-= title_with_actions @hierarchy.name
+.mb-4= link_to t('.back'), hierarchies_path
 
-= two_column_card Hierarchy.model_name.human, "", first: true do
-  = box padding: false do
-    = box_description_list do |list|
+= box padding: false, class: 'h-full' do
+  .flex.justify-between.h-full
+    .px-4.py-5.sm:px-6
+      .flex.flex-wrap= hierarchy_breadcrumbs @hierarchy.parent
+      .text-xl.font-bold= @hierarchy.name
 
-      = render(list.add(Hierarchy.human_attribute_name(:name))) do
-        = @hierarchy.name
-    
-      = render(list.add(Hierarchy.human_attribute_name(:parent))) do
-        .flex.flex-wrap= hierarchy_breadcrumbs @hierarchy.parent
+    .p-1.pr-4.flex.items-center.object-cover
+      - if @hierarchy.image.attached?
+        .flex.flex-col
+          = image_tag @hierarchy.image.variant(:thumb), class: 'w-24 h-full object-cover'
+          - if can? :remove_image, @hierarchy
+            = button_to t('actions.delete'), remove_image_hierarchy_path(@hierarchy), method: :delete
+      - else
+        .w-24.h-24
 
-= render 'words/usages'
+= turbo_frame_tag :children do
+  - if @hierarchy.children.present?
+    %h1= t '.children.title'
+    .grid.my-6.gap-4.grid-cols-1.lg:grid-cols-2.xl:grid-cols-3
+      = render @hierarchy.children.page(params[:page])
 
-.pagination-with-actions
-  = link_to t('actions.edit'), edit_hierarchy_path(@hierarchy), class: 'button primary'
+    .pagination-with-actions
+      = paginate @hierarchy.children.page(params[:page])
+
+= turbo_frame_tag :words do
+  %h1= t '.words.title'
+  .grid.my-6.gap-4.grid-cols-1.lg:grid-cols-2.xl:grid-cols-3
+    - @hierarchy.words.each do |word|
+      = render WordPanelComponent.new(word:)
+
+  .pagination-with-actions
+    = paginate @words
+
+- if can? :edit, @hierarchy
+  .pagination-with-actions.mt-4
+    = link_to t('actions.edit'), edit_hierarchy_path(@hierarchy), class: 'button primary'

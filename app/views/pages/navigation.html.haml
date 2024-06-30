@@ -7,8 +7,9 @@
   = navigation_link false, t('verbs.index.new'), new_verb_path if can?(:create, Verb)
   = navigation_link false, t('adjectives.index.new'), new_adjective_path if can?(:create, Adjective)
   = navigation_link false, Keyword.model_name.human(count: 2), keywords_path
+  = navigation_link false, Hierarchy.model_name.human(count: 2), hierarchies_path
 
-  - if [FunctionWord, Topic, Hierarchy, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemreduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
+  - if [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemreduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
     .text-gray-300.hover:bg-primary-hover.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
       .relative(data-controller="dropdown reveal")
         .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
@@ -21,7 +22,6 @@
           .md:bg-primary-hover.md:shadow.rounded-md.md:border.md:border-primary-hover.overflow-hidden
             = dropdown_link FunctionWord
             = dropdown_link Topic
-            = dropdown_link Hierarchy
             = dropdown_link Prefix
             = dropdown_link Postfix
             = dropdown_link Phenomenon

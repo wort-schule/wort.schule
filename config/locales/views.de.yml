@@ -138,10 +138,20 @@ de:
   hierarchies:
     index:
       new: Neue Kategorie
+    show:
+      back: '← Zurück zu allen Kategorien'
+      children:
+        title: Unterkategorien
+      words:
+        title: Wörter
     new:
       title: Neue Kategorie
     edit:
       title: Kategorie bearbeiten
+    hierarchy:
+      words_count:
+        one: "%{count} Wort"
+        other: "%{count} Wörter"
   prefixes:
     index:
       new: Neue Vorsilbe

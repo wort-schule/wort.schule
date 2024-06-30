@@ -144,6 +144,7 @@ de:
       hierarchy:
         name: Bezeichnung
         parent: Übergeordnete Kategorie
+        image: Bild
       prefix:
         name: Bezeichnung
         prefix_type: Typ

@@ -73,7 +73,9 @@ Rails.application.routes.draw do
     resources :sources
     resources :function_words, only: %i[index new create]
     resources :topics
-    resources :hierarchies
+    resources :hierarchies do
+      delete :remove_image, on: :member
+    end
     resources :prefixes
     resources :postfixes
     resources :phenomenons
