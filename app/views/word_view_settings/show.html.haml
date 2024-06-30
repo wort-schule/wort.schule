@@ -54,6 +54,9 @@
       = render(list.add(WordViewSetting.human_attribute_name(:genus_wording), "", hide_if_blank: false)) do
         = Genus.label_all(@word_view_setting.genus_wording)
 
+      = render(list.add(WordViewSetting.human_attribute_name(:numerus_wording), "", hide_if_blank: false)) do
+        = Numerus.label_all(@word_view_setting.numerus_wording)
+
       = render(list.add(WordViewSetting.human_attribute_name(:visibility))) do
         = @word_view_setting.visibility_text
 

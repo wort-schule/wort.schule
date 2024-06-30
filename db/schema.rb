@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_16_152222) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_30_150641) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -398,6 +398,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_152222) do
     t.boolean "show_gender_symbols", default: true, null: false
     t.string "word_type_wording", default: "default", null: false
     t.string "genus_wording", default: "default", null: false
+    t.string "numerus_wording", default: "default", null: false
     t.index ["owner_id"], name: "index_word_view_settings_on_owner_id"
     t.index ["theme_adjective_id"], name: "index_word_view_settings_on_theme_adjective_id"
     t.index ["theme_function_word_id"], name: "index_word_view_settings_on_theme_function_word_id"

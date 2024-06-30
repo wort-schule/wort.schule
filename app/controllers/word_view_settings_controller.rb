@@ -63,7 +63,8 @@ class WordViewSettingsController < ApplicationController
       :show_fresch_symbols,
       :show_gender_symbols,
       :word_type_wording,
-      :genus_wording
+      :genus_wording,
+      :numerus_wording
     )
   end
 end
