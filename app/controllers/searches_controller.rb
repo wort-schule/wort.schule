@@ -46,7 +46,7 @@ class SearchesController < PublicController
   end
 
   def permitted_filters
-    always_permitted = %i[filter_type filter_home]
+    always_permitted = %i[filter_type filter_home filter_syllables_empty]
     advanced_filters = %i[
       filter_wordstarts
       filter_wordends
