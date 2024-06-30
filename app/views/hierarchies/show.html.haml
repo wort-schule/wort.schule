@@ -18,5 +18,6 @@
 
 = render 'words/usages'
 
-.pagination-with-actions
-  = link_to t('actions.edit'), edit_hierarchy_path(@hierarchy), class: 'button primary'
+- if can? :edit, @hierarchy
+  .pagination-with-actions
+    = link_to t('actions.edit'), edit_hierarchy_path(@hierarchy), class: 'button primary'

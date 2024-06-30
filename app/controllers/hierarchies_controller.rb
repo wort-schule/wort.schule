@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HierarchiesController < ApplicationController
+class HierarchiesController < PublicController
   load_and_authorize_resource
 
   def index
