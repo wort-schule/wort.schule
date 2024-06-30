@@ -1,5 +1,5 @@
 = box padding: false do
-  = simple_form_for @function_word do |f|
+  = simple_form_for @function_word, html: {'data-turbo': false} do |f|
     = box_content do
       = f.input :name, autofocus: true, label: Word.human_attribute_name(:name)
       = f.input :function_type, collection: FunctionWord.function_types_collection, include_blank: false

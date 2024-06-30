@@ -1,4 +1,4 @@
-= simple_form_for @adjective, html: {data: {controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper'}} do |f|
+= simple_form_for @adjective, html: {data: {controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper', turbo: false}} do |f|
   = two_column_card t('words.show.adjective.title'), t('words.show.adjective.description'), first: true do
     = box padding: false do
       = box_content do
