@@ -53,15 +53,4 @@ de:
       all:
         one: 'Ergebnis (%{count})'
         other: 'Alle Ergebnisse (%{count})'
-      nouns:
-        one: 'Substantiv (%{count})'
-        other: 'Substantive (%{count})'
-      verbs:
-        one: 'Verb (%{count})'
-        other: 'Verben (%{count})'
-      adjectives:
-        one: 'Adjektiv (%{count})'
-        other: 'Adjektive (%{count})'
-      function_words:
-        one: 'Funktionswort (%{count})'
-        other: 'Funktionswörter (%{count})'
+      word_type: '%{word_type} (%{count})'

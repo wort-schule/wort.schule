@@ -8,4 +8,4 @@
     .py-2.flex.items-baseline.font-bold
       = render HighlightedSearchResultComponent.new(result: word, query: params.dig(:filterrific, :filter_home))
 
-  .uppercase.text-xs.py-2= word.model_name.human
+  .uppercase.text-xs.py-2= word_type_wording_for(word.class)

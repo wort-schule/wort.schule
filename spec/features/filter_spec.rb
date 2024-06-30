@@ -80,7 +80,7 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abbauen"
       expect(page).to have_content "abstrakt"
 
-      find(:label, text: t("filter.results.nouns.other", count: 1)).click
+      find(:label, text: t("filter.results.word_type", word_type: "Nomen", count: 1)).click
       find_button(t("filter.apply"), visible: false).trigger("click")
 
       expect(page).not_to have_content "abbauen"
