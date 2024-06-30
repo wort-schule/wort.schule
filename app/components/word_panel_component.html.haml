@@ -17,7 +17,7 @@
           .w-24.h-24
 
 - unless menu
-  = link_to word, data: { turbo_frame: '_top' }, id: dom_id(word) do
+  = link_to url, data: { turbo_frame: '_top' }, id: dom_id(word) do
     = box_content
 - else
   = box_content

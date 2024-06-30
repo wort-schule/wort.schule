@@ -341,3 +341,9 @@ de:
       words_count:
         one: '%{count} Wort'
         other: '%{count} Wörter'
+    show:
+      back: '← Zurück zu allen Stichwörtern'
+      words:
+        title: Wörter
+      related_keywords:
+        title: Verwandte Stichwörter
