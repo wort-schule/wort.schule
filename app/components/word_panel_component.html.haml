@@ -8,7 +8,7 @@
           - else
             = content
             .text-xl.font-bold= word.name
-        .text-xs.font-light.mt-3= word.meaning
+        .text-xs.font-light.mt-3= description? ? description : word.meaning
 
       .p-1.pr-4.flex.items-center.object-cover
         - if word.image.attached?
@@ -17,7 +17,7 @@
           .w-24.h-24
 
 - unless menu
-  = link_to word, data: { turbo_frame: '_top' }, id: dom_id(word) do
+  = link_to url, data: { turbo_frame: '_top' }, id: dom_id(word) do
     = box_content
 - else
   = box_content

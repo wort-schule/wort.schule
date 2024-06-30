@@ -67,6 +67,9 @@ de:
       word_view_setting:
         one: Ansichtseinstellung
         other: Ansichtseinstellungen
+      keyword:
+        one: Stichwort
+        other: Stichwörter
 
     attributes:
       user:

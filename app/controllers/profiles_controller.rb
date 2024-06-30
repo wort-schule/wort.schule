@@ -14,6 +14,8 @@ class ProfilesController < ApplicationController
 
   def update
     if @user.update(user_params)
+      session[:word_view_setting_id] = nil if @user.word_view_setting_id_previously_changed?
+
       redirect_to profile_path
     else
       render :edit, status: :unprocessable_entity

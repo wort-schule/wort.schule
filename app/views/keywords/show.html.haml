@@ -1,0 +1,24 @@
+.mb-4= link_to t('.back'), keywords_path
+
+= render WordPanelComponent.new(word: @keyword, menu: true)
+
+= turbo_frame_tag :related_keywords do
+  - if @related_keywords.present?
+    %h1= t '.related_keywords.title'
+    .grid.my-6.gap-4.grid-cols-1.lg:grid-cols-2.xl:grid-cols-3
+      - @related_keywords.each do |word|
+        = render WordPanelComponent.new(word:, url: keyword_path(word.slug)) do |component|
+          - component.with_description do
+            = t('keywords.index.words_count', count: Keyword.words_count(word.id))
+
+    .pagination-with-actions
+      = paginate @related_keywords
+
+= turbo_frame_tag :words do
+  %h1= t '.words.title'
+  .grid.my-6.gap-4.grid-cols-1.lg:grid-cols-2.xl:grid-cols-3
+    - @words.each do |word|
+      = render WordPanelComponent.new(word:)
+
+  .pagination-with-actions
+    = paginate @words

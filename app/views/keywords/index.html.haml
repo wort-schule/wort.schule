@@ -1,0 +1,10 @@
+= turbo_frame_tag :keywords do
+  %h1= t '.title'
+  .grid.my-6.gap-4.grid-cols-1.lg:grid-cols-2.xl:grid-cols-3
+    - @keywords.each do |keyword|
+      = render WordPanelComponent.new(word: keyword, url: keyword_path(keyword.slug)) do |component|
+        - component.with_description do
+          = t('keywords.index.words_count', count: Keyword.words_count(keyword.id))
+
+  .pagination-with-actions
+    = paginate @keywords
