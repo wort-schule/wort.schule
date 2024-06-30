@@ -14,6 +14,7 @@
         .flex.flex-wrap
           - if @hierarchy.image.attached?
             = image_tag @hierarchy.image
+            = button_to t('actions.delete'), remove_image_hierarchy_path(@hierarchy), method: :delete
 
 = render 'words/usages'
 

@@ -44,6 +44,12 @@ class HierarchiesController < ApplicationController
     redirect_to hierarchies_url, notice
   end
 
+  def remove_image
+    @hierarchy.image.purge if @hierarchy.image.attached?
+
+    redirect_to @hierarchy
+  end
+
   private
 
   def hierarchy_params
