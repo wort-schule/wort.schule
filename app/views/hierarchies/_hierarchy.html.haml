@@ -1,3 +1,13 @@
 = link_if(can?(:show, hierarchy), hierarchy, id: dom_id(hierarchy)) do
-  = box class: 'h-full' do
-    = hierarchy.name
+  = box padding: false, class: 'h-full' do
+    .flex.justify-between.h-full
+      .px-4.py-5.sm:px-6
+        .flex.items-baseline.gap-1
+          .text-xl.font-bold= hierarchy.name
+        .text-xs.font-light.mt-3= t('.words_count', count: hierarchy.words.count)
+
+      .p-1.pr-4.flex.items-center.object-cover
+        - if hierarchy.image.attached?
+          = image_tag hierarchy.image.variant(:thumb), class: 'w-24 h-full object-cover'
+        - else
+          .w-24.h-24

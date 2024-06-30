@@ -142,6 +142,10 @@ de:
       title: Neue Kategorie
     edit:
       title: Kategorie bearbeiten
+    hierarchy:
+      words_count:
+        one: "%{count} Wort"
+        other: "%{count} Wörter"
   prefixes:
     index:
       new: Neue Vorsilbe
