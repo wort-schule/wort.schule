@@ -48,7 +48,7 @@ class HierarchiesController < ApplicationController
 
   def hierarchy_params
     params.require(:hierarchy).permit(
-      :name, :top_hierarchy_id
+      :name, :top_hierarchy_id, :image
     )
   end
 end

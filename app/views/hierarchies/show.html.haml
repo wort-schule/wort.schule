@@ -10,6 +10,11 @@
       = render(list.add(Hierarchy.human_attribute_name(:parent))) do
         .flex.flex-wrap= hierarchy_breadcrumbs @hierarchy.parent
 
+      = render(list.add(Hierarchy.human_attribute_name(:image))) do
+        .flex.flex-wrap
+          - if @hierarchy.image.attached?
+            = image_tag @hierarchy.image
+
 = render 'words/usages'
 
 .pagination-with-actions

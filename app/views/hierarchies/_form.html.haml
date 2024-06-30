@@ -2,6 +2,7 @@
   = simple_form_for @hierarchy do |f|
     = box_content do
       = f.input :name, autofocus: true
+      = f.input :image
       = f.association :parent
 
     = box_footer do
