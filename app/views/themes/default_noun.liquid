@@ -6,8 +6,8 @@
       {% if genus_neuter != blank %}<div>Form (Neutrum)</div><div>{{ genus_neuter }}</div>{% endif %}
       {% if genus_masculine != blank %}<div>Form (Maskulinum)</div><div>{{ genus_masculine }}</div>{% endif %}
       {% if genus_feminine != blank %}<div>Form (Femininum)</div><div>{{ genus_feminine }}</div>{% endif %}
-      <div>Singularwort</div><div>{{ singularetantum }}</div>
-      <div>Pluralwort</div><div>{{ pluraletantum }}</div>
+      <div>{{ labels.singularetantum }}</div><div>{{ singularetantum }}</div>
+      <div>{{ labels.pluraletantum }}</div><div>{{ pluraletantum }}</div>
     {% endbox_grid %}
   {% endbox %}
 
@@ -26,13 +26,13 @@
           <div class="flex gap-1 font-bold">
             {{ case_1_singular_article }} {{ case_1_singular }}
           </div>
-          <div class="text-sm">Singular</div>
+          <div class="text-sm">{{ labels.singular }}</div>
         </div>
         <div>
           <div class="flex gap-1 font-bold">
             {{ case_1_plural_article }} {{ case_1_plural }}
           </div>
-          <div class="text-sm">Plural</div>
+          <div class="text-sm">{{ labels.plural }}</div>
         </div>
 
         <div class="col-span-2 lg:col-span-1">
@@ -45,13 +45,13 @@
           <div class="flex gap-1 font-bold">
             {{ case_2_singular_article }} {{ case_2_singular }}
           </div>
-          <div class="text-sm">Singular</div>
+          <div class="text-sm">{{ labels.singular }}</div>
         </div>
         <div>
           <div class="flex gap-1 font-bold">
             {{ case_2_plural_article }} {{ case_2_plural }}
           </div>
-          <div class="text-sm">Plural</div>
+          <div class="text-sm">{{ labels.plural }}</div>
         </div>
 
         <div class="col-span-2 lg:col-span-1">
@@ -64,13 +64,13 @@
           <div class="flex gap-1 font-bold">
             {{ case_3_singular_article }} {{ case_3_singular }}
           </div>
-          <div class="text-sm">Singular</div>
+          <div class="text-sm">{{ labels.singular }}</div>
         </div>
         <div>
           <div class="flex gap-1 font-bold">
             {{ case_3_plural_article }} {{ case_3_plural }}
           </div>
-          <div class="text-sm">Plural</div>
+          <div class="text-sm">{{ labels.plural }}</div>
         </div>
 
         <div class="col-span-2 lg:col-span-1">
@@ -83,13 +83,13 @@
           <div class="flex gap-1 font-bold">
             {{ case_4_singular_article }} {{ case_4_singular }}
           </div>
-          <div class="text-sm">Singular</div>
+          <div class="text-sm">{{ labels.singular }}</div>
         </div>
         <div>
           <div class="flex gap-1 font-bold">
             {{ case_4_plural_article }} {{ case_4_plural }}
           </div>
-          <div class="text-sm">Plural</div>
+          <div class="text-sm">{{ labels.plural }}</div>
         </div>
       {% endbox_grid %}
     {% endbox %}

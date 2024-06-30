@@ -92,12 +92,14 @@ class ThemeVariables
       header: view_context&.controller&.render_to_string(partial: "nouns/header", locals: {noun: word, current_user: view_context&.current_user}),
       labels: {
         **shared_labels,
+        singularetantum: Numerus.singularetantum(view_context&.current_numerus_wording),
+        pluraletantum: Numerus.pluraletantum(view_context&.current_numerus_wording),
         case_1: I18n.t("theme.labels.case_1"),
         case_2: I18n.t("theme.labels.case_2"),
         case_3: I18n.t("theme.labels.case_3"),
         case_4: I18n.t("theme.labels.case_4"),
-        singular: I18n.t("theme.labels.singular"),
-        plural: I18n.t("theme.labels.plural")
+        singular: Numerus.singular(view_context&.current_numerus_wording),
+        plural: Numerus.plural(view_context&.current_numerus_wording)
       }
     }
   end
@@ -129,8 +131,8 @@ class ThemeVariables
       header: view_context&.controller&.render_to_string(partial: "verbs/header", locals: {verb: word, current_user: view_context&.current_user}),
       labels: {
         **shared_labels,
-        singular: I18n.t("theme.labels.singular"),
-        plural: I18n.t("theme.labels.plural"),
+        singular: Numerus.singular(view_context&.current_numerus_wording),
+        plural: Numerus.plural(view_context&.current_numerus_wording),
         singular_1_pronoun: Verb.human_attribute_name(:singular_1_pronoun),
         singular_2_pronoun: Verb.human_attribute_name(:singular_2_pronoun),
         singular_3_pronoun: Verb.human_attribute_name(:singular_3_pronoun),

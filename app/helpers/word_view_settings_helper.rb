@@ -37,4 +37,8 @@ module WordViewSettingsHelper
       klass.model_name.name
     )
   end
+
+  def current_numerus_wording
+    current_word_view_setting.numerus_wording
+  end
 end

@@ -17,11 +17,11 @@
         <div>Imperativ</div>
         <div>
           {{ imperative_singular }}
-          <div class="text-sm">Singular</div>
+          <div class="text-sm">{{ labels.singular }}</div>
         </div>
         <div>
           {{ imperative_plural }}
-          <div class="text-sm">Plural</div>
+          <div class="text-sm">{{ labels.plural }}</div>
         </div>
       {% endif %}
       {% if participle != blank || past_participle != blank %}
@@ -52,14 +52,14 @@
       {% box_grid 4 %}
         <div>
           <div>Präsens</div>
-          <div class="text-sm">Singular</div>
+          <div class="text-sm">{{ labels.singular }}</div>
         </div>
         <div>ich {{ present_singular_1 }}</div>
         <div>du {{ present_singular_2 }}</div>
         <div>er/sie/es {{ present_singular_3 }}</div>
         <div>
           <div>Präsens</div>
-          <div class="text-sm">Plural</div>
+          <div class="text-sm">{{ labels.plural }}</div>
         </div>
         <div>wir {{ present_plural_1 }}</div>
         <div>ihr {{ present_plural_2 }}</div>
@@ -67,14 +67,14 @@
 
         <div>
           <div>Präteritum</div>
-          <div class="text-sm">Singular</div>
+          <div class="text-sm">{{ labels.singular }}</div>
         </div>
         <div>ich {{ past_singular_1 }}</div>
         <div>du {{ past_singular_2 }}</div>
         <div>er/sie/es {{ past_singular_3 }}</div>
         <div>
           <div>Präteritum</div>
-          <div class="text-sm">Plural</div>
+          <div class="text-sm">{{ labels.plural }}</div>
         </div>
         <div>wir {{ past_plural_1 }}</div>
         <div>ihr {{ past_plural_2 }}</div>
