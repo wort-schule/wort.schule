@@ -30,4 +30,11 @@ module WordViewSettingsHelper
     session[:word_view_setting_id] = word_view_setting&.id
     current_user&.update(word_view_setting:)
   end
+
+  def word_type_wording_for(klass)
+    WordTypes.label(
+      current_word_view_setting.word_type_wording,
+      klass.model_name.name
+    )
+  end
 end
