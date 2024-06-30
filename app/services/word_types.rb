@@ -31,10 +31,10 @@ class WordTypes
     }
   ].freeze
 
-  def self.label(key, word_type)
+  def self.label(key, word_type, plural: false)
     NAMES
       .find { |names| names[:key] == key }
-      &.dig(:names, word_type, 0)
+      &.dig(:names, word_type, plural ? 1 : 0)
   end
 
   def self.keys

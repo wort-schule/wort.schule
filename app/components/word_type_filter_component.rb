@@ -3,12 +3,13 @@
 class WordTypeFilterComponent < ViewComponent::Base
   with_collection_parameter :word_type
 
-  attr_reader :word_type, :counts, :current_word_type
+  attr_reader :word_type, :counts, :current_word_type, :current_word_type_wording
 
-  def initialize(word_type:, counts:, current_word_type:)
+  def initialize(word_type:, counts:, current_word_type:, current_word_type_wording:)
     @word_type = word_type
     @counts = counts
     @current_word_type = current_word_type.to_s
+    @current_word_type_wording = current_word_type_wording
   end
 
   def label
@@ -16,7 +17,13 @@ class WordTypeFilterComponent < ViewComponent::Base
     when :all
       t("filter.results.all", count: formatted_count)
     else
-      t("filter.results.#{word_type.model_name.plural}", count: formatted_count)
+      word_type_label = WordTypes.label(
+        current_word_type_wording,
+        word_type.model_name.name,
+        plural: count != 1
+      )
+
+      t("filter.results.word_type", word_type: word_type_label, count: formatted_count)
     end
   end
 
