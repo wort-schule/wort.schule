@@ -1,4 +1,4 @@
-= link_if(can?(:show, hierarchy), hierarchy, id: dom_id(hierarchy)) do
+= link_if(can?(:show, hierarchy), hierarchy, id: dom_id(hierarchy), data: {turbo_frame: '_top'}) do
   = box padding: false, class: 'h-full' do
     .flex.justify-between.h-full
       .px-4.py-5.sm:px-6
