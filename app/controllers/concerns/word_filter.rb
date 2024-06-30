@@ -80,7 +80,8 @@ module WordFilter
         :filter_irregular_comparison,
         :filter_images,
         :filter_letter_count,
-        :filter_syllables_count
+        :filter_syllables_count,
+        :filter_syllables_empty
       ]
     )
 
@@ -168,6 +169,10 @@ module WordFilter
       return if query.blank?
 
       where("regexp_replace(words.syllables, '\s', '', 'g') != '' AND array_length(regexp_split_to_array(words.syllables, '-'), 1) = ?", query)
+    }
+
+    scope :filter_syllables_empty, lambda { |_query|
+      where("words.syllables": "")
     }
 
     scope :filter_cologne_phonetics, lambda { |query|
