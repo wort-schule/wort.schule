@@ -19,7 +19,7 @@ class KeywordsController < PublicController
   def show
     @keyword = Word.friendly.find(params[:id])
     @all_words = Word.where(id: Keyword.where(keyword_id: @keyword.id).pluck(:word_id))
-    @related_keywords = Word.where(id: Keyword.where(keyword_id: @all_words.pluck(:id)).pluck(:keyword_id)).page(params[:page])
+    @related_keywords = Word.where(id: Keyword.where(word_id: @all_words.pluck(:id)).pluck(:keyword_id)).page(params[:page])
     @words = @all_words.page(params[:page])
   end
 end
