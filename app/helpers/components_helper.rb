@@ -3,7 +3,7 @@
 module ComponentsHelper
   def title_with_actions(title, &block)
     content_tag :div, class: "flex flex-col md:flex-row md:justify-between items-start md:items-center title px-4 md:px-0 gap-4" do
-      concat content_tag :h1, title
+      concat content_tag :h1, title, class: "mt-0"
       concat content_tag :div, class: "flex flex-wrap justify-end gap-2", &block if block
     end
   end
