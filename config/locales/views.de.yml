@@ -290,6 +290,15 @@ de:
       new: Neue Wort-Ansichtseinstellung
     show:
       not_used_yet: Diese Ansichtseinstellung wird in keiner Lerngruppe verwendet.
+      session_set_link:
+        title: Teilbarer Link
+        explanation_html: |
+          <p>Der folgende Link kann weitergegeben werden um diese Ansichtseinstellung zu verwenden.</p>
+          <p>Wird der Link geöffnet, wird für diese Browser-Session diese Ansichtseinstellung verwendet. Ist die Benutzer*in angemeldet, wird im Profil diese Ansichtseinstellung übernommen und permanent gespeichert. Angemeldete Benutzer*innen können im Profil jederzeit die Ansichtseinstellung ändern.<p>
+          <p>Dieser Link kann als Lesezeichen gespeichert werden um sicherzustellen, dass bei Aufruf des Lesezeichens die gewünschte Ansichtseinstellung verwendet wird.</p>
+        open_link: Link öffnen
+        copy: In Zwischenablage kopieren
+        copied: Kopiert!
     new:
       title: Wort-Ansichtseinstellung erstellen
     edit:
