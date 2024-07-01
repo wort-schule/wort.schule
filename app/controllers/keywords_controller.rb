@@ -17,9 +17,21 @@ class KeywordsController < PublicController
   end
 
   def show
-    @keyword = Word.friendly.find(params[:id])
-    @all_words = Word.where(id: Keyword.where(keyword_id: @keyword.id).pluck(:word_id))
-    @related_keywords = Word.where(id: Keyword.where(word_id: @all_words.pluck(:id)).pluck(:keyword_id)).page(params[:page])
+    @keyword_ids = (params[:keyword_ids].presence || "").split(",").uniq
+    @keywords = Word.where(id: @keyword_ids)
+    @all_words = Word.where(
+      id: Keyword
+      .select(:word_id)
+      .where(keyword_id: @keyword_ids)
+      .group(:word_id)
+      .having("count(word_id) = ?", @keyword_ids.count)
+    )
+    @related_keywords = Word.where(
+      id: Keyword
+      .where(word_id: @all_words.pluck(:id))
+      .where.not(keyword_id: @keyword_ids)
+      .pluck(:keyword_id)
+    ).page(params[:page])
     @words = @all_words.page(params[:page])
   end
 end

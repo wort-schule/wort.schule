@@ -353,6 +353,7 @@ de:
         other: '%{count} Wörter'
     show:
       back: '← Zurück zu allen Stichwörtern'
+      remove: Entfernen
       words:
         title: Wörter
       related_keywords:
