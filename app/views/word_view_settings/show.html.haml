@@ -60,6 +60,20 @@
       = render(list.add(WordViewSetting.human_attribute_name(:visibility))) do
         = @word_view_setting.visibility_text
 
+- if @word_view_setting.visibility.public?
+  = two_column_card t('.session_set_link.title'), "", first: false do
+    = box padding: true do
+      .flex.flex-col.gap-2
+        = t('.session_set_link.explanation_html')
+
+      - share_url = root_url(word_view_setting_id: @word_view_setting.id)
+      .my-4.flex.flex-col.gap-1(data-controller="clipboard"){ 'data-clipboard-success-content': t('.session_set_link.copied') }
+        %input.pre(type="text" name="share_url" readonly data-clipboard-target="source"){ value: share_url }
+        .flex.flex-wrap.gap-4.justify-between
+          = link_to t('.session_set_link.open_link'), share_url, target: '_blank'
+          %button.self-end(type="button" data-action="clipboard#copy" data-clipboard-target="button")
+            = t '.session_set_link.copy'
+
 = two_column_card LearningGroup.model_name.human(count: 2), "" do
   = box padding: false, class: 'striped' do
     - if @word_view_setting.learning_groups.empty?
