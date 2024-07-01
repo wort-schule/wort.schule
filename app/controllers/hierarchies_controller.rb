@@ -5,6 +5,8 @@ class HierarchiesController < PublicController
 
   def index
     @hierarchies = @hierarchies.order(:name).page(params[:page])
+    @show_children = ActiveRecord::Type::Boolean.new.cast(params[:show_children])
+    @hierarchies = @hierarchies.where(parent: nil) unless @show_children
   end
 
   def show

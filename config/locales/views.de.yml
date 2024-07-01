@@ -138,6 +138,8 @@ de:
   hierarchies:
     index:
       new: Neue Kategorie
+      show_children: Unterkategorien anzeigen
+      hide_children: Unterkategorien verstecken
     show:
       back: '← Zurück zu allen Kategorien'
       children:

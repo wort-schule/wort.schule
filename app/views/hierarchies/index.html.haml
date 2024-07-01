@@ -1,4 +1,8 @@
-= title_with_actions Hierarchy.model_name.human(count: 2)
+= title_with_actions Hierarchy.model_name.human(count: 2) do
+  - if @show_children
+    = link_to t('.hide_children'), url_for(show_children: false), class: 'button'
+  - else
+    = link_to t('.show_children'), url_for(show_children: true), class: 'button'
 
 = index_grid do
   = render @hierarchies
