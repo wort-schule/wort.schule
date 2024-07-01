@@ -25,8 +25,8 @@ class WordTypes
       names: {
         "Noun" => ["Namenwort", "Namenwörter"],
         "Verb" => ["Tu-Wort", "Tu-Wörter"],
-        "Adjective" => ["wie-Wort", "wie-Wörter"],
-        "FunctionWord" => ["Funktionswort", "Funktionswörter"]
+        "Adjective" => ["Wie-Wort", "Wie-Wörter"],
+        "FunctionWord" => ["kleines Wort", "kleine Wörter"]
       }
     }
   ].freeze
