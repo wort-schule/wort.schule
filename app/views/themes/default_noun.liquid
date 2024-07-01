@@ -13,7 +13,7 @@
 
   <%= ERB.new(File.read(Rails.root.join('app/views/themes/liquid/meaning.liquid'))).result.html_safe %>
 
-  {% if case_1_singular != blank || case_1_plural != blank || case_2_singular != blank || case_2_plural != blank || case_3_singular != blank || case_3_plural != blank || case_4_singular != blank || case_4_plural != blank %}
+  {% if case_1_singular != blank or case_1_plural != blank or case_2_singular != blank or case_2_plural != blank or case_3_singular != blank or case_3_plural != blank or case_4_singular != blank or case_4_plural != blank %}
     {% box Fälle / Kasus %}
       {% box_grid 3 %}
         <div class="col-span-2 lg:col-span-1">

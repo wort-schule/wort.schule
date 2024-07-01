@@ -13,7 +13,7 @@
 
   {% box Formen %}
     {% box_grid 3 %}
-      {% if imperative_singular != blank || imperative_plural != blank %}
+      {% if imperative_singular != blank or imperative_plural != blank %}
         <div>Imperativ</div>
         <div>
           {{ imperative_singular }}
@@ -24,7 +24,7 @@
           <div class="text-sm">{{ labels.plural }}</div>
         </div>
       {% endif %}
-      {% if participle != blank || past_participle != blank %}
+      {% if participle != blank or past_participle != blank %}
         <div>Partizip</div>
         <div>
           {{ participle }}
@@ -47,7 +47,7 @@
     {% endbox_grid %}
   {% endbox %}
 
-  {% if present_singular_1 != blank || present_plural_1 != blank || past_singular_1 != blank || past_plural_1 != blank || present_singular_2 != blank || present_plural_2 != blank || past_singular_2 != blank || past_plural_2 != blank || present_singular_3 != blank || present_plural_3 != blank || past_singular_3 != blank || past_plural_3 != blank %}
+  {% if present_singular_1 != blank or present_plural_1 != blank or past_singular_1 != blank or past_plural_1 != blank or present_singular_2 != blank or present_plural_2 != blank or past_singular_2 != blank or past_plural_2 != blank or present_singular_3 != blank or present_plural_3 != blank or past_singular_3 != blank or past_plural_3 != blank %}
     {% box Zeitformen %}
       {% box_grid 4 %}
         <div>
