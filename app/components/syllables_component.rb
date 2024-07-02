@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class SyllablesComponent < ViewComponent::Base
-  attr_reader :syllables, :word_view_setting
+  attr_reader :syllables, :word_prefix, :word, :word_view_setting
 
-  def initialize(text:, word_view_setting:)
+  def initialize(text:, word_prefix:, word:, word_view_setting:)
     @syllables = parse_syllables(text)
+    @word_prefix = word_prefix
+    @word = word
     @word_view_setting = word_view_setting
   end
 
@@ -14,10 +16,6 @@ class SyllablesComponent < ViewComponent::Base
 
       "#{arc}#{syllable}"
     end
-  end
-
-  def render?
-    syllables.compact_blank.present?
   end
 
   private
