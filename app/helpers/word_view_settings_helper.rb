@@ -41,4 +41,8 @@ module WordViewSettingsHelper
   def current_numerus_wording
     current_word_view_setting.numerus_wording
   end
+
+  def current_font
+    Fonts.by_key(current_word_view_setting.font)
+  end
 end

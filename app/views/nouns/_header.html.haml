@@ -1,4 +1,4 @@
-= render WordHeaderComponent.new(word: noun, word_font: current_user&.word_font) do |component|
+= render WordHeaderComponent.new(word: noun, word_font: current_font) do |component|
   - component.with_title do
     %h1.flex.items-baseline.gap-1.m-0
       - if noun.genus.present?

@@ -1,4 +1,4 @@
-= render WordHeaderComponent.new(word: adjective, word_font: current_user&.word_font) do |component|
+= render WordHeaderComponent.new(word: adjective, word_font: current_font) do |component|
   - component.with_title do
     %h1= adjective.name
 

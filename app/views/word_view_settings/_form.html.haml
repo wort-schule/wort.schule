@@ -2,7 +2,7 @@
   = simple_form_for @word_view_setting do |f|
     = box_content do
       = f.input :name, autofocus: true
-      = f.input :font, collection: Fonts.collection, include_blank: t('activerecord.attributes.word_view_setting.no_font')
+      = f.input :font, collection: Fonts.collection, include_blank: false
       = f.association :theme_noun, include_blank: t('themes.show.standard')
       = f.association :theme_verb, include_blank: t('themes.show.standard')
       = f.association :theme_adjective, include_blank: t('themes.show.standard')
