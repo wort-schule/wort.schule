@@ -35,8 +35,10 @@ de:
       example_sentences_box_html: Eine Box mit allen Beispielsätzen und eventuell dazugehörigen Audiodateien
       foreign_html: Fremdwort, <code>Ja</code> oder <code>Nein</code>
       header_html: Box mit allgemeinen Informationen, Symbolen und Bild
+      keywords_html: Stichwörter
       keywords_separated_html: Stichwörter als verlinkte Liste
       lists_box_html: Box mit allen Wortlisten, die dieses Wort enthalten. Erlaubt das Wort auf eigene Wortlisten zu setzen.
+      opposites_html: Gegenteile
       opposites_separated_html: Gegenteile als verlinkte Liste
       other_meanings_box_html: Box mit verlinkter Liste schreibgleicher Wörter mit anderer Bedeutung
       phenomenons_separated_html: Phänomene als verlinkte Liste
