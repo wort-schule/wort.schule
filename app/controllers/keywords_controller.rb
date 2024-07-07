@@ -41,6 +41,7 @@ class KeywordsController < PublicController
       SQL
       .order("keywords.count" => :desc, :name => :asc)
       .page(params[:page])
+      .per(12)
     @words = @all_words.page(params[:page])
   end
 end
