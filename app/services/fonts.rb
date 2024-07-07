@@ -114,7 +114,7 @@ class Fonts
   end
 
   def self.by_key(key)
-    AVAILABLE_FONTS.find { |font| font.key == key }
+    AVAILABLE_FONTS.find { |font| font.key == key } || default
   end
 
   def self.collection

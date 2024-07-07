@@ -14,6 +14,7 @@ class Ability
     can :read, Source, visible: true
     can :read, Keyword
     can :read, Hierarchy
+    can :read, WordViewSetting, visibility: :public
 
     if user.present?
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password word_view_setting_id], id: user.id

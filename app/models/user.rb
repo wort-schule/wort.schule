@@ -67,13 +67,6 @@ class User < ApplicationRecord
       &.learning_group
   end
 
-  def word_font
-    font = last_learning_group&.font
-    return if font.blank?
-
-    Fonts.by_key(font)
-  end
-
   private
 
   def setup_flashcards
