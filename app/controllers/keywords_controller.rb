@@ -31,7 +31,17 @@ class KeywordsController < PublicController
       .where(word_id: @all_words.pluck(:id))
       .where.not(keyword_id: @keyword_ids)
       .pluck(:keyword_id)
-    ).page(params[:page])
+    )
+      .joins(<<~SQL)
+        join (
+          select keyword_id, count(word_id)
+          from keywords k
+          group by keyword_id
+        ) keywords on keywords.keyword_id = words.id
+      SQL
+      .order("keywords.count" => :desc, :name => :asc)
+      .page(params[:page])
+      .per(12)
     @words = @all_words.page(params[:page])
   end
 end
