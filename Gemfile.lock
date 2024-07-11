@@ -197,7 +197,7 @@ GEM
       grpc (~> 1.59)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    good_job (3.29.5)
+    good_job (3.99.1)
       activejob (>= 6.0.0)
       activerecord (>= 6.0.0)
       concurrent-ruby (>= 1.0.2)
@@ -268,7 +268,7 @@ GEM
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
     io-console (0.7.2)
-    irb (1.13.2)
+    irb (1.14.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jbuilder (2.12.0)
@@ -315,7 +315,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
-    minitest (5.24.0)
+    minitest (5.24.1)
     msgpack (1.7.2)
     multi_json (1.15.0)
     mutex_m (0.2.0)
@@ -364,7 +364,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.0)
-    rack (3.1.4)
+    rack (3.1.7)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -571,7 +571,7 @@ DEPENDENCIES
   filterrific!
   foreman
   friendly_id
-  good_job
+  good_job (< 4)
   google-cloud-text_to_speech
   haml
   haml-rails
