@@ -9,4 +9,4 @@
 
 .pagination-with-actions
   = paginate @hierarchies
-  = link_to t('.new'), new_hierarchy_path, class: 'button primary'
+  = link_to t('.new'), new_hierarchy_path, class: 'button primary' if can? :create, Hierarchy
