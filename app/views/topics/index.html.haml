@@ -5,4 +5,4 @@
 
 .pagination-with-actions
   = paginate @topics
-  = link_to t('.new'), new_topic_path, class: 'button primary'
+  = link_to t('.new'), new_topic_path, class: 'button primary' if can? :create, Topic

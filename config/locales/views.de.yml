@@ -131,10 +131,18 @@ de:
   topics:
     index:
       new: Neues Thema
+    show:
+      back: '← Zurück zu allen Themen'
+      words:
+        title: Wörter
     new:
       title: Neues Thema
     edit:
       title: Thema bearbeiten
+    topic:
+      words_count:
+        one: "%{count} Wort"
+        other: "%{count} Wörter"
   hierarchies:
     index:
       new: Neue Kategorie

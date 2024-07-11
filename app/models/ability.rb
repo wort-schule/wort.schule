@@ -14,6 +14,7 @@ class Ability
     can :read, Source, visible: true
     can :read, Keyword
     can :read, Hierarchy
+    can :read, Topic
     can :read, WordViewSetting, visibility: :public
 
     if user.present?

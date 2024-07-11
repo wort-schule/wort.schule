@@ -72,7 +72,9 @@ Rails.application.routes.draw do
     resources :compounds, only: :index
     resources :sources
     resources :function_words, only: %i[index new create]
-    resources :topics
+    resources :topics do
+      delete :remove_image, on: :member
+    end
     resources :hierarchies do
       delete :remove_image, on: :member
     end

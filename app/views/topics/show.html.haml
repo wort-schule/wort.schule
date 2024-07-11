@@ -1,13 +1,28 @@
-= title_with_actions @topic.name
+.mb-4= link_to t('.back'), topics_path
 
-= two_column_card Topic.model_name.human, "", first: true do
-  = box padding: false do
-    = box_description_list do |list|
+= box padding: false, class: 'h-full' do
+  .flex.justify-between.h-full
+    .px-4.py-5.sm:px-6
+      .text-xl.font-bold= @topic.name
 
-      = render(list.add(Topic.human_attribute_name(:name))) do
-        = @topic.name
-    
-= render 'words/usages'
+    .p-1.pr-4.flex.items-center.object-cover
+      - if @topic.image.attached?
+        .flex.flex-col
+          = image_tag @topic.image.variant(:thumb), class: 'w-24 h-full object-cover'
+          - if can? :remove_image, @topic
+            = button_to t('actions.delete'), remove_image_topic_path(@topic), method: :delete
+      - else
+        .w-24.h-24
 
-.pagination-with-actions
-  = link_to t('actions.edit'), edit_topic_path(@topic), class: 'button primary'
+= turbo_frame_tag :words do
+  %h1= t '.words.title'
+  .grid.my-6.gap-4.grid-cols-1.lg:grid-cols-2.xl:grid-cols-3
+    - @words.each do |word|
+      = render WordPanelComponent.new(word:)
+
+  .pagination-with-actions
+    = paginate @words
+
+- if can? :edit, @topic
+  .pagination-with-actions.mt-4
+    = link_to t('actions.edit'), edit_topic_path(@topic), class: 'button primary'
