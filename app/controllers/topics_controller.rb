@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TopicsController < ApplicationController
+class TopicsController < PublicController
   load_and_authorize_resource
 
   def index
@@ -44,11 +44,17 @@ class TopicsController < ApplicationController
     redirect_to topics_url, notice
   end
 
+  def remove_image
+    @topic.image.purge if @topic.image.attached?
+
+    redirect_to @topic
+  end
+
   private
 
   def topic_params
     params.require(:topic).permit(
-      :name
+      :name, :image
     )
   end
 end
