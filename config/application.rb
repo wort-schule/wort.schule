@@ -44,6 +44,14 @@ module Wortschule
     config.default_app_namespace = "seite"
 
     config.active_job.queue_adapter = :good_job
+    config.good_job.enable_cron = true
+    config.good_job.cron = {
+      sessions_trim: {
+        cron: "every day",
+        class: "InvokeRakeTaskJob",
+        args: "db:sessions:trim"
+      }
+    }
 
     # Generated accounts use the following domain for their email address
     config.generated_account_domain = "user.wort.schule"

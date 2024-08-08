@@ -5,6 +5,7 @@ ruby "~> 3.3.1"
 
 gem "rails", "~> 7.1"
 gem "active_record_extended"
+gem "activerecord-session_store"
 gem "active_storage_svg_sanitizer"
 gem "bootsnap", require: false
 gem "cancancan"
