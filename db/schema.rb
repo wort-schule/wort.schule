@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_11_151210) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -289,6 +289,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_151210) do
     t.integer "rime_id"
     t.index ["rime_id", "word_id"], name: "index_rimes_on_rime_id_and_word_id", unique: true
     t.index ["word_id", "rime_id"], name: "index_rimes_on_word_id_and_rime_id", unique: true
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "sources", force: :cascade do |t|

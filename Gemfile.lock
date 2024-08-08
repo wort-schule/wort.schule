@@ -75,6 +75,13 @@ GEM
       activemodel (= 7.1.3.4)
       activesupport (= 7.1.3.4)
       timeout (>= 0.4.0)
+    activerecord-session_store (2.1.0)
+      actionpack (>= 6.1)
+      activerecord (>= 6.1)
+      cgi (>= 0.3.6)
+      multi_json (~> 1.11, >= 1.11.2)
+      rack (>= 2.0.8, < 4)
+      railties (>= 6.1)
     activestorage (7.1.3.4)
       actionpack (= 7.1.3.4)
       activejob (= 7.1.3.4)
@@ -120,6 +127,7 @@ GEM
     capybara-screenshot (1.0.26)
       capybara (>= 1.0, < 4)
       launchy
+    cgi (0.4.1)
     childprocess (5.0.0)
     clamped (1.0.1)
     cologne_phonetics (1.0.2)
@@ -553,6 +561,7 @@ PLATFORMS
 DEPENDENCIES
   active_record_extended
   active_storage_svg_sanitizer
+  activerecord-session_store
   better_errors
   binding_of_caller
   bootsnap
