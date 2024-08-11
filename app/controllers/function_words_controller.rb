@@ -10,7 +10,12 @@ class FunctionWordsController < PublicController
   def show
     @function_word.hit!(session, request.user_agent)
 
-    render ThemeComponent.new(word: @function_word, theme: current_word_view_setting.theme_function_word)
+    respond_to do |format|
+      format.html do
+        render ThemeComponent.new(word: @function_word, theme: current_word_view_setting.theme_function_word)
+      end
+      format.json
+    end
   end
 
   def new
