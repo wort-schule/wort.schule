@@ -20,7 +20,12 @@ class AdjectivesController < PublicController
   def show
     @adjective.hit!(session, request.user_agent)
 
-    render ThemeComponent.new(word: @adjective, theme: current_word_view_setting.theme_adjective)
+    respond_to do |format|
+      format.html do
+        render ThemeComponent.new(word: @adjective, theme: current_word_view_setting.theme_adjective)
+      end
+      format.json
+    end
   end
 
   def new

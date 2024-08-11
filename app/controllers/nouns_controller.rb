@@ -31,7 +31,12 @@ class NounsController < PublicController
   def show
     @noun.hit!(session, request.user_agent)
 
-    render ThemeComponent.new(word: @noun, theme: current_word_view_setting.theme_noun)
+    respond_to do |format|
+      format.html do
+        render ThemeComponent.new(word: @noun, theme: current_word_view_setting.theme_noun)
+      end
+      format.json
+    end
   end
 
   def new

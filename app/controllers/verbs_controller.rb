@@ -20,7 +20,12 @@ class VerbsController < PublicController
   def show
     @verb.hit!(session, request.user_agent)
 
-    render ThemeComponent.new(word: @verb, theme: current_word_view_setting.theme_verb)
+    respond_to do |format|
+      format.html do
+        render ThemeComponent.new(word: @verb, theme: current_word_view_setting.theme_verb)
+      end
+      format.json
+    end
   end
 
   def new
