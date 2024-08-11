@@ -2,6 +2,11 @@ class SeoController < PublicController
   def word_index
     @letter = params[:letter] || "a"
     @words = words_with_variants
+
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # Returns all words in the database that start with the given letter, including all variants like plural,
