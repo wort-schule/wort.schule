@@ -1,0 +1,6 @@
+.max-w-md.text-primary.mx-auto.flex.justify-center.gap-3
+  = link_to Keyword.model_name.human(count: 2), keywords_path
+  %span.text-gray-400 •
+  = link_to Topic.model_name.human(count: 2), topics_path
+  %span.text-gray-400 •
+  = link_to Hierarchy.model_name.human(count: 2), hierarchies_path

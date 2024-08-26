@@ -1,3 +1,5 @@
+= render VisualOverviewLinksComponent.new
+
 = title_with_actions Hierarchy.model_name.human(count: 2) do
   - if @show_children
     = link_to t('.hide_children'), url_for(show_children: false), class: 'button'
