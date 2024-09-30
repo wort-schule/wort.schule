@@ -397,7 +397,7 @@ GEM
       activesupport (>= 3.0)
       phony (>= 2.18.12)
     pragmatic_segmenter (0.3.24)
-    propshaft (0.9.1)
+    propshaft (1.1.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack
