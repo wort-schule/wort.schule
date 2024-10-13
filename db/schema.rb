@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_13_162343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -396,6 +396,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
     t.jsonb "object"
     t.jsonb "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "word_llm_enrichments", force: :cascade do |t|
+    t.string "word_type", null: false
+    t.bigint "word_id", null: false
+    t.string "state", default: "new", null: false
+    t.text "error"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["state"], name: "index_word_llm_enrichments_on_state"
+    t.index ["word_type", "word_id"], name: "index_word_llm_enrichments_on_word"
   end
 
   create_table "word_view_settings", force: :cascade do |t|
