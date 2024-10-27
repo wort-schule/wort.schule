@@ -17,6 +17,7 @@ gem "devise"
 gem "devise-i18n"
 gem "draper"
 gem "enumerize"
+gem "faraday"
 gem "filterrific", github: "metikular/filterrific", branch: "fix/nested-array"
 gem "friendly_id"
 gem "good_job", "< 5"
@@ -27,6 +28,7 @@ gem "heroicon"
 gem "humanize_boolean"
 gem "image_processing"
 gem "importmap-rails"
+gem "instructor-rb", github: "instructor-ai/instructor-rb", require: "instructor"
 gem "jbuilder"
 gem "kaminari"
 gem "liquid"
@@ -64,6 +66,7 @@ group :test do
   gem "capybara-screenshot"
   gem "cuprite"
   gem "simplecov", require: false
+  gem "webmock"
 end
 
 group :development, :test do

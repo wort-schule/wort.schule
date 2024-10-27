@@ -13,6 +13,7 @@ require "capybara/rspec"
 require "capybara/rails"
 require "capybara-screenshot/rspec"
 require "capybara/cuprite"
+require "webmock/rspec"
 
 Capybara.asset_host = "http://localhost:3000"
 Capybara.javascript_driver = :cuprite
