@@ -15,6 +15,8 @@ require "capybara-screenshot/rspec"
 require "capybara/cuprite"
 require "webmock/rspec"
 
+WebMock.disable_net_connect!(allow: ["127.0.0.1", "localhost"])
+
 Capybara.asset_host = "http://localhost:3000"
 Capybara.javascript_driver = :cuprite
 Capybara.register_driver(:cuprite) do |app|

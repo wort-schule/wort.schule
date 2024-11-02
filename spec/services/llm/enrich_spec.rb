@@ -8,7 +8,7 @@ RSpec.describe Llm::Enrich do
   let(:case_1_plural) { "Katzen" }
 
   let!(:get_llm_response) do
-    stub_request(:post, "http://localhost:11434/v1/chat/completions")
+    stub_request(:post, "https://ai.test/v1/chat/completions")
       .to_return_json(
         status: 200,
         body: {
