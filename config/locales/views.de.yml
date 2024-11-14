@@ -377,3 +377,19 @@ de:
         title: Wörter
       related_keywords:
         title: Verwandte Stichwörter
+
+  reviews:
+    index:
+      empty:
+        title: Keine Reviews vorhanden
+        explanation: Zur Zeit sind keine ausstehenden Reviews vorhanden. Bitte schauen Sie später nochmals vorbei!
+    show:
+      attribute: Vorschlag bezüglich
+      current_value: Aktuell
+      proposed_value: Vorschlag
+      actions:
+        skip: Überspringen
+        edit: Vorschlag anpassen
+        confirm: Vorschlag bestätigen
+    new:
+      new_proposal: Neuer Vorschlag

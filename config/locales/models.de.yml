@@ -121,6 +121,7 @@ de:
         genus_neuter: Form (Neutrum)
         genus_masculine: Form (Maskulinum)
         genus_feminine: Form (Femininum)
+        case_1_plural: '1. Fall / Nominativ Plural'
       source:
         name: Bezeichnung
         author: Autor*in(nen)

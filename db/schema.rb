@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_08_225727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -284,6 +284,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
     t.string "prefix_type", default: "Verb"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.string "reviewable_type", null: false
+    t.bigint "reviewable_id", null: false
+    t.bigint "reviewer_id", null: false
+    t.string "state", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable"
+    t.index ["reviewer_id"], name: "index_reviews_on_reviewer_id"
+  end
+
   create_table "rimes", id: false, force: :cascade do |t|
     t.integer "word_id"
     t.integer "rime_id"
@@ -398,6 +409,32 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  create_table "word_attribute_edits", force: :cascade do |t|
+    t.string "word_type", null: false
+    t.bigint "word_id", null: false
+    t.string "attribute_name", null: false
+    t.string "value"
+    t.string "state", default: "waiting_for_review", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "successor_type"
+    t.bigint "successor_id"
+    t.index ["successor_type", "successor_id"], name: "index_word_attribute_edits_on_successor"
+    t.index ["word_type", "word_id"], name: "index_word_attribute_edits_on_word"
+  end
+
+  create_table "word_llm_enrichments", force: :cascade do |t|
+    t.string "word_type", null: false
+    t.bigint "word_id", null: false
+    t.string "state", default: "new", null: false
+    t.text "error"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["state"], name: "index_word_llm_enrichments_on_state"
+    t.index ["word_type", "word_id"], name: "index_word_llm_enrichments_on_word"
+  end
+
   create_table "word_view_settings", force: :cascade do |t|
     t.string "name", null: false
     t.string "font"
@@ -509,6 +546,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
   add_foreign_key "learning_pleas", "learning_groups"
   add_foreign_key "learning_pleas", "lists"
   add_foreign_key "lists", "users"
+  add_foreign_key "reviews", "users", column: "reviewer_id"
   add_foreign_key "themes", "users"
   add_foreign_key "users", "word_view_settings"
   add_foreign_key "word_view_settings", "themes", column: "theme_adjective_id"
@@ -519,4 +557,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_191832) do
   add_foreign_key "words", "hierarchies"
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"
+  create_view "reviewers", sql_definition: <<-SQL
+      WITH RECURSIVE successors(origin_id, edit_id) AS (
+           SELECT wae.id,
+              wae.id
+             FROM word_attribute_edits wae
+            WHERE (wae.successor_id IS NULL)
+          UNION
+           SELECT successors.origin_id,
+              wae.id
+             FROM (successors
+               JOIN word_attribute_edits wae ON ((wae.successor_id = successors.edit_id)))
+          )
+   SELECT DISTINCT successors.origin_id AS word_attribute_edit_id,
+      r.reviewer_id
+     FROM (successors
+       JOIN reviews r ON ((((r.reviewable_type)::text = 'WordAttributeEdit'::text) AND (r.reviewable_id = successors.edit_id))))
+    WHERE (successors.origin_id <> successors.edit_id)
+  UNION
+   SELECT wae.id AS word_attribute_edit_id,
+      r.reviewer_id
+     FROM (word_attribute_edits wae
+       JOIN reviews r ON ((((r.reviewable_type)::text = 'WordAttributeEdit'::text) AND (r.reviewable_id = wae.id))))
+    WHERE (wae.successor_id IS NULL);
+  SQL
 end

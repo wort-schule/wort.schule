@@ -1,0 +1,24 @@
+.p-4
+  = render @reviewable.word
+
+  .mt-6= t 'reviews.show.attribute'
+  .font-bold.text-lg= @reviewable.attribute_label
+
+  .grid.lg:grid-cols-2.mt-6.gap-6
+    = box do
+      %div= t 'reviews.show.current_value'
+      .font-bold.text-xl= @reviewable.current_value
+
+    = box do
+      %div= t 'reviews.show.proposed_value'
+      .font-bold.text-xl= @reviewable.proposed_value
+
+  .mt-4
+    = simple_form_for @reviewable, url: reviews_path(id: @reviewable), method: :post do |f|
+      = f.input :value, label: t('.new_proposal')
+
+  .flex.flex-wrap.md:gap-2.md:justify-end.mt-6
+    = form_tag review_path(@reviewable), method: :patch, class: 'grow md:grow-0' do
+      = hidden_field_tag :state, 'skipped'
+      = submit_tag t('reviews.show.actions.skip')
+    %button.button.primary.mt-4{ type: "submit", form: dom_id(@reviewable, :edit) }= t 'helpers.submit.update'

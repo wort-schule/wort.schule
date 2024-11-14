@@ -98,6 +98,8 @@ Rails.application.routes.draw do
     resources :keywords, only: :index
     resource :keyword, only: :show
 
+    resources :reviews, only: %i[index show new create edit update]
+
     # User's own routes
     resource :profile, only: %i[show edit update] do
       resources :themes, only: %i[index update], module: :profiles

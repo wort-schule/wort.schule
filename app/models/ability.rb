@@ -85,6 +85,8 @@ class Ability
         can :manage, Theme
         can :manage, List
 
+        can :manage, :review
+
         # User management
         can :manage, User
         can :manage, LearningGroup
