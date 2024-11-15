@@ -2,12 +2,13 @@
 
 RSpec.describe WordAttributeEdit do
   describe ".reviewable" do
-    subject { described_class.reviewable(me.id) }
+    subject { described_class.reviewable(me) }
 
-    let(:me) { create(:user) }
-    let(:other_user) { create(:user) }
-    let(:different_user) { create(:user) }
+    let(:me) { create(:user, review_attributes: ["noun.case_1_plural"]) }
+    let(:other_user) { create(:user, review_attributes: ["noun.case_1_plural"]) }
+    let(:different_user) { create(:user, review_attributes: ["noun.case_1_plural"]) }
     let!(:reviewable_without_reviews) { create(:word_attribute_edit) }
+    let!(:reviewable_with_other_attribute) { create(:word_attribute_edit, attribute_name: "meaning") }
     let!(:reviewable_skipped_by_other) do
       create(:word_attribute_edit).tap do |reviewable|
         reviewable.reviews.create!(reviewer: other_user, state: :skipped)

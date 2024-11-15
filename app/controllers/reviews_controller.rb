@@ -64,7 +64,7 @@ class ReviewsController < ApplicationController
   end
 
   def redirect_to_next_review
-    @next_review = WordAttributeEdit.reviewable(current_user.id).first
+    @next_review = WordAttributeEdit.reviewable(current_user).first
 
     if @next_review
       redirect_to review_path(@next_review)

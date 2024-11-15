@@ -77,6 +77,8 @@ de:
         last_name: Nachname
         role: Rolle
         word_view_setting: Ansichtseinstellung
+        review_attributes: Attribute für Review
+        review_count: Anzahl Reviews
       word:
         type: Wortart
         name: Wort

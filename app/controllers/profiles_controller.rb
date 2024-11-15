@@ -29,9 +29,11 @@ class ProfilesController < ApplicationController
   end
 
   def user_params
-    params.require(:user)
+    params
+      .require(:user)
       .permit(
-        *current_ability.permitted_attributes(:update, @user)
+        *current_ability.permitted_attributes(:update, @user),
+        review_attributes: []
       )
   end
 end
