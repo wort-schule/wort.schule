@@ -7,6 +7,9 @@
     = f.input :avatar
     = f.association :word_view_setting, collection: WordViewSetting.accessible_by(current_ability)
 
+    - if Ability.new(@user).can? :manage, :review
+      = f.input :review_attributes, as: :check_boxes, collection: Llm::Attributes.collection
+
     .mt-4
       = f.submit
       = cancel_button profile_path

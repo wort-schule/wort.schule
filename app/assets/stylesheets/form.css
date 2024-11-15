@@ -1,0 +1,7 @@
+.checkbox label {
+  @apply flex gap-2;
+}
+
+.checkbox input {
+  @apply w-4;
+}

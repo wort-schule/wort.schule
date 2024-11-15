@@ -8,9 +8,14 @@ module Reviewable
   included do
     attr_accessor :action
 
-    scope :reviewable, ->(reviewer_id) {
+    scope :reviewable, ->(reviewer) {
+      reviewer_id = reviewer.id
+
       where(successor_id: nil)
-        .where(state: :waiting_for_review)
+        .where(
+          state: :waiting_for_review,
+          attribute_name: reviewer.review_attributes_without_types
+        )
         .where(
           id: select(:id)
         .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.word_attribute_edit_id = word_attribute_edits.id AND reviewers.reviewer_id = ?)", reviewer_id)

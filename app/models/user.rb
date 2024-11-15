@@ -67,6 +67,18 @@ class User < ApplicationRecord
       &.learning_group
   end
 
+  def review_attributes=(new_value)
+    write_attribute :review_attributes, (new_value || []).compact_blank
+  end
+
+  def review_attributes_without_types
+    review_attributes.map do |attribute_with_type|
+      _type, attribute = attribute_with_type.split(".")
+
+      attribute
+    end.flatten.uniq
+  end
+
   private
 
   def setup_flashcards

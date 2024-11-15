@@ -35,6 +35,17 @@ module WordHelper
     end
   end
 
+  def separate_concat(items)
+    return if items.blank?
+
+    content_tag :div, class: "flex flex-wrap gap-2" do
+      items.each.with_index do |item, index|
+        concat content_tag :span, "•", class: "text-gray-400" if index != 0
+        concat item
+      end
+    end
+  end
+
   def any_present?(model, attributes)
     return true unless Rails.configuration.hide_blank_items
 

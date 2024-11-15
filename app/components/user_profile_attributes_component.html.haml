@@ -40,5 +40,11 @@
       .ml-4.flex-shrink-0
         = edit_button edit_password_path
 
+  - if Ability.new(@user).can? :manage, :review
+    = render(list.add(User.human_attribute_name(:review_attributes))) do
+      .flex.flex-wrap.gap-2
+        = helpers.separate_concat Llm::Attributes.translate(@user.review_attributes) do |attribute|
+          %span= attribute
+
   = render(list.add(User.human_attribute_name(:role))) do
     = @user.role_text
