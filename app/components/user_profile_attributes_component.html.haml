@@ -46,5 +46,9 @@
         = helpers.separate_concat Llm::Attributes.translate(@user.review_attributes) do |attribute|
           %span= attribute
 
+    = render(list.add(User.human_attribute_name(:review_count))) do
+      .flex.flex-wrap.gap-2
+        = Review.where(reviewer: @user).count
+
   = render(list.add(User.human_attribute_name(:role))) do
     = @user.role_text
