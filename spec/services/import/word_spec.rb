@@ -32,6 +32,15 @@ RSpec.describe Import::Word do
     end
   end
 
+  context "with a failed word import" do
+    let!(:word_import) { create(:word_import, name:, topic:, word_type:, state: :failed) }
+
+    it "creates a word import" do
+      expect { subject }
+        .to change(WordImport, :count).by(1)
+    end
+  end
+
   context "with the same word" do
     let!(:word) { create(:noun, name:, topics: [build(:topic, name: topic)]) }
 

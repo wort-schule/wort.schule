@@ -2,7 +2,7 @@
 
 module Import
   class Word
-    attr_reader :name, :topic, :word_type
+    attr_reader :name, :topic, :word_type, :word_import
 
     def initialize(name:, topic:, word_type:)
       @name = name
@@ -18,12 +18,16 @@ module Import
       existing_words&.each do |existing_word|
         Llm::Enrich.new(word: existing_word).call
       end
+    rescue => e
+      word_import&.update(error: e.full_message)
     end
 
     private
 
     def import_exists?
-      WordImport.exists?(name:, topic:, word_type:)
+      WordImport
+        .where.not(state: :failed)
+        .exists?(name:, topic:, word_type:)
     end
 
     def create_word_import
