@@ -43,7 +43,8 @@ module Llm
     def pending_llm_response?
       WordLlmInvocation
         .exists?(
-          word:,
+          key: "#{word.class}##{word.id}",
+          invocation_type: "enrichment",
           state: %w[new invoked]
         )
     end
@@ -51,7 +52,7 @@ module Llm
     def initialize_word_llm_invocation
       @word_llm_invocation ||= WordLlmInvocation
         .create!(
-          word:,
+          key: "#{word.class}##{word.id}",
           invocation_type: :enrichment,
           state: :invoked
         )

@@ -5,8 +5,8 @@ module Import
     attr_reader :name, :topic, :word_type, :word_import
 
     def initialize(name:, topic:, word_type:)
-      @name = name
-      @topic = topic
+      @name = name.strip
+      @topic = topic.strip
       @word_type = word_type
     end
 
@@ -15,11 +15,37 @@ module Import
 
       create_word_import
 
-      existing_words&.each do |existing_word|
-        Llm::Enrich.new(word: existing_word).call
+      if existing_words(name:, topic:).present?
+        Rails.logger.info("Word exists, starting enrichment. name=#{name} topic=#{topic} word_type=#{word_type}")
+        existing_words(name:, topic:).each do |existing_word|
+          Llm::Enrich.new(word: existing_word).call
+        end
+
+        return
+      end
+
+      new_word = Llm::CheckBaseForm.new(name:, topic:, word_type:).call
+      change_group = ChangeGroup.new
+      new_word.change_group = change_group
+
+      change_group.state = if existing_words(name: new_word.llm_name, topic: new_word.llm_topic).present?
+        Rails.logger.info("New word, but exists after LLM corrections. name=#{name} topic=#{topic} word_type=#{word_type} llm_name=#{new_word.llm_name} llm_topic=#{new_word.llm_topic}")
+        :discarded
+      else
+        Rails.logger.info("New word, ready for review. name=#{name} topic=#{topic} word_type=#{word_type} llm_name=#{new_word.llm_name} llm_topic=#{new_word.llm_topic}")
+        :waiting_for_review
+      end
+
+      ActiveRecord::Base.transaction do
+        change_group.save!
+        new_word.save!
+        @word_import.update!(state: :completed)
       end
     rescue => e
-      word_import&.update(error: e.full_message)
+      word_import&.update(
+        error: e.full_message,
+        state: :failed
+      )
     end
 
     private
@@ -34,7 +60,7 @@ module Import
       @word_import ||= WordImport.create!(name:, topic:, word_type:, state: :new)
     end
 
-    def existing_words
+    def existing_words(name:, topic:)
       ::Word
         .joins(:topics)
         .where(

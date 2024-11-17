@@ -37,7 +37,7 @@ RSpec.describe Llm::Enrich do
       .and change(ChangeGroup, :count).by(1)
 
     expect(WordLlmInvocation.last).to have_attributes(
-      word:,
+      key: "Noun##{word.id}",
       invocation_type: "enrichment",
       state: "completed"
     )
