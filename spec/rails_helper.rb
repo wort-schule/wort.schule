@@ -91,4 +91,13 @@ RSpec.configure do |config|
   config.include Support::I18nHelpers
   config.include Support::ActionMailerHelpers
   config.include ActionView::RecordIdentifier # dom_id
+  config.include EnvironmentHelper
+
+  config.around do |example|
+    with_environment(
+      "OLLAMA_URL" => "https://ai.test"
+    ) do
+      example.run
+    end
+  end
 end

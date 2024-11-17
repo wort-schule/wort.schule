@@ -45,17 +45,22 @@ module Llm
     def llm_response
       @llm_respponse ||= Invoke.new(
         response_model:,
+        prompt_variables: {
+          attributes: word.to_json
+        },
         prompt: <<~PROMPT
           The following JSON includes all the information we have about the German word '#{word.name}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules.
 
-          #{word.to_json}
+          {attributes}
+
+          {format_instructions}
         PROMPT
       ).call
     end
 
     def create_enriched_attributes(response)
       ActiveRecord::Base.transaction do
-        response.properties.slice(*response_model.properties).each do |attribute_name, value|
+        response.with_indifferent_access.slice(*response_model.properties).each do |attribute_name, value|
           next if word.send(attribute_name) == value
 
           WordAttributeEdit
