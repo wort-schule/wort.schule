@@ -8,7 +8,7 @@ class WordAttributeEdit < ApplicationRecord
 
   has_many :reviews, dependent: :destroy, inverse_of: :reviewable
 
-  enumerize :state, in: %i[waiting_for_review edited confirmed], default: :waiting_for_review
+  enumerize :state, in: %i[waiting_for_review edited confirmed invalid], default: :waiting_for_review
 
   def attribute_label
     word.class.human_attribute_name(attribute_name)

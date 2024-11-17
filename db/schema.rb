@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_15_170537) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_16_200912) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -424,6 +424,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_15_170537) do
     t.index ["word_type", "word_id"], name: "index_word_attribute_edits_on_word"
   end
 
+  create_table "word_imports", force: :cascade do |t|
+    t.string "name"
+    t.string "topic"
+    t.string "word_type"
+    t.string "state", default: "new", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "error"
+    t.index ["name", "topic", "word_type"], name: "index_word_imports_on_name_and_topic_and_word_type"
+  end
+
   create_table "word_llm_enrichments", force: :cascade do |t|
     t.string "word_type", null: false
     t.bigint "word_id", null: false
@@ -558,6 +569,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_15_170537) do
   add_foreign_key "words", "hierarchies"
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"
+
   create_view "reviewers", sql_definition: <<-SQL
       WITH RECURSIVE successors(origin_id, edit_id) AS (
            SELECT wae.id,

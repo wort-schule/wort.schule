@@ -63,7 +63,7 @@ module Llm
               word:,
               attribute_name:,
               value:,
-              state: :waiting_for_review
+              state: value.present? ? :waiting_for_review : :invalid
             )
         end
       end
