@@ -4,5 +4,12 @@
   .flex.flex-col.gap-12.mt-12
     = render 'shared/versions', model: word
 
+    - if helpers.can?(:manage_llm, word) && !Rails.env.test?
+      - enrichment = Llm::Enrich.new(word:)
+
+      - if enrichment.supported?
+        = render BoxComponent.new(title: t('.llm_prompt.title'), span: 2) do
+          .p-4.whitespace-pre-wrap.break-words= enrichment.full_prompt
+
     .pagination-with-actions
       = link_to t('actions.edit'), [:edit, word], data: { turbo_frame: '_top' }, class: 'button primary'

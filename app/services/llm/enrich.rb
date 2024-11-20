@@ -2,7 +2,11 @@
 
 module Llm
   class Enrich
+    class UnsupportedWordType < StandardError; end
+
     attr_reader :word, :word_llm_enrichment
+
+    delegate :full_prompt, to: :llm_invocation
 
     def initialize(word:)
       @word = word
@@ -24,6 +28,12 @@ module Llm
       raise e if word_llm_enrichment.blank?
     end
 
+    def supported?
+      response_model.present?
+    rescue UnsupportedWordType
+      false
+    end
+
     private
 
     def pending_llm_response?
@@ -43,7 +53,11 @@ module Llm
     end
 
     def llm_response
-      @llm_respponse ||= Invoke.new(
+      @llm_respponse ||= llm_invocation.call
+    end
+
+    def llm_invocation
+      @llm_invocation ||= Invoke.new(
         response_model:,
         prompt_variables: {
           attributes: word.to_json
@@ -55,7 +69,7 @@ module Llm
 
           {format_instructions}
         PROMPT
-      ).call
+      )
     end
 
     def create_enriched_attributes(response)
@@ -77,7 +91,7 @@ module Llm
     def response_model
       case word.type
       when "Noun" then Schema::Noun
-      else raise "Word type '#{word.type}' is not supported for LLM enrichment"
+      else raise UnsupportedWordType, "Word type '#{word.type}' is not supported for LLM enrichment"
       end
     end
   end

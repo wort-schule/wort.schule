@@ -7,3 +7,6 @@ de:
       one: '%{count} Ergebnis zeigen'
       other: '%{count} Ergebnisse zeigen'
     show_results: 'Ergebnisse zeigen'
+  theme_component:
+    llm_prompt:
+      title: LLM Prompt
