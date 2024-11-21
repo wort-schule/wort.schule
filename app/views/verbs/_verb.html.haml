@@ -1,1 +1,7 @@
-= render WordPanelComponent.new(word: verb)
+= render WordPanelComponent.new(word: verb) do |component|
+  - component.with_description do
+    - if local_assigns[:description].present?
+      - if description.is_a?(Array)
+        = separate description
+      - else
+        = description

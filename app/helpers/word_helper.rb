@@ -30,7 +30,11 @@ module WordHelper
     content_tag :div, class: "flex flex-wrap gap-2" do
       items.each.with_index do |item, index|
         concat content_tag :span, "•", class: "text-gray-400" if index != 0
-        yield item
+        if block_given?
+          yield item
+        else
+          concat item
+        end
       end
     end
   end

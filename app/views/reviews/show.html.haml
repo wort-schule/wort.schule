@@ -1,5 +1,5 @@
 .p-4
-  = render @reviewable.word
+  = render @reviewable.word, description: @reviewable.word.meaning.presence || @reviewable.word.topics.map(&:name)
 
   .mt-6= t '.attribute'
   .font-bold.text-lg= @reviewable.attribute_label
