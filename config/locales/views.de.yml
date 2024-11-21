@@ -389,7 +389,4 @@ de:
       proposed_value: Vorschlag
       actions:
         skip: Überspringen
-        edit: Vorschlag anpassen
         confirm: Vorschlag bestätigen
-    new:
-      new_proposal: Neuer Vorschlag

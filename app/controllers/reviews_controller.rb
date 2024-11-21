@@ -3,7 +3,7 @@
 class ReviewsController < ApplicationController
   authorize_resource :review, class: false
 
-  before_action :set_reviewable, only: %i[show new create update]
+  before_action :set_reviewable, only: %i[show update]
 
   rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_next_review
 
@@ -14,14 +14,25 @@ class ReviewsController < ApplicationController
   def show
   end
 
-  def new
-  end
+  def update
+    has_skipped = params[:state] == "skipped"
+    human_proposed_value = params.dig(:word_attribute_edit, :value)&.strip
+    proposal_not_changed = @reviewable.proposed_value == human_proposed_value
+    confirmed = params[:state] == "confirmed" && proposal_not_changed && human_proposed_value.present?
 
-  def create
-    if @reviewable.value == params[:word_attribute_edit][:value]
-      @reviewable.errors.add(:value, t(".must_be_different"))
+    if has_skipped || confirmed
+      @reviewable.store_review(
+        reviewer: current_user,
+        state: params[:state]
+      )
 
-      return render :new, status: :unprocessable_entity
+      return redirect_to_next_review
+    end
+
+    if human_proposed_value.blank?
+      @reviewable.errors.add(:value, :blank)
+
+      return render :show, status: :unprocessable_entity
     end
 
     @reviewable.transaction do
@@ -29,7 +40,7 @@ class ReviewsController < ApplicationController
         .create!(
           word: @reviewable.word,
           attribute_name: @reviewable.attribute_name,
-          value: params[:word_attribute_edit][:value],
+          value: human_proposed_value,
           state: :waiting_for_review
         )
 
@@ -44,15 +55,6 @@ class ReviewsController < ApplicationController
         reviewer: current_user
       )
     end
-
-    redirect_to_next_review
-  end
-
-  def update
-    @reviewable.store_review(
-      reviewer: current_user,
-      state: params[:state]
-    )
 
     redirect_to_next_review
   end
