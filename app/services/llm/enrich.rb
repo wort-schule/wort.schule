@@ -2,7 +2,11 @@
 
 module Llm
   class Enrich
+    class UnsupportedWordType < StandardError; end
+
     attr_reader :word, :word_llm_enrichment
+
+    delegate :full_prompt, to: :llm_invocation
 
     def initialize(word:)
       @word = word
@@ -24,6 +28,12 @@ module Llm
       raise e if word_llm_enrichment.blank?
     end
 
+    def supported?
+      response_model.present?
+    rescue UnsupportedWordType
+      false
+    end
+
     private
 
     def pending_llm_response?
@@ -43,19 +53,28 @@ module Llm
     end
 
     def llm_response
-      @llm_respponse ||= Invoke.new(
+      @llm_respponse ||= llm_invocation.call
+    end
+
+    def llm_invocation
+      @llm_invocation ||= Invoke.new(
         response_model:,
+        prompt_variables: {
+          attributes: word.to_json
+        },
         prompt: <<~PROMPT
           The following JSON includes all the information we have about the German word '#{word.name}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules.
 
-          #{word.to_json}
+          {attributes}
+
+          {format_instructions}
         PROMPT
-      ).call
+      )
     end
 
     def create_enriched_attributes(response)
       ActiveRecord::Base.transaction do
-        response.properties.slice(*response_model.properties).each do |attribute_name, value|
+        response.with_indifferent_access.slice(*response_model.properties).each do |attribute_name, value|
           next if word.send(attribute_name) == value
 
           WordAttributeEdit
@@ -72,7 +91,7 @@ module Llm
     def response_model
       case word.type
       when "Noun" then Schema::Noun
-      else raise "Word type '#{word.type}' is not supported for LLM enrichment"
+      else raise UnsupportedWordType, "Word type '#{word.type}' is not supported for LLM enrichment"
       end
     end
   end
