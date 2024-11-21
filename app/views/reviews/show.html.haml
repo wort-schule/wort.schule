@@ -18,5 +18,5 @@
   .flex.flex-wrap.md:gap-2.md:justify-end.mt-6
     = form_tag review_path(@reviewable), method: :patch, class: 'grow md:grow-0' do
       = hidden_field_tag :state, 'skipped'
-      = submit_tag t('.actions.skip')
+      = submit_tag t('.actions.skip'), class: 'button outline mt-4'
     %button.button.primary.grow.md:grow-0.mt-4{ type: "submit", form: dom_id(@reviewable, :edit) }= t '.actions.confirm'
