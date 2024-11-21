@@ -1,3 +1,11 @@
-= render WordPanelComponent.new(word: noun) do
-  - if noun.article_definite.present?
-    .text-xl= noun.article_definite
+= render WordPanelComponent.new(word: noun) do |component|
+  - component.with_prefix do
+    - if noun.article_definite.present?
+      .text-xl= noun.article_definite
+
+  - component.with_description do
+    - if local_assigns[:description].present?
+      - if description.is_a?(Array)
+        = separate description
+      - else
+        = description
