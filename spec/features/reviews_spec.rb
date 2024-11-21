@@ -61,22 +61,21 @@ RSpec.describe "reviews" do
     login_as me
     visit reviews_path
     expect(page).to have_content edit.word.name
-    click_on I18n.t("reviews.show.actions.edit")
 
-    fill_in I18n.t("reviews.new.new_proposal"), with: proposal
-    click_on I18n.t("helpers.submit.update")
+    fill_in "word_attribute_edit[value]", with: proposal
+    click_on I18n.t("reviews.show.actions.confirm")
     expect(edit.reload.current_value).not_to eq proposal
 
     login_as other_admin
     visit reviews_path
-    expect(page).to have_content proposal
+    expect(page).to have_field "word_attribute_edit[value]", with: proposal
     click_on I18n.t("reviews.show.actions.confirm")
 
     expect(edit.reload.current_value).not_to eq proposal
 
     login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
     visit reviews_path
-    expect(page).to have_content proposal
+    expect(page).to have_field "word_attribute_edit[value]", with: proposal
     click_on I18n.t("reviews.show.actions.confirm")
 
     expect(edit.reload.current_value).to eq proposal
@@ -98,10 +97,9 @@ RSpec.describe "reviews" do
     login_as other_admin
     visit reviews_path
     expect(page).to have_content edit.word.name
-    click_on I18n.t("reviews.show.actions.edit")
 
-    fill_in I18n.t("reviews.new.new_proposal"), with: proposal
-    click_on I18n.t("helpers.submit.update")
+    fill_in "word_attribute_edit[value]", with: proposal
+    click_on I18n.t("reviews.show.actions.confirm")
     expect(edit.reload.current_value).not_to eq proposal
 
     login_as me
@@ -120,5 +118,21 @@ RSpec.describe "reviews" do
     end
 
     expect(edit.reload.current_value).to eq proposal
+  end
+
+  it "does not allow to send in an empty proposal" do
+    edit = create(:word_attribute_edit, value: "")
+    proposal = ""
+
+    login_as me
+    visit reviews_path
+    expect(page).to have_content edit.word.name
+
+    fill_in "word_attribute_edit[value]", with: proposal
+    expect do
+      click_on I18n.t("reviews.show.actions.confirm")
+    end.to_not change(Review, :count)
+
+    expect(page).to have_content I18n.t("errors.messages.blank")
   end
 end

@@ -11,13 +11,12 @@
 
     = box do
       %div= t '.proposed_value'
-      .font-bold.text-xl= @reviewable.proposed_value
+      = simple_form_for @reviewable, url: review_path(@reviewable), method: :patch do |f|
+        = hidden_field_tag :state, 'confirmed'
+        = f.input :value, label: false
 
   .flex.flex-wrap.md:gap-2.md:justify-end.mt-6
     = form_tag review_path(@reviewable), method: :patch, class: 'grow md:grow-0' do
       = hidden_field_tag :state, 'skipped'
       = submit_tag t('.actions.skip')
-    = link_to t('.actions.edit'), new_review_path(id: @reviewable), class: 'button primary mt-4'
-    = form_tag review_path(@reviewable), method: :patch, class: 'grow md:grow-0' do
-      = hidden_field_tag :state, 'confirmed'
-      = submit_tag t('.actions.confirm')
+    %button.button.primary.grow.md:grow-0.mt-4{ type: "submit", form: dom_id(@reviewable, :edit) }= t '.actions.confirm'
