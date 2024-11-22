@@ -1,19 +1,25 @@
 .p-4
-  = render @reviewable.word, description: @reviewable.word.meaning.presence || @reviewable.word.topics.map(&:name)
+  - word = @reviewable.word_attribute_edits.first.word
+  = render word, description: word.meaning.presence || word.topics.map(&:name)
 
-  .mt-6= t '.attribute'
-  .font-bold.text-lg= @reviewable.attribute_label
+  .mt-6
+    = simple_form_for @reviewable, url: review_path(@reviewable), method: :patch do |f|
+      .grid.gap-6
+        = f.fields_for :word_attribute_edits do |wae|
+          = box do
+            .grid.lg:grid-cols-2.gap-x-6.gap-y-2
+              %div
+                %div= t '.attribute'
+                .font-bold.text-lg= wae.object.attribute_label
+              %div
 
-  .grid.lg:grid-cols-2.mt-6.gap-6
-    = box do
-      %div= t '.current_value'
-      .font-bold.text-xl= @reviewable.current_value
+              %div= t '.current_value'
+              %div= t '.proposed_value'
 
-    = box do
-      %div= t '.proposed_value'
-      = simple_form_for @reviewable, url: review_path(@reviewable), method: :patch do |f|
-        = hidden_field_tag :state, 'confirmed'
-        = f.input :value, label: false
+              .font-bold.text-xl= wae.object.current_value
+              %div
+                = hidden_field_tag :state, 'confirmed'
+                = wae.input :value, label: false
 
   .flex.flex-wrap.md:gap-2.md:justify-end.mt-6
     = form_tag review_path(@reviewable), method: :patch, class: 'grow md:grow-0' do

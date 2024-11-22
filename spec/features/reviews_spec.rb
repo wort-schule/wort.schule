@@ -62,20 +62,20 @@ RSpec.describe "reviews" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    fill_in "word_attribute_edit[value]", with: proposal
+    fill_in "change_group[word_attribute_edits_attributes][0][value]", with: proposal
     click_on I18n.t("reviews.show.actions.confirm")
     expect(edit.reload.current_value).not_to eq proposal
 
     login_as other_admin
     visit reviews_path
-    expect(page).to have_field "word_attribute_edit[value]", with: proposal
+    expect(page).to have_field "change_group[word_attribute_edits_attributes][0][value]", with: proposal
     click_on I18n.t("reviews.show.actions.confirm")
 
     expect(edit.reload.current_value).not_to eq proposal
 
     login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
     visit reviews_path
-    expect(page).to have_field "word_attribute_edit[value]", with: proposal
+    expect(page).to have_field "change_group[word_attribute_edits_attributes][0][value]", with: proposal
     click_on I18n.t("reviews.show.actions.confirm")
 
     expect(edit.reload.current_value).to eq proposal
@@ -98,7 +98,7 @@ RSpec.describe "reviews" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    fill_in "word_attribute_edit[value]", with: proposal
+    fill_in "change_group[word_attribute_edits_attributes][0][value]", with: proposal
     click_on I18n.t("reviews.show.actions.confirm")
     expect(edit.reload.current_value).not_to eq proposal
 
@@ -128,7 +128,7 @@ RSpec.describe "reviews" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    fill_in "word_attribute_edit[value]", with: proposal
+    fill_in "change_group[word_attribute_edits_attributes][0][value]", with: proposal
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
     end.to_not change(Review, :count)

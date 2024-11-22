@@ -16,9 +16,14 @@ class ReviewsController < ApplicationController
 
   def update
     has_skipped = params[:state] == "skipped"
-    human_proposed_value = params.dig(:word_attribute_edit, :value)&.strip
-    proposal_not_changed = @reviewable.proposed_value == human_proposed_value
-    confirmed = params[:state] == "confirmed" && proposal_not_changed && human_proposed_value.present?
+    confirmed = params.dig(:change_group, :word_attribute_edits_attributes)&.values&.map do |attributes|
+      existing = @reviewable.word_attribute_edits.find { |word_attribute_edit| word_attribute_edit.id.to_s == attributes[:id] }
+
+      human_proposed_value = attributes[:value]&.strip
+      existing.errors.add(:value, :blank) if human_proposed_value.blank?
+      proposal_not_changed = existing.proposed_value == human_proposed_value
+      params[:state] == "confirmed" && proposal_not_changed && human_proposed_value.present?
+    end&.all?
 
     if has_skipped || confirmed
       @reviewable.store_review(
@@ -29,20 +34,21 @@ class ReviewsController < ApplicationController
       return redirect_to_next_review
     end
 
-    if human_proposed_value.blank?
-      @reviewable.errors.add(:value, :blank)
-
+    if @reviewable.word_attribute_edits.any? { |word_attribute_edit| word_attribute_edit.errors.present? }
       return render :show, status: :unprocessable_entity
     end
 
     @reviewable.transaction do
-      successor = WordAttributeEdit
-        .create!(
-          word: @reviewable.word,
-          attribute_name: @reviewable.attribute_name,
-          value: human_proposed_value,
-          state: :waiting_for_review
-        )
+      successor = ChangeGroup.create!(state: :waiting_for_review)
+      @reviewable.word_attribute_edits.each do |word_attribute_edit|
+        WordAttributeEdit
+          .create!(
+            change_group: successor,
+            word: word_attribute_edit.word,
+            attribute_name: word_attribute_edit.attribute_name,
+            value: params.dig(:change_group, :word_attribute_edits_attributes)&.values&.find { |attributes| attributes[:id] == word_attribute_edit.id.to_s }&.dig(:value)
+          )
+      end
 
       @reviewable.update!(
         state: :edited,
@@ -62,11 +68,11 @@ class ReviewsController < ApplicationController
   private
 
   def set_reviewable
-    @reviewable = WordAttributeEdit.find(params[:id])
+    @reviewable = ChangeGroup.find(params[:id])
   end
 
   def redirect_to_next_review
-    @next_review = WordAttributeEdit.reviewable(current_user).first
+    @next_review = ChangeGroup.reviewable(current_user).first
 
     if @next_review
       redirect_to review_path(@next_review)

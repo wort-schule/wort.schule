@@ -12,19 +12,21 @@ module Reviewable
       reviewer_id = reviewer.id
 
       where(successor_id: nil)
+        .where(state: :waiting_for_review)
+        .left_joins(:word_attribute_edits)
         .where(
-          state: :waiting_for_review,
-          attribute_name: reviewer.review_attributes_without_types
+          "word_attribute_edits.id IN (?)", WordAttributeEdit.where(attribute_name: reviewer.review_attributes_without_types).select(:id)
         )
         .where(
           id: select(:id)
-        .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.word_attribute_edit_id = word_attribute_edits.id AND reviewers.reviewer_id = ?)", reviewer_id)
+        .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.change_group_id = change_groups.id AND reviewers.reviewer_id = ?)", reviewer_id)
         )
         .order(:created_at)
     }
 
-    belongs_to :successor, optional: true, polymorphic: true
+    belongs_to :successor, optional: true, class_name: "ChangeGroup"
 
+    has_many :reviews, dependent: :destroy, inverse_of: :reviewable
     has_many :reviewers, dependent: nil
 
     def store_review(reviewer:, state:)
@@ -46,7 +48,9 @@ module Reviewable
       transaction do
         update!(state: :confirmed)
 
-        word.update!(attribute_name => value)
+        word_attribute_edits.each do |word_attribute_edit|
+          word_attribute_edit.word.update!(word_attribute_edit.attribute_name => word_attribute_edit.value)
+        end
       end
     end
   end

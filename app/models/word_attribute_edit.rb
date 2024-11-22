@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
 class WordAttributeEdit < ApplicationRecord
-  extend Enumerize
-  include Reviewable
-
   belongs_to :word, polymorphic: true
-
-  has_many :reviews, dependent: :destroy, inverse_of: :reviewable
-
-  enumerize :state, in: %i[waiting_for_review edited confirmed invalid], default: :waiting_for_review
+  belongs_to :change_group
 
   def attribute_label
     word.class.human_attribute_name(attribute_name)

@@ -76,14 +76,18 @@ module Llm
       ActiveRecord::Base.transaction do
         response.with_indifferent_access.slice(*response_model.properties).each do |attribute_name, value|
           next if word.send(attribute_name) == value
+          next if WordAttributeEdit.exists?(word:, attribute_name:, value:)
 
-          WordAttributeEdit
-            .find_or_create_by!(
-              word:,
-              attribute_name:,
-              value:,
-              state: value.present? ? :waiting_for_review : :invalid
-            )
+          change_group = ChangeGroup.create!(
+            state: value.present? ? :waiting_for_review : :invalid
+          )
+
+          WordAttributeEdit.create!(
+            change_group:,
+            word:,
+            attribute_name:,
+            value:
+          )
         end
       end
     end
