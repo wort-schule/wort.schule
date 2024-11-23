@@ -21,7 +21,7 @@ module Llm
     rescue Langchain::OutputParsers::OutputParserException
       fix_parser = Langchain::OutputParsers::OutputFixingParser.from_llm(
         llm: client,
-        parser:
+        parser: output_parser
       )
       fix_parser.parse(llm_response)
     end
