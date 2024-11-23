@@ -4,6 +4,10 @@ module Llm
   class Enrich
     class UnsupportedWordType < StandardError; end
 
+    ATTRIBUTE_GROUPS = [
+      [:case_1_singular, :case_1_plural, :case_2_singular, :case_2_plural, :case_3_singular, :case_3_plural, :case_4_singular, :case_4_plural]
+    ]
+
     attr_reader :word, :word_llm_enrichment
 
     delegate :full_prompt, to: :llm_invocation
@@ -74,20 +78,44 @@ module Llm
 
     def create_enriched_attributes(response)
       ActiveRecord::Base.transaction do
-        response.with_indifferent_access.slice(*response_model.properties).each do |attribute_name, value|
-          next if word.send(attribute_name) == value
-          next if WordAttributeEdit.exists?(word:, attribute_name:, value:)
+        properties = response.with_indifferent_access.slice(*response_model.properties)
+
+        groups = ATTRIBUTE_GROUPS.map do |attributes|
+          group_attributes = properties.slice(*attributes)
+
+          properties.reject! { |property| attributes.include?(property.to_sym) }
+
+          group_attributes
+        end
+
+        properties.each do |attribute_name, value|
+          groups << {
+            attribute_name => value
+          }
+        end
+
+        groups.each do |attributes|
+          attributes.select! do |attribute_name, value|
+            next false if word.send(attribute_name) == value
+            next false if WordAttributeEdit.exists?(word:, attribute_name:, value:)
+
+            true
+          end
+
+          next if attributes.empty?
 
           change_group = ChangeGroup.create!(
-            state: value.present? ? :waiting_for_review : :invalid
+            state: :waiting_for_review
           )
 
-          WordAttributeEdit.create!(
-            change_group:,
-            word:,
-            attribute_name:,
-            value:
-          )
+          attributes.each do |attribute_name, value|
+            WordAttributeEdit.create!(
+              change_group:,
+              word:,
+              attribute_name:,
+              value:
+            )
+          end
         end
       end
     end
