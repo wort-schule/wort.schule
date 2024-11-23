@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_16_200912) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -42,6 +42,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_16_200912) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "change_groups", force: :cascade do |t|
+    t.string "state", default: "waiting_for_review", null: false
+    t.bigint "successor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "compound_entities", force: :cascade do |t|
@@ -415,12 +422,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_16_200912) do
     t.bigint "word_id", null: false
     t.string "attribute_name", null: false
     t.string "value"
-    t.string "state", default: "waiting_for_review", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "successor_type"
-    t.bigint "successor_id"
-    t.index ["successor_type", "successor_id"], name: "index_word_attribute_edits_on_successor"
+    t.bigint "change_group_id", null: false
+    t.index ["change_group_id"], name: "index_word_attribute_edits_on_change_group_id"
     t.index ["word_type", "word_id"], name: "index_word_attribute_edits_on_word"
   end
 
@@ -550,6 +555,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_16_200912) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "change_groups", "change_groups", column: "successor_id"
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "learning_group_memberships", "learning_groups"
   add_foreign_key "learning_group_memberships", "users"
@@ -572,26 +578,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_16_200912) do
 
   create_view "reviewers", sql_definition: <<-SQL
       WITH RECURSIVE successors(origin_id, edit_id) AS (
-           SELECT wae.id,
-              wae.id
-             FROM word_attribute_edits wae
-            WHERE (wae.successor_id IS NULL)
+           SELECT cg.id,
+              cg.id
+             FROM change_groups cg
+            WHERE (cg.successor_id IS NULL)
           UNION
            SELECT successors.origin_id,
-              wae.id
+              cg.id
              FROM (successors
-               JOIN word_attribute_edits wae ON ((wae.successor_id = successors.edit_id)))
+               JOIN change_groups cg ON ((cg.successor_id = successors.edit_id)))
           )
-   SELECT DISTINCT successors.origin_id AS word_attribute_edit_id,
+   SELECT DISTINCT successors.origin_id AS change_group_id,
       r.reviewer_id
      FROM (successors
-       JOIN reviews r ON ((((r.reviewable_type)::text = 'WordAttributeEdit'::text) AND (r.reviewable_id = successors.edit_id))))
+       JOIN reviews r ON ((((r.reviewable_type)::text = 'ChangeGroup'::text) AND (r.reviewable_id = successors.edit_id))))
     WHERE (successors.origin_id <> successors.edit_id)
   UNION
-   SELECT wae.id AS word_attribute_edit_id,
+   SELECT cg.id AS change_group_id,
       r.reviewer_id
-     FROM (word_attribute_edits wae
-       JOIN reviews r ON ((((r.reviewable_type)::text = 'WordAttributeEdit'::text) AND (r.reviewable_id = wae.id))))
-    WHERE (wae.successor_id IS NULL);
+     FROM (change_groups cg
+       JOIN reviews r ON ((((r.reviewable_type)::text = 'ChangeGroup'::text) AND (r.reviewable_id = cg.id))))
+    WHERE (cg.successor_id IS NULL);
   SQL
 end

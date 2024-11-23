@@ -34,18 +34,23 @@ RSpec.describe Llm::Enrich do
     expect { subject }
       .to change(WordLlmEnrichment, :count).by(1)
       .and change(WordAttributeEdit, :count).by(1)
+      .and change(ChangeGroup, :count).by(1)
 
     expect(WordLlmEnrichment.last).to have_attributes(
       word:,
       state: "completed"
     )
 
+    expect(ChangeGroup.last).to have_attributes(
+      state: "waiting_for_review"
+    )
+
     expect(WordAttributeEdit.all).to match_array [
       have_attributes(
+        change_group: ChangeGroup.last,
         word:,
         attribute_name: "meaning",
-        value: meaning,
-        state: "waiting_for_review"
+        value: meaning
       )
     ]
   end

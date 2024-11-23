@@ -117,6 +117,10 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abstrakt"
 
       click_on t("filter.add_words_to_list")
+      if !page.has_select?("list_id")
+        sleep 1
+        click_on t("filter.add_words_to_list")
+      end
       expect(page).to have_select "list_id"
       click_on t("words.show.lists.add")
 

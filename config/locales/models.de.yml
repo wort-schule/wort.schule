@@ -123,7 +123,14 @@ de:
         genus_neuter: Form (Neutrum)
         genus_masculine: Form (Maskulinum)
         genus_feminine: Form (Femininum)
+        case_1_singular: '1. Fall / Nominativ Singular'
         case_1_plural: '1. Fall / Nominativ Plural'
+        case_2_singular: '2. Fall / Genitiv Singular'
+        case_2_plural: '2. Fall / Genitiv Plural'
+        case_3_singular: '3. Fall / Dativ Singular'
+        case_3_plural: '3. Fall / Dativ Plural'
+        case_4_singular: '4. Fall / Akkusativ Singular'
+        case_4_plural: '4. Fall / Akkusativ Plural'
       source:
         name: Bezeichnung
         author: Autor*in(nen)

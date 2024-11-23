@@ -21,7 +21,7 @@ module Llm
     rescue Langchain::OutputParsers::OutputParserException
       fix_parser = Langchain::OutputParsers::OutputFixingParser.from_llm(
         llm: client,
-        parser:
+        parser: output_parser
       )
       fix_parser.parse(llm_response)
     end
@@ -45,7 +45,7 @@ module Llm
     def client
       @client ||= Langchain::LLM::Ollama.new(
         url: ENV["OLLAMA_URL"].presence,
-        default_options: {temperature: 0.2, chat_model: model}
+        default_options: {temperature: 0.0, chat_model: model}
       )
     end
 

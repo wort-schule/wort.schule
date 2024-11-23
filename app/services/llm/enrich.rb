@@ -4,6 +4,10 @@ module Llm
   class Enrich
     class UnsupportedWordType < StandardError; end
 
+    ATTRIBUTE_GROUPS = [
+      [:case_1_singular, :case_1_plural, :case_2_singular, :case_2_plural, :case_3_singular, :case_3_plural, :case_4_singular, :case_4_plural]
+    ]
+
     attr_reader :word, :word_llm_enrichment
 
     delegate :full_prompt, to: :llm_invocation
@@ -63,7 +67,7 @@ module Llm
           attributes: word.to_json
         },
         prompt: <<~PROMPT
-          The following JSON includes all the information we have about the German word '#{word.name}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules.
+          The following JSON includes all the information we have about the German word '#{word.name}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules. You can use the provided JSON as an input, but please answer in a JSON conforming to the JSON schema provided later in this request.
 
           {attributes}
 
@@ -74,16 +78,44 @@ module Llm
 
     def create_enriched_attributes(response)
       ActiveRecord::Base.transaction do
-        response.with_indifferent_access.slice(*response_model.properties).each do |attribute_name, value|
-          next if word.send(attribute_name) == value
+        properties = response.with_indifferent_access.slice(*response_model.properties)
 
-          WordAttributeEdit
-            .find_or_create_by!(
+        groups = ATTRIBUTE_GROUPS.map do |attributes|
+          group_attributes = properties.slice(*attributes)
+
+          properties.reject! { |property| attributes.include?(property.to_sym) }
+
+          group_attributes
+        end
+
+        properties.each do |attribute_name, value|
+          groups << {
+            attribute_name => value
+          }
+        end
+
+        groups.each do |attributes|
+          attributes.select! do |attribute_name, value|
+            next false if word.send(attribute_name) == value
+            next false if WordAttributeEdit.exists?(word:, attribute_name:, value:)
+
+            true
+          end
+
+          next if attributes.empty?
+
+          change_group = ChangeGroup.create!(
+            state: :waiting_for_review
+          )
+
+          attributes.each do |attribute_name, value|
+            WordAttributeEdit.create!(
+              change_group:,
               word:,
               attribute_name:,
-              value:,
-              state: value.present? ? :waiting_for_review : :invalid
+              value:
             )
+          end
         end
       end
     end
