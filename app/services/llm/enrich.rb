@@ -67,7 +67,7 @@ module Llm
           attributes: word.to_json
         },
         prompt: <<~PROMPT
-          The following JSON includes all the information we have about the German word '#{word.name}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules.
+          The following JSON includes all the information we have about the German word '#{word.name}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules. You can use the provided JSON as an input, but please answer in a JSON conforming to the JSON schema provided later in this request.
 
           {attributes}
 
