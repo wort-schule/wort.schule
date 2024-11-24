@@ -32,12 +32,13 @@ RSpec.describe Llm::Enrich do
 
   it "calls the LLM and stores changed attributes" do
     expect { subject }
-      .to change(WordLlmEnrichment, :count).by(1)
+      .to change(WordLlmInvocation, :count).by(1)
       .and change(WordAttributeEdit, :count).by(1)
       .and change(ChangeGroup, :count).by(1)
 
-    expect(WordLlmEnrichment.last).to have_attributes(
-      word:,
+    expect(WordLlmInvocation.last).to have_attributes(
+      key: "Noun##{word.id}",
+      invocation_type: "enrichment",
       state: "completed"
     )
 

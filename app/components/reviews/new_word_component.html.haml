@@ -1,0 +1,44 @@
+%h1= t '.title'
+
+.grid.gap-6
+  .mt-4.box.bg-white.overflow-hidden.border-2.border-gray-border.rounded-3xl.px-4.py-5.sm:px-6
+    .grid.lg:grid-cols-2.gap-x-6.gap-y-2
+      %div
+        %div= t '.name'
+        .font-bold.text-lg= new_word.name
+      %div
+        %div= t '.topic'
+        .font-bold.text-lg= new_word.topic
+
+      %div
+        %div= t '.llm_name'
+        .font-bold.text-lg= new_word.llm_name
+      %div
+        %div= t '.llm_topic'
+        .font-bold.text-lg= new_word.llm_topic
+
+- if duplicates_exist?
+  %h2.mt-8= t '.duplicates.title'
+  .mb-6= t '.duplicates.introduction'
+
+  - if words_with_other_topics.present?
+    = render Reviews::DuplicateWordsComponent.new(change_group:, words: words_with_other_topics)
+
+  - if words_with_other_topics_from_llm.present?
+    = render Reviews::DuplicateWordsComponent.new(change_group:, words: words_with_other_topics_from_llm)
+
+%h2= t '.new_word.title'
+
+.mt-4.box.bg-white.overflow-hidden.border-2.border-gray-border.rounded-3xl.px-4.py-5.sm:px-6
+  = simple_form_for change_group, url: review_path(change_group), method: :patch do |f|
+    = hidden_field_tag :state, 'created'
+    = f.fields_for :new_word do |n|
+      = n.input :word_type, include_blank: false
+      = n.input :name
+      = n.input :topic
+
+  .flex.flex-wrap.md:gap-2.md:justify-end.mt-6
+    = form_tag review_path(change_group), method: :patch, class: 'grow md:grow-0' do
+      = hidden_field_tag :state, 'skipped'
+      = submit_tag t('reviews.show.actions.skip'), class: 'button outline mt-4'
+    %button.button.primary.grow.md:grow-0.mt-4{ type: "submit", form: dom_id(change_group, :edit) }= t 'reviews.new_word_component.create'

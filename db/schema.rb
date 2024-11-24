@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_24_130532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -255,6 +255,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
     t.bigint "word_id", null: false
   end
 
+  create_table "new_words", force: :cascade do |t|
+    t.bigint "change_group_id", null: false
+    t.string "name", null: false
+    t.string "topic", null: false
+    t.string "word_type", null: false
+    t.string "llm_name"
+    t.string "llm_topic"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "duplicate_word_id"
+    t.bigint "created_word_id"
+    t.index ["change_group_id"], name: "index_new_words_on_change_group_id"
+    t.index ["created_word_id"], name: "index_new_words_on_created_word_id"
+    t.index ["duplicate_word_id"], name: "index_new_words_on_duplicate_word_id"
+    t.index ["name", "topic", "word_type"], name: "index_new_words_on_name_and_topic_and_word_type"
+  end
+
   create_table "opposites", id: false, force: :cascade do |t|
     t.integer "word_id"
     t.integer "opposite_id"
@@ -440,16 +457,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
     t.index ["name", "topic", "word_type"], name: "index_word_imports_on_name_and_topic_and_word_type"
   end
 
-  create_table "word_llm_enrichments", force: :cascade do |t|
-    t.string "word_type", null: false
-    t.bigint "word_id", null: false
+  create_table "word_llm_invocations", force: :cascade do |t|
     t.string "state", default: "new", null: false
     t.text "error"
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["state"], name: "index_word_llm_enrichments_on_state"
-    t.index ["word_type", "word_id"], name: "index_word_llm_enrichments_on_word"
+    t.string "invocation_type", null: false
+    t.string "key", null: false
+    t.index ["invocation_type"], name: "index_word_llm_invocations_on_invocation_type"
+    t.index ["key"], name: "index_word_llm_invocations_on_key"
+    t.index ["state"], name: "index_word_llm_invocations_on_state"
   end
 
   create_table "word_view_settings", force: :cascade do |t|
@@ -564,6 +582,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
   add_foreign_key "learning_pleas", "learning_groups"
   add_foreign_key "learning_pleas", "lists"
   add_foreign_key "lists", "users"
+  add_foreign_key "new_words", "change_groups"
+  add_foreign_key "new_words", "words", column: "created_word_id"
+  add_foreign_key "new_words", "words", column: "duplicate_word_id"
   add_foreign_key "reviews", "users", column: "reviewer_id"
   add_foreign_key "themes", "users"
   add_foreign_key "users", "word_view_settings"

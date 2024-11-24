@@ -8,5 +8,5 @@ class WordImport < ApplicationRecord
   validates :word_type, presence: true
 
   enumerize :word_type, in: %i[Noun Verb Adjective FunctionWord]
-  enumerize :state, in: %i[new failed], default: :new
+  enumerize :state, in: %i[new failed completed], default: :new
 end

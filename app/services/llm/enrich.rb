@@ -8,7 +8,7 @@ module Llm
       [:case_1_singular, :case_1_plural, :case_2_singular, :case_2_plural, :case_3_singular, :case_3_plural, :case_4_singular, :case_4_plural]
     ]
 
-    attr_reader :word, :word_llm_enrichment
+    attr_reader :word, :word_llm_invocation
 
     delegate :full_prompt, to: :llm_invocation
 
@@ -19,17 +19,17 @@ module Llm
     def call
       return if pending_llm_response?
 
-      initialize_word_llm_enrichment
+      initialize_word_llm_invocation
       response = llm_response
       create_enriched_attributes(response)
-      word_llm_enrichment.update!(state: :completed)
+      word_llm_invocation.update!(state: :completed)
     rescue => e
-      word_llm_enrichment&.update!(
+      word_llm_invocation&.update!(
         state: :failed,
         error: e.full_message
       )
 
-      raise e if word_llm_enrichment.blank?
+      raise e if word_llm_invocation.blank?
     end
 
     def supported?
@@ -41,17 +41,19 @@ module Llm
     private
 
     def pending_llm_response?
-      WordLlmEnrichment
+      WordLlmInvocation
         .exists?(
-          word:,
+          key: "#{word.class}##{word.id}",
+          invocation_type: "enrichment",
           state: %w[new invoked]
         )
     end
 
-    def initialize_word_llm_enrichment
-      @word_llm_enrichment ||= WordLlmEnrichment
+    def initialize_word_llm_invocation
+      @word_llm_invocation ||= WordLlmInvocation
         .create!(
-          word:,
+          key: "#{word.class}##{word.id}",
+          invocation_type: :enrichment,
           state: :invoked
         )
     end

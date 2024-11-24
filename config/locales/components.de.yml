@@ -10,3 +10,18 @@ de:
   theme_component:
     llm_prompt:
       title: LLM Prompt
+  reviews:
+    new_word_component:
+      title: Neues Wort
+      duplicates:
+        title: Bestehende Wörter
+        introduction: Die folgenden Wörter existieren bereits in unserer Datenbank. Bitte eines dieser Wörter wählen, falls eines dieser Wörter identisch ist.
+      name: Grundform
+      topic: Thema
+      llm_name: LLM-Vorschlag Grundform
+      llm_topic: LLM-Vorschlag Thema
+      new_word:
+        title: Neues Wort erstellen
+      create: Erstellen
+    duplicate_words_component:
+      choose: Wort wählen
