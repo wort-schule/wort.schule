@@ -13,9 +13,10 @@ module Reviewable
 
       where(successor_id: nil)
         .where(state: :waiting_for_review)
+        .left_joins(:new_word)
         .left_joins(:word_attribute_edits)
         .where(
-          "word_attribute_edits.id IN (?)", WordAttributeEdit.where(attribute_name: reviewer.review_attributes_without_types).select(:id)
+          "new_words.id IS NOT NULL OR word_attribute_edits.id IN (?)", WordAttributeEdit.where(attribute_name: reviewer.review_attributes_without_types).select(:id)
         )
         .where(
           id: select(:id)

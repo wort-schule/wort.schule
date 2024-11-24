@@ -6,5 +6,5 @@ class Review < ApplicationRecord
   belongs_to :reviewable, polymorphic: true
   belongs_to :reviewer, class_name: "User"
 
-  enumerize :state, in: %i[skipped edited confirmed]
+  enumerize :state, in: %i[skipped edited confirmed created duplicate]
 end

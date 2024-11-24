@@ -27,3 +27,9 @@ de:
       visibility:
         private: Privat
         public: Öffentlich
+    new_word:
+      word_type:
+        Noun: Substantiv
+        Verb: Verb
+        Adjective: Adjektiv
+        FunctionWord: Funktionswort

@@ -257,3 +257,7 @@ de:
         numerus_wording: Bezeichnung Numerus
         no_font: Standardschrift
         visibility: Sichtbarkeit
+      new_word:
+        word_type: Worttyp
+        name: Grundform
+        topic: Thema

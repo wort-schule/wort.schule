@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_24_130532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -264,7 +264,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
     t.string "llm_topic"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "duplicate_word_id"
+    t.bigint "created_word_id"
     t.index ["change_group_id"], name: "index_new_words_on_change_group_id"
+    t.index ["created_word_id"], name: "index_new_words_on_created_word_id"
+    t.index ["duplicate_word_id"], name: "index_new_words_on_duplicate_word_id"
     t.index ["name", "topic", "word_type"], name: "index_new_words_on_name_and_topic_and_word_type"
   end
 
@@ -579,6 +583,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_23_160244) do
   add_foreign_key "learning_pleas", "lists"
   add_foreign_key "lists", "users"
   add_foreign_key "new_words", "change_groups"
+  add_foreign_key "new_words", "words", column: "created_word_id"
+  add_foreign_key "new_words", "words", column: "duplicate_word_id"
   add_foreign_key "reviews", "users", column: "reviewer_id"
   add_foreign_key "themes", "users"
   add_foreign_key "users", "word_view_settings"

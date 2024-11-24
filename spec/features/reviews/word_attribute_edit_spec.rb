@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "reviews" do
+RSpec.describe "reviews for enriched attributes" do
   let(:me) { create :admin, review_attributes: Llm::Attributes.keys_with_types }
   let(:other_admin) { create :admin, review_attributes: Llm::Attributes.keys_with_types }
 
