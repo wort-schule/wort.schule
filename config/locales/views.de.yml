@@ -390,3 +390,17 @@ de:
       actions:
         skip: Überspringen
         confirm: Vorschlag bestätigen
+
+  word_imports:
+    new:
+      title: Wörter importieren
+      explanation_html: |
+        <p>Folgend kann eine CSV-Datei hochgeladen werden um Wörter zu importieren. Es wird überprüft ob importierte Wörter bereits in der Wort-Datenbank vorhanden sind. Vorhandene Wörter werden durch ein Large Language Model (LLM) ergänzt. Neue Wörter werden durch das LLM überprüft. Alle Anpassungen gehen durch den Review-Prozess.</p>
+        <p>Die CSV-Datei muss 3 Spalten enthalten, in der Reihenfolge: Wort-Typ, Grundform des Wortes, Thema</p>
+        <p>Die erste Zeile wird als Kopfzeile ignoriert.</p>
+      example: "Folgend ein Beispiel einer CSV-Datei:"
+      submit: Importieren
+    create:
+      imported:
+        one: "1 Wort wurde importiert"
+        other: "%{count} Wörter wurden importiert"

@@ -3,19 +3,19 @@
 require "rails_helper"
 
 RSpec.describe Import::Word do
-  subject { described_class.new(name:, topic:, word_type:).call }
+  subject { described_class.new(name:, topic:, word_type:, word_import_id:).call }
 
   let(:name) { "Katze" }
   let(:topic) { "Tiere" }
   let(:word_type) { "Noun" }
+  let!(:word_import_id) { create(:word_import, name:, topic:, word_type:, state: :new).id }
 
   context "with an empty database" do
-    it "creates a word import" do
+    it "calls the LLM" do
       expect(Llm::CheckBaseForm).to receive(:new).with(word_type:, name:, topic:).and_call_original
       expect_any_instance_of(Llm::CheckBaseForm).to receive(:call).and_return(NewWord.new(word_type:, name:, topic:))
 
-      expect { subject }
-        .to change(WordImport, :count).by(1)
+      subject
 
       expect(WordImport.last).to have_attributes(
         name:,
@@ -26,27 +26,6 @@ RSpec.describe Import::Word do
     end
   end
 
-  context "with the same word import" do
-    let!(:word_import) { create(:word_import, name:, topic:, word_type:) }
-
-    it "does not do anything" do
-      expect { subject }
-        .not_to change(WordImport, :count)
-    end
-  end
-
-  context "with a failed word import" do
-    let!(:word_import) { create(:word_import, name:, topic:, word_type:, state: :failed) }
-
-    it "creates a word import" do
-      expect(Llm::CheckBaseForm).to receive(:new).with(word_type:, name:, topic:).and_call_original
-      expect_any_instance_of(Llm::CheckBaseForm).to receive(:call).and_return(NewWord.new(word_type:, name:, topic:))
-
-      expect { subject }
-        .to change(WordImport, :count).by(1)
-    end
-  end
-
   context "with the same word" do
     let!(:word) { create(:noun, name:, topics: [build(:topic, name: topic)]) }
 
@@ -54,8 +33,14 @@ RSpec.describe Import::Word do
       expect(Llm::Enrich).to receive(:new).with(word:).and_call_original
       expect_any_instance_of(Llm::Enrich).to receive(:call)
 
-      expect { subject }
-        .to change(WordImport, :count).by(1)
+      subject
+
+      expect(WordImport.last).to have_attributes(
+        name:,
+        topic:,
+        word_type:,
+        state: "completed"
+      )
     end
   end
 
@@ -87,8 +72,7 @@ RSpec.describe Import::Word do
       expect(Llm::CheckBaseForm).to receive(:new).with(word_type:, name:, topic:).and_call_original
 
       expect { subject }
-        .to change(WordImport, :count).by(1)
-        .and change(NewWord, :count).by(1)
+        .to change(NewWord, :count).by(1)
 
       expect(NewWord.last).to have_attributes(
         word_type:,
