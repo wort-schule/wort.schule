@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resources :adjectives, except: %i[index new create], path: "", constraints: SlugConstraint.new(Adjective)
   resources :function_words, except: %i[index new create], path: "", constraints: SlugConstraint.new(FunctionWord)
 
+  authenticate :user, ->(user) { user.role == "Admin" } do
+    mount GoodJob::Engine => "seite/good_job"
+  end
+
   concern :themeable do
     get :theme, action: :theme
   end
