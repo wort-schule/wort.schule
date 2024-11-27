@@ -99,6 +99,7 @@ Rails.application.routes.draw do
     resource :keyword, only: :show
 
     resources :reviews, only: %i[index show update]
+    resources :word_imports, only: %i[new create]
 
     # User's own routes
     resource :profile, only: %i[show edit update] do

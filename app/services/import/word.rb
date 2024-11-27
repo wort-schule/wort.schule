@@ -4,16 +4,16 @@ module Import
   class Word
     attr_reader :name, :topic, :word_type, :word_import
 
-    def initialize(name:, topic:, word_type:)
+    def initialize(name:, topic:, word_type:, word_import_id:)
       @name = name.strip
       @topic = topic.strip
       @word_type = word_type
+      @word_import = WordImport.find_by(id: word_import_id)
     end
 
     def call
-      return if import_exists?
-
-      create_word_import
+      return if word_import.blank?
+      return if [word_type, name, topic].any?(&:blank?)
 
       if existing_words(name:, topic:).present?
         Rails.logger.info("Word exists, starting enrichment. name=#{name} topic=#{topic} word_type=#{word_type}")
@@ -21,6 +21,7 @@ module Import
           Llm::Enrich.new(word: existing_word).call
         end
 
+        @word_import.update!(state: :completed)
         return
       end
 
@@ -49,16 +50,6 @@ module Import
     end
 
     private
-
-    def import_exists?
-      WordImport
-        .where.not(state: :failed)
-        .exists?(name:, topic:, word_type:)
-    end
-
-    def create_word_import
-      @word_import ||= WordImport.create!(name:, topic:, word_type:, state: :new)
-    end
 
     def existing_words(name:, topic:)
       ::Word

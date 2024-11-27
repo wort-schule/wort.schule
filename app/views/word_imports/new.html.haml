@@ -1,0 +1,12 @@
+%h1= t '.title'
+.mt-4
+  .flex.flex-col.gap-2
+    = t '.explanation_html'
+    = t '.example'
+
+    %pre= File.read(Rails.root.join('app/views/word_imports/example.csv'))
+
+.mt-6
+  = simple_form_for @word_import do |f|
+    = f.input :csv_file, as: :file, label: false
+    = f.submit t('.submit')
