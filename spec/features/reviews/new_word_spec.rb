@@ -41,6 +41,28 @@ RSpec.describe "reviews for new words" do
     expect(Review.last.state).to eq "skipped"
   end
 
+  it "discards the review" do
+    original_env = ENV.to_hash
+    ENV.update("REVIEW_EXCEPTION_MAIL" => "muster@example.com")
+
+    new_word = create(:new_word)
+
+    login_as me
+    visit reviews_path
+    expect(page).to have_content new_word.name
+    expect(page).to have_content new_word.topic
+
+    expect do
+      click_on I18n.t("reviews.show.actions.discard")
+    end.to change(Review, :count).by(1)
+      .and not_change(Word, :count)
+      .and enqueue_job(ActionMailer::MailDeliveryJob)
+
+    expect(Review.last.state).to eq "discarded"
+  ensure
+    ENV.replace(original_env)
+  end
+
   it "confirms the new word" do
     new_word = create(:new_word)
 

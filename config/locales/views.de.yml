@@ -389,6 +389,7 @@ de:
       proposed_value: Vorschlag
       actions:
         skip: Überspringen
+        discard: Wort nicht aufnehmen
         confirm: Vorschlag bestätigen
 
   word_imports:

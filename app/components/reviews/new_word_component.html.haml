@@ -41,4 +41,7 @@
     = form_tag review_path(change_group), method: :patch, class: 'grow md:grow-0' do
       = hidden_field_tag :state, 'skipped'
       = submit_tag t('reviews.show.actions.skip'), class: 'button outline mt-4'
+    = form_tag review_path(change_group), method: :patch, class: 'grow md:grow-0' do
+      = hidden_field_tag :state, 'discarded'
+      = submit_tag t('reviews.show.actions.discard'), class: 'button outline mt-4'
     %button.button.primary.grow.md:grow-0.mt-4{ type: "submit", form: dom_id(change_group, :edit) }= t 'reviews.new_word_component.create'

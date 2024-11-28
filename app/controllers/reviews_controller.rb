@@ -15,13 +15,17 @@ class ReviewsController < ApplicationController
   end
 
   def update
-    has_skipped = params[:state] == "skipped"
+    has_skipped = %w[skipped discarded].include?(params[:state])
 
     if has_skipped
       @reviewable.store_review(
         reviewer: current_user,
         state: params[:state]
       )
+
+      if @reviewable.new_word.present? && params[:state] == "discarded"
+        ReviewMailer.discarded(@reviewable.new_word).deliver_later if ENV["REVIEW_EXCEPTION_MAIL"].present?
+      end
 
       return redirect_to_next_review
     end
