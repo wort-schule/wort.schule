@@ -4,7 +4,7 @@ class ChangeGroup < ApplicationRecord
   extend Enumerize
   include Reviewable
 
-  enumerize :state, in: %i[waiting_for_review edited confirmed invalid created duplicate], default: :waiting_for_review
+  enumerize :state, in: %i[waiting_for_review edited confirmed invalid created duplicate discarded], default: :waiting_for_review
 
   has_many :word_attribute_edits, dependent: :destroy
   has_one :new_word, dependent: :destroy

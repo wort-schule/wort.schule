@@ -5,3 +5,6 @@ de:
       salutation: 'Hallo %{full_name}'
       invited_to: 'Sie wurden in die Lerngruppe "%{name}" eingeladen.'
       accept: Zu meinen Lerngruppen-Einladungen
+  review_mailer:
+    discarded:
+      subject: 'Wort nicht aufgenommen: %{name}'
