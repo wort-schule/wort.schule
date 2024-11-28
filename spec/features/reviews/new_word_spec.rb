@@ -53,6 +53,7 @@ RSpec.describe "reviews for new words" do
       click_on I18n.t("reviews.new_word_component.create")
     end.to change(Review, :count).by(1)
       .and change(Word, :count).by(1)
+      .and enqueue_job(EnrichWordJob)
 
     created_word = Word.last
 
