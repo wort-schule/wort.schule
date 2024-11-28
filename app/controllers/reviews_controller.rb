@@ -123,6 +123,8 @@ class ReviewsController < ApplicationController
           @reviewable.update!(state: "created")
           @reviewable.new_word.update!(created_word_id: created_word.id)
 
+          EnrichWordJob.perform_later(created_word.id)
+
           return redirect_to_next_review
         end
       end
