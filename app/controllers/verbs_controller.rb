@@ -24,7 +24,9 @@ class VerbsController < PublicController
       format.html do
         render ThemeComponent.new(word: @verb, theme: current_word_view_setting.theme_verb)
       end
-      format.json
+      format.json do
+        render "show", locals: {verb: @verb}
+      end
     end
   end
 

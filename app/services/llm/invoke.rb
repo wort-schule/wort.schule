@@ -2,12 +2,13 @@
 
 module Llm
   class Invoke
-    attr_reader :prompt, :prompt_variables, :response_model
+    attr_reader :prompt, :prompt_variables, :response_model, :include_format_instructions
 
-    def initialize(prompt:, prompt_variables:, response_model:)
+    def initialize(prompt:, prompt_variables:, response_model:, include_format_instructions: true)
       @prompt = prompt
       @prompt_variables = prompt_variables
       @response_model = response_model
+      @include_format_instructions = include_format_instructions
     end
 
     def call
@@ -31,12 +32,12 @@ module Llm
 
       templated_prompt = Langchain::Prompt::PromptTemplate.new(
         template: prompt,
-        input_variables: prompt_variables.keys.map(&:to_s) + ["format_instructions"]
+        input_variables: prompt_variables.keys.map(&:to_s) + (include_format_instructions ? ["format_instructions"] : [])
       )
 
       templated_prompt.format(
-        attributes: prompt_variables[:attributes],
-        format_instructions: output_parser.get_format_instructions
+        format_instructions: output_parser.get_format_instructions,
+        **prompt_variables
       )
     end
 

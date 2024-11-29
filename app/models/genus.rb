@@ -35,4 +35,8 @@ class Genus < ApplicationRecord
       NAMES[key.to_sym][genus_key.to_sym]
     end.join("/")
   end
+
+  def self.values
+    distinct.pluck(:name)
+  end
 end

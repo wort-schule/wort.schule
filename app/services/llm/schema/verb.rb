@@ -2,9 +2,7 @@
 
 module Llm
   module Schema
-    class Verb
-      include EasyTalk::Model
-
+    class Verb < Base
       define_schema do
         instance_eval(Llm::Schema::Shared.properties)
 

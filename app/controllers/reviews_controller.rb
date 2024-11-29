@@ -34,7 +34,11 @@ class ReviewsController < ApplicationController
       confirmed = params.dig(:change_group, :word_attribute_edits_attributes)&.values&.map do |attributes|
         existing = @reviewable.word_attribute_edits.find { |word_attribute_edit| word_attribute_edit.id.to_s == attributes[:id] }
 
-        human_proposed_value = attributes[:value]&.strip
+        human_proposed_value = attributes[:value]
+        human_proposed_value.strip! if human_proposed_value&.is_a?(String)
+        human_proposed_value.compact_blank! if human_proposed_value&.is_a?(Array)
+        human_proposed_value = true if human_proposed_value == "1"
+        human_proposed_value = false if human_proposed_value == "0"
         existing.errors.add(:value, :blank) if human_proposed_value.blank?
         proposal_not_changed = existing.proposed_value == human_proposed_value
         params[:state] == "confirmed" && proposal_not_changed && human_proposed_value.present?
@@ -56,12 +60,18 @@ class ReviewsController < ApplicationController
       @reviewable.transaction do
         successor = ChangeGroup.create!(state: :waiting_for_review)
         @reviewable.word_attribute_edits.each do |word_attribute_edit|
+          value = params.dig(:change_group, :word_attribute_edits_attributes)&.values&.find { |attributes| attributes[:id] == word_attribute_edit.id.to_s }&.dig(:value)
+
+          value = true if value == "1"
+          value = false if value == "0"
+          value.compact_blank! if value&.is_a?(Array)
+
           WordAttributeEdit
             .create!(
               change_group: successor,
               word: word_attribute_edit.word,
               attribute_name: word_attribute_edit.attribute_name,
-              value: params.dig(:change_group, :word_attribute_edits_attributes)&.values&.find { |attributes| attributes[:id] == word_attribute_edit.id.to_s }&.dig(:value)
+              value: value.to_json
             )
         end
 

@@ -1,0 +1,7 @@
+- case type
+- when :string
+  = form.input :value, label: false, input_html: {value:}
+- when :boolean
+  = form.input :value, as: :boolean, label: false, input_html: {checked: value}
+- when :array
+  = form.input :value, collection:, selected: value, multiple: true, label: false, input_html: {'data-controller': 'select'}

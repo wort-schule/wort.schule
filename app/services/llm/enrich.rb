@@ -2,8 +2,6 @@
 
 module Llm
   class Enrich
-    class UnsupportedWordType < StandardError; end
-
     ATTRIBUTE_GROUPS = [
       [:case_1_singular, :case_1_plural, :case_2_singular, :case_2_plural, :case_3_singular, :case_3_plural, :case_4_singular, :case_4_plural],
       [:imperative_singular, :imperative_plural],
@@ -40,7 +38,7 @@ module Llm
 
     def supported?
       response_model.present?
-    rescue UnsupportedWordType
+    rescue Llm::Attributes::UnsupportedWordType
       false
     end
 
@@ -70,18 +68,24 @@ module Llm
 
     def llm_invocation
       @llm_invocation ||= Invoke.new(
+        include_format_instructions: true,
         response_model:,
         prompt_variables: {
-          attributes: word.to_json
+          input_dataset: response_model.from_word(word).to_json,
+          word: word.name
         },
         prompt: <<~PROMPT
-          The following JSON includes all the information we have about the German word '#{word.name}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules. You can use the provided JSON as an input, but please answer in a JSON conforming to the JSON schema provided later in this request.
+          The following JSON includes all the information we have about the German word '{word}'. Please correct and enrich that information. We use your response for students learning German. Please ensure that all your answers are in German and adhere to German grammar rules. You can use the provided JSON as an input, but please answer in a JSON conforming to the JSON schema provided later in this request.
 
-          {attributes}
+          {input_dataset}
 
           {format_instructions}
         PROMPT
       )
+    end
+
+    def response_model
+      Llm::Attributes.response_model(word.type)
     end
 
     def create_enriched_attributes(response)
@@ -117,23 +121,17 @@ module Llm
           )
 
           attributes.each do |attribute_name, value|
+            filtered_value = Attributes.filter(response_model:, attribute_name:, value:)
+            next if filtered_value.nil?
+
             WordAttributeEdit.create!(
               change_group:,
               word:,
               attribute_name:,
-              value:
+              value: filtered_value
             )
           end
         end
-      end
-    end
-
-    def response_model
-      case word.type
-      when "Noun" then Schema::Noun
-      when "Verb" then Schema::Verb
-      when "Adjective" then Schema::Adjective
-      else raise UnsupportedWordType, "Word type '#{word.type}' is not supported for LLM enrichment"
       end
     end
   end

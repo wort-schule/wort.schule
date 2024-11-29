@@ -9,10 +9,14 @@ class WordAttributeEdit < ApplicationRecord
   end
 
   def current_value
-    word.send(attribute_name)
+    values = word.send(attribute_name)
+
+    return values.pluck(:name).sort.join(", ") if values.is_a?(ActiveRecord::Relation)
+
+    values
   end
 
   def proposed_value
-    value
+    JSON.parse(value) if value.present?
   end
 end

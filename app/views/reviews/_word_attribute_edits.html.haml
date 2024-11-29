@@ -5,20 +5,19 @@
   = simple_form_for @reviewable, url: review_path(@reviewable), method: :patch do |f|
     .grid.gap-6
       = f.fields_for :word_attribute_edits do |wae|
-        = box do
-          .grid.lg:grid-cols-2.gap-x-6.gap-y-2
-            %div
-              %div= t 'reviews.show.attribute'
-              .font-bold.text-lg= wae.object.attribute_label
-            %div
+        .grid.lg:grid-cols-2.gap-x-6.gap-y-2
+          %div
+            %div= t 'reviews.show.attribute'
+            .font-bold.text-lg= wae.object.attribute_label
+          %div
 
-            %div= t 'reviews.show.current_value'
-            %div= t 'reviews.show.proposed_value'
+          %div= t 'reviews.show.current_value'
+          %div= t 'reviews.show.proposed_value'
 
-            .font-bold.text-xl= wae.object.current_value
-            %div
-              = hidden_field_tag :state, 'confirmed'
-              = wae.input :value, label: false
+          .font-bold.text-xl= wae.object.current_value
+          %div
+            = hidden_field_tag :state, 'confirmed'
+            = render Reviews::LlmValueComponent.new(form: wae)
 
 .flex.flex-wrap.md:gap-2.md:justify-end.mt-6
   = form_tag review_path(@reviewable), method: :patch, class: 'grow md:grow-0' do

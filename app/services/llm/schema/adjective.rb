@@ -2,9 +2,7 @@
 
 module Llm
   module Schema
-    class Adjective
-      include EasyTalk::Model
-
+    class Adjective < Base
       define_schema do
         instance_eval(Llm::Schema::Shared.properties)
 

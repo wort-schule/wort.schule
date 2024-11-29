@@ -9,4 +9,8 @@ class Topic < ApplicationRecord
   end
 
   validates_presence_of :name
+
+  def self.values
+    distinct.pluck(:name).sort
+  end
 end

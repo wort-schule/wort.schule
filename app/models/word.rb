@@ -185,6 +185,10 @@ class Word < ApplicationRecord
     audios.all.find { |a| a.filename == "#{slug}.mp3" }
   end
 
+  def self.values
+    distinct.pluck(:name)
+  end
+
   private
 
   def set_consonant_vowel

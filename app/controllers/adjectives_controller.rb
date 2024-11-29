@@ -24,7 +24,9 @@ class AdjectivesController < PublicController
       format.html do
         render ThemeComponent.new(word: @adjective, theme: current_word_view_setting.theme_adjective)
       end
-      format.json
+      format.json do
+        render "show", locals: {adjective: @adjective}
+      end
     end
   end
 

@@ -5,4 +5,8 @@ class Prefix < ApplicationRecord
   validates_presence_of :name
 
   enumerize :prefix_type, in: %w[Verb adjective noun]
+
+  def self.values
+    distinct.pluck(:name)
+  end
 end

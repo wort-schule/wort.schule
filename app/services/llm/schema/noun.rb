@@ -2,9 +2,7 @@
 
 module Llm
   module Schema
-    class Noun
-      include EasyTalk::Model
-
+    class Noun < Base
       define_schema do
         instance_eval(Llm::Schema::Shared.properties)
 
@@ -18,7 +16,7 @@ module Llm
         property :case_4_plural, String, description: "Deutsche Deklination im Akkusativ Plural"
         property :singularetantum, T::Boolean, description: "Ob das Wort ein Singularwort ist"
         property :pluraletantum, T::Boolean, description: "Ob das Wort ein Pluralwort ist"
-        property :genus, String, enum: Genus.distinct.pluck(:name), description: "Das grammatikalische Geschlecht dieses Nomens"
+        property :genus, String, enum: Genus.values, description: "Das grammatikalische Geschlecht dieses Nomens" if Genus.values.present?
       end
     end
   end

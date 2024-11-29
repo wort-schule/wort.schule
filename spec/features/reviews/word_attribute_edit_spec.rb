@@ -135,4 +135,68 @@ RSpec.describe "reviews for enriched attributes" do
 
     expect(page).to have_content I18n.t("errors.messages.blank")
   end
+
+  it "edits and confirms a boolean change" do
+    edit = create(:word_attribute_edit, attribute_name: "singularetantum", value: "false")
+    proposal = true
+
+    login_as me
+    visit reviews_path
+    expect(page).to have_content edit.word.name
+
+    expect(page).to have_unchecked_field "change_group[word_attribute_edits_attributes][0][value]"
+    check "change_group[word_attribute_edits_attributes][0][value]"
+    click_on I18n.t("reviews.show.actions.confirm")
+    expect(edit.reload.current_value).not_to eq proposal
+    expect(WordAttributeEdit.last.value).to eq "true"
+
+    login_as other_admin
+    visit reviews_path
+    expect(page).to have_checked_field "change_group[word_attribute_edits_attributes][0][value]"
+    click_on I18n.t("reviews.show.actions.confirm")
+
+    expect(edit.reload.current_value).not_to eq proposal
+    expect(WordAttributeEdit.last.value).to eq "true"
+
+    login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
+    visit reviews_path
+    expect(page).to have_checked_field "change_group[word_attribute_edits_attributes][0][value]"
+    click_on I18n.t("reviews.show.actions.confirm")
+
+    expect(edit.reload.current_value).to eq proposal
+  end
+
+  it "edits and confirms an array change" do
+    edit = create(:word_attribute_edit, attribute_name: "synonyms", value: '["Katze", "Kaninchen"]')
+    cat = create(:noun, name: "Katze")
+    rabbit = create(:noun, name: "Kaninchen")
+    proposal = "Katze"
+    expect(edit.reload.current_value).not_to eq edit.proposed_value
+
+    login_as me
+    visit reviews_path
+    expect(page).to have_content edit.word.name
+
+    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name, rabbit.name]
+    unselect "Kaninchen", from: "change_group[word_attribute_edits_attributes][0][value][]"
+    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name]
+    click_on I18n.t("reviews.show.actions.confirm")
+    expect(edit.reload.current_value).not_to eq proposal
+    expect(WordAttributeEdit.last.value).to eq '["Katze"]'
+
+    login_as other_admin
+    visit reviews_path
+    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name]
+    click_on I18n.t("reviews.show.actions.confirm")
+
+    expect(edit.reload.current_value).not_to eq proposal
+    expect(WordAttributeEdit.last.value).to eq '["Katze"]'
+
+    login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
+    visit reviews_path
+    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name]
+    click_on I18n.t("reviews.show.actions.confirm")
+
+    expect(edit.reload.current_value).to eq proposal
+  end
 end
