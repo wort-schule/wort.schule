@@ -4,7 +4,9 @@ module Llm
   class Attributes
     def self.all
       {
-        noun: Llm::Schema::Noun.properties
+        noun: Llm::Schema::Noun.properties,
+        verb: Llm::Schema::Verb.properties,
+        adjective: Llm::Schema::Adjective.properties
       }
     end
 
