@@ -2,9 +2,13 @@
 
 module Llm
   class Attributes
+    class UnsupportedWordType < StandardError; end
+
     def self.all
       {
-        noun: Llm::Schema::Noun.properties
+        noun: Llm::Schema::Noun.properties,
+        verb: Llm::Schema::Verb.properties,
+        adjective: Llm::Schema::Adjective.properties
       }
     end
 
@@ -29,6 +33,61 @@ module Llm
 
         type.to_s.classify.constantize.human_attribute_name(attribute)
       end.uniq
+    end
+
+    def self.filter(response_model:, attribute_name:, value:)
+      type = response_model.schema.dig(:properties, attribute_name.to_sym)&.type
+
+      filtered_value = if type.is_a?(T::Types::TypedArray)
+        if relation_klass(attribute_name).present?
+          value.clamped(relation_klass(attribute_name).values)
+        else
+          value
+        end
+      else
+        value
+      end
+
+      filtered_value.to_json
+    end
+
+    def self.relation_klass(attribute_name)
+      case attribute_name.to_s
+      when "topics" then Topic
+      when "strategies" then Strategy
+      when "phenomenons" then Phenomenon
+      when "compound_entities", "synonyms", "opposites", "keywords", "rimes" then Word
+      end
+    end
+
+    def self.update!(word:, attribute_name:, value:)
+      type = response_model(word.type).schema.dig(:properties, attribute_name.to_sym)&.type
+
+      transformed_value = if type.is_a?(T::Types::TypedArray)
+        case attribute_name.to_s
+        when "topics"
+          Topic.where(name: value)
+        when "strategies"
+          Strategy.where(name: value)
+        when "phenomenons"
+          Phenomenon.where(name: value)
+        when "compound_entities", "synonyms", "opposites", "keywords", "rimes"
+          Word.where(name: value)
+        end
+      else
+        value
+      end
+
+      word.update!(attribute_name => transformed_value)
+    end
+
+    def self.response_model(word_type)
+      case word_type
+      when "Noun" then Schema::Noun
+      when "Verb" then Schema::Verb
+      when "Adjective" then Schema::Adjective
+      else raise UnsupportedWordType, "Word type '#{word_type}' is not supported for LLM enrichment"
+      end
     end
   end
 end

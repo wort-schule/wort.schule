@@ -14,7 +14,9 @@ class FunctionWordsController < PublicController
       format.html do
         render ThemeComponent.new(word: @function_word, theme: current_word_view_setting.theme_function_word)
       end
-      format.json
+      format.json do
+        render "show", locals: {function_word: @function_word}
+      end
     end
   end
 

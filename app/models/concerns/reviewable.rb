@@ -50,7 +50,11 @@ module Reviewable
         update!(state: :confirmed)
 
         word_attribute_edits.each do |word_attribute_edit|
-          word_attribute_edit.word.update!(word_attribute_edit.attribute_name => word_attribute_edit.value)
+          Llm::Attributes.update!(
+            word: word_attribute_edit.word,
+            attribute_name: word_attribute_edit.attribute_name,
+            value: JSON.parse(word_attribute_edit.value)
+          )
         end
       end
     end

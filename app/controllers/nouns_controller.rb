@@ -35,7 +35,9 @@ class NounsController < PublicController
       format.html do
         render ThemeComponent.new(word: @noun, theme: current_word_view_setting.theme_noun)
       end
-      format.json
+      format.json do
+        render "show", locals: {noun: @noun}
+      end
     end
   end
 
