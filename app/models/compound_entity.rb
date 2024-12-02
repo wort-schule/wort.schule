@@ -13,6 +13,8 @@ class CompoundEntity < ApplicationRecord
   belongs_to :word
   belongs_to :part, polymorphic: true
 
+  delegate :name, to: :word
+
   def to_s
     part.name
   end
