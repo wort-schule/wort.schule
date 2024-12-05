@@ -4,7 +4,7 @@ module Langchain
       private
 
       def client
-        @client ||= Faraday.new(url: url, headers: auth_headers, request: {timeout: 600, read_timeout: 600}) do |conn|
+        @client ||= Faraday.new(url: url, headers: auth_headers, request: {timeout: 1800, read_timeout: 1800}) do |conn|
           conn.request :json
           conn.response :json
           conn.response :raise_error
