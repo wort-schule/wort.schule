@@ -45,7 +45,7 @@ module Llm
 
     def client
       @client ||= Langchain::LLM::Ollama.new(
-        url: ENV["OLLAMA_URL"].presence,
+        url: ENV["OLLAMA_URL"].presence || "http://localhost:11434",
         default_options: {temperature: 0.0, chat_model: model}
       )
     end

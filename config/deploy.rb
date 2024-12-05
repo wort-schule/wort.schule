@@ -84,6 +84,7 @@ task :deploy do
 
     on :launch do
       command "sudo systemctl restart #{fetch(:user)}"
+      command "sudo systemctl restart #{fetch(:user)}-jobs"
     end
   end
 
