@@ -44,6 +44,7 @@ module Wortschule
     config.default_app_namespace = "seite"
 
     config.active_job.queue_adapter = :good_job
+    config.good_job.queues = "default:3; llm:1"
     config.good_job.enable_cron = true
     config.good_job.cron = {
       sessions_trim: {
