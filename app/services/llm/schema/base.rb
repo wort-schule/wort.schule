@@ -10,6 +10,7 @@ module Llm
           values = word.send(property)
 
           values = values.map(&:name).sort if values.is_a?(ActiveRecord::Relation)
+          values = values.name if values.is_a?(ActiveRecord::Base)
 
           [property, values]
         end

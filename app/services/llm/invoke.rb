@@ -18,13 +18,11 @@ module Llm
 
       raise "LLM response is empty full_prompt=#{full_prompt}" if llm_response.blank?
 
-      output_parser.parse(llm_response)
-    rescue Langchain::OutputParsers::OutputParserException
-      fix_parser = Langchain::OutputParsers::OutputFixingParser.from_llm(
-        llm: client,
-        parser: output_parser
-      )
-      fix_parser.parse(llm_response)
+      Rails.logger.info "Received LLM response:\n#{llm_response}"
+
+      text = llm_response
+      json = text.include?("```") ? text.strip.split(/```(?:json)?/)[1] : text.strip
+      JSON.parse(json)
     end
 
     def full_prompt
