@@ -14,7 +14,11 @@
           %div= t 'reviews.show.current_value'
           %div= t 'reviews.show.proposed_value'
 
-          .font-bold.text-xl= wae.object.current_value
+          .font-bold.text-xl
+            - if [TrueClass, FalseClass].any? { |klass| wae.object.current_value.is_a?(klass) }
+              = wae.object.current_value.humanize
+            - else
+              = wae.object.current_value
           %div
             = hidden_field_tag :state, 'confirmed'
             = render Reviews::LlmValueComponent.new(form: wae)
