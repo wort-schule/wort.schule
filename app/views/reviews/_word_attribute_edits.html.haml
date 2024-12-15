@@ -17,6 +17,9 @@
           .font-bold.text-xl
             - if [TrueClass, FalseClass].any? { |klass| wae.object.current_value.is_a?(klass) }
               = wae.object.current_value.humanize
+            - elsif wae.object.attribute_name == 'example_sentences'
+              - wae.object.word.example_sentences.each do |example_sentence|
+                %div= example_sentence
             - else
               = wae.object.current_value
           %div
