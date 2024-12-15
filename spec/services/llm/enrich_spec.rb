@@ -4,6 +4,7 @@ RSpec.describe Llm::Enrich do
   subject { described_class.new(word:).call }
 
   let(:word) { create(:noun, case_1_plural:) }
+  let!(:topic) { create(:topic) } # We need at least one topic for it to be included in the LLM schema
   let(:meaning) { "Ein Tier mit vier Pfoten." }
   let(:case_1_plural) { "Katzen" }
 
@@ -111,6 +112,228 @@ RSpec.describe Llm::Enrich do
           value: "[\"A\",\"B\"]"
         )
       ]
+    end
+  end
+
+  context "with an empty array response" do
+    let(:word) { create(:noun, case_1_plural:, singularetantum: false) }
+    let!(:get_llm_response) do
+      stub_request(:post, "https://ai.test/api/chat")
+        .to_return_json(
+          status: 200,
+          body: {
+            model: "llama3.1",
+            created_at: "2024-11-20T21:48:24.480952052Z",
+            message: {
+              role: "assistant",
+              content: "```json\n{\n  \"id\": 8467,\n  \"topics\": []\n}\n```"
+            },
+            done_reason: "stop",
+            done: true,
+            total_duration: 347987332616,
+            load_duration: 19833664,
+            prompt_eval_count: 726,
+            prompt_eval_duration: 350627000,
+            eval_count: 938,
+            eval_duration: 347572054000
+          }
+        )
+    end
+
+    it "does not store a change" do
+      expect { subject }
+        .to change(WordLlmInvocation, :count).by(1)
+        .and not_change(WordAttributeEdit, :count)
+        .and not_change(ChangeGroup, :count)
+
+      expect(WordLlmInvocation.last).to have_attributes(
+        key: "Noun##{word.id}",
+        invocation_type: "enrichment",
+        state: "completed"
+      )
+    end
+  end
+
+  context "with invalid values in an array response" do
+    let(:word) { create(:noun, case_1_plural:, singularetantum: false) }
+    let!(:get_llm_response) do
+      stub_request(:post, "https://ai.test/api/chat")
+        .to_return_json(
+          status: 200,
+          body: {
+            model: "llama3.1",
+            created_at: "2024-11-20T21:48:24.480952052Z",
+            message: {
+              role: "assistant",
+              content: "```json\n{\n  \"id\": 8467,\n  \"topics\": [\"Invalid\"]\n}\n```"
+            },
+            done_reason: "stop",
+            done: true,
+            total_duration: 347987332616,
+            load_duration: 19833664,
+            prompt_eval_count: 726,
+            prompt_eval_duration: 350627000,
+            eval_count: 938,
+            eval_duration: 347572054000
+          }
+        )
+    end
+
+    it "does not store a change" do
+      expect(Topic.exists?(name: "Invalid")).to be false
+      expect { subject }
+        .to change(WordLlmInvocation, :count).by(1)
+        .and not_change(WordAttributeEdit, :count)
+        .and not_change(ChangeGroup, :count)
+
+      expect(WordLlmInvocation.last).to have_attributes(
+        key: "Noun##{word.id}",
+        invocation_type: "enrichment",
+        state: "completed"
+      )
+    end
+  end
+
+  context "with valid and invalid values in an array response" do
+    let(:word) { create(:noun, case_1_plural:, singularetantum: false) }
+    let!(:topic) { create(:topic, name: "Baugewerbe") }
+    let!(:get_llm_response) do
+      stub_request(:post, "https://ai.test/api/chat")
+        .to_return_json(
+          status: 200,
+          body: {
+            model: "llama3.1",
+            created_at: "2024-11-20T21:48:24.480952052Z",
+            message: {
+              role: "assistant",
+              content: "```json\n{\n  \"id\": 8467,\n  \"topics\": [\"Invalid\", \"Baugewerbe\"]\n}\n```"
+            },
+            done_reason: "stop",
+            done: true,
+            total_duration: 347987332616,
+            load_duration: 19833664,
+            prompt_eval_count: 726,
+            prompt_eval_duration: 350627000,
+            eval_count: 938,
+            eval_duration: 347572054000
+          }
+        )
+    end
+
+    it "stores only valid values as change" do
+      expect(Topic.exists?(name: "Invalid")).to be false
+      expect(Topic.exists?(name: "Baugewerbe")).to be true
+      expect { subject }
+        .to change(WordLlmInvocation, :count).by(1)
+        .and change(WordAttributeEdit, :count).by(1)
+        .and change(ChangeGroup, :count).by(1)
+
+      expect(WordLlmInvocation.last).to have_attributes(
+        key: "Noun##{word.id}",
+        invocation_type: "enrichment",
+        state: "completed"
+      )
+      expect(ChangeGroup.last).to have_attributes(
+        state: "waiting_for_review"
+      )
+
+      expect(WordAttributeEdit.all).to match_array [
+        have_attributes(
+          change_group: be_present,
+          word:,
+          attribute_name: "topics",
+          value: '["Baugewerbe"]'
+        )
+      ]
+    end
+  end
+
+  context "with valid and invalid values in an array response with valid already existing" do
+    let(:word) { create(:noun, case_1_plural:, singularetantum: false) }
+    let!(:topic) { create(:topic, name: "Baugewerbe") }
+    let!(:get_llm_response) do
+      stub_request(:post, "https://ai.test/api/chat")
+        .to_return_json(
+          status: 200,
+          body: {
+            model: "llama3.1",
+            created_at: "2024-11-20T21:48:24.480952052Z",
+            message: {
+              role: "assistant",
+              content: "```json\n{\n  \"id\": 8467,\n  \"topics\": [\"Invalid\", \"Baugewerbe\"]\n}\n```"
+            },
+            done_reason: "stop",
+            done: true,
+            total_duration: 347987332616,
+            load_duration: 19833664,
+            prompt_eval_count: 726,
+            prompt_eval_duration: 350627000,
+            eval_count: 938,
+            eval_duration: 347572054000
+          }
+        )
+    end
+
+    before do
+      word.topics << create(:topic, name: "Baugewerbe")
+    end
+
+    it "does not store a change" do
+      expect(Topic.exists?(name: "Invalid")).to be false
+      expect(Topic.exists?(name: "Baugewerbe")).to be true
+      expect { subject }
+        .to change(WordLlmInvocation, :count).by(1)
+        .and not_change(WordAttributeEdit, :count)
+        .and not_change(ChangeGroup, :count)
+
+      expect(WordLlmInvocation.last).to have_attributes(
+        key: "Noun##{word.id}",
+        invocation_type: "enrichment",
+        state: "completed"
+      )
+    end
+  end
+
+  context "with same array suggestion as existing" do
+    let(:word) { create(:noun, case_1_plural:, singularetantum: false) }
+    let!(:get_llm_response) do
+      stub_request(:post, "https://ai.test/api/chat")
+        .to_return_json(
+          status: 200,
+          body: {
+            model: "llama3.1",
+            created_at: "2024-11-20T21:48:24.480952052Z",
+            message: {
+              role: "assistant",
+              content: "```json\n{\n  \"id\": 8467,\n  \"topics\": [\"Baugewerbe\"]\n}\n```"
+            },
+            done_reason: "stop",
+            done: true,
+            total_duration: 347987332616,
+            load_duration: 19833664,
+            prompt_eval_count: 726,
+            prompt_eval_duration: 350627000,
+            eval_count: 938,
+            eval_duration: 347572054000
+          }
+        )
+    end
+
+    before do
+      word.topics << create(:topic, name: "Baugewerbe")
+    end
+
+    it "does not store a change" do
+      expect { subject }
+        .to change(WordLlmInvocation, :count).by(1)
+        .and not_change(WordAttributeEdit, :count)
+        .and not_change(ChangeGroup, :count)
+
+      expect(WordLlmInvocation.last).to have_attributes(
+        key: "Noun##{word.id}",
+        invocation_type: "enrichment",
+        state: "completed"
+      )
     end
   end
 end
