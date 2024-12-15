@@ -11,7 +11,14 @@ class WordAttributeEdit < ApplicationRecord
   def current_value
     values = word.send(attribute_name)
 
-    return values.pluck(:name).sort.join(", ") if values.is_a?(ActiveRecord::Relation)
+    if values.is_a?(ActiveRecord::Relation)
+      return case attribute_name
+             when "compound_entities"
+               values.map { |compound_entity| compound_entity.part.name }.sort.join(", ")
+             else
+               values.pluck(:name).sort.join(", ")
+             end
+    end
 
     values
   end

@@ -336,4 +336,57 @@ RSpec.describe Llm::Enrich do
       )
     end
   end
+
+  context "with compound entities" do
+    let(:word) { create(:noun, case_1_plural:, singularetantum: false) }
+    let!(:haus_compound_entity) { create(:compound_entity, word:, part: create(:noun, name: "Haus")) }
+    let!(:bau_compound_entity) { create(:compound_entity, word:, part: create(:noun, name: "Bau")) }
+    let!(:get_llm_response) do
+      stub_request(:post, "https://ai.test/api/chat")
+        .to_return_json(
+          status: 200,
+          body: {
+            model: "llama3.1",
+            created_at: "2024-11-20T21:48:24.480952052Z",
+            message: {
+              role: "assistant",
+              content: "```json\n{\n  \"id\": 8467,\n  \"compound_entities\": [\"Haus\", \"Bau\"]\n}\n```"
+            },
+            done_reason: "stop",
+            done: true,
+            total_duration: 347987332616,
+            load_duration: 19833664,
+            prompt_eval_count: 726,
+            prompt_eval_duration: 350627000,
+            eval_count: 938,
+            eval_duration: 347572054000
+          }
+        )
+    end
+
+    it "stores a change" do
+      expect { subject }
+        .to change(WordLlmInvocation, :count).by(1)
+        .and change(WordAttributeEdit, :count).by(1)
+        .and change(ChangeGroup, :count).by(1)
+
+      expect(WordLlmInvocation.last).to have_attributes(
+        key: "Noun##{word.id}",
+        invocation_type: "enrichment",
+        state: "completed"
+      )
+      expect(ChangeGroup.last).to have_attributes(
+        state: "waiting_for_review"
+      )
+
+      expect(WordAttributeEdit.all).to match_array [
+        have_attributes(
+          change_group: be_present,
+          word:,
+          attribute_name: "compound_entities",
+          value: '["Haus","Bau"]'
+        )
+      ]
+    end
+  end
 end
