@@ -4,4 +4,10 @@
 - when :boolean
   = form.input :value, as: :boolean, label: false, input_html: {checked: value}
 - when :array
-  = form.input :value, collection:, selected: value, multiple: true, label: false, input_html: {'data-controller': 'select'}
+  - case attribute_name
+  - when 'example_sentences'
+    - form.object.proposed_value.each do |example_sentence|
+      %div= example_sentence
+    = form.input :value, as: :hidden
+  - else
+    = form.input :value, collection:, selected: value, multiple: true, label: false, input_html: {'data-controller': 'select'}

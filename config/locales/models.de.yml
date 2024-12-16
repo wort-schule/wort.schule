@@ -219,6 +219,18 @@ de:
         plural_1_pronoun: wir
         plural_2_pronoun: ihr
         plural_3_pronoun: sie
+        present_singular_1: 1. Person Singular Präsens
+        present_singular_2: 2. Person Singular Präsens
+        present_singular_3: 3. Person Singular Präsens
+        present_plural_1: 1. Person Plural Präsens
+        present_plural_2: 2. Person Plural Präsens
+        present_plural_3: 3. Person Plural Präsens
+        past_singular_1: 1. Person Singular Präteritum
+        past_singular_2: 2. Person Singular Präteritum
+        past_singular_3: 3. Person Singular Präteritum
+        past_plural_1: 1. Person Plural Präteritum
+        past_plural_2: 2. Person Plural Präteritum
+        past_plural_3: 3. Person Plural Präteritum
       theme:
         name: Name
         description: Beschreibung

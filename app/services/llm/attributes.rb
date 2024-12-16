@@ -38,7 +38,7 @@ module Llm
     def self.filter(response_model:, attribute_name:, value:)
       type = response_model.schema.dig(:properties, attribute_name.to_sym)&.type
 
-      filtered_value = if type.is_a?(T::Types::TypedArray)
+      if type.is_a?(T::Types::TypedArray)
         if relation_klass(attribute_name).present?
           value.clamped(relation_klass(attribute_name).values)
         else
@@ -47,8 +47,6 @@ module Llm
       else
         value
       end
-
-      filtered_value.to_json
     end
 
     def self.relation_klass(attribute_name)

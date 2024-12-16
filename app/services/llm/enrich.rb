@@ -147,16 +147,22 @@ module Llm
         end
 
         groups.each do |attributes|
-          attributes.select! do |attribute_name, value|
+          attributes = attributes.map do |attribute_name, value|
             existing_value = word.send(attribute_name)
-            next false if existing_value == value
-            next false if value.is_a?(ActiveSupport::HashWithIndifferentAccess)
-            next false if value.is_a?(ActiveRecord::Relation) && value.sort == existing_value.map(&:name).sort
-            next false if value.is_a?(ActiveRecord::Base) && value == existing_value.name
-            next false if WordAttributeEdit.exists?(word:, attribute_name:, value:)
+            next if existing_value == value
+            next if value.is_a?(ActiveSupport::HashWithIndifferentAccess)
+            next if existing_value.is_a?(ActiveRecord::Base) && value == existing_value.name
+            next if WordAttributeEdit.exists?(word:, attribute_name:, value:)
 
-            true
-          end
+            if existing_value.is_a?(ActiveRecord::Relation)
+              value = Attributes.filter(response_model:, attribute_name:, value:)
+
+              next if value.blank?
+              next if value.sort == existing_value.map(&:name).sort
+            end
+
+            [attribute_name, value]
+          end.compact
 
           next if attributes.empty?
 
@@ -165,16 +171,13 @@ module Llm
           )
 
           attributes.each do |attribute_name, value|
-            filtered_value = Attributes.filter(response_model:, attribute_name:, value:)
-            next if filtered_value.nil?
-
-            Rails.logger.info "Create LLM suggestion word=#{word.name} attribute_name=#{attribute_name} value=#{filtered_value}"
+            Rails.logger.info "Create LLM suggestion word=#{word.name} attribute_name=#{attribute_name} value=#{value}"
 
             WordAttributeEdit.create!(
               change_group:,
               word:,
               attribute_name:,
-              value: filtered_value
+              value: value.to_json
             )
           end
         end
