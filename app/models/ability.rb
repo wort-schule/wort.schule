@@ -87,6 +87,7 @@ class Ability
 
         can :manage, :review
         can :manage, :word_import
+        can :manage, :word_images
 
         # User management
         can :manage, User

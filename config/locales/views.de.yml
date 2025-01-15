@@ -405,3 +405,8 @@ de:
       imported:
         one: "1 Wort wurde importiert"
         other: "%{count} Wörter wurden importiert"
+
+  word_images:
+    index:
+      title: Wörter mit Bildern
+      empty: Keine Wörter mit Bildern vorhanden
