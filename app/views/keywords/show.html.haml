@@ -14,7 +14,7 @@
       - @related_keywords.each do |word|
         = render WordPanelComponent.new(word:, url: keyword_path(keyword_ids: params[:keyword_ids] + ",#{word.id}")) do |component|
           - component.with_description do
-            = t('keywords.index.words_count', count: Keyword.words_count(word.id))
+            = t('keywords.index.words_count', count: Keyword.words_count(Array(params[:keyword_ids]) + [word.id]))
 
     .pagination-with-actions
       = paginate @related_keywords, model_name: 'activerecord.models.related_keyword'

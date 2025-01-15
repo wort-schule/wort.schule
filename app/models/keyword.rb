@@ -3,13 +3,15 @@
 class Keyword < ApplicationRecord
   belongs_to :word
 
-  def self.words_count(keyword_id)
-    Keyword
-      .select(:keyword_id)
-      .where(keyword_id: keyword_id)
-      .group(:keyword_id)
-      .count
-      .values
-      .first
+  def self.words_count(keyword_ids)
+    result = connection.execute <<~SQL
+      SELECT DISTINCT COUNT(*)
+      FROM (
+        SELECT word_id, array_agg(keyword_id) AS keyword_ids FROM keywords k GROUP BY word_id
+      ) keywords
+      WHERE ARRAY[#{keyword_ids.join(",")}] <@ keywords.keyword_ids
+    SQL
+
+    result.getvalue(0, 0)
   end
 end
