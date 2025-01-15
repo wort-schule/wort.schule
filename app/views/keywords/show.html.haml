@@ -17,7 +17,7 @@
             = t('keywords.index.words_count', count: Keyword.words_count(word.id))
 
     .pagination-with-actions
-      = paginate @related_keywords
+      = paginate @related_keywords, model_name: 'activerecord.models.related_keyword'
 
 = turbo_frame_tag :words do
   %h1= t '.words.title'
