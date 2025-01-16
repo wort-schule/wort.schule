@@ -36,5 +36,14 @@ RSpec.describe "image requests" do
       expect(page).to have_content noun.meaning
       expect(page).to have_content 3
     end
+
+    it "removes the requests when image is attached" do
+      expect do
+        noun.image.attach(filename: "word.png", io: StringIO.new(file_fixture("avatar1.png").read))
+      end.to change(ImageRequest, :count).by(-3)
+
+      visit image_requests_path
+      expect(page).to have_content I18n.t("image_requests.index.empty")
+    end
   end
 end

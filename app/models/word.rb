@@ -81,6 +81,7 @@ class Word < ApplicationRecord
   before_save :update_cologne_phonetics, if: -> { respond_to?(:cologne_phonetics) }
 
   after_save :handle_audio_attachments, if: -> { respond_to?(:with_tts) }
+  after_save :delete_image_requests
 
   validates :slug, presence: true, uniqueness: true
 
@@ -242,5 +243,13 @@ class Word < ApplicationRecord
     else
       audios&.purge
     end
+  end
+
+  def delete_image_requests
+    return unless image.attached?
+
+    ImageRequest
+      .where(word: self)
+      .delete_all
   end
 end
