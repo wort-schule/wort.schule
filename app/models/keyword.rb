@@ -4,6 +4,8 @@ class Keyword < ApplicationRecord
   belongs_to :word
 
   def self.words_count(keyword_ids)
+    keyword_ids = Array(keyword_ids)
+
     result = connection.execute <<~SQL
       SELECT DISTINCT COUNT(*)
       FROM (
