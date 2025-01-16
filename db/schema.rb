@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_16_200351) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_16_210358) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -632,5 +632,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_16_200351) do
      FROM (change_groups cg
        JOIN reviews r ON ((((r.reviewable_type)::text = 'ChangeGroup'::text) AND (r.reviewable_id = cg.id))))
     WHERE (cg.successor_id IS NULL);
+  SQL
+  create_view "requested_word_images", sql_definition: <<-SQL
+      SELECT words.name,
+      words.meaning,
+      requests.request_count
+     FROM (words
+       JOIN ( SELECT ir.word_id,
+              count(ir.word_id) AS request_count
+             FROM image_requests ir
+            GROUP BY ir.word_id) requests ON ((words.id = requests.word_id)))
+    ORDER BY words.hit_counter DESC, words.name;
   SQL
 end

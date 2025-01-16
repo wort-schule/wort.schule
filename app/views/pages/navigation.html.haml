@@ -10,6 +10,7 @@
   = navigation_link false, t('navigation.reviews'), reviews_path if can?(:manage, :review)
   = navigation_link false, t('navigation.word_imports'), new_word_import_path if can?(:manage, :word_import)
   = navigation_link false, t('navigation.word_images'), word_images_path if can?(:manage, :word_images)
+  = navigation_link false, t('navigation.image_requests'), image_requests_path if can?(:read, ImageRequest)
 
   - if [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemreduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
     .text-gray-300.hover:bg-primary-hover.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
