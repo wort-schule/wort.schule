@@ -16,6 +16,7 @@ class Ability
     can :read, Hierarchy
     can :read, Topic
     can :read, WordViewSetting, visibility: :public
+    can :read, :word_images
 
     if user.present?
       can %i[show edit update destroy], User, %i[first_name last_name avatar email password word_view_setting_id], id: user.id
@@ -89,7 +90,6 @@ class Ability
 
         can :manage, :review
         can :manage, :word_import
-        can :manage, :word_images
         can :read, ImageRequest
 
         # User management

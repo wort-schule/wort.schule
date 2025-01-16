@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WordImagesController < ApplicationController
+class WordImagesController < PublicController
   authorize_resource :word_images, class: false
 
   def index
