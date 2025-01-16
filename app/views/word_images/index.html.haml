@@ -1,0 +1,11 @@
+%h1= t '.title'
+
+.mt-4
+  - if @word_images.empty?
+    %p= t '.empty'
+  - else
+    %table.mt-4
+      - @word_images.each do |id, name, filename|
+        %tr
+          %td= name
+          %td= filename ? File.basename(filename) : nil

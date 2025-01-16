@@ -104,6 +104,7 @@ Rails.application.routes.draw do
 
     resources :reviews, only: %i[index show update]
     resources :word_imports, only: %i[new create]
+    resources :word_images, only: :index
 
     # User's own routes
     resource :profile, only: %i[show edit update] do
