@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_30_113628) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_16_200351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -195,6 +195,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_30_113628) do
     t.datetime "updated_at", null: false
     t.bigint "top_hierarchy_id"
     t.index ["top_hierarchy_id"], name: "index_hierarchies_on_top_hierarchy_id"
+  end
+
+  create_table "image_requests", force: :cascade do |t|
+    t.bigint "word_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_image_requests_on_user_id"
+    t.index ["word_id", "user_id"], name: "index_image_requests_on_word_id_and_user_id", unique: true
+    t.index ["word_id"], name: "index_image_requests_on_word_id"
   end
 
   create_table "keywords", id: false, force: :cascade do |t|
@@ -575,6 +585,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_30_113628) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "change_groups", "change_groups", column: "successor_id"
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
+  add_foreign_key "image_requests", "users"
+  add_foreign_key "image_requests", "words"
   add_foreign_key "learning_group_memberships", "learning_groups"
   add_foreign_key "learning_group_memberships", "users"
   add_foreign_key "learning_groups", "users"

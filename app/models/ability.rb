@@ -37,6 +37,8 @@ class Ability
       can :crud, Theme, {user:}
       can :read, WordViewSetting, visibility: :public
 
+      can :create, ImageRequest
+
       case user.role
       when "Lecturer"
         can :crud, Noun

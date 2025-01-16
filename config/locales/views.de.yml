@@ -410,3 +410,7 @@ de:
     index:
       title: Wörter mit Bildern
       empty: Keine Wörter mit Bildern vorhanden
+
+  image_requests:
+    create:
+      image_requested: Vielen Dank. Die Wort-Illustration wurde beantragt.

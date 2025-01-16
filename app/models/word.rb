@@ -71,6 +71,8 @@ class Word < ApplicationRecord
   has_one :compound_entity, as: :part
   has_and_belongs_to_many :lists
 
+  has_many :image_requests, dependent: :destroy
+
   scope :ordered_lexigraphically, -> { order(:name) }
 
   before_save :set_consonant_vowel

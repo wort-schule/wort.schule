@@ -25,3 +25,5 @@ de:
       create: Erstellen
     duplicate_words_component:
       choose: Wort wählen
+  request_image_component:
+    request: Wort-Illustration beantragen

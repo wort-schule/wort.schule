@@ -1,8 +1,9 @@
 = liquid_template
 
-- if helpers.can?(:edit, word) && !preview
+- if !preview
   .flex.flex-col.gap-12.mt-12
-    = render 'shared/versions', model: word
+    - if helpers.can?(:edit, word)
+      = render 'shared/versions', model: word
 
     - if helpers.can?(:manage_llm, word) && !Rails.env.test?
       - enrichment = Llm::Enrich.new(word:)
@@ -12,4 +13,8 @@
           .p-4.whitespace-pre-wrap.break-words= enrichment.full_prompt
 
     .pagination-with-actions
-      = link_to t('actions.edit'), [:edit, word], data: { turbo_frame: '_top' }, class: 'button primary'
+      .flex.flex-wrap.gap-2
+        - if helpers.can?(:edit, word)
+          = link_to t('actions.edit'), [:edit, word], data: { turbo_frame: '_top' }, class: 'button primary'
+        - if helpers.can? :create, ImageRequest
+          = render RequestImageComponent.new(word:, user: helpers.current_user)

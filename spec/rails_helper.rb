@@ -17,6 +17,7 @@ require "capybara/rails"
 require "capybara-screenshot/rspec"
 require "capybara/cuprite"
 require "webmock/rspec"
+require "view_component/test_helpers"
 
 WebMock.disable_net_connect!(allow: ["127.0.0.1", "localhost"])
 
@@ -92,6 +93,7 @@ RSpec.configure do |config|
   config.include Support::ActionMailerHelpers
   config.include ActionView::RecordIdentifier # dom_id
   config.include EnvironmentHelper
+  config.include ViewComponent::TestHelpers, type: :component
 
   config.around do |example|
     with_environment(
