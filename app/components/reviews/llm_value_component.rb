@@ -40,6 +40,6 @@ class Reviews::LlmValueComponent < ViewComponent::Base
   end
 
   def collection
-    Llm::Attributes.relation_klass(attribute_name)&.values
+    Llm::Attributes.relation_klass(attribute_name)&.values&.sort
   end
 end
