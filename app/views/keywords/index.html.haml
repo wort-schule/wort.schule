@@ -9,4 +9,4 @@
           = t('keywords.index.words_count', count: Keyword.words_count(keyword.id))
 
   .pagination-with-actions
-    = paginate @keywords
+    = paginate @keywords, model_name: 'activerecord.models.related_keyword'
