@@ -1,0 +1,12 @@
+%h1= t '.title'
+
+.mt-4
+  - if @requested_word_images.empty?
+    %p= t '.empty'
+  - else
+    %table.mt-4
+      - @requested_word_images.each do |word|
+        %tr
+          %td= word.name
+          %td= word.meaning
+          %td= word.request_count

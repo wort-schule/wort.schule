@@ -55,6 +55,10 @@ Rails.application.routes.draw do
         concerns :list_addable
       end
     end
+    resources :image_requests, only: :index
+    resources :words, only: [] do
+      resources :image_requests, only: :create
+    end
     resources :users
     resources :learning_groups do
       scope module: :learning_groups do
