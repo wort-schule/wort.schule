@@ -60,7 +60,7 @@ task :setup do
 
     # Create env file if it doesn't exist
     path_env_file = ".env"
-    env_file = %(RAILS_ENV=production\nSECRET_KEY_BASE=#{`bundle exec rake secret`.strip}\nLLM_MODEL=llama3.1:70b)
+    env_file = %(RAILS_ENV=production\nSECRET_KEY_BASE=#{`bundle exec rake secret`.strip}\nLLM_MODEL=llama3.1:70b\nPIDFILE=tmp/pids/server.pid)
     command %(test -e #{path_env_file} || echo "#{env_file}" > #{path_env_file})
 
     # Remove others-permission for config directory and env file
