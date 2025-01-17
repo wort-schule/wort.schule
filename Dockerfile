@@ -1,4 +1,4 @@
-FROM ruby:3.3.1
+FROM ruby:3.3.7
 
 RUN apt-get update -qq && apt-get install -y postgresql-client libvips42
 
