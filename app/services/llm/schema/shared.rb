@@ -21,7 +21,6 @@ module Llm
           property :compound_entities, T::Array[String], description: "Bausteine dieses Wortes"
           property :synonyms, T::Array[String], description: "Synonyme dieses Wortes"
           property :opposites, T::Array[String], description: "Gegenteile dieses Wortes"
-          property :keywords, T::Array[String], description: "Stichwörter zu diesem Wort"
           property :rimes, T::Array[String], description: "Wörter, die mit diesem Wort reimen"
           property :example_sentences, T::Array[String], description: "Besipielsätze, die dieses Wort verwenden"
         RUBY
