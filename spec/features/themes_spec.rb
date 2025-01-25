@@ -2,7 +2,7 @@
 
 RSpec.describe "themes for words" do
   let(:klass) { Theme }
-  let(:admin) { create :admin }
+  let(:admin) { create :admin, first_name: "Sarah", last_name: "Muster" }
 
   before do
     login_as admin
