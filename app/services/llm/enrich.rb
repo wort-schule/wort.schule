@@ -91,6 +91,14 @@ module Llm
 
     def initialize(word:)
       @word = word
+      @llm_invoke_all_properties ||= Invoke.new(
+        include_format_instructions: false,
+        response_model: all_properties_response_model,
+        prompt_variables: {
+          input_dataset: all_properties_response_model.from_word(word).to_json
+        },
+        prompt: ALL_PROPERTIES_PROMPT
+      )
     end
 
     def call
@@ -120,6 +128,10 @@ module Llm
       false
     end
 
+    def full_prompt
+      @llm_invoke_all_properties.full_prompt
+    end
+
     private
 
     def pending_llm_response?
@@ -138,18 +150,6 @@ module Llm
           invocation_type: :enrichment,
           state: :invoked
         )
-      @llm_invoke_all_properties ||= Invoke.new(
-        include_format_instructions: false,
-        response_model: all_properties_response_model,
-        prompt_variables: {
-          input_dataset: all_properties_response_model.from_word(word).to_json
-        },
-        prompt: ALL_PROPERTIES_PROMPT
-      )
-    end
-
-    def full_prompt
-      @llm_invoke_all_properties.full_prompt
     end
 
     def all_properties_llm_response
