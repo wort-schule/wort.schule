@@ -317,8 +317,9 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    langchainrb (0.18.0)
+    langchainrb (0.19.3)
       baran (~> 0.1.9)
+      csv
       json-schema (~> 4)
       matrix
       pragmatic_segmenter (~> 0.3.0)
