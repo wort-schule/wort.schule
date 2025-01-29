@@ -9,8 +9,9 @@
       - enrichment = Llm::Enrich.new(word:)
 
       - if enrichment.supported?
-        = render BoxComponent.new(title: t('.llm_prompt.title'), span: 2) do
-          .p-4.whitespace-pre-wrap.break-words= enrichment.full_prompt
+        - enrichment.full_prompts.each do |prompt|
+          = render BoxComponent.new(title: t('.llm_prompt.title'), span: 2) do
+            .p-4.whitespace-pre-wrap.break-words= prompt
 
     .pagination-with-actions
       .flex.flex-wrap.gap-2

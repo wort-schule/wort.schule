@@ -91,13 +91,22 @@ module Llm
 
     def initialize(word:)
       @word = word
-      @llm_invoke_all_properties ||= Invoke.new(
+      @llm_invoke_all_properties = Invoke.new(
         include_format_instructions: false,
         response_model: all_properties_response_model,
         prompt_variables: {
           input_dataset: all_properties_response_model.from_word(word).to_json
         },
         prompt: ALL_PROPERTIES_PROMPT
+      )
+      @llm_invoke_keywords = Invoke.new(
+        include_format_instructions: false,
+        response_model: keywords_response_model,
+        prompt_variables: {
+          word: word.name,
+          valid_keywords: Word.where(id: Keyword.distinct.pluck(:keyword_id)).pluck(:name).join(", ")
+        },
+        prompt: KEYWORDS_PROMPT
       )
     end
 
@@ -128,8 +137,11 @@ module Llm
       false
     end
 
-    def full_prompt
-      @llm_invoke_all_properties.full_prompt
+    def full_prompts
+      [
+        @llm_invoke_all_properties.full_prompt,
+        @llm_invoke_keywords.full_prompt
+      ]
     end
 
     private
@@ -157,15 +169,7 @@ module Llm
     end
 
     def keywords_llm_response
-      Invoke.new(
-        include_format_instructions: false,
-        response_model: keywords_response_model,
-        prompt_variables: {
-          word: word.name,
-          valid_keywords: Word.where(id: Keyword.distinct.pluck(:keyword_id)).pluck(:name).join(", ")
-        },
-        prompt: KEYWORDS_PROMPT
-      ).call
+      @llm_invoke_keywords.call
     end
 
     def all_properties_response_model
