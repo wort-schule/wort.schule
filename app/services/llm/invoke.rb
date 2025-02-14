@@ -2,13 +2,14 @@
 
 module Llm
   class Invoke
-    attr_reader :prompt, :prompt_variables, :response_model, :include_format_instructions
+    attr_reader :prompt, :prompt_variables, :response_model, :include_format_instructions, :model
 
-    def initialize(prompt:, prompt_variables:, response_model:, include_format_instructions: true)
+    def initialize(prompt:, prompt_variables:, response_model:, include_format_instructions: true, model: default_model)
       @prompt = prompt
       @prompt_variables = prompt_variables
       @response_model = response_model
       @include_format_instructions = include_format_instructions
+      @model = model
     end
 
     def call
@@ -44,11 +45,11 @@ module Llm
     def client
       @client ||= Langchain::LLM::Ollama.new(
         url: ENV["OLLAMA_URL"].presence || "http://localhost:11434",
-        default_options: {temperature: 0.0, chat_model: model}
+        default_options: {temperature: 0.0, chat_completion_model_name: model}
       )
     end
 
-    def model
+    def default_model
       ENV["LLM_MODEL"].presence || "llama3.1"
     end
 
