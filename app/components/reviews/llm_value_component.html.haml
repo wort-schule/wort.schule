@@ -10,4 +10,13 @@
       %div= example_sentence
     = form.input :value, as: :hidden
   - else
-    = form.input :value, collection:, selected: value, multiple: true, label: false, input_html: {'data-controller': 'select'}
+    %div(data-controller="toggle-buttons" data-toggle-buttons-fixed-value=value data-toggle-buttons-items-value=collection){ 'data-toggle-buttons-checked-value': form.object.change_group.predecessors.present? ? "true" : "false" }
+      %select.hidden(multiple="multiple" data-toggle-buttons-target="input" name="#{form.object_name}[value][]")
+
+      %template#item-template
+        %button.rounded-lg.border.border-primary.p-2.select-none(type="button" data-action="click->toggle-buttons#toggle")
+
+      .flex.flex-wrap.gap-1(data-toggle-buttons-target="list")
+
+      .mt-4.mb-1= t '.add'
+      %input(type="text" data-toggle-buttons-target="add")

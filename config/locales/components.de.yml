@@ -25,5 +25,7 @@ de:
       create: Erstellen
     duplicate_words_component:
       choose: Wort wählen
+    llm_value_component:
+      add: "Hinzufügen:"
   request_image_component:
     request: Wort-Illustration beantragen
