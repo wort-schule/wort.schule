@@ -166,7 +166,7 @@ RSpec.describe "reviews for enriched attributes" do
     expect(edit.reload.current_value).to eq proposal
   end
 
-  it "edits and confirms an array change" do
+  it "edits and confirms an array change", js: true do
     edit = create(:word_attribute_edit, attribute_name: "synonyms", value: '["Katze", "Kaninchen"]')
     cat = create(:noun, name: "Katze")
     rabbit = create(:noun, name: "Kaninchen")
@@ -177,25 +177,40 @@ RSpec.describe "reviews for enriched attributes" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name, rabbit.name]
-    unselect "Kaninchen", from: "change_group[word_attribute_edits_attributes][0][value][]"
-    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name]
-    click_on I18n.t("reviews.show.actions.confirm")
+    within '[data-toggle-buttons-target="list"]' do
+      expect(page.find_all("button").map(&:text)).to match_array [cat.name, rabbit.name]
+
+      click_on cat.name
+
+      expect(page.find_all('button[class~="bg-primary"]').map(&:text)).to match_array [cat.name]
+    end
+
+    expect do
+      click_on I18n.t("reviews.show.actions.confirm")
+    end.to change(Review, :count).by(1)
     expect(edit.reload.current_value).not_to eq proposal
     expect(WordAttributeEdit.last.value).to eq '["Katze"]'
 
     login_as other_admin
     visit reviews_path
-    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name]
-    click_on I18n.t("reviews.show.actions.confirm")
+    within '[data-toggle-buttons-target="list"]' do
+      expect(page.find_all("button").map(&:text)).to match_array [cat.name]
+    end
+    expect do
+      click_on I18n.t("reviews.show.actions.confirm")
+    end.to change(Review, :count).by(1)
 
     expect(edit.reload.current_value).not_to eq proposal
     expect(WordAttributeEdit.last.value).to eq '["Katze"]'
 
     login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
     visit reviews_path
-    expect(page).to have_select "change_group[word_attribute_edits_attributes][0][value][]", options: [edit.word.name, cat.name, rabbit.name], selected: [cat.name]
-    click_on I18n.t("reviews.show.actions.confirm")
+    within '[data-toggle-buttons-target="list"]' do
+      expect(page.find_all("button").map(&:text)).to match_array [cat.name]
+    end
+    expect do
+      click_on I18n.t("reviews.show.actions.confirm")
+    end.to change(Review, :count).by(1)
 
     expect(edit.reload.current_value).to eq proposal
   end

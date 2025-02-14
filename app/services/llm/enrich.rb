@@ -165,7 +165,7 @@ module Llm
     end
 
     def all_properties_llm_response
-      @llm_invoke_all_properties.call
+      @llm_invoke_all_properties.call.reject { |key, _| key.to_s == "keywords" }
     end
 
     def keywords_llm_response

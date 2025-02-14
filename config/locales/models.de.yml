@@ -107,6 +107,7 @@ de:
         keywords: Stichwörter
         rimes: Reimwörter
         compound_entities: Bausteine
+        example_sentences: Beispielsätze
       noun:
         name: Grundform
         with_tts: Audio aktiviert
