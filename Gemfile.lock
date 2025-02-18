@@ -177,8 +177,8 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
-    factory_bot (6.5.0)
-      activesupport (>= 5.0.0)
+    factory_bot (6.5.1)
+      activesupport (>= 6.1.0)
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
@@ -335,7 +335,7 @@ GEM
     liquid (5.7.2)
       bigdecimal
       strscan (>= 3.1.1)
-    logger (1.6.5)
+    logger (1.6.6)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
