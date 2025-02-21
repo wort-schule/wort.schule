@@ -86,10 +86,10 @@ export default class extends Controller {
     Array.from(set).forEach(value => {
       const option = document.createElement("option")
       option.value = value
-      option.selected = "selected"
+      option.textContent = value
       this.inputTarget.appendChild(option)
     })
-    this.inputTarget.value = Array.from(set).join(",")
+    Array.from(this.inputTarget.options).forEach(option => option.selected = true)
     this.updateButtons()
   }
 
