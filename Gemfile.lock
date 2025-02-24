@@ -318,7 +318,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    langchainrb (0.19.3)
+    langchainrb (0.19.4)
       baran (~> 0.1.9)
       csv
       json-schema (~> 4)
