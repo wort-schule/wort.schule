@@ -40,6 +40,7 @@ module Import
       ActiveRecord::Base.transaction do
         change_group.save!
         new_word.save!
+        UnlistedKeyword.unprocessed.where(word_import:).update_all(new_word_id: new_word.id)
         @word_import.update!(state: :completed)
       end
     rescue => e

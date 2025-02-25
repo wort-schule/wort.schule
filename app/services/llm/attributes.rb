@@ -69,8 +69,35 @@ module Llm
           Strategy.where(name: value)
         when "phenomenons"
           Phenomenon.where(name: value)
-        when "compound_entities", "synonyms", "opposites", "keywords", "rimes"
+        when "compound_entities", "synonyms", "opposites", "rimes"
           Word.where(name: value)
+        when "keywords"
+          listed_keywords = Word.where(name: value)
+          unlisted_keywords = value - listed_keywords.pluck(:name)
+
+          word.transaction do
+            word.update!(attribute_name => listed_keywords)
+
+            unlisted_keywords.each do |keyword|
+              word_type = if keyword[0] == keyword[0].upcase
+                "Noun"
+              else
+                (keyword.ends_with?("en") ? "Verb" : "Adjective")
+              end
+
+              word_import = WordImport.create!(
+                name: keyword,
+                topic: keyword,
+                word_type:
+              )
+              UnlistedKeyword.create!(
+                word:,
+                word_import:
+              )
+            end
+          end
+
+          return
         end
       else
         value

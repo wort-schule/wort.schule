@@ -104,6 +104,7 @@ class ReviewsController < ApplicationController
 
           @reviewable.update!(state: "duplicate")
           @reviewable.new_word.update!(duplicate_word:)
+          @reviewable.new_word.process_unlisted_keywords
 
           return redirect_to_next_review
         end
@@ -136,6 +137,7 @@ class ReviewsController < ApplicationController
 
           @reviewable.update!(state: "created")
           @reviewable.new_word.update!(created_word_id: created_word.id)
+          @reviewable.new_word.process_unlisted_keywords
 
           EnrichWordJob.perform_later(created_word.id)
 
