@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_17_180159) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_25_212139) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -411,6 +411,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_17_180159) do
     t.index ["word_id", "topic_id"], name: "index_topics_words_on_word_id_and_topic_id", unique: true
   end
 
+  create_table "unlisted_keywords", force: :cascade do |t|
+    t.string "word_type", null: false
+    t.bigint "word_id", null: false
+    t.bigint "word_import_id", null: false
+    t.bigint "new_word_id"
+    t.string "state", default: "new", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["new_word_id"], name: "index_unlisted_keywords_on_new_word_id"
+    t.index ["word_import_id"], name: "index_unlisted_keywords_on_word_import_id"
+    t.index ["word_type", "word_id"], name: "index_unlisted_keywords_on_word"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -600,6 +613,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_17_180159) do
   add_foreign_key "new_words", "words", column: "duplicate_word_id"
   add_foreign_key "reviews", "users", column: "reviewer_id"
   add_foreign_key "themes", "users"
+  add_foreign_key "unlisted_keywords", "new_words"
+  add_foreign_key "unlisted_keywords", "word_imports"
   add_foreign_key "users", "word_view_settings"
   add_foreign_key "word_view_settings", "themes", column: "theme_adjective_id"
   add_foreign_key "word_view_settings", "themes", column: "theme_function_word_id"

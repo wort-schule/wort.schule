@@ -11,7 +11,7 @@
     = form.input :value, as: :hidden
   - else
     %div(data-controller="toggle-buttons" data-toggle-buttons-fixed-value=value data-toggle-buttons-items-value=collection){ 'data-toggle-buttons-checked-value': form.object.change_group.predecessors.present? ? "true" : "false" }
-      %select.hidden(multiple="multiple" data-toggle-buttons-target="input" name="#{form.object_name}[value][]")
+      %select.hidden(multiple data-toggle-buttons-target="input" name="#{form.object_name}[value][]")
 
       %template#item-template
         %button.rounded-lg.border.border-primary.p-2.select-none(type="button" data-action="click->toggle-buttons#toggle")
