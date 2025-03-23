@@ -3,7 +3,7 @@
 module Llm
   class Enrich
     ATTRIBUTE_GROUPS = [
-      [:case_1_singular, :case_1_plural, :case_2_singular, :case_2_plural, :case_3_singular, :case_3_plural, :case_4_singular, :case_4_plural],
+      [:case_1_singular, :case_2_singular, :case_3_singular, :case_4_singular, :case_1_plural, :case_2_plural, :case_3_plural, :case_4_plural],
       [:imperative_singular, :imperative_plural],
       [:participle, :past_participle],
       [:perfect_haben, :perfect_sein],
