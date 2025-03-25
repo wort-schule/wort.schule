@@ -1,0 +1,7 @@
+%h1= @llm_prompt.identifier
+
+= box do
+  = simple_form_for @llm_prompt do |f|
+    = f.input :content, input_html: {rows: 50}
+
+    = f.submit

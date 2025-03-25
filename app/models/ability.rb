@@ -88,6 +88,7 @@ class Ability
         can :manage, Theme
         can :manage, List
 
+        can :manage, LlmPrompt
         can :manage, :review
         can :manage, :word_import
         can :read, ImageRequest

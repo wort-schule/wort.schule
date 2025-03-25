@@ -106,6 +106,7 @@ Rails.application.routes.draw do
     resources :keywords, only: :index
     resource :keyword, only: :show
 
+    resources :llm_prompts, only: %i[index edit update]
     resources :reviews, only: %i[index show update]
     resources :word_imports, only: %i[new create]
     resources :word_images, only: :index

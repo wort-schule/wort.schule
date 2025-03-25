@@ -417,3 +417,7 @@ de:
       empty: Keine Anträge vorhanden
     create:
       image_requested: Vielen Dank. Die Wort-Illustration wurde beantragt.
+
+  llm_prompts:
+    index:
+      title: LLM Prompts
