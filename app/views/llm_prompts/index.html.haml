@@ -1,0 +1,6 @@
+%h1= t '.title'
+
+= box do
+  .flex.flex-col
+    - @llm_prompts.each do |llm_prompt|
+      = link_to llm_prompt.identifier, edit_llm_prompt_path(llm_prompt)

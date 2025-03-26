@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_25_212139) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_25_200424) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -264,6 +264,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_212139) do
   create_table "lists_words", id: false, force: :cascade do |t|
     t.bigint "list_id", null: false
     t.bigint "word_id", null: false
+  end
+
+  create_table "llm_prompts", force: :cascade do |t|
+    t.string "identifier", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["identifier"], name: "index_llm_prompts_on_identifier", unique: true
   end
 
   create_table "new_words", force: :cascade do |t|
