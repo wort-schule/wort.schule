@@ -20,7 +20,9 @@ module Llm
         include_format_instructions: false,
         response_model: all_properties_response_model,
         prompt_variables: {
-          input_dataset: all_properties_response_model.from_word(word).to_json
+          input_dataset: all_properties_response_model.from_word(word).to_json,
+          meaning: word.meaning,
+          topics: word.topics.map(&:name).join(", ")
         },
         prompt: LlmPrompt.find_by(identifier: "all_properties").content
       )
@@ -29,7 +31,9 @@ module Llm
         response_model: keywords_response_model,
         prompt_variables: {
           word: word.name,
-          valid_keywords: Word.where(id: Keyword.distinct.pluck(:keyword_id)).pluck(:name).join(", ")
+          valid_keywords: Word.where(id: Keyword.distinct.pluck(:keyword_id)).pluck(:name).join(", "),
+          meaning: word.meaning,
+          topics: word.topics.map(&:name).join(", ")
         },
         prompt: LlmPrompt.find_by(identifier: "keywords").content
       )

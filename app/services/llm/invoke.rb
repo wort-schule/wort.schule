@@ -29,10 +29,7 @@ module Llm
     def full_prompt
       return @full_prompt if defined?(@full_prompt)
 
-      templated_prompt = Langchain::Prompt::PromptTemplate.new(
-        template: prompt,
-        input_variables: prompt_variables.keys.map(&:to_s) + (include_format_instructions ? ["format_instructions"] : [])
-      )
+      templated_prompt = Langchain::Prompt::PromptTemplate.from_template(prompt)
 
       templated_prompt.format(
         format_instructions: output_parser.get_format_instructions,
