@@ -107,6 +107,9 @@ Rails.application.routes.draw do
     resource :keyword, only: :show
 
     resources :llm_prompts, only: %i[index edit update]
+    namespace :reviewables do
+      resource :garbage_collection, only: %i[show new create]
+    end
     resources :reviews, only: %i[index show update]
     resources :word_imports, only: %i[new create]
     resources :word_images, only: :index
