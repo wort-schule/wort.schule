@@ -26,7 +26,7 @@ module Reviewable
     }
 
     belongs_to :successor, optional: true, class_name: "ChangeGroup"
-    has_many :predecessors, class_name: "ChangeGroup", foreign_key: :successor_id, inverse_of: :successor
+    has_many :predecessors, class_name: "ChangeGroup", foreign_key: :successor_id, inverse_of: :successor, dependent: :destroy
 
     has_many :reviews, dependent: :destroy, inverse_of: :reviewable
     has_many :reviewers, dependent: nil

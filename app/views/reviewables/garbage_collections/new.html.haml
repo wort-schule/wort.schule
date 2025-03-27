@@ -1,0 +1,3 @@
+%h1= t '.title'
+
+= button_to t('.delete_all.label'), reviewables_garbage_collection_path, method: :post, class: 'button', 'data-turbo-confirm': t('.delete_all.confirmation')
