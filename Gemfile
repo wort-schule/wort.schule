@@ -42,7 +42,7 @@ gem "propshaft"
 gem "puma", "~> 6.5"
 gem "rails-i18n"
 gem "rb-gravatar"
-gem "redis", "~> 5.3" # Use Redis for Action Cable
+gem "redis", "~> 5.4" # Use Redis for Action Cable
 gem "route_downcaser"
 gem "ruby-vips"
 gem "sanitize"
