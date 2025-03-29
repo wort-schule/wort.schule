@@ -422,6 +422,13 @@ de:
     index:
       title: LLM Prompts
 
+  llm_enrichments:
+    new:
+      title: LLM Ergänzung starten
+    show:
+      title: LLM Ergänzung gestartet
+      description: Die LLM Ergänzung wurde für alle Wörter in der Liste gestartet.
+
   reviewables:
     garbage_collections:
       new:

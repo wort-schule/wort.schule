@@ -279,3 +279,8 @@ de:
         topic: Thema
       llm_prompt:
         content: Prompt
+
+  activemodel:
+    attributes:
+      llm_enrichment:
+        list_id: Wortliste
