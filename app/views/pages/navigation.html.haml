@@ -11,7 +11,8 @@
   = navigation_link false, t('navigation.word_imports'), new_word_import_path if can?(:manage, :word_import)
   = navigation_link false, t('navigation.word_images'), word_images_path if can?(:manage, :word_images)
   = navigation_link false, t('navigation.image_requests'), image_requests_path if can?(:read, ImageRequest)
-  = navigation_link false, t('navigation.llm_prompts'), llm_prompts_path if can?(:read, LlmPrompt)
+  = navigation_link false, t('navigation.llm_prompts'), llm_prompts_path if can?(:manage, LlmPrompt)
+  = navigation_link false, t('navigation.llm_enrichments'), new_llm_enrichment_path if can?(:manage, :llm_enrichment)
   = navigation_link false, t('navigation.delete_reviews'), new_reviewables_garbage_collection_path if can?(:manage, :review)
 
   - if [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemreduction, CompoundVocalalternation].any? { |klass| can? :read, klass }

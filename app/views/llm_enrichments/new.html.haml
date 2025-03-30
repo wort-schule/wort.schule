@@ -1,0 +1,6 @@
+%h1= t '.title'
+
+= simple_form_for @llm_enrichment_list, url: llm_enrichment_path do |f|
+  = f.input :list_id, collection: current_user.lists.order(:name)
+
+  = f.submit
