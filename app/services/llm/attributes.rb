@@ -40,7 +40,14 @@ module Llm
 
       if type.is_a?(T::Types::TypedArray)
         if relation_klass(attribute_name).present?
-          value.clamped(relation_klass(attribute_name).values)
+          if attribute_name.to_s != "keywords"
+            value.clamped(relation_klass(attribute_name).values)
+          else
+            existing_keywords = Word.where(name: value)
+            new_keywords = value - existing_keywords.map(&:name)
+
+            existing_keywords.map(&:id).map(&:to_s) + new_keywords
+          end
         else
           value
         end
@@ -72,11 +79,11 @@ module Llm
         when "compound_entities", "synonyms", "opposites", "rimes"
           Word.where(name: value)
         when "keywords"
-          listed_keywords = Word.where(name: value)
-          unlisted_keywords = value - listed_keywords.pluck(:name)
+          listed_keywords = value.select { |key| key.to_i.to_s == key.to_s }
+          unlisted_keywords = value - listed_keywords
 
           word.transaction do
-            word.update!(attribute_name => listed_keywords)
+            word.update!(attribute_name => Word.where(id: listed_keywords))
 
             unlisted_keywords.each do |keyword|
               word_type = if keyword[0] == keyword[0].upcase

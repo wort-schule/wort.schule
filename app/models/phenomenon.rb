@@ -5,4 +5,8 @@ class Phenomenon < ApplicationRecord
   def self.values
     distinct.pluck(:name).sort
   end
+
+  def self.collection
+    distinct.order(:name).pluck(:id, :name)
+  end
 end

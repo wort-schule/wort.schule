@@ -192,6 +192,10 @@ class Word < ApplicationRecord
     distinct.pluck(:name)
   end
 
+  def self.collection
+    distinct.order(:name).pluck(:id, :name)
+  end
+
   private
 
   def set_consonant_vowel

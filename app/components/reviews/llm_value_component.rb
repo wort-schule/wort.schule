@@ -20,7 +20,23 @@ class Reviews::LlmValueComponent < ViewComponent::Base
   end
 
   def value
-    word_attribute_edit.proposed_value
+    values = word_attribute_edit.proposed_value
+
+    if values.is_a?(Array)
+      values.map do |element|
+        if element.to_i.to_s == element.to_s
+          word = Llm::Attributes.relation_klass(attribute_name).find(element)
+          meaning = word.respond_to?(:meaning) ? word.meaning : nil
+          text = meaning.present? ? "#{word.name} (#{meaning})" : word.name
+
+          {value: element, text:}
+        else
+          {value: element, text: element}
+        end
+      end.to_json
+    else
+      values
+    end
   end
 
   def type
@@ -40,6 +56,6 @@ class Reviews::LlmValueComponent < ViewComponent::Base
   end
 
   def collection
-    Llm::Attributes.relation_klass(attribute_name)&.values&.sort
+    Llm::Attributes.relation_klass(attribute_name)&.collection
   end
 end
