@@ -9,7 +9,7 @@ RSpec.describe "reviews for a new keyword" do
   let(:other_admin) { create :admin, review_attributes: Llm::Attributes.keys_with_types }
   let!(:existing_keyword) { create(:noun, name: "Tier", with_tts: false) }
   let!(:word) { create(:noun, name: "Katze", with_tts: false) }
-  let!(:edit) { create(:word_attribute_edit, word:, attribute_name: "keywords", value: %w[Tier klein].as_json) }
+  let!(:edit) { create(:word_attribute_edit, word:, attribute_name: "keywords", value: [existing_keyword.id, "klein"].to_json) }
 
   after do
     clear_enqueued_jobs
@@ -55,10 +55,10 @@ RSpec.describe "reviews for a new keyword" do
     login_as other_admin
     visit reviews_path
     expect(page).to have_content edit.word.name
-    within '[data-toggle-buttons-target="list"]' do
-      click_on "Tier"
-      click_on "klein"
-    end
+    click_on I18n.t("reviews.show.actions.confirm")
+
+    login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
+    visit reviews_path
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
     end.to change(UnlistedKeyword, :count).by(1)

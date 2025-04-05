@@ -3,10 +3,11 @@
 RSpec.describe Llm::Enrich do
   subject { described_class.new(word:).call }
 
-  let(:word) { create(:noun, case_1_plural:) }
+  let(:word) { create(:noun, case_1_plural:, name: "Katze") }
+  let!(:existing_keyword) { create(:noun, name: "Tier") }
   let!(:topic) { create(:topic) } # We need at least one topic for it to be included in the LLM schema
   let(:meaning) { "Ein Tier mit vier Pfoten." }
-  let(:keywords) { ["Bach", "Ungültiges Stichwort"] }
+  let(:keywords) { ["Bach", "Tier"] }
   let(:case_1_plural) { "Katzen" }
 
   let!(:get_llm_response) do
@@ -145,13 +146,13 @@ RSpec.describe Llm::Enrich do
         change_group: be_present,
         word:,
         attribute_name: "keywords",
-        value: ["Bach"].to_json
+        value: [existing_keyword.id.to_s, "Bach"].to_json
       )
     ]
   end
 
   context "with booleans and array attributes" do
-    let(:word) { create(:noun, case_1_plural:, singularetantum: false) }
+    let(:word) { create(:noun, case_1_plural:, singularetantum: false, name: "Katze") }
     let!(:get_llm_response) do
       stub_request(:post, "https://ai.test/api/chat")
         .to_return_json(
@@ -208,7 +209,7 @@ RSpec.describe Llm::Enrich do
           change_group: be_present,
           word:,
           attribute_name: "keywords",
-          value: ["Bach"].to_json
+          value: [existing_keyword.id.to_s, "Bach"].to_json
         )
       ]
     end

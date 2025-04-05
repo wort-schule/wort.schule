@@ -18,16 +18,16 @@ export default class extends Controller {
   connect() {
     const self = this
 
-    this.fixedValue.forEach(item => this.addItem(item, this.checkedValue))
+    this.fixedValue.forEach(item => this.addItem(item.value, item.text, this.checkedValue))
     this.updateButtons()
 
     let options = {
-      options: this.itemsValue.map(item => ({value: item, text: item})),
-      onItemAdd: function(value) {
+      options: this.itemsValue.map(([value, text]) => ({value, text})),
+      onItemAdd: function(value, item) {
         this.clear(true)
         this.refreshOptions()
 
-        self.addItem(value, true)
+        self.addItem(value, item.innerText, true)
       }
     }
 
@@ -38,12 +38,12 @@ export default class extends Controller {
     this.addTarget.style.display = 'none'
   }
 
-  addItem(value, checked) {
+  addItem(value, text, checked) {
     const template = document.getElementById('item-template')
     const instance = template.content.cloneNode(true)
     const attribute = btoa(value)
 
-    instance.querySelector('button').textContent = value
+    instance.querySelector('button').textContent = text
     instance.querySelector('button').dataset.value = value
     instance.querySelector('button').dataset.checked = checked
 
