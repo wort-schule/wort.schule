@@ -56,5 +56,8 @@ module Wortschule
 
     # Generated accounts use the following domain for their email address
     config.generated_account_domain = "user.wort.schule"
+
+    # In reviews, keywords are searched case-insensitive
+    config.reviews_keywords_search_case_insensitive = true
   end
 end

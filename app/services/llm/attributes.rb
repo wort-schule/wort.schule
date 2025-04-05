@@ -43,7 +43,13 @@ module Llm
           if attribute_name.to_s != "keywords"
             value.clamped(relation_klass(attribute_name).values)
           else
-            existing_keywords = Word.where(name: value)
+            case_insensitive = Rails.application.config.reviews_keywords_search_case_insensitive
+
+            existing_keywords = if case_insensitive
+              Word.where("LOWER(name) IN (?)", value.map(&:downcase))
+            else
+              Word.where(name: value)
+            end
             new_keywords = value - existing_keywords.map(&:name)
 
             existing_keywords.map(&:id).map(&:to_s) + new_keywords
