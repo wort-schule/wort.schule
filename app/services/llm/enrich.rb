@@ -44,11 +44,15 @@ module Llm
 
       initialize_word_llm_invocation
 
-      response = all_properties_llm_response
-      create_enriched_attributes(response, all_properties_response_model)
+      if @llm_invoke_all_properties.full_prompt.present?
+        response = all_properties_llm_response
+        create_enriched_attributes(response, all_properties_response_model)
+      end
 
-      response = keywords_llm_response
-      create_enriched_attributes(response, keywords_response_model)
+      if @llm_invoke_keywords.full_prompt.present?
+        response = keywords_llm_response
+        create_enriched_attributes(response, keywords_response_model)
+      end
 
       word_llm_invocation.update!(state: :completed)
     rescue => e

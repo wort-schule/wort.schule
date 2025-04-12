@@ -10,31 +10,8 @@ RSpec.describe Llm::Enrich do
   let(:keywords) { ["Bach", "Tier"] }
   let(:case_1_plural) { "Katzen" }
 
-  let!(:get_llm_response) do
-    stub_request(:post, "https://ai.test/api/chat")
-      .to_return_json(
-        status: 200,
-        body: {
-          model: "llama3.1",
-          created_at: "2024-11-20T21:48:24.480952052Z",
-          message: {
-            role: "assistant",
-            content: "Hier ist der korrigierte und erweiterte JSON-Inhalt für das deutsche Wort \"Hausbau\":\n\n```json\n{\n  \"id\": 8467,\n  \"hierarchy_id\": null,\"topics\": [],\"compound_entities\": [],\"synonyms\": [],\"opposites\": [],\"keywords\": #{keywords.inspect},\"rimes\": [],\n  \"created_at\": \"2024-01-19T21:26:41.352+01:00\",\n  \"updated_at\": \"2024-11-17T17:54:33.699+01:00\",\n  \"meaning\": \"#{meaning}\",\n  \"meaning_long\": \"#{word.meaning_long}\",\n  \"prototype\": false,\n  \"foreign\": false,\n  \"compound\": false,\n  \"prefix_id\": null,\n  \"postfix_id\": null,\n  \"name\": \"Hausbau\",\n  \"consonant_vowel\": \"KVVKKVV\",\n  \"syllables\": \"#{word.syllables}\",\n  \"written_syllables\": \"\",\n  \"slug\": \"hausbau\",\n  \"plural\": \"#{case_1_plural}\",\n  \"genus_id\": null,\n  \"genus_masculine_id\": null,\n  \"genus_feminine_id\": null,\n  \"genus_neuter_id\": null,\n  \"case_1_singular\": \"\",\n  \"case_1_plural\": \"#{case_1_plural}\",\n  \"case_2_singular\": \"\",\n  \"case_2_plural\": \"\",\n  \"case_3_singular\": \"\",\n  \"case_3_plural\": \"\",\n  \"case_4_singular\": \"\",\n  \"case_4_plural\": \"\",\n  \"pluraletantum\": false,\n  \"singularetantum\": false,\n  \"participle\": \"\",\n  \"past_participle\": \"\",\n  \"present_singular_1\": \"\",\n  \"present_singular_2\": \"\",\n  \"present_singular_3\": \"\",\n  \"present_plural_1\": \"Häuserbauten\",\n  \"present_plural_2\": \"\",\n  \"present_plural_3\": \"\",\n  \"past_singular_1\": \"\",\n  \"past_singular_2\": \"\",\n  \"past_singular_3\": \"\",\n  \"past_plural_1\": \"Häuserbauten waren\",\n  \"past_plural_2\": \"\",\n  \"past_plural_3\": \"\",\n  \"subjectless\": false,\n  \"perfect_haben\": false,\n  \"perfect_sein\": false,\n  \"imperative_singular\": null,\n  \"imperative_plural\": null,\n  \"modal\": false,\n  \"strong\": false,\n  \"comparative\": \"\",\n  \"superlative\": \"\",\n  \"absolute\": false,\n  \"irregular_declination\": false,\n  \"irregular_comparison\": false,\n  \"function_type\": \"Verbum actionis\",\n  \"example_sentences\": [],\n  \"hit_counter\": 1,\n  \"with_tts\": true,\n  \"cologne_phonetics\": [\"081\"]\n}\n```\n\nIch habe dabei die folgenden Änderungen und Ergänzungen vorgenommen:\n\n- Die Beschreibung des Wortes (meaning) wurde korrigiert und erweitert.\n- Die Bedeutung im langen Text (meaning_long) wurde hinzugefügt, um eine bessere Vorstellung von dem Konzept des Hausbaus zu geben.\n- Der grammatische Status des Wortes (prototype) wurde auf False gesetzt, da es sich nicht um ein Grundwort handelt.\n- Die Kompositität des Wortes (compound) wurde auf True gesetzt, da \"Hausbau\" aus zwei Wörtern besteht.\n- Die Silbentrennung (syllables) wurde hinzugefügt, um eine klare Struktur des Wortes zu zeigen.\n- Die Pluralform (plural) und die Pluraletantum-Eigenschaft (pluraletantum) wurden korrigiert und auf True gesetzt, da \"Hausbau\" im Plural als \"Häuserbauten\" vorhanden ist.\n- Die anderen Felder wurden entweder korrigiert oder auf den Standardwerten belassen, um die Konsistenz zu gewährleisten."
-          },
-          done_reason: "stop",
-          done: true,
-          total_duration: 347987332616,
-          load_duration: 19833664,
-          prompt_eval_count: 726,
-          prompt_eval_duration: 350627000,
-          eval_count: 938,
-          eval_duration: 347572054000
-        }
-      )
-  end
-
-  before do
-    all_properties_prompt = <<~PROMPT
+  let(:all_properties_prompt) do
+    <<~PROMPT
       You are a highly skilled and knowledgeable German teacher, as well as a native speaker, specializing in teaching children aged 6 to 10 how to write in the German language. Your task is to analyze, correct, and enrich a dataset containing partial information about German words, their meanings, and their grammar properties. Your goal is to suggest values for missing information, correct any existing inaccuracies, and improve the overall quality of the dataset.
       Below is a structured dataset in JSON format. This dataset may contain incomplete or incorrect information. Your role is to complete, correct, and enrich the dataset while adhering strictly to the provided JSON schema and maintaining the integrity of the content.
 
@@ -81,8 +58,10 @@ RSpec.describe Llm::Enrich do
       - Do not include any extraneous information or commentary outside the JSON structure.
       - Your response should contain only the corrected and enriched dataset in the specified JSON format.
     PROMPT
+  end
 
-    keywords_prompt = <<~PROMPT
+  let(:keywords_prompt) do
+    <<~PROMPT
       Stelle dir vor, du bist eine Grundschullehrerin und sollst Schülern auf einfache Weise erklären, was ein bestimmter Begriff bedeutet. Ähnlich dem Spiel Tabu. Gib mir dazu bitte 3–5 kurze, kinderfreundliche Wörter, die den Begriff beschreiben.
 
       Wichtig:
@@ -108,7 +87,32 @@ RSpec.describe Llm::Enrich do
       {{ "keywords": ["Erstes Wort", "Zweites Wort"] }}
       ```
     PROMPT
+  end
 
+  let!(:get_llm_response) do
+    stub_request(:post, "https://ai.test/api/chat")
+      .to_return_json(
+        status: 200,
+        body: {
+          model: "llama3.1",
+          created_at: "2024-11-20T21:48:24.480952052Z",
+          message: {
+            role: "assistant",
+            content: "Hier ist der korrigierte und erweiterte JSON-Inhalt für das deutsche Wort \"Hausbau\":\n\n```json\n{\n  \"id\": 8467,\n  \"hierarchy_id\": null,\"topics\": [],\"compound_entities\": [],\"synonyms\": [],\"opposites\": [],\"keywords\": #{keywords.inspect},\"rimes\": [],\n  \"created_at\": \"2024-01-19T21:26:41.352+01:00\",\n  \"updated_at\": \"2024-11-17T17:54:33.699+01:00\",\n  \"meaning\": \"#{meaning}\",\n  \"meaning_long\": \"#{word.meaning_long}\",\n  \"prototype\": false,\n  \"foreign\": false,\n  \"compound\": false,\n  \"prefix_id\": null,\n  \"postfix_id\": null,\n  \"name\": \"Hausbau\",\n  \"consonant_vowel\": \"KVVKKVV\",\n  \"syllables\": \"#{word.syllables}\",\n  \"written_syllables\": \"\",\n  \"slug\": \"hausbau\",\n  \"plural\": \"#{case_1_plural}\",\n  \"genus_id\": null,\n  \"genus_masculine_id\": null,\n  \"genus_feminine_id\": null,\n  \"genus_neuter_id\": null,\n  \"case_1_singular\": \"\",\n  \"case_1_plural\": \"#{case_1_plural}\",\n  \"case_2_singular\": \"\",\n  \"case_2_plural\": \"\",\n  \"case_3_singular\": \"\",\n  \"case_3_plural\": \"\",\n  \"case_4_singular\": \"\",\n  \"case_4_plural\": \"\",\n  \"pluraletantum\": false,\n  \"singularetantum\": false,\n  \"participle\": \"\",\n  \"past_participle\": \"\",\n  \"present_singular_1\": \"\",\n  \"present_singular_2\": \"\",\n  \"present_singular_3\": \"\",\n  \"present_plural_1\": \"Häuserbauten\",\n  \"present_plural_2\": \"\",\n  \"present_plural_3\": \"\",\n  \"past_singular_1\": \"\",\n  \"past_singular_2\": \"\",\n  \"past_singular_3\": \"\",\n  \"past_plural_1\": \"Häuserbauten waren\",\n  \"past_plural_2\": \"\",\n  \"past_plural_3\": \"\",\n  \"subjectless\": false,\n  \"perfect_haben\": false,\n  \"perfect_sein\": false,\n  \"imperative_singular\": null,\n  \"imperative_plural\": null,\n  \"modal\": false,\n  \"strong\": false,\n  \"comparative\": \"\",\n  \"superlative\": \"\",\n  \"absolute\": false,\n  \"irregular_declination\": false,\n  \"irregular_comparison\": false,\n  \"function_type\": \"Verbum actionis\",\n  \"example_sentences\": [],\n  \"hit_counter\": 1,\n  \"with_tts\": true,\n  \"cologne_phonetics\": [\"081\"]\n}\n```\n\nIch habe dabei die folgenden Änderungen und Ergänzungen vorgenommen:\n\n- Die Beschreibung des Wortes (meaning) wurde korrigiert und erweitert.\n- Die Bedeutung im langen Text (meaning_long) wurde hinzugefügt, um eine bessere Vorstellung von dem Konzept des Hausbaus zu geben.\n- Der grammatische Status des Wortes (prototype) wurde auf False gesetzt, da es sich nicht um ein Grundwort handelt.\n- Die Kompositität des Wortes (compound) wurde auf True gesetzt, da \"Hausbau\" aus zwei Wörtern besteht.\n- Die Silbentrennung (syllables) wurde hinzugefügt, um eine klare Struktur des Wortes zu zeigen.\n- Die Pluralform (plural) und die Pluraletantum-Eigenschaft (pluraletantum) wurden korrigiert und auf True gesetzt, da \"Hausbau\" im Plural als \"Häuserbauten\" vorhanden ist.\n- Die anderen Felder wurden entweder korrigiert oder auf den Standardwerten belassen, um die Konsistenz zu gewährleisten."
+          },
+          done_reason: "stop",
+          done: true,
+          total_duration: 347987332616,
+          load_duration: 19833664,
+          prompt_eval_count: 726,
+          prompt_eval_duration: 350627000,
+          eval_count: 938,
+          eval_duration: 347572054000
+        }
+      )
+  end
+
+  before do
     LlmPrompt.create!(
       identifier: "all_properties",
       content: all_properties_prompt
@@ -485,6 +489,47 @@ RSpec.describe Llm::Enrich do
           word:,
           attribute_name: "compound_entities",
           value: '["Haus","Bau"]'
+        )
+      ]
+    end
+  end
+
+  context "without a prompt" do
+    before do
+      LlmPrompt.destroy_all
+
+      LlmPrompt.create!(
+        identifier: "all_properties",
+        content: ""
+      )
+      LlmPrompt.create!(
+        identifier: "keywords",
+        content: keywords_prompt
+      )
+    end
+
+    it "only calls the LLM with the keyword prompt" do
+      expect { subject }
+        .to change(WordLlmInvocation, :count).by(1)
+        .and change(WordAttributeEdit, :count).by(1)
+        .and change(ChangeGroup, :count).by(1)
+
+      expect(WordLlmInvocation.last).to have_attributes(
+        key: "Noun##{word.id}",
+        invocation_type: "enrichment",
+        state: "completed"
+      )
+
+      expect(ChangeGroup.last).to have_attributes(
+        state: "waiting_for_review"
+      )
+
+      expect(WordAttributeEdit.all).to match_array [
+        have_attributes(
+          change_group: be_present,
+          word:,
+          attribute_name: "keywords",
+          value: [existing_keyword.id.to_s, "Bach"].to_json
         )
       ]
     end
