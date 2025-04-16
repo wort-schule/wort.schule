@@ -56,13 +56,15 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    if (event.target.dataset.checked === "true") {
-      this.deactivate(event.target.dataset.value)
+    const button = event.target.closest('button')
+
+    if (button.dataset.checked === "true") {
+      this.deactivate(button.dataset.value)
     } else {
-      this.activate(event.target.dataset.value)
+      this.activate(button.dataset.value)
     }
 
-    event.target.dataset.checked = event.target.dataset.checked === "true" ? false : true
+    button.dataset.checked = button.dataset.checked === "true" ? false : true
     this.updateButtons()
   }
 
