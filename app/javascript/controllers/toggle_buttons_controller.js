@@ -43,7 +43,7 @@ export default class extends Controller {
     const instance = template.content.cloneNode(true)
     const attribute = btoa(value)
 
-    instance.querySelector('button').textContent = text
+    instance.querySelector('button').innerHTML = text
     instance.querySelector('button').dataset.value = value
     instance.querySelector('button').dataset.checked = checked
 

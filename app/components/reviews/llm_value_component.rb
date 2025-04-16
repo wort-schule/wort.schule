@@ -27,7 +27,7 @@ class Reviews::LlmValueComponent < ViewComponent::Base
         if element.to_i.to_s == element.to_s
           word = Llm::Attributes.relation_klass(attribute_name).find(element)
           meaning = word.respond_to?(:meaning) ? word.meaning : nil
-          text = meaning.present? ? "#{word.name} (#{meaning})" : word.name
+          text = meaning.present? ? "<b>#{word.name}</b> (#{meaning})".html_safe : word.name
 
           {value: element, text:}
         else
