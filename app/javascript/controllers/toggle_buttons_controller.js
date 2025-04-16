@@ -25,6 +25,7 @@ export default class extends Controller {
       options: this.itemsValue.map(([value, text]) => ({value, text})),
       onItemAdd: function(value, item) {
         this.clear(true)
+        this.setTextboxValue("")
         this.refreshOptions()
 
         self.addItem(value, item.innerText, true)
