@@ -25,6 +25,7 @@ export default class extends Controller {
       options: this.itemsValue.map(([value, text]) => ({value, text})),
       onItemAdd: function(value, item) {
         this.clear(true)
+        this.setTextboxValue("")
         this.refreshOptions()
 
         self.addItem(value, item.innerText, true)
@@ -43,7 +44,7 @@ export default class extends Controller {
     const instance = template.content.cloneNode(true)
     const attribute = btoa(value)
 
-    instance.querySelector('button').textContent = text
+    instance.querySelector('button').innerHTML = text
     instance.querySelector('button').dataset.value = value
     instance.querySelector('button').dataset.checked = checked
 
@@ -55,13 +56,15 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    if (event.target.dataset.checked === "true") {
-      this.deactivate(event.target.dataset.value)
+    const button = event.target.closest('button')
+
+    if (button.dataset.checked === "true") {
+      this.deactivate(button.dataset.value)
     } else {
-      this.activate(event.target.dataset.value)
+      this.activate(button.dataset.value)
     }
 
-    event.target.dataset.checked = event.target.dataset.checked === "true" ? false : true
+    button.dataset.checked = button.dataset.checked === "true" ? false : true
     this.updateButtons()
   }
 
