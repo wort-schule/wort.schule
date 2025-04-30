@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_25_200424) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pgcrypto"
@@ -272,6 +272,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_200424) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["identifier"], name: "index_llm_prompts_on_identifier", unique: true
+  end
+
+  create_table "llm_services", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "service_klass", null: false
+    t.string "endpoint"
+    t.string "api_key"
+    t.string "model", null: false
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "new_words", force: :cascade do |t|

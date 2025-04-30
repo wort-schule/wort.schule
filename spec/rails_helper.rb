@@ -94,12 +94,4 @@ RSpec.configure do |config|
   config.include ActionView::RecordIdentifier # dom_id
   config.include EnvironmentHelper
   config.include ViewComponent::TestHelpers, type: :component
-
-  config.around do |example|
-    with_environment(
-      "OLLAMA_URL" => "https://ai.test"
-    ) do
-      example.run
-    end
-  end
 end

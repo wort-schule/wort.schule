@@ -14,5 +14,6 @@ de:
     word_images: Wörter mit Bildern
     image_requests: Wort-Illustration Anträge
     llm_prompts: LLM Prompts
+    llm_services: LLM Services
     llm_enrichments: LLM Ergänzung starten
     delete_reviews: Reviews löschen

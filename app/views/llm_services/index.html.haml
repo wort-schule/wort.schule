@@ -1,0 +1,25 @@
+= title_with_actions t('.title') do
+  = link_to t('.new'), new_llm_service_path, class: 'button primary'
+
+= box do
+  .grid.grid-cols-6.gap-2.items-center
+    %b= LlmService.human_attribute_name(:name)
+    %b= LlmService.human_attribute_name(:service_klass)
+    %b= LlmService.human_attribute_name(:endpoint)
+    %b= LlmService.human_attribute_name(:api_key)
+    %b= LlmService.human_attribute_name(:model)
+    %div
+
+    - @llm_services.each do |llm_service|
+      %div{ class: llm_service.active? ? 'font-bold' : '' } #{llm_service.name} #{llm_service.active? ? t('.active') : ''}
+      %div= llm_service.service_klass
+      %div= llm_service.endpoint
+      %div
+        - if llm_service.api_key&.length > 10
+          %span ****-#{llm_service.api_key[-4..]}
+      %div= llm_service.model
+
+      .flex.flex-wrap.gap-2
+        = link_to t('.edit'), edit_llm_service_path(llm_service), class: 'button'
+        - unless llm_service.active?
+          = button_to t('.activate'), llm_service_activation_path(llm_service), class: 'button'

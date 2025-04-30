@@ -40,14 +40,11 @@ module Llm
     private
 
     def client
-      @client ||= Langchain::LLM::Ollama.new(
-        url: ENV["OLLAMA_URL"].presence || "http://localhost:11434",
-        default_options: {temperature: 0.0, chat_model: model}
-      )
+      @client ||= LlmService.active.client(default_options: {temperature: 0.0, chat_model: model})
     end
 
     def default_model
-      ENV["LLM_MODEL"].presence || "llama3.1"
+      LlmService.active.model
     end
 
     def output_parser

@@ -1,0 +1,9 @@
+= box do
+  = simple_form_for @llm_service do |f|
+    = f.input :name
+    = f.input :service_klass
+    = f.input :endpoint
+    = f.input :api_key
+    = f.input :model
+
+    = f.submit

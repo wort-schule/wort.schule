@@ -73,6 +73,9 @@ de:
       related_keyword:
         one: verwandtes Stichwort
         other: verwandte Stichwörter
+      llm_service:
+        one: LLM Service
+        other: LLM Services
 
     attributes:
       user:
@@ -279,6 +282,12 @@ de:
         topic: Thema
       llm_prompt:
         content: Prompt
+      llm_service:
+        name: Name
+        service_klass: Service
+        endpoint: URL
+        api_key: API Key
+        model: LLM Modellname
 
   activemodel:
     attributes:
