@@ -3,6 +3,8 @@
 - if !preview
   .flex.flex-col.gap-12.mt-12
     - if helpers.can?(:edit, word)
+      .flex
+        = link_to t('actions.edit'), [:edit, word], data: { turbo_frame: '_top' }, class: 'button primary'
       = render 'shared/versions', model: word
 
     - if helpers.can?(:manage_llm, word) && !Rails.env.test?
