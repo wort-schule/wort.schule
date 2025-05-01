@@ -422,6 +422,16 @@ de:
     index:
       title: LLM Prompts
 
+  llm_services:
+    index:
+      title: LLM Services
+      new: Neuer Service
+      edit: Bearbeiten
+      active: "(aktiv)"
+      activate: Aktivieren
+    new:
+      title: Neuen Service erstellen
+
   llm_enrichments:
     new:
       title: LLM Ergänzung starten

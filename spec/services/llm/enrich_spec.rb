@@ -9,6 +9,7 @@ RSpec.describe Llm::Enrich do
   let(:meaning) { "Ein Tier mit vier Pfoten." }
   let(:keywords) { ["Bach", "Tier"] }
   let(:case_1_plural) { "Katzen" }
+  let!(:llm_service) { create(:llm_service) }
 
   let(:all_properties_prompt) do
     <<~PROMPT

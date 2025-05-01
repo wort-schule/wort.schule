@@ -1,0 +1,4 @@
+= title_with_actions @llm_service.name do
+  = button_to t('actions.delete'), llm_service_path(@llm_service), class: 'button danger', method: :delete, 'data-turbo-confirm': t('confirmations.llm_service.destroy') if can?(:destroy, @llm_service)
+
+= render 'form'

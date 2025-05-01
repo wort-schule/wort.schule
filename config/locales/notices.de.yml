@@ -67,3 +67,5 @@ de:
       destroy: Soll die Quelle %{name} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
     shared:
       destroy: Soll %{name} wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.
+    llm_service:
+      destroy: Soll dieser LLM Service wirklich gelöscht werden? Dies kann nicht rückgängig gemacht werden.

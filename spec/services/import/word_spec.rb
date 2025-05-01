@@ -9,6 +9,7 @@ RSpec.describe Import::Word do
   let(:topic) { "Tiere" }
   let(:word_type) { "Noun" }
   let!(:word_import_id) { create(:word_import, name:, topic:, word_type:, state: :new).id }
+  let!(:llm_service) { create(:llm_service) }
 
   before do
     all_properties_prompt = <<~PROMPT

@@ -10,6 +10,7 @@ RSpec.describe "reviews for a new keyword" do
   let!(:existing_keyword) { create(:noun, name: "Tier", with_tts: false) }
   let!(:word) { create(:noun, name: "Katze", with_tts: false) }
   let!(:edit) { create(:word_attribute_edit, word:, attribute_name: "keywords", value: [existing_keyword.id, "klein"].to_json) }
+  let!(:llm_service) { create(:llm_service) }
 
   after do
     clear_enqueued_jobs

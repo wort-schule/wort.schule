@@ -89,6 +89,7 @@ class Ability
         can :manage, List
 
         can :manage, LlmPrompt
+        can :manage, LlmService
         can :manage, :llm_enrichment
         can :manage, :review
         can :manage, :word_import
