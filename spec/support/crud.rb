@@ -20,7 +20,7 @@ RSpec.shared_examples "CRUD" do |klass|
       visit public_send(:"#{klass.model_name.plural}_path")
 
       click_on entry.name
-      click_on t("actions.edit")
+      click_on t("actions.edit"), match: :first
       fill_in "#{klass.model_name.singular}[name]", with: "Anderer Name"
       click_on t("helpers.submit.update")
 
@@ -32,7 +32,7 @@ RSpec.shared_examples "CRUD" do |klass|
       visit public_send(:"#{klass.model_name.plural}_path")
 
       click_on entry.name
-      click_on t("actions.edit")
+      click_on t("actions.edit"), match: :first
       fill_in "#{klass.model_name.singular}[name]", with: ""
 
       expect do
@@ -46,7 +46,7 @@ RSpec.shared_examples "CRUD" do |klass|
       visit public_send(:"#{klass.model_name.plural}_path")
 
       click_on entry.name
-      click_on t("actions.edit")
+      click_on t("actions.edit"), match: :first
       click_on t("actions.delete")
 
       expect do
