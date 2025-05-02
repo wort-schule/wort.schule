@@ -18,13 +18,16 @@ class LlmService < ApplicationRecord
   end
 
   def client(options = {})
+    client_options = {
+      api_key:,
+      **options
+    }
+
+    client_options[:url] = endpoint if endpoint.present?
+
     "Langchain::LLM::#{service_klass}"
       .constantize
-      .new(
-        url: endpoint,
-        api_key: api_key,
-        **options
-      )
+      .new(**client_options)
   end
 
   private
