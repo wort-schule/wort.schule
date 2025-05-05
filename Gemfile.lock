@@ -305,8 +305,9 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.9.1)
-    json-schema (4.3.1)
-      addressable (>= 2.8)
+    json-schema (5.1.1)
+      addressable (~> 2.8)
+      bigdecimal (~> 3.1)
     jwt (2.8.2)
       base64
     kaminari (1.2.2)
@@ -321,10 +322,10 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    langchainrb (0.19.3)
+    langchainrb (0.19.5)
       baran (~> 0.1.9)
       csv
-      json-schema (~> 4)
+      json-schema (>= 4, < 6)
       matrix
       pragmatic_segmenter (~> 0.3.0)
       zeitwerk (~> 2.5)
@@ -408,7 +409,7 @@ GEM
     psych (5.2.3)
       date
       stringio
-    public_suffix (6.0.1)
+    public_suffix (6.0.2)
     puma (6.6.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
