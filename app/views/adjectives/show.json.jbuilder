@@ -15,6 +15,7 @@ json.cache! ["v1", adjective], expires_in: 15.minutes do
     :irregular_declination
 
   json.word_type adjective.class.model_name.human
+  json.image_url adjective.image.attached? ? Rails.application.routes.url_helpers.url_for(adjective.image) : nil
   json.compound_entities adjective.compound_entities.map(&:part).map(&:name)
   json.example_sentences adjective.example_sentences
   json.hierarchy do
