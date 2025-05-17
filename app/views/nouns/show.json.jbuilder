@@ -14,7 +14,7 @@ json.cache! ["v1", noun], expires_in: 15.minutes do
     :pluraletantum
 
   json.word_type noun.class.model_name.human
-  json.image_url noun.image.attached? ? Rails.application.routes.url_helpers.url_for(noun.image) : nil
+  json.image_url noun.image.attached? ? Rails.application.routes.url_helpers.polymorphic_url(noun.image, only_path: true) : nil
   json.compound_entities noun.compound_entities.map(&:part).map(&:name)
   json.example_sentences noun.example_sentences
   json.hierarchy do

@@ -31,7 +31,7 @@ json.cache! ["v1", verb], expires_in: 15.minutes do
     :strong
 
   json.word_type verb.class.model_name.human
-  json.image_url verb.image.attached? ? Rails.application.routes.url_helpers.url_for(verb.image) : nil
+  json.image_url verb.image.attached? ? Rails.application.routes.url_helpers.polymorphic_url(verb.image, only_path: true) : nil
   json.compound_entities verb.compound_entities.map(&:part).map(&:name)
   json.example_sentences verb.example_sentences
   json.hierarchy do
