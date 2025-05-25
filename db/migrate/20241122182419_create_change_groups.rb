@@ -1,12 +1,5 @@
 class CreateChangeGroups < ActiveRecord::Migration[7.1]
   def change
-    create_table :change_groups do |t|
-      t.string :state, null: false, default: 'waiting_for_review'
-      t.bigint :successor_id, null: true
-
-      t.timestamps
-    end
-
     execute <<~SQL
       INSERT INTO change_groups (id, state, successor_id, created_at, updated_at)
       SELECT id, state, successor_id, created_at, updated_at

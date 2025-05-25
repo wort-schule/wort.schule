@@ -3,6 +3,9 @@ class ChangeColognePhoneticsToArray < ActiveRecord::Migration[7.0]
     remove_column :words, :cologne_phonetics
     add_column :words, :cologne_phonetics, :string, array: true, default: []
 
+    def Word.delete_image_requests
+    end
+
     Word.find_each do |word|
       word.send(:update_cologne_phonetics)
       word.save(validate: false)
