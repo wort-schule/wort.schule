@@ -18,7 +18,7 @@ module WordFilter
       options[attribute]&.select!(&:present?)
       return if options[attribute].blank?
 
-      if options.conjunction == "and"
+      if options[:conjunction] == "and"
         filtered_words = Word.joins(attribute)
           .where(attribute => {id: options[attribute]})
           .group("words.id")

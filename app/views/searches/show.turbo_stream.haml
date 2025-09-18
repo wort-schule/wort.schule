@@ -3,7 +3,7 @@
 = turbo_stream.update :word_type_filter, partial: 'word_type_filter'
 
 = turbo_stream.update :words do
-  = render 'words/index', words: @words
+  = render 'words/index', words: @words, wrap_in_turbo_frame: false
 
 = turbo_stream.update :filter_sources, partial: 'filters/sources'
 = turbo_stream.update :filter_topics, partial: 'filters/topics'

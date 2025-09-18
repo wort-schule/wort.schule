@@ -4,7 +4,9 @@ RSpec.describe "word filter" do
   describe "filtering words" do
     before do
       words.each do |word|
-        create :noun, name: word
+        Noun.find_or_create_by(name: word) do |w|
+          w.slug = word.downcase
+        end
       end
 
       visit search_path
