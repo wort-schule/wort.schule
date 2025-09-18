@@ -63,6 +63,7 @@ group :development do
   gem "letter_opener"
   gem "web-console"
   gem "foreman"
+  gem "tidewave"
 end
 
 group :test do

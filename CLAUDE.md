@@ -15,8 +15,11 @@ bin/setup
 bin/rails db:create db:migrate
 bin/rails 'word_images:import[db/seeds/word_images]'
 
-# Start development server (runs web server, Tailwind CSS, and background jobs)
+# Start development server (runs web server with limited threads for Tidewave, Tailwind CSS, and background jobs)
 bin/dev
+
+# Access Tidewave AI coding agent
+# Navigate to http://localhost:3000/tidewave after starting the server
 
 # Run tests
 bin/rails spec
@@ -81,6 +84,11 @@ RSpec with:
 - TTS credentials: `config/google-tts-credentials.json`
 - Database views managed by Scenic gem
 - Hide blank attributes: `config.hide_blank_items` in `config/application.rb`
+
+### Development Tools
+- **Tidewave**: AI-powered coding agent available at `/tidewave` route (development only)
+  - Requires Rails server to run with `RAILS_MAX_THREADS=1 WEB_CONCURRENCY=1` (automatically configured in bin/dev)
+  - Deep integration for full-stack Rails development from database to UI
 
 ## Testing Philosophy
 Always start new features or bugfixes by writing or updating tests first.

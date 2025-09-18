@@ -25,6 +25,24 @@ The initial data is loaded by a migration, so that the database schema can be ad
 - Do not use `db:setup`, because that loads the schema without running all migrations.
 - Start the development server using `bin/dev`
 
+## Tidewave AI Coding Assistant
+
+This project includes [Tidewave](https://github.com/tidewave-ai/tidewave_rails), an AI-powered coding agent specifically designed for Rails development. Tidewave provides an interactive interface to help you with:
+
+- Writing and modifying Rails code
+- Database schema design and migrations
+- Creating views and UI components
+- Debugging and refactoring
+- Full-stack development from database to frontend
+
+### How to use Tidewave
+
+1. Start the development server: `bin/dev`
+2. Open your browser and navigate to http://localhost:3000/tidewave
+3. Use the Tidewave interface to interact with the AI assistant
+
+**Note:** Tidewave requires the Rails server to run with limited threads for proper operation. This is automatically configured when using `bin/dev`.
+
 ## Tests
 
 ```
