@@ -187,11 +187,26 @@ module WordFilter
 
       query = squeeze query
       letters = query
+        .downcase
         .gsub(/[^[:alpha:]]/, "")
         .chars
         .uniq
 
-      where("words.name ~* ?", letters.map { |letter| "(?=.*#{letter})" }.join)
+      # Build a query that checks for all letters
+      # Since PostgreSQL with C locale doesn't handle Unicode case-folding,
+      # we need to check for both uppercase and lowercase versions
+      scope = all
+      letters.each do |letter|
+        upper = letter.upcase
+        if letter != upper
+          # Letter has different upper/lower case versions (including umlauts)
+          scope = scope.where("words.name ILIKE ? OR words.name ILIKE ?", "%#{letter}%", "%#{upper}%")
+        else
+          # Letter is same in upper/lower case
+          scope = scope.where("words.name ILIKE ?", "%#{letter}%")
+        end
+      end
+      scope
     }
 
     scope :filter_source, lambda { |source|
