@@ -77,6 +77,11 @@ task :deploy do
     # instance of your project.
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
+
+    # Create deployment timestamp and revision files
+    command %(echo "$(date -u +"%Y-%m-%dT%H:%M:%S%z")" > DEPLOY_TIMESTAMP)
+    command %(git rev-parse HEAD > REVISION)
+
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
     invoke :"rails:assets_precompile"

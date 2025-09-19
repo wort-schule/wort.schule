@@ -23,3 +23,15 @@
     %a{:href => "https://www.sophie-scholl-schulen.de", :rel => "noopener noreferrer", :target => "_blank"}= image_tag "sophie-scholl-schulen.png", class: "h-16 grayscale hover:grayscale-0 opacity-75 hover:opacity-100", alt: "Sophie Scholl Schulen"
     %a{:href => "https://www.uni-bremen.de/fb12/arbeitsbereiche/abteilung-c-inklusive-paedagogik/sekundarstufe", :rel => "noopener noreferrer", :target => "_blank"}= image_tag "uni-bremen.png", class: "h-16 grayscale hover:grayscale-0 opacity-25 hover:opacity-100", alt: "Universität Bremen"
     %a{href: "https://www.hu-berlin.de", rel: "noopener noreferrer", target: "_blank"}= image_tag "humboldt.svg", class: "h-16 grayscale hover:grayscale-0 opacity-25 hover:opacity-100", alt: "Humboldt-Universität zu Berlin"
+
+  - if Rails.env.production? && (DeploymentInfo.deployed_at || DeploymentInfo.short_revision)
+    .px-4.pb-4.mx-auto.max-w-7xl.sm:px-6.lg:px-8
+      .text-xs.text-center.text-gray-400
+        - if DeploymentInfo.deployed_at
+          Deployed on #{DeploymentInfo.deployed_at.strftime('%d.%m.%Y at %H:%M')}
+        - if DeploymentInfo.short_revision
+          - if DeploymentInfo.deployed_at
+            ·
+          Revision
+          %a.hover:text-gray-600{href: "https://github.com/wort-schule/wort.schule/commit/#{DeploymentInfo.git_revision}", rel: "noopener noreferrer", target: "_blank"}
+            = DeploymentInfo.short_revision

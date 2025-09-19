@@ -37,3 +37,7 @@
 coverage
 
 .DS_Store
+
+# Deployment information files
+DEPLOY_TIMESTAMP
+REVISION
