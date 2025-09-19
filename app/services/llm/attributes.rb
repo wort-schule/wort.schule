@@ -8,7 +8,8 @@ module Llm
       {
         noun: Llm::Schema::Noun.properties,
         verb: Llm::Schema::Verb.properties,
-        adjective: Llm::Schema::Adjective.properties
+        adjective: Llm::Schema::Adjective.properties,
+        function_word: Llm::Schema::FunctionWord.properties
       }
     end
 
@@ -124,6 +125,7 @@ module Llm
       when "Noun" then Schema::Noun
       when "Verb" then Schema::Verb
       when "Adjective" then Schema::Adjective
+      when "FunctionWord" then Schema::FunctionWord
       else raise UnsupportedWordType, "Word type '#{word_type}' is not supported for LLM enrichment"
       end
     end

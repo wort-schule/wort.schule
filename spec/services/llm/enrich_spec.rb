@@ -535,4 +535,24 @@ RSpec.describe Llm::Enrich do
       ]
     end
   end
+
+  describe "#supported?" do
+    context "with a FunctionWord" do
+      let(:function_word) { create(:function_word, name: "ab", function_type: "preposition") }
+      let(:enrichment) { described_class.new(word: function_word) }
+
+      it "returns true for FunctionWord" do
+        expect(enrichment.supported?).to be true
+      end
+    end
+
+    context "with a Noun" do
+      let(:noun) { create(:noun, name: "Haus") }
+      let(:enrichment) { described_class.new(word: noun) }
+
+      it "returns true for Noun" do
+        expect(enrichment.supported?).to be true
+      end
+    end
+  end
 end

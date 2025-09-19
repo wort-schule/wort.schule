@@ -1,6 +1,31 @@
 # frozen_string_literal: true
 
 RSpec.describe Llm::Attributes do
+  describe ".response_model" do
+    it "returns the correct schema for Noun" do
+      expect(described_class.response_model("Noun")).to eq(Llm::Schema::Noun)
+    end
+
+    it "returns the correct schema for Verb" do
+      expect(described_class.response_model("Verb")).to eq(Llm::Schema::Verb)
+    end
+
+    it "returns the correct schema for Adjective" do
+      expect(described_class.response_model("Adjective")).to eq(Llm::Schema::Adjective)
+    end
+
+    it "returns the correct schema for FunctionWord" do
+      expect(described_class.response_model("FunctionWord")).to eq(Llm::Schema::FunctionWord)
+    end
+
+    it "raises an error for unsupported word types" do
+      expect { described_class.response_model("InvalidType") }.to raise_error(
+        Llm::Attributes::UnsupportedWordType,
+        "Word type 'InvalidType' is not supported for LLM enrichment"
+      )
+    end
+  end
+
   describe ".filter" do
     let!(:noun) { create(:noun, name: "Spielen") }
     let!(:verb) { create(:noun, name: "spielen") }
