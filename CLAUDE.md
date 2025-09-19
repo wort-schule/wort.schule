@@ -95,3 +95,10 @@ Always start new features or bugfixes by writing or updating tests first.
 - Keep the use of JavaScript to a minimum.
 - When creating a new feature or fixing a bug: Always start by creating a test for that.
 - Always run the tests and fix any issue after you implimented a new feature or fixed a bug.
+
+## Code Quality
+**IMPORTANT**: After making any code changes, ALWAYS run the linter to ensure code quality:
+```bash
+bundle exec standardrb --no-fix
+```
+If there are any lint errors, fix them before considering the task complete.

@@ -198,12 +198,12 @@ module WordFilter
       scope = all
       letters.each do |letter|
         upper = letter.upcase
-        if letter != upper
+        scope = if letter != upper
           # Letter has different upper/lower case versions (including umlauts)
-          scope = scope.where("words.name ILIKE ? OR words.name ILIKE ?", "%#{letter}%", "%#{upper}%")
+          scope.where("words.name ILIKE ? OR words.name ILIKE ?", "%#{letter}%", "%#{upper}%")
         else
           # Letter is same in upper/lower case
-          scope = scope.where("words.name ILIKE ?", "%#{letter}%")
+          scope.where("words.name ILIKE ?", "%#{letter}%")
         end
       end
       scope
