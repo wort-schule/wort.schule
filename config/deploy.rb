@@ -80,7 +80,10 @@ task :deploy do
 
     # Create deployment timestamp and revision files
     command %(date -u +"%Y-%m-%dT%H:%M:%SZ" > DEPLOY_TIMESTAMP)
-    command %(git rev-parse HEAD > REVISION)
+    # Git commands must be run in the build path where git repository exists
+    in_path(fetch(:build_path)) do
+      command %(git rev-parse HEAD > #{fetch(:build_path)}/REVISION)
+    end
 
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
