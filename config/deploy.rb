@@ -76,14 +76,12 @@ task :deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
     invoke :"git:clone"
-    invoke :"deploy:link_shared_paths"
 
-    # Create deployment timestamp and revision files
+    # Create deployment timestamp and revision files (must be done before link_shared_paths)
     command %(date -u +"%Y-%m-%dT%H:%M:%SZ" > DEPLOY_TIMESTAMP)
-    # Git commands must be run in the build path where git repository exists
-    in_path(fetch(:build_path)) do
-      command %(git rev-parse HEAD > REVISION)
-    end
+    command %(git rev-parse HEAD > REVISION)
+
+    invoke :"deploy:link_shared_paths"
 
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
