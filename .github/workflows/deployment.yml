@@ -30,7 +30,8 @@ jobs:
       - name: Install dependencies
         run: |
           gem install bundler
-          bundle install --without test
+          bundle config set --local without 'test'
+          bundle install
 
       - name: Deploy with Mina
         run: |
