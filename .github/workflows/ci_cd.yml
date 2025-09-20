@@ -1,15 +1,18 @@
-name: Run all tests
+name: CI/CD Pipeline
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  tests:
+  test:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:10
@@ -60,3 +63,35 @@ jobs:
           name: capybara-screenshots-${{ github.sha }}
           path: tmp/capybara/screenshot_*
           retention-days: 1
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: deployment
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH keys
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H wort.schule >> ~/.ssh/known_hosts
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.7
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle config set --local without 'test'
+          bundle install
+
+      - name: Deploy with Mina
+        run: |
+          bundle exec mina deploy
