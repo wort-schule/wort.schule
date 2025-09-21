@@ -86,13 +86,7 @@ task :deploy do
     invoke :"deploy:link_shared_paths"
 
     # Ensure we're using the correct Ruby version for bundler
-    # First install the Ruby version if it's not available, then use it
-    command %(
-      source #{fetch(:rvm_use_path)}
-      rvm list | grep -q "#{ruby_version}" || rvm install #{ruby_version} --quiet-curl
-      rvm use #{ruby_version}
-      echo "Using Ruby: $(ruby --version)"
-    )
+    command %(source #{fetch(:rvm_use_path)} && rvm use #{ruby_version})
 
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
