@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "fuzzystrmatch"
+  enable_extension "pg_trgm"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -49,6 +49,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.bigint "successor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["state"], name: "index_change_groups_on_state"
+    t.index ["successor_id"], name: "index_change_groups_on_successor_id"
   end
 
   create_table "compound_entities", force: :cascade do |t|
@@ -58,6 +60,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.string "part_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["part_id"], name: "index_compound_entities_on_part_id"
+    t.index ["part_type", "part_id"], name: "index_compound_entities_on_part_type_and_part_id"
+    t.index ["word_id"], name: "index_compound_entities_on_word_id"
   end
 
   create_table "compound_interfixes", force: :cascade do |t|
@@ -99,9 +104,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "genus_keys", default: [], array: true
+    t.index ["genus_keys"], name: "index_genus_on_genus_keys", using: :gin
   end
 
-  create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_batches", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
@@ -117,7 +123,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.datetime "jobs_finished_at"
   end
 
-  create_table "good_job_executions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_executions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "active_job_id", null: false
@@ -135,14 +141,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.index ["process_id", "created_at"], name: "index_good_job_executions_on_process_id_and_created_at"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "state"
     t.integer "lock_type", limit: 2
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "key"
@@ -150,7 +156,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -224,6 +230,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.string "role", default: "member"
     t.index ["learning_group_id", "user_id"], name: "index_learning_group_membership_unique", unique: true
     t.index ["learning_group_id"], name: "index_learning_group_memberships_on_learning_group_id"
+    t.index ["role"], name: "index_learning_group_memberships_on_role"
+    t.index ["user_id", "role"], name: "index_learning_group_memberships_on_user_id_and_role"
     t.index ["user_id"], name: "index_learning_group_memberships_on_user_id"
   end
 
@@ -258,12 +266,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "flashcard_section"
+    t.index ["user_id", "visibility"], name: "index_lists_on_user_id_and_visibility"
     t.index ["user_id"], name: "index_lists_on_user_id"
+    t.index ["visibility"], name: "index_lists_on_visibility"
   end
 
   create_table "lists_words", id: false, force: :cascade do |t|
     t.bigint "list_id", null: false
     t.bigint "word_id", null: false
+    t.index ["list_id", "word_id"], name: "idx_lists_words_composite"
+    t.index ["list_id"], name: "index_lists_words_on_list_id"
+    t.index ["word_id"], name: "index_lists_words_on_word_id"
   end
 
   create_table "llm_prompts", force: :cascade do |t|
@@ -345,6 +358,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.string "state", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["reviewable_type", "reviewable_id", "state"], name: "idx_reviews_on_reviewable_and_state"
     t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable"
     t.index ["reviewer_id"], name: "index_reviews_on_reviewer_id"
   end
@@ -414,7 +428,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_themes_on_name", unique: true
+    t.index ["user_id", "visibility"], name: "index_themes_on_user_id_and_visibility"
     t.index ["user_id"], name: "index_themes_on_user_id"
+    t.index ["visibility"], name: "index_themes_on_visibility"
+    t.index ["word_type"], name: "index_themes_on_word_type"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -439,6 +456,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["new_word_id"], name: "index_unlisted_keywords_on_new_word_id"
+    t.index ["state"], name: "index_unlisted_keywords_on_state"
     t.index ["word_import_id"], name: "index_unlisted_keywords_on_word_import_id"
     t.index ["word_type", "word_id"], name: "index_unlisted_keywords_on_word"
   end
@@ -486,6 +504,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.datetime "updated_at", null: false
     t.bigint "change_group_id", null: false
     t.index ["change_group_id"], name: "index_word_attribute_edits_on_change_group_id"
+    t.index ["word_type", "word_id", "attribute_name"], name: "idx_word_attr_edits_on_word_and_attr"
     t.index ["word_type", "word_id"], name: "index_word_attribute_edits_on_word"
   end
 
@@ -498,6 +517,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.datetime "updated_at", null: false
     t.text "error"
     t.index ["name", "topic", "word_type"], name: "index_word_imports_on_name_and_topic_and_word_type"
+    t.index ["state"], name: "index_word_imports_on_state"
   end
 
   create_table "word_llm_invocations", force: :cascade do |t|
@@ -534,11 +554,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.string "word_type_wording", default: "default", null: false
     t.string "genus_wording", default: "default", null: false
     t.string "numerus_wording", default: "default", null: false
+    t.index ["owner_id", "visibility"], name: "index_word_view_settings_on_owner_id_and_visibility"
     t.index ["owner_id"], name: "index_word_view_settings_on_owner_id"
     t.index ["theme_adjective_id"], name: "index_word_view_settings_on_theme_adjective_id"
     t.index ["theme_function_word_id"], name: "index_word_view_settings_on_theme_function_word_id"
     t.index ["theme_noun_id"], name: "index_word_view_settings_on_theme_noun_id"
     t.index ["theme_verb_id"], name: "index_word_view_settings_on_theme_verb_id"
+    t.index ["visibility"], name: "index_word_view_settings_on_visibility"
   end
 
   create_table "words", force: :cascade do |t|
@@ -604,14 +626,34 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
     t.bigint "hit_counter", default: 0, null: false
     t.boolean "with_tts", default: true, null: false
     t.string "cologne_phonetics", default: [], array: true
+    t.index ["cologne_phonetics"], name: "index_words_on_cologne_phonetics", using: :gin
+    t.index ["compound"], name: "index_words_on_compound"
+    t.index ["example_sentences"], name: "index_words_on_example_sentences", using: :gin
     t.index ["genus_feminine_id"], name: "index_words_on_genus_feminine_id"
     t.index ["genus_id"], name: "index_words_on_genus_id"
     t.index ["genus_masculine_id"], name: "index_words_on_genus_masculine_id"
     t.index ["genus_neuter_id"], name: "index_words_on_genus_neuter_id"
     t.index ["hierarchy_id"], name: "index_words_on_hierarchy_id"
+    t.index ["hit_counter"], name: "index_words_on_hit_counter"
+    t.index ["meaning"], name: "idx_words_meaning_trgm", opclass: :gin_trgm_ops, using: :gin
+    t.index ["meaning_long"], name: "idx_words_meaning_long_trgm", opclass: :gin_trgm_ops, using: :gin
+    t.index ["name"], name: "idx_adjectives_name", where: "((type)::text = 'Adjective'::text)"
+    t.index ["name"], name: "idx_compound_words_name", where: "(compound = true)"
+    t.index ["name"], name: "idx_function_words_name", where: "((type)::text = 'FunctionWord'::text)"
+    t.index ["name"], name: "idx_nouns_name", where: "((type)::text = 'Noun'::text)"
+    t.index ["name"], name: "idx_prototype_words_name", where: "(prototype = true)"
+    t.index ["name"], name: "idx_verbs_name", where: "((type)::text = 'Verb'::text)"
+    t.index ["name"], name: "index_words_on_name"
+    t.index ["participle"], name: "idx_words_participle", where: "((participle IS NOT NULL) AND ((participle)::text <> ''::text))"
+    t.index ["past_participle"], name: "idx_words_past_participle", where: "((past_participle IS NOT NULL) AND ((past_participle)::text <> ''::text))"
+    t.index ["plural"], name: "idx_words_plural", where: "((plural IS NOT NULL) AND ((plural)::text <> ''::text))"
     t.index ["postfix_id"], name: "index_words_on_postfix_id"
     t.index ["prefix_id"], name: "index_words_on_prefix_id"
     t.index ["slug"], name: "index_words_on_slug", unique: true
+    t.index ["syllables"], name: "index_words_on_syllables"
+    t.index ["type", "name"], name: "index_words_on_type_and_name"
+    t.index ["type"], name: "index_words_on_type"
+    t.index ["written_syllables"], name: "index_words_on_written_syllables"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -621,8 +663,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
   add_foreign_key "image_requests", "users"
   add_foreign_key "image_requests", "words"
   add_foreign_key "learning_group_memberships", "learning_groups"
-  add_foreign_key "learning_group_memberships", "users"
-  add_foreign_key "learning_groups", "users"
   add_foreign_key "learning_groups", "word_view_settings"
   add_foreign_key "learning_pleas", "learning_groups"
   add_foreign_key "learning_pleas", "lists"
@@ -644,6 +684,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
   add_foreign_key "words", "postfixes"
   add_foreign_key "words", "prefixes"
 
+  create_view "requested_word_images", sql_definition: <<-SQL
+      SELECT words.name,
+      words.meaning,
+      requests.request_count
+     FROM (words
+       JOIN ( SELECT ir.word_id,
+              count(ir.word_id) AS request_count
+             FROM image_requests ir
+            GROUP BY ir.word_id) requests ON ((words.id = requests.word_id)))
+    ORDER BY words.hit_counter DESC, words.name;
+  SQL
   create_view "reviewers", sql_definition: <<-SQL
       WITH RECURSIVE successors(origin_id, edit_id) AS (
            SELECT cg.id,
@@ -667,16 +718,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_193924) do
      FROM (change_groups cg
        JOIN reviews r ON ((((r.reviewable_type)::text = 'ChangeGroup'::text) AND (r.reviewable_id = cg.id))))
     WHERE (cg.successor_id IS NULL);
-  SQL
-  create_view "requested_word_images", sql_definition: <<-SQL
-      SELECT words.name,
-      words.meaning,
-      requests.request_count
-     FROM (words
-       JOIN ( SELECT ir.word_id,
-              count(ir.word_id) AS request_count
-             FROM image_requests ir
-            GROUP BY ir.word_id) requests ON ((words.id = requests.word_id)))
-    ORDER BY words.hit_counter DESC, words.name;
   SQL
 end
