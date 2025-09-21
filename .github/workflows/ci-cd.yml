@@ -97,8 +97,26 @@ jobs:
           gem install bundler
           bundle install --without test
 
-      - name: Force unlock previous deployment if needed
-        run: bundle exec mina deploy:force_unlock || true
+      - name: Check and handle deployment lock
+        run: |
+          # Check if there's a stale lock (older than 10 minutes)
+          if ssh wortschule@wort.schule "test -f ~/app/deploy.lock"; then
+            LOCK_AGE=$(ssh wortschule@wort.schule "stat -c %Y ~/app/deploy.lock")
+            CURRENT_TIME=$(date +%s)
+            AGE_SECONDS=$((CURRENT_TIME - LOCK_AGE))
+
+            # If lock is older than 10 minutes (600 seconds), it's likely stale
+            if [ $AGE_SECONDS -gt 600 ]; then
+              echo "Found stale deployment lock (age: ${AGE_SECONDS} seconds). Removing it."
+              bundle exec mina deploy:force_unlock
+            else
+              echo "ERROR: Another deployment is in progress (lock age: ${AGE_SECONDS} seconds)."
+              echo "If you're sure no deployment is running, wait a few minutes or manually unlock."
+              exit 1
+            fi
+          else
+            echo "No deployment lock found. Proceeding with deployment."
+          fi
 
       - name: Deploy with Mina
         run: bundle exec mina deploy
