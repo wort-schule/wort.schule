@@ -14,6 +14,8 @@ RSpec.describe "Deployment Configuration" do
 
     it "generates valid deployment info YAML" do
       # Test the actual command that will be run during deployment
+      # Note: In deploy.rb, the commit SHA is captured before deployment starts
+      # because the deployed directory may not have a .git folder
       Tempfile.create("deployment_info.yml") do |f|
         cmd = %(
           DEPLOY_TIME=$(date -u '+%Y-%m-%d %H:%M:%S UTC')

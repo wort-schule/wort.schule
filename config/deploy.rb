@@ -72,6 +72,10 @@ desc "Deploys the current version to the server."
 task :deploy do
   # uncomment this line to make sure you pushed your local branch to the remote origin
   # invoke :'git:ensure_pushed'
+
+  # Get the commit SHA from the local repository before deploying
+  commit_sha = `git rev-parse HEAD`.strip
+
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
@@ -81,14 +85,15 @@ task :deploy do
     invoke :"rails:db_migrate"
 
     # Generate deployment info file with timestamp and git commit
-    # Using printf for reliable YAML generation without heredoc issues
+    # Using the commit SHA from the local repo since the deployed directory may not have .git
     command %(
       echo "Writing deployment info..."
       DEPLOY_TIME=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-      COMMIT_SHA=$(git rev-parse HEAD)
+      COMMIT_SHA="#{commit_sha}"
       printf "timestamp: \\"%s\\"\\ncommit: \\"%s\\"\\ncommit_url: \\"https://github.com/wort-schule/wort.schule/commit/%s\\"\\n" "$DEPLOY_TIME" "$COMMIT_SHA" "$COMMIT_SHA" > config/deployment_info.yml || echo "Warning: Could not write deployment info"
       if [ -f config/deployment_info.yml ]; then
-        echo "Deployment info written successfully"
+        echo "Deployment info written successfully:"
+        cat config/deployment_info.yml
       else
         echo "Warning: deployment_info.yml not created, but continuing deployment"
       fi
