@@ -5,8 +5,6 @@ class Word < ApplicationRecord
 
   include WordFilter
 
-  VOWELS = "aeiouäöü"
-
   friendly_id :name, use: %i[sequentially_slugged finders]
 
   has_and_belongs_to_many :topics, -> { distinct }
@@ -118,24 +116,8 @@ class Word < ApplicationRecord
   end
 
   def assign_compound_entities(compound_entity_ids)
-    self.compound_entities = compound_entity_ids.map.with_index do |type_with_id, position|
-      type, id = type_with_id.split(":")
-
-      if id.blank?
-        CompoundEntity.find_by(id: type)&.tap do |entity|
-          entity.pos = position + 1
-        end
-      else
-        next unless CompoundEntity::VALID_COMPOUND_TYPES.include?(type)
-
-        part = type.constantize.find_by(id:)
-        next if part.blank?
-
-        CompoundEntity.find_or_initialize_by(word: @noun, part:).tap do |entity|
-          entity.pos = position + 1
-        end
-      end
-    end.compact
+    service = CompoundEntityService.new(self)
+    self.compound_entities = service.assign_compound_entities(compound_entity_ids)
   end
 
   def other_meanings
@@ -172,21 +154,8 @@ class Word < ApplicationRecord
     session[:words_hit_counter][id.to_s] = Time.zone.now.iso8601
   end
 
-  # Generates a unique slug for the given example sentence. This is used to give the attachments a deterministic name.
-  def slug_for_example_sentence(sentence)
-    Digest::SHA256.hexdigest(sentence).first(6)
-  end
-
-  # Returns the audio attachment for the word itself.
-  def audio_for_word
-    audios.find { |a| a.filename == "audio.mp3" }
-  end
-
-  # Returns the audio attachment for the given example sentence.
-  def audio_for_example_sentence(sentence)
-    slug = slug_for_example_sentence(sentence)
-    audios.find { |a| a.filename == "#{slug}.mp3" }
-  end
+  delegate :slug_for_example_sentence, :audio_for_word, :audio_for_example_sentence,
+    to: :audio_service
 
   def self.values
     distinct.pluck(:name)
@@ -198,18 +167,16 @@ class Word < ApplicationRecord
 
   private
 
-  def set_consonant_vowel
-    self.consonant_vowel = letters
-      .join
-      .gsub(/[#{VOWELS}]/o, "V")
-      .gsub(/[^V]/, "K")
+  def audio_service
+    @audio_service ||= WordAudioService.new(self)
   end
 
-  def letters
-    name
-      .downcase
-      .gsub(/[^[:alpha:]]/, "")
-      .chars
+  def phonetics_service
+    @phonetics_service ||= PhoneticsService.new(self)
+  end
+
+  def set_consonant_vowel
+    self.consonant_vowel = phonetics_service.set_consonant_vowel_pattern
   end
 
   def sanitize_slug
@@ -229,24 +196,11 @@ class Word < ApplicationRecord
   end
 
   def update_cologne_phonetics
-    self.cologne_phonetics = cologne_phonetics_terms.filter_map do |term|
-      ColognePhonetics.encode(term).presence
-    end.uniq
+    self.cologne_phonetics = phonetics_service.update_cologne_phonetics
   end
 
-  # Hooks to react to changes in the with_tts, name and example_sentences attributes and purge or (re)generate audio
-  # attachments.
   def handle_audio_attachments
-    return true unless saved_change_to_with_tts? ||
-      saved_change_to_example_sentences? ||
-      saved_change_to_name? ||
-      saved_change_to_genus_id?
-
-    if with_tts?
-      TtsJob.perform_later self
-    else
-      audios&.purge
-    end
+    audio_service.handle_audio_attachments
   end
 
   def delete_image_requests
