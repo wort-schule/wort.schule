@@ -68,9 +68,6 @@ task :deploy do
   # Get the commit SHA from the local repository before deploying
   commit_sha = `git rev-parse HEAD`.strip
 
-  # Clean up any stale build directories before deploying
-  command %(cd "#{fetch(:deploy_to)}" && rm -rf tmp/build-* 2>/dev/null || true)
-
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
