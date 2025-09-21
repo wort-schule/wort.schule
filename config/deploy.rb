@@ -78,8 +78,8 @@ task :deploy do
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
 
-    # Save git revision from scm to build directory
-    command %(git -C #{fetch(:deploy_to)}/scm rev-parse HEAD > REVISION)
+    # Save git revision - get it from scm directory and write to current directory
+    command %(cd #{fetch(:deploy_to)}/scm && git rev-parse HEAD > $build_path/REVISION)
 
     # Create deployment timestamp after linking shared paths
     command %(date -u +"%Y-%m-%dT%H:%M:%SZ" > DEPLOY_TIMESTAMP)
