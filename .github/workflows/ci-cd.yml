@@ -97,8 +97,5 @@ jobs:
           gem install bundler
           bundle install --without test
 
-      - name: Force unlock previous deployment if needed
-        run: bundle exec mina deploy:force_unlock || true
-
       - name: Deploy with Mina
         run: bundle exec mina deploy
