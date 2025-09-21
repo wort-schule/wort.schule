@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SeoController < PublicController
   def word_index
     @letter = params[:letter] || "a"

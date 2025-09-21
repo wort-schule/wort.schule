@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Genus < ApplicationRecord
   has_one_attached :symbol
 
