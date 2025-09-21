@@ -1,8 +1,15 @@
 - if Rails.env.production? && Rails.application.deployment_info.present?
   - info = Rails.application.deployment_info
-  .text-center.text-xs.text-gray-400.mt-4
-    %span Bereitgestellt: #{info[:timestamp]}
+  - if info[:timestamp].present?
+    - # Parse the UTC timestamp and convert to German time (CET/CEST)
+    - utc_time = Time.parse(info[:timestamp])
+    - german_time = utc_time.in_time_zone("Europe/Berlin")
+    - formatted_time = german_time.strftime("%d.%m.%Y um %H:%M Uhr")
+  .text-center.text-xs.text-gray-400.mt-4.mb-6
+    - if formatted_time.present?
+      %span Bereitgestellt: #{formatted_time}
     - if info[:commit].present?
       %span.mx-1 •
-      %a.hover:text-gray-600{href: info[:commit_url], target: "_blank", rel: "noopener noreferrer"}
+      %span Commit:
+      %a.hover:text-gray-600.ml-1{href: info[:commit_url], target: "_blank", rel: "noopener noreferrer"}
         = info[:commit][0..6]

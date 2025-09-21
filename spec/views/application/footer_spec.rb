@@ -11,13 +11,16 @@ RSpec.describe "application/_footer.html.haml", type: :view do
       })
     end
 
-    it "displays deployment timestamp" do
+    it "displays deployment timestamp in German format" do
       render
-      expect(rendered).to include("Bereitgestellt: 2024-12-20 10:30:45 UTC")
+      # The timestamp should be converted to German time (CET/CEST)
+      # 2024-12-20 10:30:45 UTC becomes 20.12.2024 um 11:30 Uhr (CET)
+      expect(rendered).to include("Bereitgestellt: 20.12.2024 um 11:30 Uhr")
     end
 
     it "displays commit SHA with link to GitHub" do
       render
+      expect(rendered).to include("Commit:")
       expect(rendered).to have_link("abc123d", href: "https://github.com/wort-schule/wort.schule/commit/abc123def")
     end
   end
