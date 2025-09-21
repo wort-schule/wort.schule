@@ -97,5 +97,9 @@ jobs:
           gem install bundler
           bundle install --without test
 
+      - name: Ensure Ruby 3.3.7 is default on server
+        run: |
+          ssh wortschule@wort.schule "source /etc/profile.d/rvm.sh && rvm install 3.3.7 && rvm alias create default 3.3.7 && rvm use 3.3.7 --default"
+
       - name: Deploy with Mina
         run: bundle exec mina deploy
