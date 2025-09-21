@@ -1,0 +1,28 @@
+[Unit]
+Description=wort.schule Background Jobs (good_job)
+After=network.target
+
+[Service]
+Type=simple
+User=wortschule
+Group=wortschule
+WorkingDirectory=/home/wortschule/app/current
+
+# Load mise environment and start good_job
+ExecStart=/bin/bash -lc 'eval "$($HOME/.local/bin/mise activate bash)" && mise trust --all && bundle exec good_job start'
+
+# Environment variables
+Environment="RAILS_ENV=production"
+Environment="MISE_YES=1"
+EnvironmentFile=/home/wortschule/app/shared/.env
+
+# Restart configuration
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=append:/home/wortschule/app/shared/log/good_job.log
+StandardError=append:/home/wortschule/app/shared/log/good_job.error.log
+
+[Install]
+WantedBy=multi-user.target
