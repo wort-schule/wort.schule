@@ -79,7 +79,7 @@ task :deploy do
     invoke :"deploy:link_shared_paths"
 
     # Create deployment timestamp and revision files
-    command %(date -u +"%Y-%m-%dT%H:%M:%SZ" > DEPLOY_TIMESTAMP)
+    command %(echo "$(date -u +"%Y-%m-%dT%H:%M:%S%z")" > DEPLOY_TIMESTAMP)
     command %(git rev-parse HEAD > REVISION)
 
     invoke :"bundle:install"
