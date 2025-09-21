@@ -36,14 +36,8 @@ task :remote_environment do
   ruby_version = File.read(".ruby-version").strip
   raise "Couldn't determine Ruby version: Do you have a file .ruby-version in your project root?" if ruby_version.empty?
 
-  # Ensure Ruby version is installed and set as default
-  command %(
-    source #{fetch(:rvm_use_path)}
-    rvm install #{ruby_version}
-    rvm alias create default #{ruby_version}
-    rvm use #{ruby_version}
-  )
-  invoke :"rvm:use", ruby_version
+  # Force use of Ruby 3.3.7 explicitly
+  invoke :"rvm:use", "3.3.7"
 end
 
 # Put any custom commands you need to run at setup
