@@ -78,6 +78,11 @@ task :deploy do
     # instance of your project.
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
+    # Debug Ruby version
+    command %(ruby -v)
+    command %(which ruby)
+    command %(which bundle)
+    command %(bundle exec ruby -v)
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
 
