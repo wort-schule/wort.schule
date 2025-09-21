@@ -98,6 +98,14 @@ task :deploy do
     invoke :"deploy:cleanup"
 
     on :launch do
+      # Update systemd services if they exist in the repo
+      if File.exist?("systemd/wortschule.service")
+        comment "Updating systemd services with mise configuration..."
+        command "if [ -f systemd/wortschule.service ]; then sudo cp systemd/wortschule.service /etc/systemd/system/; fi"
+        command "if [ -f systemd/wortschule-jobs.service ]; then sudo cp systemd/wortschule-jobs.service /etc/systemd/system/; fi"
+        command "sudo systemctl daemon-reload"
+      end
+
       command "sudo systemctl restart #{fetch(:user)}"
       command "sudo systemctl restart #{fetch(:user)}-jobs"
     end
