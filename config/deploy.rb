@@ -1,6 +1,7 @@
 require "mina/rails"
 require "mina/git"
-require "mina/rvm"
+# Load custom mise task instead of rvm
+require_relative "../lib/mina/mise"
 
 # Basic settings:
 #   domain       - The hostname to SSH to.
@@ -14,7 +15,7 @@ set :user, fetch(:application_name)
 set :deploy_to, "/home/wortschule/app"
 set :repository, "git@github.com:wort-schule/wort.schule.git"
 set :branch, "main"
-set :rvm_use_path, "/etc/profile.d/rvm.sh"
+# Removed rvm_use_path - now using mise
 set :bundle_prefix, "env $(cat .env | xargs) bundle exec "
 
 # Optional settings:
@@ -32,16 +33,7 @@ set :shared_dirs, fetch(:shared_dirs, []).push("public/packs", "node_modules", "
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
-task :remote_environment do
-  ruby_version = File.read(".ruby-version").strip
-  raise "Couldn't determine Ruby version: Do you have a file .ruby-version in your project root?" if ruby_version.empty?
-
-  # Load RVM and use the correct Ruby version
-  command %(
-    source #{fetch(:rvm_use_path)}
-    rvm use #{ruby_version} --default
-  )
-end
+# The remote_environment task is now defined in lib/mina/mise.rb
 
 # Put any custom commands you need to run at setup
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
