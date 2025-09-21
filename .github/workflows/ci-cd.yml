@@ -1,15 +1,20 @@
-name: Run all tests
+name: CI/CD Pipeline
 
-on: [push]
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['main']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  tests:
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:10
@@ -20,7 +25,7 @@ jobs:
         ports: ["5432:5432"]
 
     steps:
-      - name: Pull repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Ruby
@@ -34,8 +39,9 @@ jobs:
       - name: Install libvips
         env:
           DEBIAN_FRONTEND: noninteractive
-        run:
-          sudo apt-get update -qq -o Acquire::Retries=3 && sudo apt-get install --fix-missing -qq -o Acquire::Retries=3 libvips
+        run: |
+          sudo apt-get update -qq -o Acquire::Retries=3
+          sudo apt-get install --fix-missing -qq -o Acquire::Retries=3 libvips
 
       - name: Setup test database
         env:
@@ -60,3 +66,36 @@ jobs:
           name: capybara-screenshots-${{ github.sha }}
           path: tmp/capybara/screenshot_*
           retention-days: 1
+
+  deploy:
+    name: Deploy to Production
+    needs: test
+    runs-on: ubuntu-latest
+    # Only deploy from main branch after tests pass
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: deployment
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH keys
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H wort.schule >> ~/.ssh/known_hosts
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.7
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --without test
+
+      - name: Deploy with Mina
+        run: bundle exec mina deploy
