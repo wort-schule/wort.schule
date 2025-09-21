@@ -108,7 +108,6 @@ task :deploy do
     command %(
       source #{fetch(:rvm_use_path)}
       rvm use #{ruby_version}
-      export $(cat .env | xargs)
       RAILS_ENV=production bundle exec rails db:migrate
     )
 
@@ -131,7 +130,6 @@ task :deploy do
     command %(
       source #{fetch(:rvm_use_path)}
       rvm use #{ruby_version}
-      export $(cat .env | xargs)
       RAILS_ENV=production bundle exec rails assets:precompile
     )
     invoke :"deploy:cleanup"
