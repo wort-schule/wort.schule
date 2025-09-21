@@ -43,7 +43,7 @@ task :remote_environment do
     rvm alias create default #{ruby_version}
     rvm use #{ruby_version}
   )
-  invoke :'rvm:use', ruby_version
+  invoke :"rvm:use", ruby_version
 end
 
 # Put any custom commands you need to run at setup
