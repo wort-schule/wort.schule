@@ -9,4 +9,7 @@
 = turbo_stream.update :filter_topics, partial: 'filters/topics'
 = turbo_stream.update :filter_hierarchies, partial: 'filters/hierarchies'
 = turbo_stream.update :filter_keywords, partial: 'filters/keywords'
-= turbo_stream.update :add_words_to_list, partial: 'filters/add_to_list'
+= turbo_stream.update :add_words_to_list do
+  = render layout: 'filters/add_to_list' do
+    - if @filterrific
+      .mt-2.text-xs.text-gray-600= t 'filter.added_words_to_list', count: @filterrific.find.count
