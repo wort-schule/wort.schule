@@ -73,13 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     # Only deploy from main branch after tests pass
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: production
-      url: https://wort.schule
-    # Concurrency ensures only one deployment at a time to production
-    concurrency:
-      group: production-deployment
-      cancel-in-progress: false
+    environment: deployment
 
     steps:
       - name: Checkout code
