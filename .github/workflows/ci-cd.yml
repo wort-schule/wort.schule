@@ -105,8 +105,8 @@ jobs:
             CURRENT_TIME=$(date +%s)
             AGE_SECONDS=$((CURRENT_TIME - LOCK_AGE))
 
-            # If lock is older than 10 minutes (600 seconds), it's likely stale
-            if [ $AGE_SECONDS -gt 600 ]; then
+            # If lock is older than 15 minutes (900 seconds), it's likely stale
+            if [ $AGE_SECONDS -gt 900 ]; then
               echo "Found stale deployment lock (age: ${AGE_SECONDS} seconds). Removing it."
               bundle exec mina deploy:force_unlock
             else
