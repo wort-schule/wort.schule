@@ -39,9 +39,7 @@ task :remote_environment do
   # Load RVM and use the correct Ruby version
   command %(
     source #{fetch(:rvm_use_path)}
-    rvm install #{ruby_version} --quiet-curl 2>/dev/null || true
     rvm use #{ruby_version} --default
-    rvm #{ruby_version} do ruby --version
   )
 end
 
@@ -77,17 +75,12 @@ task :deploy do
 
   # Get the commit SHA from the local repository before deploying
   commit_sha = `git rev-parse HEAD`.strip
-  ruby_version = File.read(".ruby-version").strip
 
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
-
-    # Ensure we're using the correct Ruby version for bundler
-    command %(source #{fetch(:rvm_use_path)} && rvm use #{ruby_version})
-
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
 
