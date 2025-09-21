@@ -83,7 +83,7 @@ task :deploy do
     # Generate deployment info file with timestamp and git commit
     command %(
       echo "Writing deployment info..."
-      cat > config/deployment_info.yml << EOF
+      cat > config/deployment_info.yml <<-EOF
 timestamp: "$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 commit: "$(git rev-parse HEAD)"
 commit_url: "https://github.com/wort-schule/wort.schule/commit/$(git rev-parse HEAD)"
