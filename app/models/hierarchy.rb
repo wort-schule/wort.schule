@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Hierarchy < ApplicationRecord
   default_scope { order(:name) }
 

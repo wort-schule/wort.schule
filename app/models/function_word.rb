@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FunctionWord < Word
   validates_presence_of :name, :function_type
 

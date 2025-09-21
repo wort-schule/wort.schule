@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Adjective < Word
   validates_presence_of :name
 
