@@ -78,12 +78,15 @@ task :deploy do
     # instance of your project.
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
-    # Debug Ruby version
-    command %(ruby -v)
-    command %(which ruby)
-    command %(which bundle)
-    command %(bundle exec ruby -v)
-    invoke :"bundle:install"
+    # Use explicit bundle install with Ruby 3.3.7
+    command %(
+      source #{fetch(:rvm_use_path)}
+      rvm use 3.3.7
+      bundle config set --local deployment 'true'
+      bundle config set --local path 'vendor/bundle'
+      bundle config set --local without 'development test'
+      bundle install
+    )
     invoke :"rails:db_migrate"
 
     # Generate deployment info file with timestamp and git commit
