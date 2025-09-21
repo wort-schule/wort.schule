@@ -81,14 +81,17 @@ task :deploy do
     invoke :"rails:db_migrate"
 
     # Generate deployment info file with timestamp and git commit
+    # Using printf for reliable YAML generation without heredoc issues
     command %(
       echo "Writing deployment info..."
-      cat > config/deployment_info.yml <<-EOF
-timestamp: "$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-commit: "$(git rev-parse HEAD)"
-commit_url: "https://github.com/wort-schule/wort.schule/commit/$(git rev-parse HEAD)"
-EOF
-      echo "Deployment info written to config/deployment_info.yml"
+      DEPLOY_TIME=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+      COMMIT_SHA=$(git rev-parse HEAD)
+      printf "timestamp: \\"%s\\"\\ncommit: \\"%s\\"\\ncommit_url: \\"https://github.com/wort-schule/wort.schule/commit/%s\\"\\n" "$DEPLOY_TIME" "$COMMIT_SHA" "$COMMIT_SHA" > config/deployment_info.yml || echo "Warning: Could not write deployment info"
+      if [ -f config/deployment_info.yml ]; then
+        echo "Deployment info written successfully"
+      else
+        echo "Warning: deployment_info.yml not created, but continuing deployment"
+      fi
     )
 
     invoke :"rails:assets_precompile"
