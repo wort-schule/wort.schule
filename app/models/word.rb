@@ -139,7 +139,7 @@ class Word < ApplicationRecord
   end
 
   def other_meanings
-    Word.where("name ILIKE ?", name).to_a - [self]
+    Word.where("name ILIKE ? AND id != ?", name, id)
   end
 
   def name_with_meaning
@@ -157,7 +157,7 @@ class Word < ApplicationRecord
   end
 
   def accessible_lists(ability)
-    List.accessible_by(ability).where(id: lists.pluck(:id))
+    lists.accessible_by(ability)
   end
 
   def hit!(session, user_agent)
@@ -179,13 +179,13 @@ class Word < ApplicationRecord
 
   # Returns the audio attachment for the word itself.
   def audio_for_word
-    audios.all.find { |a| a.filename == "audio.mp3" }
+    audios.find { |a| a.filename == "audio.mp3" }
   end
 
   # Returns the audio attachment for the given example sentence.
   def audio_for_example_sentence(sentence)
     slug = slug_for_example_sentence(sentence)
-    audios.all.find { |a| a.filename == "#{slug}.mp3" }
+    audios.find { |a| a.filename == "#{slug}.mp3" }
   end
 
   def self.values

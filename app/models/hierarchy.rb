@@ -3,7 +3,7 @@ class Hierarchy < ApplicationRecord
 
   belongs_to :parent, class_name: "Hierarchy", optional: true, foreign_key: "top_hierarchy_id"
   has_many :children, class_name: "Hierarchy", foreign_key: "top_hierarchy_id", dependent: :nullify
-  has_many :words, dependent: :nullify
+  has_many :words, dependent: :nullify, counter_cache: :words_count
 
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png

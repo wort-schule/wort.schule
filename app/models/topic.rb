@@ -1,7 +1,7 @@
 class Topic < ApplicationRecord
   default_scope { order(:name) }
 
-  has_and_belongs_to_many :words
+  has_and_belongs_to_many :words, counter_cache: :words_count
 
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100], format: :png

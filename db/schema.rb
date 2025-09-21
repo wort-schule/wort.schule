@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_21_103706) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_21_112552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -203,6 +203,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_103706) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "top_hierarchy_id"
+    t.integer "words_count", default: 0, null: false
     t.index ["top_hierarchy_id"], name: "index_hierarchies_on_top_hierarchy_id"
   end
 
@@ -392,12 +393,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_103706) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "visible", default: true, null: false
+    t.integer "words_count", default: 0, null: false
   end
 
   create_table "sources_words", id: false, force: :cascade do |t|
     t.bigint "word_id", null: false
     t.bigint "source_id", null: false
     t.index ["source_id", "word_id"], name: "index_sources_words_on_source_id_and_word_id"
+    t.index ["source_id"], name: "idx_sources_words_source_id"
     t.index ["word_id", "source_id"], name: "index_sources_words_on_word_id_and_source_id", unique: true
   end
 
@@ -442,12 +445,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_103706) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "words_count", default: 0, null: false
   end
 
   create_table "topics_words", id: false, force: :cascade do |t|
     t.bigint "word_id", null: false
     t.bigint "topic_id", null: false
     t.index ["topic_id", "word_id"], name: "index_topics_words_on_topic_id_and_word_id"
+    t.index ["topic_id"], name: "idx_topics_words_topic_id"
     t.index ["word_id", "topic_id"], name: "index_topics_words_on_word_id_and_topic_id", unique: true
   end
 
@@ -640,6 +645,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_103706) do
     t.index ["genus_masculine_id"], name: "index_words_on_genus_masculine_id"
     t.index ["genus_neuter_id"], name: "index_words_on_genus_neuter_id"
     t.index ["hierarchy_id"], name: "index_words_on_hierarchy_id"
+    t.index ["hit_counter"], name: "idx_words_hit_counter_desc", order: :desc
     t.index ["hit_counter"], name: "index_words_on_hit_counter"
     t.index ["meaning"], name: "idx_words_meaning_trgm", opclass: :gin_trgm_ops, using: :gin
     t.index ["meaning_long"], name: "idx_words_meaning_long_trgm", opclass: :gin_trgm_ops, using: :gin
@@ -660,6 +666,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_103706) do
     t.index ["type", "name", "hit_counter"], name: "idx_words_type_name_hit_counter"
     t.index ["type", "name"], name: "index_words_on_type_and_name"
     t.index ["type"], name: "index_words_on_type"
+    t.index ["with_tts"], name: "idx_words_with_tts", where: "(with_tts = true)"
     t.index ["written_syllables"], name: "index_words_on_written_syllables"
   end
 
