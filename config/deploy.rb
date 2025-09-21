@@ -94,22 +94,8 @@ task :deploy do
       echo "Using Ruby: $(ruby --version)"
     )
 
-    # Use custom bundle install with RVM to ensure correct Ruby version
-    command %(
-      source #{fetch(:rvm_use_path)}
-      rvm use #{ruby_version}
-      bundle config set --local deployment 'true'
-      bundle config set --local path 'vendor/bundle'
-      bundle config set --local without 'development test'
-      bundle install
-    )
-
-    # Use custom db:migrate with RVM to ensure correct Ruby version
-    command %(
-      source #{fetch(:rvm_use_path)}
-      rvm use #{ruby_version}
-      RAILS_ENV=production bundle exec rails db:migrate
-    )
+    invoke :"bundle:install"
+    invoke :"rails:db_migrate"
 
     # Generate deployment info file with timestamp and git commit
     # Using the commit SHA from the local repo since the deployed directory may not have .git
@@ -126,12 +112,7 @@ task :deploy do
       fi
     )
 
-    # Use custom assets precompile with RVM to ensure correct Ruby version
-    command %(
-      source #{fetch(:rvm_use_path)}
-      rvm use #{ruby_version}
-      RAILS_ENV=production bundle exec rails assets:precompile
-    )
+    invoke :"rails:assets_precompile"
     invoke :"deploy:cleanup"
 
     on :launch do
