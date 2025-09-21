@@ -29,6 +29,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore deployment info (generated during deployment)
+/config/deployment_info.yml
 /config/google-tts-credentials.json
 
 /app/assets/builds/*

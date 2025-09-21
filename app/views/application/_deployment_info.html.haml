@@ -1,0 +1,8 @@
+- if Rails.env.production? && Rails.application.deployment_info.present?
+  - info = Rails.application.deployment_info
+  .text-center.text-xs.text-gray-400.mt-4
+    %span Bereitgestellt: #{info[:timestamp]}
+    - if info[:commit].present?
+      %span.mx-1 •
+      %a.hover:text-gray-600{href: info[:commit_url], target: "_blank", rel: "noopener noreferrer"}
+        = info[:commit][0..6]

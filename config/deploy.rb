@@ -79,6 +79,18 @@ task :deploy do
     invoke :"deploy:link_shared_paths"
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
+
+    # Generate deployment info file with timestamp and git commit
+    command %(
+      echo "Writing deployment info..."
+      cat > config/deployment_info.yml << EOF
+timestamp: "$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+commit: "$(git rev-parse HEAD)"
+commit_url: "https://github.com/wort-schule/wort.schule/commit/$(git rev-parse HEAD)"
+EOF
+      echo "Deployment info written to config/deployment_info.yml"
+    )
+
     invoke :"rails:assets_precompile"
     invoke :"deploy:cleanup"
 
