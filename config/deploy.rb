@@ -82,12 +82,10 @@ task :deploy do
     command %(
       source #{fetch(:rvm_use_path)}
       rvm use 3.3.7
-      which ruby
-      ruby -v
-      /home/wortschule/.rvm/gems/ruby-3.3.7/bin/bundle config set --local deployment 'true'
-      /home/wortschule/.rvm/gems/ruby-3.3.7/bin/bundle config set --local path 'vendor/bundle'
-      /home/wortschule/.rvm/gems/ruby-3.3.7/bin/bundle config set --local without 'development test'
-      /home/wortschule/.rvm/gems/ruby-3.3.7/bin/bundle install
+      bundle config set --local deployment 'true'
+      bundle config set --local path 'vendor/bundle'
+      bundle config set --local without 'development test'
+      BUNDLE_FORCE_RUBY_PLATFORM=1 bundle install --force
     )
     invoke :"rails:db_migrate"
 
