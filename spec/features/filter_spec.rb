@@ -42,10 +42,7 @@ RSpec.describe "word filter" do
       end
     end
 
-    it "filters by keywords only", js: true, skip: "Keyword filter not working correctly - needs investigation" do
-      # Commenting out until we can fix the keyword filter issue
-      # The filter seems to not be applying correctly through the UI
-      # even though it works in console
+    it "filters by keywords only", js: true do
       first_word = Word.find_by(name: "Abfall")
       second_word = Word.find_by(name: "Bach")
       first_word.keywords << second_word
@@ -73,7 +70,7 @@ RSpec.describe "word filter" do
       end
     end
 
-    it "filters words and keywords", js: true, skip: "Combined filter not working - same issue as keyword-only filter" do
+    it "filters words and keywords", js: true do
       words.each do |word|
         expect(page).to have_content word
       end

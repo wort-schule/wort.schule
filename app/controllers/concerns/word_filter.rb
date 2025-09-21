@@ -15,14 +15,22 @@ module WordFilter
     end
 
     def filter_with_conjunction(attribute, options)
-      options[attribute]&.select!(&:present?)
-      return if options[attribute].blank?
+      # Handle both string and symbol keys
+      options = options.with_indifferent_access if options.is_a?(Hash)
 
-      if options[:conjunction] == "and"
+      # Get the attribute values (array of IDs)
+      attribute_values = options[attribute.to_s] || options[attribute]
+      attribute_values&.select!(&:present?)
+      return if attribute_values.blank?
+
+      # Get the conjunction (default to "or")
+      conjunction = options["conjunction"] || options[:conjunction] || "or"
+
+      if conjunction == "and"
         filtered_words = Word.joins(attribute)
-          .where(attribute => {id: options[attribute]})
+          .where(attribute => {id: attribute_values})
           .group("words.id")
-          .having("COUNT(*) = #{options[attribute].length}")
+          .having("COUNT(*) = #{attribute_values.length}")
           .unscope(:order)
           .distinct
 
@@ -30,7 +38,7 @@ module WordFilter
       else
         where(
           "words.id": Word.joins(attribute)
-          .where(attribute => {id: options[attribute]})
+          .where(attribute => {id: attribute_values})
         )
       end
     end

@@ -39,9 +39,18 @@ class SearchesController < PublicController
   end
 
   def filter_params
-    allowed_params = params.fetch(:filterrific, {}).permit!.select { |filter| permitted_filters.map(&:to_s).include?(filter) }
-    params[:filterrific] = allowed_params
+    filterrific_params = params.fetch(:filterrific, {}).permit!
 
+    # Handle filters with nested parameters (conjunction + array of values)
+    allowed_params = {}
+    filterrific_params.each do |key, value|
+      if permitted_filters.map(&:to_s).include?(key)
+        # Handle both simple values and nested hashes for filters with conjunction
+        allowed_params[key] = value
+      end
+    end
+
+    params[:filterrific] = allowed_params
     allowed_params
   end
 
