@@ -76,12 +76,11 @@ task :deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
     invoke :"git:clone"
-    invoke :"deploy:link_shared_paths"
 
-    # Save git revision - the scm directory contains the git repository
-    in_path "#{fetch(:deploy_to)}/scm" do
-      command %(git rev-parse HEAD > #{fetch(:release_path)}/REVISION)
-    end
+    # Save git revision immediately after cloning while still in git directory
+    command %(git rev-parse HEAD > REVISION)
+
+    invoke :"deploy:link_shared_paths"
 
     # Create deployment timestamp after linking shared paths
     command %(date -u +"%Y-%m-%dT%H:%M:%SZ" > DEPLOY_TIMESTAMP)
