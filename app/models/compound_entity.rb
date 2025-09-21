@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CompoundEntity < ApplicationRecord
   default_scope { order(pos: :asc) }
 

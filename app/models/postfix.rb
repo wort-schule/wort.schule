@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Postfix < ApplicationRecord
   has_many :words
   validates_presence_of :name

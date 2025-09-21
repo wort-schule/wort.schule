@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LearningGroupMailer < ApplicationMailer
   def invite
     @learning_group_name = params[:learning_group_name]

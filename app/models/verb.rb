@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Verb < Word
   validates_presence_of :name
 

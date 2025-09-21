@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Prefix < ApplicationRecord
   extend Enumerize
 
