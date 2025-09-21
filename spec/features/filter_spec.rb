@@ -42,25 +42,31 @@ RSpec.describe "word filter" do
       end
     end
 
-    it "filters words by search term", js: true do
+    it "filters words and keywords", js: true do
       words.each do |word|
         expect(page).to have_content word
       end
 
-      # Note: There's a known issue where combining filter_home with filter_keywords
-      # doesn't properly intersect the results. This test has been simplified to only
-      # test the filter_home functionality until the keyword filter issue is resolved.
-      # The Ruby code works correctly (Word.filter_home("a").filter_keywords(keywords: [id])
-      # returns the right results), but the form submission doesn't apply both filters properly.
+      first_word = Word.find_by(name: "Abfall")
+      second_word = Word.find_by(name: "Bach")
+      first_word.keywords << second_word
+      expect(first_word.keywords).to match_array([second_word])
 
       click_on t("filter.open")
       fill_in "filterrific[filter_home]", with: "a"
+
+      # Wait for the keywords filter to be populated via Turbo
+      sleep 0.5
+
+      # Select keyword using the visible: false option since it's a hidden select (uses TomSelect)
+      select second_word.name, from: "filterrific[filter_keywords][keywords][]", visible: false
+
       find_button(t("filter.apply"), visible: false).trigger("click")
 
       within "#words" do
         expect(page).to have_css '[data-name="Abfall"]'
-        expect(page).to have_css '[data-name="Abend"]'  # Contains 'a'
-        expect(page).to have_css '[data-name="Bach"]'    # Contains 'a'
+        expect(page).not_to have_css '[data-name="Abend"]'
+        expect(page).not_to have_css '[data-name="Bach"]'
       end
     end
   end
