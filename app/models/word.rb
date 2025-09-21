@@ -168,7 +168,7 @@ class Word < ApplicationRecord
 
     return if last_hit.present? && DateTime.parse(last_hit) > 24.hours.ago
 
-    update_attribute(:hit_counter, hit_counter + 1)
+    increment!(:hit_counter)
     session[:words_hit_counter][id.to_s] = Time.zone.now.iso8601
   end
 

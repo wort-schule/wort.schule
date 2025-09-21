@@ -84,3 +84,7 @@ production:
   database: wortschule_production
   username: wortschule
   password: <%= ENV["WORTSCHULE_DATABASE_PASSWORD"] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 20 } %>
+  checkout_timeout: 5
+  reaping_frequency: 10
+  dead_connection_timeout: 5

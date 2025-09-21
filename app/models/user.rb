@@ -42,7 +42,7 @@ class User < ApplicationRecord
   end
 
   def word_in_flashcards?(word)
-    flashcard_lists.joins(:words).exists?("words.id": word.id)
+    flashcard_lists.joins(:words).where(words: {id: word.id}).exists?
   end
 
   def active_for_authentication?

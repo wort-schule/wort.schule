@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_21_103706) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -24,6 +24,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["record_type", "record_id", "name"], name: "idx_active_storage_attachments_record_name"
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -62,6 +63,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
     t.datetime "updated_at", null: false
     t.index ["part_id"], name: "index_compound_entities_on_part_id"
     t.index ["part_type", "part_id"], name: "index_compound_entities_on_part_type_and_part_id"
+    t.index ["word_id", "pos"], name: "idx_compound_entities_word_pos"
     t.index ["word_id"], name: "index_compound_entities_on_word_id"
   end
 
@@ -228,6 +230,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
     t.datetime "updated_at", null: false
     t.string "access"
     t.string "role", default: "member"
+    t.index ["access", "role", "learning_group_id"], name: "idx_learning_group_memberships_access_role"
     t.index ["learning_group_id", "user_id"], name: "index_learning_group_membership_unique", unique: true
     t.index ["learning_group_id"], name: "index_learning_group_memberships_on_learning_group_id"
     t.index ["role"], name: "index_learning_group_memberships_on_role"
@@ -266,6 +269,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "flashcard_section"
+    t.index ["user_id", "flashcard_section"], name: "idx_users_flashcard_section", where: "(flashcard_section IS NOT NULL)"
     t.index ["user_id", "visibility"], name: "index_lists_on_user_id_and_visibility"
     t.index ["user_id"], name: "index_lists_on_user_id"
     t.index ["visibility"], name: "index_lists_on_visibility"
@@ -554,6 +558,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
     t.string "word_type_wording", default: "default", null: false
     t.string "genus_wording", default: "default", null: false
     t.string "numerus_wording", default: "default", null: false
+    t.index ["owner_id", "visibility"], name: "idx_word_view_settings_owner_visibility"
     t.index ["owner_id", "visibility"], name: "index_word_view_settings_on_owner_id_and_visibility"
     t.index ["owner_id"], name: "index_word_view_settings_on_owner_id"
     t.index ["theme_adjective_id"], name: "index_word_view_settings_on_theme_adjective_id"
@@ -629,6 +634,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
     t.index ["cologne_phonetics"], name: "index_words_on_cologne_phonetics", using: :gin
     t.index ["compound"], name: "index_words_on_compound"
     t.index ["example_sentences"], name: "index_words_on_example_sentences", using: :gin
+    t.index ["foreign", "prototype", "compound", "type"], name: "idx_words_foreign_prototype_compound"
     t.index ["genus_feminine_id"], name: "index_words_on_genus_feminine_id"
     t.index ["genus_id"], name: "index_words_on_genus_id"
     t.index ["genus_masculine_id"], name: "index_words_on_genus_masculine_id"
@@ -651,6 +657,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_101432) do
     t.index ["prefix_id"], name: "index_words_on_prefix_id"
     t.index ["slug"], name: "index_words_on_slug", unique: true
     t.index ["syllables"], name: "index_words_on_syllables"
+    t.index ["type", "name", "hit_counter"], name: "idx_words_type_name_hit_counter"
     t.index ["type", "name"], name: "index_words_on_type_and_name"
     t.index ["type"], name: "index_words_on_type"
     t.index ["written_syllables"], name: "index_words_on_written_syllables"

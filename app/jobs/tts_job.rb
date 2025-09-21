@@ -17,12 +17,25 @@ class TtsJob < ApplicationJob
   end
 
   private def generate_audios(word)
+    # Prepare all attachments first
+    attachments = []
+
+    # Add main word audio
+    attachments << {content: text(word), name: "audio.mp3"}
+
+    # Add example sentence audios
+    word.example_sentences&.each do |sentence|
+      attachments << {
+        content: sentence,
+        name: "#{word.slug_for_example_sentence(sentence)}.mp3"
+      }
+    end
+
+    # Purge once, then attach all at once
     word.audios.purge
 
-    attach word, text(word), "audio.mp3"
-
-    word.example_sentences&.each do |sentence|
-      attach word, sentence, "#{word.slug_for_example_sentence(sentence)}.mp3"
+    attachments.each do |attachment|
+      attach word, attachment[:content], attachment[:name]
     end
   end
 

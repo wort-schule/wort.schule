@@ -18,8 +18,14 @@ class ThemeComponent < ViewComponent::Base
 
   def liquid_template
     template = @default ? Theme.default_template(word_type:) : @theme.template
-    template_renderer = Liquid::Template.parse(sanitize_template(template))
+    cache_key = "theme_template_#{@theme&.id}_#{@theme&.updated_at&.to_i}_#{template.hash}"
 
+    # Cache the sanitized template string, not the parsed object
+    sanitized_template = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      sanitize_template(template)
+    end
+
+    template_renderer = Liquid::Template.parse(sanitized_template)
     template_renderer.render(params.with_indifferent_access.merge(view_context:)).html_safe
   end
 

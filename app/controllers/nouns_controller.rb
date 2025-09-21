@@ -14,7 +14,10 @@ class NounsController < PublicController
       Word,
       (params[:filterrific] || {}).merge(filter_type: "Noun")
     ) or return
-    @nouns = @filterrific.find.ordered_lexigraphically.page(params[:page])
+    @nouns = @filterrific.find
+      .includes(:topics, :keywords, :synonyms, :image_attachment)
+      .ordered_lexigraphically
+      .page(params[:page])
   end
 
   def by_genus
