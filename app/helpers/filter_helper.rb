@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FilterHelper
   def filter_text_field(form, attribute, **input_options)
     form_attribute = "filter_#{attribute}"

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module SeoHelper
   def label_for(word)
     return word.name unless word.name === Noun

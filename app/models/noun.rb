@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Noun < Word
   belongs_to :genus, optional: true
   validates_presence_of :name
