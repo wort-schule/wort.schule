@@ -1,82 +1,10 @@
 # frozen_string_literal: true
 
-class VerbsController < PublicController
-  include OpenGraph
-  include Themeable
-  include ListAddable
-
-  load_and_authorize_resource except: :add_to_list
-
-  before_action :set_open_graph_tags, only: :show
-
-  def index
-    @filterrific = initialize_filterrific(
-      Word,
-      (params[:filterrific] || {}).merge(filter_type: "Verb")
-    ) or return
-    @verbs = @filterrific.find.ordered_lexigraphically.page(params[:page])
-  end
-
-  def show
-    @verb.hit!(session, request.user_agent)
-
-    respond_to do |format|
-      format.html do
-        render ThemeComponent.new(word: @verb, theme: current_word_view_setting.theme_verb)
-      end
-      format.json do
-        render "show", locals: {verb: @verb}
-      end
-    end
-  end
-
-  def new
-  end
-
-  def create
-    @verb.assign_compound_entities(params[:verb][:compound_entity_ids])
-
-    if @verb.save
-      redirect_to @verb, notice: t("notices.verbs.created", verb: @verb.name)
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def edit
-  end
-
-  def update
-    @verb.assign_compound_entities(params[:verb][:compound_entity_ids])
-
-    if @verb.update(verb_params)
-      @verb.compound_entities.each(&:save)
-
-      redirect_to @verb, notice: t("notices.verbs.updated", verb: @verb.name)
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    destroyed = @verb.destroy
-    notice = if destroyed
-      {notice: t("notices.verbs.destroyed", verb: @verb.name)}
-    else
-      {alert: t("alerts.verbs.destroyed", verb: @verb.name)}
-    end
-
-    redirect_to verbs_path, notice
-  end
-
-  def background_color
-    "bg-white md:bg-gray-100"
-  end
-
+class VerbsController < WordTypeController
   private
 
-  def page_title
-    instance_variable_defined?(:@verb) ? @verb.name : super
+  def resource_params
+    verb_params
   end
 
   def verb_params
