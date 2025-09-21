@@ -420,7 +420,6 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     os (1.1.4)
-    ostruct (0.6.3)
     paper_trail (16.0.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
@@ -695,7 +694,6 @@ DEPENDENCIES
   liquid
   meta-tags
   mina (= 1.2.5)
-  ostruct
   paper_trail
   pg (~> 1.5)
   phony_rails
@@ -726,7 +724,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 3.4.6p54
+   ruby 3.3.7p123
 
 BUNDLED WITH
-   2.5.3
+   2.3.17
