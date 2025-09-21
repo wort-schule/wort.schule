@@ -1,12 +1,12 @@
 class FunctionWord < Word
   validates_presence_of :name, :function_type
 
-  enum function_type: {article_definite: 0,
-                       article_indefinite: 1,
-                       auxiliary_verb: 2,
-                       conjunction: 3,
-                       preposition: 4,
-                       pronoun: 5}
+  enum :function_type, {article_definite: 0,
+                        article_indefinite: 1,
+                        auxiliary_verb: 2,
+                        conjunction: 3,
+                        preposition: 4,
+                        pronoun: 5}
 
   def function_type_text
     I18n.t function_type, scope: %i[activerecord attributes function_word function_types]
