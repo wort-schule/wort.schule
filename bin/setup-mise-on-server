@@ -1,0 +1,57 @@
+#!/bin/bash
+# Script to set up mise on the production server
+# Run this on the server as the deployment user
+
+set -e
+
+echo "Setting up mise for Ruby deployment..."
+
+# Install mise if not already installed
+if ! command -v mise &> /dev/null; then
+    echo "Installing mise..."
+    curl https://mise.jdx.dev/install.sh | sh
+
+    # Add mise to bashrc if not already there
+    if ! grep -q "mise activate" ~/.bashrc; then
+        echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
+    fi
+
+    # Source it for current session
+    eval "$(~/.local/bin/mise activate bash)"
+else
+    echo "mise is already installed"
+fi
+
+# Read Ruby version from .ruby-version file
+if [ -f ~/app/current/.ruby-version ]; then
+    RUBY_VERSION=$(cat ~/app/current/.ruby-version)
+elif [ -f ~/.ruby-version ]; then
+    RUBY_VERSION=$(cat ~/.ruby-version)
+else
+    RUBY_VERSION="3.4.6"
+    echo "No .ruby-version found, defaulting to Ruby $RUBY_VERSION"
+fi
+
+echo "Installing Ruby $RUBY_VERSION with mise..."
+mise install ruby@$RUBY_VERSION
+mise use ruby@$RUBY_VERSION --global
+
+# Verify installation
+echo ""
+echo "Verification:"
+echo "mise version: $(mise --version)"
+echo "Ruby version: $(ruby --version)"
+echo "Gem version: $(gem --version)"
+echo "Bundler version: $(bundle --version 2>/dev/null || echo 'Bundler not installed yet')"
+
+# Install bundler if needed
+if ! command -v bundle &> /dev/null; then
+    echo "Installing bundler..."
+    gem install bundler
+fi
+
+echo ""
+echo "✅ mise setup complete!"
+echo ""
+echo "Note: Make sure to restart your shell or run:"
+echo "  eval \"\$(~/.local/bin/mise activate bash)\""
