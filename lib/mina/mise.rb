@@ -38,20 +38,14 @@ task :remote_environment do
       # Activate mise
       eval "$($MISE_PATH activate bash)"
 
-      # Trust all config files non-interactively
-      export MISE_YES=1
-
-      # Trust the config files in the current directory
-      mise trust --all || true
-
       # Ensure the Ruby version is installed and set
       if ! mise list ruby | grep -q "#{ruby_version}"; then
         echo "Installing Ruby #{ruby_version} with mise..."
         mise install ruby@#{ruby_version}
       fi
 
-      # Use the specified Ruby version with --yes flag to avoid prompts
-      mise use ruby@#{ruby_version} --yes || mise use ruby@#{ruby_version}
+      # Use the specified Ruby version
+      mise use ruby@#{ruby_version}
 
       # Verify Ruby is accessible
       echo "Using Ruby: $(ruby --version)"
