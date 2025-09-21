@@ -77,13 +77,11 @@ task :deploy do
     # instance of your project.
     invoke :"git:clone"
 
-    # Save git revision immediately after cloning while still in git directory
+    # Create deployment timestamp and revision files (must be done before link_shared_paths)
+    command %(date -u +"%Y-%m-%dT%H:%M:%SZ" > DEPLOY_TIMESTAMP)
     command %(git rev-parse HEAD > REVISION)
 
     invoke :"deploy:link_shared_paths"
-
-    # Create deployment timestamp after linking shared paths
-    command %(date -u +"%Y-%m-%dT%H:%M:%SZ" > DEPLOY_TIMESTAMP)
 
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
