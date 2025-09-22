@@ -107,3 +107,4 @@ To quickly test the application locally without customizing the `docker-compose.
 - The voice is randomly selected from the list in the config file.
 
 To process all words, do: `Word.where(with_tts: true).each { |w| TtsJob.perform_later(w) }` (or perform_now when there is no job runner).
+
