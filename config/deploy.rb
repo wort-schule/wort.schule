@@ -33,10 +33,7 @@ set :shared_dirs, fetch(:shared_dirs, []).push("public/packs", "node_modules", "
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
 task :remote_environment do
-  ruby_version = File.read(".ruby-version").strip
-  raise "Couldn't determine Ruby version: Do you have a file .ruby-version in your project root?" if ruby_version.empty?
-
-  # Force use of Ruby 3.3.7 explicitly
+  # Use RVM with Ruby 3.3.7
   invoke :"rvm:use", "3.3.7"
 end
 
@@ -78,15 +75,8 @@ task :deploy do
     # instance of your project.
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
-    # Use explicit bundle install with Ruby 3.3.7
-    command %(
-      source #{fetch(:rvm_use_path)}
-      rvm use 3.3.7
-      bundle config set --local deployment 'true'
-      bundle config set --local path 'vendor/bundle'
-      bundle config set --local without 'development test'
-      BUNDLE_FORCE_RUBY_PLATFORM=1 bundle install --force
-    )
+    # Bundle install with deployment settings
+    invoke :"bundle:install"
     invoke :"rails:db_migrate"
 
     # Generate deployment info file with timestamp and git commit
