@@ -25,7 +25,7 @@ class WordTypeController < PublicController
         render ThemeComponent.new(word: resource, theme: theme_setting)
       end
       format.json do
-        render "show", locals: {resource_name => resource}
+        render "show", locals: {resource_name.to_sym => resource}
       end
     end
   end

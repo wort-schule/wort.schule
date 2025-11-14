@@ -13,9 +13,12 @@
         = filter_text_field f, :wordcontains, inline: true, label: false, placeholder: t('filter.wordcontains')
         = filter_text_field f, :wordends, inline: true, label: false, placeholder: t('filter.wordends')
       .mt-4
-      = render partial: 'filters/keywords'
-      = render partial: 'filters/topics'
-      = render partial: 'filters/hierarchies'
+      = turbo_frame_tag :filter_keywords, class: 'block input' do
+        = render partial: 'filters/keywords'
+      = turbo_frame_tag :filter_topics, class: 'block input' do
+        = render partial: 'filters/topics'
+      = turbo_frame_tag :filter_hierarchies, class: 'block input' do
+        = render partial: 'filters/hierarchies'
       = filter_text_field f, :letter_count, type: :number, min: 0
       = filter_text_field f, :syllables_count, type: :number, min: 1
 
@@ -25,7 +28,8 @@
 
         - if @mode.show_power_options?
           = filter_text_field f, :letters
-          = render partial: 'filters/sources'
+          = turbo_frame_tag :filter_sources, class: 'block input' do
+            = render partial: 'filters/sources'
           = filter_text_field f, :consonant_vowel, placeholder: 'KVVK', style: 'text-transform: uppercase', oninput: "this.value = this.value.replace(/[^KVkv]/, '')"
           = filter_select_field_with_and_or :phenomenons, collection: Phenomenon.as_collection
           = filter_select_field_with_and_or :strategies, collection: Strategy.as_collection
