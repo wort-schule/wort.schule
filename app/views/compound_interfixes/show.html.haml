@@ -7,7 +7,11 @@
       = render(list.add(CompoundInterfix.human_attribute_name(:name))) do
         = @compound_interfix.name
 
-= render 'words/usages'
+= render 'words/usages' do |compound_entity|
+  - if compound_entity.word.blank?
+    %span
+  - else
+    .p-4= link_to compound_entity.word.name, compound_entity.word
 
 .pagination-with-actions
   = link_to t('actions.edit'), edit_compound_interfix_path(@compound_interfix), class: 'button primary'

@@ -1,4 +1,9 @@
 # frozen_string_literal: true
 
-class CompoundPhonemreductionsController < CompoundBaseController
+class CompoundPhonemreductionsController < CrudResourceController
+  private
+
+  def permitted_attributes
+    [:name]
+  end
 end

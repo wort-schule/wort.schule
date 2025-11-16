@@ -7,5 +7,5 @@ class Hierarchy < ApplicationRecord
   has_many :children, class_name: "Hierarchy", foreign_key: "top_hierarchy_id", dependent: :nullify
   has_many :words, dependent: :nullify, counter_cache: :words_count
 
-  validates_presence_of :name
+  validates :name, presence: true
 end

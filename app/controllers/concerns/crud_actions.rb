@@ -1,14 +1,33 @@
 # frozen_string_literal: true
 
-class CompoundBaseController < ApplicationController
-  load_and_authorize_resource
+# Provides common CRUD action implementations for controllers.
+# Can be included in controllers that need standard CRUD operations
+# but cannot inherit from CrudResourceController.
+#
+# Usage:
+#   class TopicsController < PublicController
+#     include CrudActions
+#     load_and_authorize_resource
+#
+#     private
+#
+#     def permitted_attributes
+#       [:name, :image]
+#     end
+#   end
+module CrudActions
+  extend ActiveSupport::Concern
+
+  included do
+    # Override these methods in the including controller if needed
+  end
 
   def index
     instance_variable_set(:"@#{controller_name}", resources.order(:name).page(params[:page]))
   end
 
   def show
-    @words = resource.words.page(params[:page])
+    @words = resource.words.ordered_lexigraphically.page(params[:page]) if resource.respond_to?(:words)
   end
 
   def new
@@ -44,6 +63,11 @@ class CompoundBaseController < ApplicationController
     redirect_to url_for(action: :index), notice
   end
 
+  def remove_image
+    resource.image.purge if resource.image.attached?
+    redirect_to resource
+  end
+
   private
 
   def resource
@@ -63,7 +87,11 @@ class CompoundBaseController < ApplicationController
   end
 
   def resource_params
-    params.require(resource_name).permit(:name)
+    params.require(resource_name).permit(permitted_attributes)
+  end
+
+  def permitted_attributes
+    raise NotImplementedError, "#{self.class} must implement #permitted_attributes"
   end
 
   def create_notice

@@ -7,7 +7,7 @@
 # - auxiliary_verb: auxiliary verb used (haben/sein)
 # - verb_type: type of verb (regular, irregular, modal, etc.)
 class Verb < Word
-  validates_presence_of :name
+  validates :name, presence: true
 
   def self.dummy
     new(

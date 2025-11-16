@@ -5,5 +5,5 @@ class Topic < ApplicationRecord
 
   has_and_belongs_to_many :words, counter_cache: :words_count
 
-  validates_presence_of :name
+  validates :name, presence: true
 end

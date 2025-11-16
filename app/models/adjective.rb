@@ -5,7 +5,7 @@
 # - superlative: superlative form (e.g., "am schönsten" for "schön")
 # - predicative: predicative form
 class Adjective < Word
-  validates_presence_of :name
+  validates :name, presence: true
 
   def self.dummy
     new(

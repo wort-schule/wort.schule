@@ -5,7 +5,7 @@
 # Specific attributes:
 # - function_type: type of function word (article, pronoun, preposition, conjunction, etc.)
 class FunctionWord < Word
-  validates_presence_of :name, :function_type
+  validates :name, :function_type, presence: true
 
   enum :function_type, {article_definite: 0,
                         article_indefinite: 1,

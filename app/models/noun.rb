@@ -8,7 +8,7 @@
 # - article_indefinite: indefinite article (ein/eine)
 class Noun < Word
   belongs_to :genus, optional: true
-  validates_presence_of :name
+  validates :name, presence: true
 
   belongs_to :genus_masculine, class_name: "Noun", optional: true
   belongs_to :genus_feminine, class_name: "Noun", optional: true

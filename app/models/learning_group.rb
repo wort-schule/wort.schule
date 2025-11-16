@@ -24,7 +24,7 @@ class LearningGroup < ApplicationRecord
                              )
                            }
 
-  validates_presence_of :name
+  validates :name, presence: true
   validate :accessible_word_view_setting
 
   after_save :update_word_view_setting
