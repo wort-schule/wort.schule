@@ -1,8 +1,21 @@
+# Base class for German words using Single Table Inheritance (STI).
+#
+# Subclasses represent different word types:
+# - Noun: German nouns with gender, plural forms, and case declensions
+# - Verb: German verbs with conjugations and participles
+# - Adjective: German adjectives with comparatives and superlatives
+# - FunctionWord: Function words like articles, pronouns, conjunctions
+#
+# Common attributes include name, meaning, syllables, and associations with
+# topics, sources, learning strategies, and other words (keywords, opposites, etc.)
 class Word < ApplicationRecord
   extend FriendlyId
 
   has_paper_trail ignore: %i[hit_counter]
 
+  include Collectable
+  include HasStandardImage
+  include SelfReferencingAssociations
   include WordFilter
 
   friendly_id :name, use: %i[sequentially_slugged finders]
@@ -13,56 +26,13 @@ class Word < ApplicationRecord
   has_and_belongs_to_many :strategies, -> { distinct }
   belongs_to :hierarchy, optional: true
   has_many :compound_entities
-  has_and_belongs_to_many :keywords,
-    -> { distinct.order(:name) },
-    class_name: "Word",
-    join_table: :keywords,
-    foreign_key: :word_id,
-    association_foreign_key: :keyword_id do
-      def <<(group)
-        group -= self if group.respond_to?(:to_a)
-        super(group) unless include?(group)
-      end
-    end
-  has_and_belongs_to_many :opposites,
-    -> { distinct.order(:name) },
-    class_name: "Word",
-    join_table: :opposites,
-    foreign_key: :word_id,
-    association_foreign_key: :opposite_id do
-      def <<(group)
-        group -= self if group.respond_to?(:to_a)
-        super(group) unless include?(group)
-      end
-    end
-  has_and_belongs_to_many :synonyms,
-    -> { distinct.order(:name) },
-    class_name: "Word",
-    join_table: :synonyms,
-    foreign_key: :word_id,
-    association_foreign_key: :synonym_id do
-      def <<(group)
-        group -= self if group.respond_to?(:to_a)
-        super(group) unless include?(group)
-      end
-    end
-  has_and_belongs_to_many :rimes,
-    -> { distinct.order(:name) },
-    class_name: "Word",
-    join_table: :rimes,
-    foreign_key: :word_id,
-    association_foreign_key: :rime_id do
-      def <<(group)
-        group -= self if group.respond_to?(:to_a)
-        super(group) unless include?(group)
-      end
-    end
+
+  has_self_referential_association :keywords, :keyword_id
+  has_self_referential_association :opposites, :opposite_id
+  has_self_referential_association :synonyms, :synonym_id
+  has_self_referential_association :rimes, :rime_id
 
   has_many_attached :audios
-  has_one_attached :image do |attachable|
-    attachable.variant :thumb, resize_to_fill: [100, 100], format: :png
-    attachable.variant :open_graph, resize_to_fill: [1200, 630], format: :png
-  end
 
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
@@ -156,14 +126,6 @@ class Word < ApplicationRecord
 
   delegate :slug_for_example_sentence, :audio_for_word, :audio_for_example_sentence,
     to: :audio_service
-
-  def self.values
-    distinct.pluck(:name)
-  end
-
-  def self.collection
-    distinct.order(:name).pluck(:id, :name)
-  end
 
   private
 

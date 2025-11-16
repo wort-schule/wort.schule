@@ -1,3 +1,9 @@
+# German function word (Funktionswort) - STI subclass of Word.
+#
+# Represents grammatical words like articles, pronouns, prepositions, and conjunctions.
+#
+# Specific attributes:
+# - function_type: type of function word (article, pronoun, preposition, conjunction, etc.)
 class FunctionWord < Word
   validates_presence_of :name, :function_type
 

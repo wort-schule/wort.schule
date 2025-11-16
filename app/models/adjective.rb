@@ -1,3 +1,9 @@
+# German adjective (Adjektiv) - STI subclass of Word.
+#
+# Specific attributes:
+# - comparative: comparative form (e.g., "schöner" for "schön")
+# - superlative: superlative form (e.g., "am schönsten" for "schön")
+# - predicative: predicative form
 class Adjective < Word
   validates_presence_of :name
 

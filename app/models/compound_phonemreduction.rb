@@ -1,6 +1,4 @@
-class CompoundPhonemreduction < ApplicationRecord
-  has_one :compound_entity, as: :part
-  has_many :words, through: :compound_entity
-
-  validates_presence_of :name
+# Represents a phoneme reduction in a compound word.
+# Example: "Kirchturm" instead of "Kircheturm" (church tower)
+class CompoundPhonemreduction < CompoundPart
 end

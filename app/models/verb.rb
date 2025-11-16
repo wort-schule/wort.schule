@@ -1,3 +1,11 @@
+# German verb (Verb) - STI subclass of Word.
+#
+# Specific attributes:
+# - participle: present participle (Partizip I)
+# - past_participle: past participle (Partizip II)
+# - infinitive_with_zu: infinitive with "zu"
+# - auxiliary_verb: auxiliary verb used (haben/sein)
+# - verb_type: type of verb (regular, irregular, modal, etc.)
 class Verb < Word
   validates_presence_of :name
 

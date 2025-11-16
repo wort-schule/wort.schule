@@ -1,6 +1,4 @@
-class CompoundVocalalternation < ApplicationRecord
-  has_one :compound_entity, as: :part
-  has_many :words, through: :compound_entity
-
-  validates_presence_of :name
+# Represents a vocal alternation (vowel change) in a compound word.
+# Example: "ä" to "a" in "Gänsestall" (goose stable)
+class CompoundVocalalternation < CompoundPart
 end

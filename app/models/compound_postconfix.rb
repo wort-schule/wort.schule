@@ -1,6 +1,3 @@
-class CompoundPostconfix < ApplicationRecord
-  has_one :compound_entity, as: :part
-  has_many :words, through: :compound_entity
-
-  validates_presence_of :name
+# Represents a postconfix (suffix added after compounding) in a compound word.
+class CompoundPostconfix < CompoundPart
 end

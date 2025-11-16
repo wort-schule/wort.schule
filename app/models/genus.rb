@@ -1,4 +1,6 @@
 class Genus < ApplicationRecord
+  include Collectable
+
   has_one_attached :symbol
 
   NAMES = {
@@ -34,13 +36,5 @@ class Genus < ApplicationRecord
     genus_keys.map do |genus_key|
       NAMES[key.to_sym][genus_key.to_sym]
     end.join("/")
-  end
-
-  def self.values
-    distinct.pluck(:name)
-  end
-
-  def self.collection
-    distinct.order(:name).pluck(:id, :name)
   end
 end

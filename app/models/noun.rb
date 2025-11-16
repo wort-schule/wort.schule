@@ -1,3 +1,11 @@
+# German noun (Substantiv/Nomen) - STI subclass of Word.
+#
+# Specific attributes:
+# - genus: grammatical gender (masculinum, femininum, neutrum)
+# - plural: plural form
+# - genitive: genitive case form
+# - article_definite: definite article (der/die/das)
+# - article_indefinite: indefinite article (ein/eine)
 class Noun < Word
   belongs_to :genus, optional: true
   validates_presence_of :name

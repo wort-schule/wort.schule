@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Note: Inherits from PublicController instead of CrudResourceController
+# because topics are publicly accessible
 class TopicsController < PublicController
   load_and_authorize_resource
 
