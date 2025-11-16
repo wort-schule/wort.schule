@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include ActiveStorage::SetCurrent
   include WordViewSettingsHelper
 
   before_action :authenticate_user!

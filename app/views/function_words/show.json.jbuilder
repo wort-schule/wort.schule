@@ -10,7 +10,7 @@ json.cache! ["v1", function_word], expires_in: 15.minutes do
     :written_syllables
 
   json.word_type function_word.class.model_name.human
-  json.image_url function_word.image.attached? ? Rails.application.routes.url_helpers.polymorphic_url(function_word.image, only_path: true) : nil
+  json.image_url function_word.image.attached? ? function_word.image.url : nil
   json.compound_entities function_word.compound_entities.map(&:part).map(&:name)
   json.example_sentences function_word.example_sentences
   json.hierarchy do

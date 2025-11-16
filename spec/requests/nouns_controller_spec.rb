@@ -112,4 +112,30 @@ RSpec.describe NounsController, type: :request do
       expect(response).to be_successful
     end
   end
+
+  describe "JSON response" do
+    before do
+      word.image.attach(
+        io: StringIO.new(File.read("spec/fixtures/files/avatar1.png")),
+        filename: "example.png"
+      )
+
+      Rails.application.routes.default_url_options = {host: "example.com", protocol: "https"}
+      ActiveStorage::Current.url_options = {host: "example.com", protocol: "https"}
+    end
+
+    it "includes full URL with host for image_url" do
+      get noun_path(word, format: :json)
+
+      expect(response).to be_successful
+      json_response = JSON.parse(response.body)
+
+      expect(json_response["image_url"]).to be_present
+      # Should include the host (test environment uses www.example.com by default)
+      expect(json_response["image_url"]).to include("example.com")
+      # Should use direct disk URL, not redirect URL
+      expect(json_response["image_url"]).to include("/rails/active_storage/disk/")
+      expect(json_response["image_url"]).not_to include("/redirect/")
+    end
+  end
 end
