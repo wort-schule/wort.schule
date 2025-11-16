@@ -14,7 +14,7 @@ json.cache! ["v1", noun], expires_in: 15.minutes do
     :pluraletantum
 
   json.word_type noun.class.model_name.human
-  json.image_url noun.image.attached? ? noun.image.url : nil
+  json.image_url noun.image.attached? ? Rails.application.routes.url_helpers.rails_storage_proxy_url(noun.image, host: Rails.application.routes.default_url_options[:host], protocol: Rails.application.routes.default_url_options[:protocol]) : nil
   json.compound_entities noun.compound_entities.map(&:part).map(&:name)
   json.example_sentences noun.example_sentences
   json.hierarchy do

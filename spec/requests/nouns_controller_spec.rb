@@ -133,9 +133,11 @@ RSpec.describe NounsController, type: :request do
       expect(json_response["image_url"]).to be_present
       # Should include the host (test environment uses www.example.com by default)
       expect(json_response["image_url"]).to include("example.com")
-      # Should use direct disk URL, not redirect URL
-      expect(json_response["image_url"]).to include("/rails/active_storage/disk/")
+      # Should use permanent service blob URL, not temporary signed disk URL
+      expect(json_response["image_url"]).to include("/rails/active_storage/blobs/")
       expect(json_response["image_url"]).not_to include("/redirect/")
+      # Should not include expiration parameters (exp, pur, etc.)
+      expect(json_response["image_url"]).not_to match(/[?&]exp=/)
     end
   end
 end
