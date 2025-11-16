@@ -43,6 +43,6 @@ class LearningPleasController < ApplicationController
   def set_lists
     @lists = List
       .where(visibility: :public)
-      .where.not(id: @learning_group.lists.to_a)
+      .where.not(id: @learning_group.lists.select(:id))
   end
 end

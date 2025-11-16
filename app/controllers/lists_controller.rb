@@ -54,7 +54,10 @@ class ListsController < ApplicationController
   def add_word
     @word = Word.find params[:word_id]
     @list.words << @word
-    @list.learning_groups.includes(:users, :lists).find_each do |learning_group|
+
+    # Process all learning groups at once instead of one-by-one
+    learning_groups = @list.learning_groups.includes(:users, :lists).to_a
+    learning_groups.each do |learning_group|
       Flashcards.add_list(learning_group, @list)
     end
 

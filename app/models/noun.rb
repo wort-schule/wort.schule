@@ -18,34 +18,37 @@ class Noun < Word
     where(genus: Genus.find_by(name: genus))
   }
 
+  # Article lookup table for better readability and performance
+  # Structure: [case_number][singular?][genus_id]
+  ARTICLE_LOOKUP = {
+    1 => {
+      true => %w[der die das der/die der/das die/das der/die/das],
+      false => "die"
+    },
+    2 => {
+      true => %w[des der des des/der des der/des des/der],
+      false => "der"
+    },
+    3 => {
+      true => %w[dem der dem dem/der dem der/dem dem/der],
+      false => "den"
+    },
+    4 => {
+      true => %w[den die das den/die den/das die/das den/die/das],
+      false => "die"
+    }
+  }.freeze
+
   def article_definite(case_number: 1, singular: true)
     return "" if genus_id.blank? && singular
 
-    case case_number
-    when 1
-      if singular
-        %w[der die das der/die der/das die/das der/die/das][genus_id]
-      else
-        "die"
-      end
-    when 2
-      if singular
-        %w[des der des des/der des der/des des/der][genus_id]
-      else
-        "der"
-      end
-    when 3
-      if singular
-        %w[dem der dem dem/der dem der/dem dem/der][genus_id]
-      else
-        "den"
-      end
-    when 4
-      if singular
-        %w[den die das den/die den/das die/das den/die/das][genus_id]
-      else
-        "die"
-      end
+    lookup = ARTICLE_LOOKUP[case_number]
+    return "" unless lookup
+
+    if singular
+      lookup[true][genus_id]
+    else
+      lookup[false]
     end
   end
 

@@ -12,8 +12,7 @@ class SeoController < PublicController
   # Returns all words in the database that start with the given letter, including all variants like plural,
   # comparative, etc. and sorted by the word itself. Also ensures that the same word is not included multiple times.
   private def words_with_variants
-    # TODO: case_X singular and plural?
-    %i[
+    fields = %i[
       name
       case_1_singular case_2_singular case_3_singular case_4_singular case_1_plural case_2_plural case_3_plural
       case_4_plural plural
@@ -22,10 +21,21 @@ class SeoController < PublicController
       present_singular_1 present_singular_2 present_singular_3 present_plural_1 present_plural_2 present_plural_3
       past_singular_1 past_singular_2 past_singular_3 past_plural_1 past_plural_2 past_plural_3
     ]
-      .map { |field| Word.where("#{field} ILIKE ?", "#{@letter}%").map { |w| build_word_hash(w, field) } }
-      .flatten
-      .uniq { |w| w[:label] }
-      .sort_by { |w| w[:label].downcase }
+
+    # Build a single SQL query using OR conditions instead of 22+ separate queries
+    conditions = fields.map { |field| "#{field} ILIKE :pattern" }.join(" OR ")
+    words = Word.where(conditions, pattern: "#{@letter}%")
+
+    # Build all variants for matching words
+    result = []
+    words.each do |word|
+      fields.each do |field|
+        value = word.send(field)
+        result << build_word_hash(word, field) if value.to_s.downcase.starts_with?(@letter.downcase)
+      end
+    end
+
+    result.uniq { |w| w[:label] }.sort_by { |w| w[:label].downcase }
   end
 
   # Generates a simple hash for the given word and field as a data object for the view.

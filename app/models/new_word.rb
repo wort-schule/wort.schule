@@ -16,13 +16,21 @@ class NewWord < ApplicationRecord
 
   def process_unlisted_keywords
     keyword = created_word || duplicate_word
+    return unless keyword
 
     transaction do
-      UnlistedKeyword.unprocessed.where(new_word: self).find_each do |unlisted|
-        unlisted.word.keywords << keyword
-        unlisted.word.save!
-        unlisted.update!(state: "processed")
+      unlisted_keywords = UnlistedKeyword.unprocessed.where(new_word: self).includes(:word).to_a
+      return if unlisted_keywords.empty?
+
+      # Batch update all words' keywords at once
+      word_ids = unlisted_keywords.map(&:word_id).uniq
+      Word.where(id: word_ids).find_each do |word|
+        word.keywords << keyword unless word.keywords.include?(keyword)
+        word.save!
       end
+
+      # Batch update all unlisted keywords to processed
+      UnlistedKeyword.where(id: unlisted_keywords.map(&:id)).update_all(state: "processed")
     end
   end
 end

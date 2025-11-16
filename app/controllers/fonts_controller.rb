@@ -7,23 +7,15 @@ class FontsController < ApplicationController
     @font = Fonts.by_key(params[:font]) || Fonts.default
     @syllable_arc = SyllableArc.new(@font)
 
+    # Optimize syllable processing by combining operations and using a more efficient approach
     syllables = Word
+      .where.not(syllables: [nil, ""])
       .pluck(:syllables)
-      .compact_blank
-      .map do |word|
-        if word.include?("-")
-          word.split("-")
-        elsif word.include?("|")
-          word.split("|")
-        elsif word.strip.include?(" ")
-          word.split(" ")
-        else
-          word
-        end
+      .flat_map do |word|
+        # Split by multiple delimiters in a single pass
+        word.split(/[-|\s]+/).map { |s| s.strip.downcase }
       end
-      .flatten
-      .map(&:downcase)
-      .map(&:strip)
+      .reject(&:blank?)
       .uniq
       .sort
 

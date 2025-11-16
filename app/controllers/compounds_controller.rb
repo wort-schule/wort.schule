@@ -5,36 +5,45 @@ class CompoundsController < ApplicationController
     query = params[:q].to_s.strip
     limit = 50 # Limit results to prevent loading too many records
 
+    # Define model classes for compound parts
+    compound_classes = [
+      CompoundPreconfix, CompoundPostconfix, CompoundInterfix,
+      CompoundPhonemreduction, CompoundVocalalternation
+    ]
+
+    # Use a Set for faster word class lookup
+    word_class_set = Set.new([Word, Noun, Verb, Adjective, FunctionWord])
+
     # Build collections with search filtering and limit
     @elements = []
 
     if query.present?
-      # Search compound parts by name
-      @elements += CompoundPreconfix.where("name ILIKE ?", "%#{query}%").limit(limit)
-      @elements += CompoundPostconfix.where("name ILIKE ?", "%#{query}%").limit(limit)
-      @elements += CompoundInterfix.where("name ILIKE ?", "%#{query}%").limit(limit)
-      @elements += CompoundPhonemreduction.where("name ILIKE ?", "%#{query}%").limit(limit)
-      @elements += CompoundVocalalternation.where("name ILIKE ?", "%#{query}%").limit(limit)
+      # Search compound parts by name - combine queries for better performance
+      compound_classes.each do |klass|
+        @elements.concat(klass.where("name ILIKE ?", "%#{query}%").limit(limit).to_a)
+      end
 
       # Search words by name
-      @elements += FunctionWord.where("name ILIKE ?", "%#{query}%").limit(limit)
-      @elements += Word.ordered_lexigraphically
-        .where.not(type: "FunctionWord")
-        .where("name ILIKE ?", "%#{query}%")
-        .limit(limit)
+      @elements.concat(FunctionWord.where("name ILIKE ?", "%#{query}%").limit(limit).to_a)
+      @elements.concat(
+        Word.ordered_lexigraphically
+          .where.not(type: "FunctionWord")
+          .where("name ILIKE ?", "%#{query}%")
+          .limit(limit)
+          .to_a
+      )
     else
-      # When no query, return a reasonable initial set (first 50 of each type)
-      @elements += CompoundPreconfix.order(:name).limit(10)
-      @elements += CompoundPostconfix.order(:name).limit(10)
-      @elements += CompoundInterfix.order(:name).limit(10)
-      @elements += CompoundPhonemreduction.order(:name).limit(10)
-      @elements += CompoundVocalalternation.order(:name).limit(10)
-      @elements += FunctionWord.order(:name).limit(10)
-      @elements += Word.ordered_lexigraphically.where.not(type: "FunctionWord").limit(10)
+      # When no query, return a reasonable initial set (first 10 of each type)
+      compound_classes.each do |klass|
+        @elements.concat(klass.order(:name).limit(10).to_a)
+      end
+      @elements.concat(FunctionWord.order(:name).limit(10).to_a)
+      @elements.concat(Word.ordered_lexigraphically.where.not(type: "FunctionWord").limit(10).to_a)
     end
 
+    # Map elements to JSON format using Set for faster lookup
     @elements = @elements.map do |element|
-      is_word = [Word, Noun, Verb, Adjective, FunctionWord].include?(element.class)
+      is_word = word_class_set.include?(element.class)
 
       name = if is_word
         element.meaning.empty? ? element.name : "#{element.name} [#{element.meaning}]"
