@@ -1,4 +1,6 @@
 class Genus < ApplicationRecord
+  self.table_name = "genera"
+
   include Collectable
 
   has_one_attached :symbol

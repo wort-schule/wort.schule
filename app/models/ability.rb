@@ -58,7 +58,7 @@ class Ability
         can :crud, CompoundInterfix
         can :crud, CompoundPreconfix
         can :crud, CompoundPostconfix
-        can :crud, CompoundPhonemreduction
+        can :crud, CompoundPhonemReduction
         can :crud, CompoundVocalalternation
 
         can :read, User
@@ -82,7 +82,7 @@ class Ability
         can :manage, CompoundInterfix
         can :manage, CompoundPreconfix
         can :manage, CompoundPostconfix
-        can :manage, CompoundPhonemreduction
+        can :manage, CompoundPhonemReduction
         can :manage, CompoundVocalalternation
 
         can :manage, Theme

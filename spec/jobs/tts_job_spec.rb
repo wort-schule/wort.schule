@@ -22,7 +22,7 @@ RSpec.describe TtsJob, type: :job do
     let(:with_tts) { false }
 
     it "doesn't generate the audio" do
-      expect(TtsGenerator).not_to receive(:call)
+      expect(TtsService).not_to receive(:call)
       perform_enqueued_jobs { job }
     end
   end
@@ -31,9 +31,9 @@ RSpec.describe TtsJob, type: :job do
     let(:with_tts) { true }
 
     it "generates the audio" do
-      expect(TtsGenerator).to receive(:call).with("#{word.article_definite} #{word.name}".strip).and_return(StringIO.new)
-      expect(TtsGenerator).to receive(:call).with(word.example_sentences.first).and_return(StringIO.new)
-      expect(TtsGenerator).to receive(:call).with(word.example_sentences.last).and_return(StringIO.new)
+      expect(TtsService).to receive(:call).with("#{word.article_definite} #{word.name}".strip).and_return(StringIO.new)
+      expect(TtsService).to receive(:call).with(word.example_sentences.first).and_return(StringIO.new)
+      expect(TtsService).to receive(:call).with(word.example_sentences.last).and_return(StringIO.new)
       perform_enqueued_jobs { job }
     end
   end

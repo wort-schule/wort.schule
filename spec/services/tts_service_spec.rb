@@ -3,7 +3,7 @@
 require "google/cloud/text_to_speech"
 require "google/cloud/text_to_speech/v1"
 
-RSpec.describe TtsGenerator do
+RSpec.describe TtsService do
   let(:client) { double("client") }
 
   before do
@@ -12,7 +12,7 @@ RSpec.describe TtsGenerator do
   end
 
   it "returns a mp3 file as StringIO" do
-    io = TtsGenerator.call("Hello world")
+    io = TtsService.call("Hello world")
     expect(io).to be_a(StringIO)
     expect(io.string).to eq("audio_content")
   end

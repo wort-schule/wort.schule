@@ -211,7 +211,7 @@ de:
       title: Neues Postkonfix
     edit:
       title: Postkonfix bearbeiten
-  compound_phonemreductions:
+  compound_phonem_reductions:
     index:
       new: Neue Phonemreduktion
     new:

@@ -93,7 +93,7 @@ Rails.application.routes.draw do
     resources :compound_interfixes
     resources :compound_preconfixes
     resources :compound_postconfixes
-    resources :compound_phonemreductions
+    resources :compound_phonem_reductions
     resources :compound_vocalalternations
     resources :themes
     resources :lists do

@@ -1,0 +1,8 @@
+= title_with_actions CompoundPhonemReduction.model_name.human(count: 2)
+
+= index_grid do
+  = render @compound_phonem_reductions
+
+.pagination-with-actions
+  = paginate @compound_phonem_reductions
+  = link_to t('.new'), new_compound_phonem_reduction_path, class: 'button primary'

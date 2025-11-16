@@ -1,8 +1,0 @@
-= box padding: false do
-  = simple_form_for @compound_phonemreduction do |f|
-    = box_content do
-      = f.input :name, autofocus: true
-
-    = box_footer do
-      = f.submit
-      = cancel_button @compound_phonemreduction.new_record? ? compound_phonemreductions_path : compound_phonemreduction_path(@compound_phonemreduction)

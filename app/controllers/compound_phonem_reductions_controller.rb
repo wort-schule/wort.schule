@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CompoundPhonemreductionsController < CrudResourceController
+class CompoundPhonemReductionsController < CrudResourceController
   private
 
   def permitted_attributes

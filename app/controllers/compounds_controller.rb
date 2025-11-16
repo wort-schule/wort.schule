@@ -8,7 +8,7 @@ class CompoundsController < ApplicationController
     # Define model classes for compound parts
     compound_classes = [
       CompoundPreconfix, CompoundPostconfix, CompoundInterfix,
-      CompoundPhonemreduction, CompoundVocalalternation
+      CompoundPhonemReduction, CompoundVocalalternation
     ]
 
     # Use a Set for faster word class lookup

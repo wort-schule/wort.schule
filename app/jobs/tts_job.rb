@@ -43,7 +43,7 @@ class TtsJob < ApplicationJob
     @logger.info "Processing audio #{name} (#{content}) to Word ##{word.id}"
 
     word.audios.attach(
-      io: TtsGenerator.call(content),
+      io: TtsService.call(content),
       filename: name,
       content_type: "audio/mp3"
     )

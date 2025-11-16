@@ -16,7 +16,7 @@
   = navigation_link false, t('navigation.llm_enrichments'), new_llm_enrichment_path if can?(:manage, :llm_enrichment)
   = navigation_link false, t('navigation.delete_reviews'), new_reviewables_garbage_collection_path if can?(:manage, :review)
 
-  - if [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemreduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
+  - if [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemReduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
     .text-gray-300.hover:bg-primary-hover.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
       .relative(data-controller="dropdown reveal")
         .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
@@ -36,7 +36,7 @@
             = dropdown_link CompoundInterfix
             = dropdown_link CompoundPreconfix
             = dropdown_link CompoundPostconfix
-            = dropdown_link CompoundPhonemreduction
+            = dropdown_link CompoundPhonemReduction
             = dropdown_link CompoundVocalalternation
 
   - if [Theme, List].any? { |klass| can? :read, klass }

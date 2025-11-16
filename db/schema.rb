@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_16_185736) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_16_195451) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -73,7 +73,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_16_185736) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "compound_phonemreductions", force: :cascade do |t|
+  create_table "compound_phonem_reductions", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -97,16 +97,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_16_185736) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "function_words", force: :cascade do |t|
-    t.integer "function_type"
-  end
-
-  create_table "genus", force: :cascade do |t|
+  create_table "genera", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "genus_keys", default: [], array: true
-    t.index ["genus_keys"], name: "index_genus_on_genus_keys", using: :gin
+    t.index ["genus_keys"], name: "index_genera_on_genus_keys", using: :gin
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

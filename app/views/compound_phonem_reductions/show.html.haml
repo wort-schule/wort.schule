@@ -1,0 +1,17 @@
+= title_with_actions @compound_phonem_reduction.name
+
+= two_column_card CompoundPhonemReduction.model_name.human, "", first: true do
+  = box padding: false do
+    = box_description_list do |list|
+
+      = render(list.add(CompoundPhonemReduction.human_attribute_name(:name))) do
+        = @compound_phonem_reduction.name
+
+= render 'words/usages' do |compound_entity|
+  - if compound_entity.word.blank?
+    %span
+  - else
+    .p-4= link_to compound_entity.word.name, compound_entity.word
+
+.pagination-with-actions
+  = link_to t('actions.edit'), edit_compound_phonem_reduction_path(@compound_phonem_reduction), class: 'button primary'

@@ -8,8 +8,8 @@ require "stringio"
 # an StringIO object. Configuration in config/tts.yml
 #
 # Usage:
-#   TtsGenerator.call('Hallo Welt')
-class TtsGenerator
+#   TtsService.call('Hallo Welt')
+class TtsService
   def self.call(input)
     new.call input
   end

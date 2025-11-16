@@ -41,7 +41,7 @@ RSpec.describe "compound postconfixes" do
 end
 
 RSpec.describe "compound phonemreductions" do
-  it_behaves_like "CRUD", CompoundPhonemreduction
+  it_behaves_like "CRUD", CompoundPhonemReduction
 end
 
 RSpec.describe "compound vocal alternations" do

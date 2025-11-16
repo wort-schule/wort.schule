@@ -5,7 +5,7 @@ class CompoundEntity < ApplicationRecord
     CompoundPreconfix
     CompoundInterfix
     CompoundPostconfix
-    CompoundPhonemreduction
+    CompoundPhonemReduction
     CompoundVocalalternation
     Word
   ]

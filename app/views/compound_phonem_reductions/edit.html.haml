@@ -1,0 +1,4 @@
+= title_with_actions t('.title') do
+  = button_to t('actions.delete'), compound_phonem_reduction_path(@compound_phonem_reduction), class: 'button danger', method: :delete, 'data-turbo-confirm': t('confirmations.shared.destroy', name: @compound_phonem_reduction.name) if can?(:destroy, @compound_phonem_reduction)
+
+= render 'form'
