@@ -40,6 +40,7 @@ gem "pg", "~> 1.5"
 gem "phony_rails"
 gem "propshaft"
 gem "puma", "~> 6.6"
+gem "rack-cors"
 gem "rails-i18n"
 gem "rb-gravatar"
 gem "redis", "~> 5.3" # Use Redis for Action Cable
