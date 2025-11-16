@@ -92,9 +92,15 @@ RSpec.describe "word filter" do
       # Wait for Turbo to update the keywords filter with available options
       expect(page).to have_select("filterrific[filter_keywords][keywords][]", visible: false, wait: 2)
 
-      # Select the keyword by its ID value
-      keyword_select = find("select[name='filterrific[filter_keywords][keywords][]']", visible: false)
-      keyword_select.find("option[value='#{second_word.id}']", visible: false).select_option
+      # Interact with TomSelect properly
+      # Find the TomSelect input control and type the keyword name
+      tomselect_input = find(".ts-control input", match: :first)
+      tomselect_input.fill_in with: second_word.name
+
+      # Wait for and click the option in the dropdown
+      within ".ts-dropdown" do
+        find(:css, "[data-value=\"#{second_word.id}\"]").click
+      end
 
       find_button(t("filter.apply"), visible: false).trigger("click")
 
