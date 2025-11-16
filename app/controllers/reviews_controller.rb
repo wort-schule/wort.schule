@@ -35,7 +35,9 @@ class ReviewsController < ApplicationController
   private
 
   def set_reviewable
-    @reviewable = ChangeGroup.find(params[:id])
+    @reviewable = ChangeGroup
+      .includes(word_attribute_edits: {word: {compound_entities: :part}})
+      .find(params[:id])
   end
 
   def redirect_to_next_review

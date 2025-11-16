@@ -92,7 +92,7 @@ class WordTypeController < PublicController
 
   def filtered_words
     @filterrific.find
-      .includes(:topics, :keywords, :synonyms, :image_attachment)
+      .includes(:topics, :keywords, :synonyms, :image_attachment, :hierarchy, :sources, :phenomenons, :strategies)
       .ordered_lexigraphically
       .page(params[:page])
   end

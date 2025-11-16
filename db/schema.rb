@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_21_112552) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_16_185736) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -270,6 +270,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_112552) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "flashcard_section"
+    t.integer "words_count", default: 0, null: false
     t.index ["user_id", "flashcard_section"], name: "idx_users_flashcard_section", where: "(flashcard_section IS NOT NULL)"
     t.index ["user_id", "visibility"], name: "index_lists_on_user_id_and_visibility"
     t.index ["user_id"], name: "index_lists_on_user_id"
@@ -332,6 +333,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_112552) do
     t.string "description", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "words_count", default: 0, null: false
   end
 
   create_table "phenomenons_words", id: false, force: :cascade do |t|
@@ -409,6 +411,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_112552) do
     t.string "description", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "words_count", default: 0, null: false
   end
 
   create_table "strategies_words", id: false, force: :cascade do |t|
@@ -636,6 +639,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_21_112552) do
     t.bigint "hit_counter", default: 0, null: false
     t.boolean "with_tts", default: true, null: false
     t.string "cologne_phonetics", default: [], array: true
+    t.index "lower((name)::text)", name: "idx_words_lower_name"
     t.index ["cologne_phonetics"], name: "index_words_on_cologne_phonetics", using: :gin
     t.index ["compound"], name: "index_words_on_compound"
     t.index ["example_sentences"], name: "index_words_on_example_sentences", using: :gin

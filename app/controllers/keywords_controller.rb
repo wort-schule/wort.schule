@@ -28,9 +28,9 @@ class KeywordsController < PublicController
     )
     @related_keywords = Word.where(
       id: Keyword
-      .where(word_id: @all_words.pluck(:id))
+      .where(word_id: @all_words.select(:id))
       .where.not(keyword_id: @keyword_ids)
-      .pluck(:keyword_id)
+      .select(:keyword_id)
     )
       .joins(<<~SQL)
         join (

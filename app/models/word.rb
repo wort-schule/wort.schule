@@ -20,11 +20,11 @@ class Word < ApplicationRecord
 
   friendly_id :name, use: %i[sequentially_slugged finders]
 
-  has_and_belongs_to_many :topics, -> { distinct }
-  has_and_belongs_to_many :sources, -> { distinct }
-  has_and_belongs_to_many :phenomenons, -> { distinct }
-  has_and_belongs_to_many :strategies, -> { distinct }
-  belongs_to :hierarchy, optional: true
+  has_and_belongs_to_many :topics, -> { distinct }, counter_cache: :words_count
+  has_and_belongs_to_many :sources, -> { distinct }, counter_cache: :words_count
+  has_and_belongs_to_many :phenomenons, -> { distinct }, counter_cache: :words_count
+  has_and_belongs_to_many :strategies, -> { distinct }, counter_cache: :words_count
+  belongs_to :hierarchy, optional: true, counter_cache: :words_count
   has_many :compound_entities
 
   has_self_referential_association :keywords, :keyword_id
@@ -37,7 +37,7 @@ class Word < ApplicationRecord
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
   has_one :compound_entity, as: :part
-  has_and_belongs_to_many :lists
+  has_and_belongs_to_many :lists, counter_cache: :words_count
 
   has_many :image_requests, dependent: :destroy
 

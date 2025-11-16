@@ -71,6 +71,6 @@ module WordHelper
     initialize_filterrific(
       Word,
       (params[:filterrific] || {}).merge(filter_type: word_type, filter_home: {count: true, query: params.dig(:filterrific, :filter_home)})
-    ).find.size
+    ).find.count
   end
 end
