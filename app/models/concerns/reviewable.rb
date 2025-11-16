@@ -3,7 +3,7 @@
 module Reviewable
   extend ActiveSupport::Concern
 
-  REVIEWS_REQUIRED = 2
+  REVIEWS_REQUIRED = 1
 
   included do
     attr_accessor :action

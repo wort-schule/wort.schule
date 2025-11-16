@@ -89,9 +89,6 @@ RSpec.describe ChangeGroup do
       expect(reviewable.change_group.state).to eq "waiting_for_review"
 
       reviewable.change_group.store_review(reviewer: create(:user), state: :confirmed)
-      expect(reviewable.change_group.state).to eq "waiting_for_review"
-
-      reviewable.change_group.store_review(reviewer: create(:user), state: :confirmed)
       expect(reviewable.change_group.state).to eq "confirmed"
     end
   end

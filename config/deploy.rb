@@ -78,6 +78,7 @@ task :deploy do
     # Bundle install with deployment settings
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
+    command %(#{fetch(:bundle_prefix)} rake change_groups:process_waiting_reviews)
 
     # Generate deployment info file with timestamp and git commit
     # Using the commit SHA from the local repo since the deployed directory may not have .git
