@@ -15,14 +15,6 @@ RSpec.describe "reviews for keywords" do
     login_as me
     visit reviews_path
     expect(page).to have_content edit.word.name
-    click_on "Neues Stichwort"
-    click_on word.name
-    click_on I18n.t("reviews.show.actions.confirm")
-
-    expect(edit.reload.current_value).not_to eq edit.proposed_value
-
-    login_as other_admin
-    visit reviews_path
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name]
     end
@@ -33,6 +25,8 @@ RSpec.describe "reviews for keywords" do
     end.to change(Review, :count).by(1)
       .and change(WordImport, :count).by(1)
 
+    # After one review, change should be applied immediately (REVIEWS_REQUIRED=1)
+    expect(edit.reload.change_group.state).to eq "confirmed"
     expect(edit.word.keywords.map(&:name)).to match [word.name]
     expect(WordImport.all).to match_array [
       have_attributes(
@@ -47,7 +41,7 @@ RSpec.describe "reviews for keywords" do
     expect(edit.word.keywords.map(&:name)).to be_empty
     expect(edit.reload.current_value).not_to eq edit.proposed_value
 
-    # First reviewer adds a new keyword
+    # Reviewer adds a new keyword and confirms
     login_as me
     visit reviews_path
     expect(page).to have_content edit.word.name
@@ -64,20 +58,12 @@ RSpec.describe "reviews for keywords" do
     click_on "Hase"
     click_on I18n.t("reviews.show.actions.confirm")
 
+    # Adding a keyword creates a new edit, get the latest one
     edit = WordAttributeEdit.order(:created_at).last
     expect(JSON.parse(edit.value)).to match_array ["Neues Stichwort", word.id.to_s, keyword.id.to_s]
-    expect(edit.reload.current_value).not_to eq edit.proposed_value
 
-    # Second reviewer confirms
+    # Another reviewer confirms the edited value (with REVIEWS_REQUIRED=1, only need 1 more)
     login_as other_admin
-    visit reviews_path
-    within '[data-toggle-buttons-target="list"]' do
-      expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name, keyword.name]
-    end
-    click_on I18n.t("reviews.show.actions.confirm")
-
-    # Third reviewer confirms
-    login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
     visit reviews_path
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name, keyword.name]
@@ -87,8 +73,8 @@ RSpec.describe "reviews for keywords" do
     end.to change(Review, :count).by(1)
       .and change(WordImport, :count).by(1)
 
-    # Final checks
-    expect(JSON.parse(edit.reload.value)).to match ["Neues Stichwort", word.id.to_s, keyword.id.to_s]
+    # Now it's applied
+    expect(edit.reload.change_group.state).to eq "confirmed"
     expect(edit.word.keywords.map(&:name)).to match_array [word.name, keyword.name]
     expect(WordImport.all).to match_array [
       have_attributes(

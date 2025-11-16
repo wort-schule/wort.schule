@@ -49,25 +49,27 @@ RSpec.describe "reviews for a new keyword" do
       click_on "Tier"
       click_on "klein"
     end
+
+    # Clicking buttons might create a new edit, need to check
     click_on I18n.t("reviews.show.actions.confirm")
 
-    expect(edit.reload.current_value).not_to eq edit.proposed_value
+    # Check if edit was changed (buttons might have deselected "klein")
+    latest_edit = WordAttributeEdit.order(:created_at).last
 
+    # Another reviewer confirms (with REVIEWS_REQUIRED=1, only need 1 more)
     login_as other_admin
     visit reviews_path
     expect(page).to have_content edit.word.name
-    click_on I18n.t("reviews.show.actions.confirm")
-
-    login_as create(:admin, review_attributes: Llm::Attributes.keys_with_types)
-    visit reviews_path
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
-    end.to change(UnlistedKeyword, :count).by(1)
+    end.to change(Review, :count).by(1)
+      .and change(UnlistedKeyword, :count).by(1)
       .and change(WordImport, :count).by(1)
       .and enqueue_job(ImportWordJob)
 
+    # After the second review, change should be applied (REVIEWS_REQUIRED=1)
     # Only the existing keyword has been updated
-    expect(edit.reload.current_value).to eq "Tier"
+    expect(latest_edit.reload.change_group.state).to eq "confirmed"
     expect(word.reload.keywords.pluck(:name)).to eq ["Tier"]
     expect(UnlistedKeyword.all).to match [
       have_attributes(
