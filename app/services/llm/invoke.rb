@@ -40,7 +40,23 @@ module Llm
     private
 
     def client
-      @client ||= LlmService.active.client(default_options: {temperature: 0.0, chat_model: model})
+      @client ||= LlmService.active.client(default_options: client_options)
+    end
+
+    def client_options
+      options = {chat_model: model}
+
+      # GPT-5 models don't support temperature, top_p, or logprobs parameters
+      # See: https://platform.openai.com/docs/guides/reasoning
+      unless gpt5_model?
+        options[:temperature] = 0.0
+      end
+
+      options
+    end
+
+    def gpt5_model?
+      model.to_s.match?(/^gpt-5(-mini|-nano)?$/i)
     end
 
     def default_model
