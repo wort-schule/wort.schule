@@ -125,7 +125,7 @@
                 %td.px-4.py-2
                   %code.text-xs.bg-gray-100.px-2.py-1.rounded= job.job_class
                 %td.px-4.py-2.text-xs.max-w-xs
-                  %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": job.error, type: "button"} Show error
+                  %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": format_error_message(job.error), type: "button"} Show error
                 %td.px-4.py-2.text-xs
                   - if job.finished_at
                     = time_ago_in_words(job.finished_at)
@@ -188,9 +188,7 @@
                     %span.px-2.py-1.rounded.bg-gray-100.text-gray-800= invocation.state
                 %td.px-4.py-2.text-xs.max-w-md
                   - if invocation.error.present?
-                    .space-y-1
-                      %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": invocation.error, type: "button"} Show full error
-                      %div.text-red-700.mt-1.truncate{title: invocation.error}= invocation.error
+                    %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": format_error_message(invocation.error), type: "button"} Show full error
                   - else
                     %span.text-gray-400 —
                 %td.px-4.py-2.text-xs
@@ -236,7 +234,7 @@
                   %code.text-xs= import.word_type
                 %td.px-4.py-2.text-xs.max-w-xs
                   - if import.error.present?
-                    %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": import.error, type: "button"} Show error
+                    %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": format_error_message(import.error), type: "button"} Show error
                   - else
                     %span.text-gray-400 —
                 %td.px-4.py-2.text-xs
