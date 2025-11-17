@@ -242,4 +242,33 @@
   .active[data-search-result] {
     @apply bg-blue-100;
   }
+
+  /* Navigation page cards */
+  .nav-card {
+    @apply block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all duration-200 no-underline;
+  }
+
+  .nav-card-link {
+    @apply flex gap-3 items-start text-gray-900 no-underline;
+  }
+
+  .nav-card-link:hover {
+    @apply text-blue-600;
+  }
+
+  .nav-card-link:hover .nav-card-icon {
+    @apply text-blue-600;
+  }
+
+  .nav-card-icon {
+    @apply flex-shrink-0 mt-1 text-gray-600 transition-colors;
+  }
+
+  .nav-card-compact {
+    @apply block p-3 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all duration-200;
+  }
+
+  .nav-card-compact-link {
+    @apply block w-full text-center text-sm font-medium text-gray-900 no-underline hover:text-blue-600;
+  }
 }

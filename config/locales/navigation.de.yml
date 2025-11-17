@@ -17,3 +17,54 @@ de:
     llm_services: LLM Services
     llm_enrichments: LLM Ergänzung starten
     delete_reviews: Reviews löschen
+
+    # Welcome section
+    welcome_title: Willkommen im Verwaltungsbereich
+    welcome_description: "Hier können Sie Wörter verwalten, Lernmaterialien erstellen und Inhalte überprüfen. Klicken Sie auf eine Option, um mehr Informationen zu erhalten."
+    welcome_description_anonymous: "Erkunden Sie unseren Wortschatz. Melden Sie sich an, um Ihre eigenen Lernmaterialien zu erstellen und mehr Funktionen zu nutzen."
+
+    # Section headers
+    section_content_management: Inhaltsverwaltung
+    section_learning: Lernen & Üben
+    section_data_management: Datenverwaltung
+    section_quality: Qualitätssicherung
+    section_ai: KI & Erweiterte Funktionen
+    section_special_data: Speziale Datentypen
+    section_admin: Administration
+    section_browse: Wortschatz erkunden
+
+    # Help texts for Content Management
+    create_noun_help: "Fügen Sie neue Substantive zur Datenbank hinzu"
+    create_verb_help: "Fügen Sie neue Verben zur Datenbank hinzu"
+    create_adjective_help: "Fügen Sie neue Adjektive zur Datenbank hinzu"
+    word_imports_help: "Importieren Sie Wörter in Großmengen aus Dateien"
+    word_images_help: "Verwalten Sie Bilder für Wörter und weisen Sie sie zu"
+
+    # Help texts for Learning
+    themes_help: "Erstellen und verwalten Sie benutzerdefinierte Lernthemen"
+    flashcards_help: "Üben Sie Wörter mit interaktiven Lernkarten"
+    lists_help: "Erstellen Sie kuratierte Wortlisten für verschiedene Themen"
+
+    # Help texts for Data Management
+    sources_help: "Verwalten Sie die Quellen von Wortdefinitionen und Inhalten"
+    word_view_settings_help: "Passen Sie an, welche Felder für Wörter angezeigt werden"
+    keywords_help: "Verwalten Sie Schlüsselwörter für Kategorisierung und Suche"
+
+    # Help texts for Quality Assurance
+    reviews_help: "Überprüfen und genehmigen Sie Wortbeiträge"
+    image_requests_help: "Verwalten Sie Anfragen für Wort-Illustrationen"
+    delete_reviews_help: "Bereinigen Sie verwaiste Review-Einträge aus der Datenbank"
+
+    # Help texts for AI
+    llm_prompts_help: "Verwalten Sie KI-Aufforderungen für automatische Ergänzungen"
+    llm_services_help: "Konfigurieren Sie verfügbare KI-Sprachmodelle"
+    llm_enrichments_help: "Starten Sie KI-gestützte Wortbereicherungsprozesse"
+
+    # Help texts for Admin
+    users_help: "Verwalten Sie Benutzer und deren Zugangsrechte"
+    learning_groups_help: "Verwalten Sie Lerngruppen für kollaboratives Lernen"
+
+    # Help texts for Public browsing (anonymous users)
+    browse_nouns_help: "Durchsuchen Sie alle verfügbaren Substantive"
+    browse_verbs_help: "Durchsuchen Sie alle verfügbaren Verben"
+    browse_adjectives_help: "Durchsuchen Sie alle verfügbaren Adjektive"

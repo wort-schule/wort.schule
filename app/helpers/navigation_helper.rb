@@ -31,4 +31,25 @@ module NavigationHelper
 
     link_to klass.model_name.human(count: 2), [klass.model_name.plural.to_sym], data: {action: "click->dropdown#toggle"}, class: "no-underline block px-8 py-3 text-gray-300 hover:bg-primary whitespace-nowrap"
   end
+
+  def has_navigation_access?
+    # For anonymous users, only show public content
+    if current_user.blank?
+      can?(:read, Noun) || can?(:read, Verb) || can?(:read, Adjective) ||
+        can?(:read, FunctionWord) || can?(:read, Topic) ||
+        can?(:read, Keyword) ||
+        [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemReduction, CompoundVocalalternation].any? { |klass| can? :read, klass } ||
+        can?(:read, :word_images)
+    else
+      # For logged in users, show all accessible content
+      can?(:create, Noun) || can?(:create, Verb) || can?(:create, Adjective) ||
+        can?(:manage, :word_import) || can?(:manage, :word_images) ||
+        [Theme, List].any? { |klass| can? :read, klass } ||
+        can?(:read, Source) || can?(:index, WordViewSetting) || can?(:read, Keyword) ||
+        can?(:manage, :review) || can?(:read, ImageRequest) ||
+        can?(:manage, LlmPrompt) || can?(:manage, LlmService) || can?(:manage, :llm_enrichment) ||
+        [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemReduction, CompoundVocalalternation].any? { |klass| can? :read, klass } ||
+        can?(:index, User) || can?(:index, LearningGroup)
+    end
+  end
 end

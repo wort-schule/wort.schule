@@ -1,56 +1,256 @@
-.miscellaneous.bg-white.p-6.flex.flex-col.gap-4
-  %div= navigation_link params[:controller].to_sym == :sources, Source.model_name.human(count: 2), sources_path if can? :read, Source
-  %div= navigation_link params[:controller].to_sym == :users, User.model_name.human(count: 2), users_path if can?(:index, User)
-  %div= navigation_link params[:controller].to_sym == :learning_groups, LearningGroup.model_name.human(count: 2), learning_groups_path if can?(:index, LearningGroup)
-  = navigation_link params[:controller].to_sym == :word_view_settings, WordViewSetting.model_name.human(count: 2), word_view_settings_path if can?(:index, WordViewSetting)
-  = navigation_link false, t('nouns.index.new'), new_noun_path if can?(:create, Noun)
-  = navigation_link false, t('verbs.index.new'), new_verb_path if can?(:create, Verb)
-  = navigation_link false, t('adjectives.index.new'), new_adjective_path if can?(:create, Adjective)
-  = navigation_link false, Keyword.model_name.human(count: 2), keywords_path
-  = navigation_link false, t('navigation.reviews'), reviews_path if can?(:manage, :review)
-  = navigation_link false, t('navigation.word_imports'), new_word_import_path if can?(:manage, :word_import)
-  = navigation_link false, t('navigation.word_images'), word_images_path if can?(:manage, :word_images)
-  = navigation_link false, t('navigation.image_requests'), image_requests_path if can?(:read, ImageRequest)
-  = navigation_link false, t('navigation.llm_prompts'), llm_prompts_path if can?(:manage, LlmPrompt)
-  = navigation_link false, t('navigation.llm_services'), llm_services_path if can?(:manage, LlmService)
-  = navigation_link false, t('navigation.llm_enrichments'), new_llm_enrichment_path if can?(:manage, :llm_enrichment)
-  = navigation_link false, t('navigation.delete_reviews'), new_reviewables_garbage_collection_path if can?(:manage, :review)
+.miscellaneous
+  .px-2.sm:px-6.py-6
 
-  - if [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemReduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
-    .text-gray-300.hover:bg-primary-hover.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
-      .relative(data-controller="dropdown reveal")
-        .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
-          %span.appearance-none.flex.items-center.inline-block.text-gray-300.gap-1
-            .md:hidden(data-reveal-target="item")= heroicon 'chevron-right'
-            .hidden.md:hidden(data-reveal-target="item")= heroicon 'chevron-down'
-            = t('navigation.special_entries')
-            .hidden.md:block= heroicon 'chevron-down'
-        .md:absolute.md:right-0.mt-2.hidden.z-50(data-dropdown-target="menu")
-          .md:bg-primary-hover.md:shadow.rounded-md.md:border.md:border-primary-hover.overflow-hidden
-            = dropdown_link FunctionWord
-            = dropdown_link Topic
-            = dropdown_link Prefix
-            = dropdown_link Postfix
-            = dropdown_link Phenomenon
-            = dropdown_link Strategy
-            = dropdown_link CompoundInterfix
-            = dropdown_link CompoundPreconfix
-            = dropdown_link CompoundPostconfix
-            = dropdown_link CompoundPhonemReduction
-            = dropdown_link CompoundVocalalternation
+    / Welcome section for new users
+    - if has_navigation_access?
+      .mb-8.p-6.rounded-lg.bg-blue-50.border-l-4.border-blue-500
+        %h2.text-lg.font-bold.text-blue-900.mb-2= t('navigation.welcome_title')
+        - if user_signed_in?
+          %p.text-sm.text-blue-800= t('navigation.welcome_description')
+        - else
+          %p.text-sm.text-blue-800= t('navigation.welcome_description_anonymous')
 
-  - if [Theme, List].any? { |klass| can? :read, klass }
-    .text-gray-300.hover:bg-primary-hover.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
-      .relative(data-controller="dropdown reveal")
-        .inline-block.select-none(data-action="click->dropdown#toggle click@window->dropdown#hide click->reveal#toggle" role="button" data-dropdown-target="button" tabindex="0")
-          %span.appearance-none.flex.items-center.inline-block.text-gray-300.gap-1
-            .md:hidden(data-reveal-target="item")= heroicon 'chevron-right'
-            .hidden.md:hidden(data-reveal-target="item")= heroicon 'chevron-down'
-            = t('navigation.learning')
-            .hidden.md:block= heroicon 'chevron-down'
-        .md:absolute.md:right-0.mt-2special_entries.hidden.z-50(data-dropdown-target="menu")
-          .md:bg-primary-hover.md:shadow.rounded-md.md:border.md:border-primary-hover.overflow-hidden
-            = dropdown_link Theme
-            - if can? :index, :flashcard
-              = link_to t('flashcards.index.title'), flashcards_path, data: {action: "click->dropdown#toggle"}, class: "no-underline block px-8 py-3 text-gray-300 hover:bg-primary whitespace-nowrap"
-            = dropdown_link List
+    / Public Content Section (only for anonymous users)
+    - if !user_signed_in? && (can?(:read, Noun) || can?(:read, Verb) || can?(:read, Adjective) || can?(:read, FunctionWord) || can?(:read, Topic))
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('book-open', options: {class: 'w-6 h-6 text-green-600'})
+          = t('navigation.section_browse')
+        .grid.grid-cols-1.md:grid-cols-2.gap-4
+
+          - if can? :read, Noun
+            .nav-card
+              = link_to nouns_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('list-bullet', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= Noun.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.browse_nouns_help')
+
+          - if can? :read, Verb
+            .nav-card
+              = link_to verbs_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('list-bullet', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= Verb.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.browse_verbs_help')
+
+          - if can? :read, Adjective
+            .nav-card
+              = link_to adjectives_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('list-bullet', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= Adjective.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.browse_adjectives_help')
+
+    / Content Management Section (only for logged in users)
+    - if user_signed_in? && (can?(:create, Noun) || can?(:create, Verb) || can?(:create, Adjective) || can?(:manage, :word_import) || can?(:manage, :word_images))
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('pencil', options: {class: 'w-6 h-6 text-blue-600'})
+          = t('navigation.section_content_management')
+        .grid.grid-cols-1.md:grid-cols-2.gap-4
+
+          - if can?(:create, Noun)
+            .nav-card
+              = link_to new_noun_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('document-plus', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('nouns.index.new')
+                  %p.text-sm.text-gray-600= t('navigation.create_noun_help')
+
+          - if can?(:create, Verb)
+            .nav-card
+              = link_to new_verb_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('document-plus', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('verbs.index.new')
+                  %p.text-sm.text-gray-600= t('navigation.create_verb_help')
+
+          - if can?(:create, Adjective)
+            .nav-card
+              = link_to new_adjective_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('document-plus', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('adjectives.index.new')
+                  %p.text-sm.text-gray-600= t('navigation.create_adjective_help')
+
+          - if can?(:manage, :word_import)
+            .nav-card
+              = link_to new_word_import_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('arrow-up-tray', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.word_imports')
+                  %p.text-sm.text-gray-600= t('navigation.word_imports_help')
+
+          - if can?(:manage, :word_images)
+            .nav-card
+              = link_to word_images_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('photo', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.word_images')
+                  %p.text-sm.text-gray-600= t('navigation.word_images_help')
+
+    / Learning & Practice Section (only for logged in users)
+    - if user_signed_in? && [Theme, List].any? { |klass| can? :read, klass }
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('book-open', options: {class: 'w-6 h-6 text-green-600'})
+          = t('navigation.section_learning')
+        .grid.grid-cols-1.md:grid-cols-2.gap-4
+
+          - if can? :read, Theme
+            .nav-card
+              = link_to themes_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('paint-brush', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= Theme.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.themes_help')
+
+          - if can? :index, :flashcard
+            .nav-card
+              = link_to flashcards_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('star', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('flashcards.index.title')
+                  %p.text-sm.text-gray-600= t('navigation.flashcards_help')
+
+          - if can? :read, List
+            .nav-card
+              = link_to lists_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('list-bullet', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= List.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.lists_help')
+
+    / Data Management Section (only for logged in users)
+    - if user_signed_in? && (can?(:read, Source) || can?(:index, WordViewSetting) || can?(:manage, :word_import))
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('cog-6-tooth', options: {class: 'w-6 h-6 text-purple-600'})
+          = t('navigation.section_data_management')
+        .grid.grid-cols-1.md:grid-cols-2.gap-4
+
+          - if can? :read, Source
+            .nav-card
+              = link_to sources_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('link', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= Source.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.sources_help')
+
+          - if can?(:index, WordViewSetting)
+            .nav-card
+              = link_to word_view_settings_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('eye', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= WordViewSetting.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.word_view_settings_help')
+
+          - if can? :read, Keyword
+            .nav-card
+              = link_to keywords_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('tag', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= Keyword.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.keywords_help')
+
+    / Quality Assurance Section (only for logged in users)
+    - if user_signed_in? && (can?(:manage, :review) || can?(:read, ImageRequest))
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('check-circle', options: {class: 'w-6 h-6 text-orange-600'})
+          = t('navigation.section_quality')
+        .grid.grid-cols-1.md:grid-cols-2.gap-4
+
+          - if can?(:manage, :review)
+            .nav-card
+              = link_to reviews_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('document-check', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.reviews')
+                  %p.text-sm.text-gray-600= t('navigation.reviews_help')
+
+          - if can?(:read, ImageRequest)
+            .nav-card
+              = link_to image_requests_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('exclamation-circle', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.image_requests')
+                  %p.text-sm.text-gray-600= t('navigation.image_requests_help')
+
+          - if can?(:manage, :review)
+            .nav-card
+              = link_to new_reviewables_garbage_collection_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('trash', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.delete_reviews')
+                  %p.text-sm.text-gray-600= t('navigation.delete_reviews_help')
+
+    / AI & Advanced Features Section (only for logged in users)
+    - if user_signed_in? && (can?(:manage, LlmPrompt) || can?(:manage, LlmService) || can?(:manage, :llm_enrichment))
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('spark', options: {class: 'w-6 h-6 text-yellow-600'})
+          = t('navigation.section_ai')
+        .grid.grid-cols-1.md:grid-cols-2.gap-4
+
+          - if can?(:manage, LlmPrompt)
+            .nav-card
+              = link_to llm_prompts_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('chat-bubble-left', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.llm_prompts')
+                  %p.text-sm.text-gray-600= t('navigation.llm_prompts_help')
+
+          - if can?(:manage, LlmService)
+            .nav-card
+              = link_to llm_services_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('cpu-chip', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.llm_services')
+                  %p.text-sm.text-gray-600= t('navigation.llm_services_help')
+
+          - if can?(:manage, :llm_enrichment)
+            .nav-card
+              = link_to new_llm_enrichment_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('wand-magic-sparkles', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.llm_enrichments')
+                  %p.text-sm.text-gray-600= t('navigation.llm_enrichments_help')
+
+    / Special Data Types Section
+    - if [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemReduction, CompoundVocalalternation].any? { |klass| can? :read, klass }
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('archive-box', options: {class: 'w-6 h-6 text-red-600'})
+          = t('navigation.section_special_data')
+        .grid.grid-cols-2.md:grid-cols-3.lg:grid-cols-4.gap-3
+
+          - [FunctionWord, Topic, Prefix, Postfix, Phenomenon, Strategy, CompoundInterfix, CompoundPreconfix, CompoundPostconfix, CompoundPhonemReduction, CompoundVocalalternation].each do |klass|
+            - if can?(:read, klass)
+              .nav-card-compact
+                = link_to klass.model_name.human(count: 2), [klass.model_name.plural.to_sym], class: 'nav-card-compact-link'
+
+    / Admin Section (only for logged in users)
+    - if user_signed_in? && (can?(:index, User) || can?(:index, LearningGroup))
+      .mb-8
+        %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
+          = heroicon('shield-check', options: {class: 'w-6 h-6 text-red-700'})
+          = t('navigation.section_admin')
+        .grid.grid-cols-1.md:grid-cols-2.gap-4
+
+          - if can?(:index, User)
+            .nav-card
+              = link_to users_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('users', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= User.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.users_help')
+
+          - if can?(:index, LearningGroup)
+            .nav-card
+              = link_to learning_groups_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('user-group', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= LearningGroup.model_name.human(count: 2)
+                  %p.text-sm.text-gray-600= t('navigation.learning_groups_help')
