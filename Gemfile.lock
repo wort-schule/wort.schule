@@ -155,7 +155,7 @@ GEM
       rails-i18n
     diff-lcs (1.5.1)
     docile (1.4.0)
-    draper (4.0.5)
+    draper (4.0.6)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
       activemodel-serializers-xml (>= 1.0)
