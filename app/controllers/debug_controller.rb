@@ -1,4 +1,5 @@
 class DebugController < ApplicationController
+  before_action :authorize_admin!
   before_action :set_page_title
 
   def index
@@ -12,6 +13,10 @@ class DebugController < ApplicationController
   end
 
   private
+
+  def authorize_admin!
+    redirect_to root_path, alert: "Unauthorized" unless current_user&.role == "Admin"
+  end
 
   def set_page_title
     @page_title = "Debug Dashboard"

@@ -15,9 +15,14 @@ RSpec.describe "Debug Dashboard", type: :request do
     context "when user is not an admin" do
       before { sign_in user }
 
-      it "returns 404 not found" do
+      it "redirects to root_path" do
         get "/debug"
-        expect(response).to have_http_status(:not_found)
+        expect(response).to redirect_to(root_path)
+      end
+
+      it "shows alert message" do
+        get "/debug"
+        expect(flash[:alert]).to eq("Unauthorized")
       end
     end
 
