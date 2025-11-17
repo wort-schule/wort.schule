@@ -18,6 +18,28 @@ class DebugController < ApplicationController
     Rails.logger.error(e.backtrace.join("\n"))
   end
 
+  # Helper method to parse word key and return word details
+  helper_method :parse_word_key
+  def parse_word_key(key)
+    # For enrichment keys: "Noun#123" -> {type: "Noun", id: 123, word: <Word>}
+    # For check_base_form keys: "Hund#Animals#Noun" -> {name: "Hund", topic: "Animals", type: "Noun"}
+    return nil if key.blank?
+
+    parts = key.split("#")
+    if parts.size == 2 && parts[1].match?(/^\d+$/)
+      # This is a word enrichment key
+      word_type = parts[0]
+      word_id = parts[1].to_i
+      word = word_type.constantize.find_by(id: word_id)
+      {type: :word_enrichment, word_type: word_type, word_id: word_id, word: word}
+    elsif parts.size == 3
+      # This is a check_base_form key
+      {type: :check_base_form, name: parts[0], topic: parts[1], word_type: parts[2]}
+    end
+  rescue
+    nil
+  end
+
   private
 
   def authorize_admin!

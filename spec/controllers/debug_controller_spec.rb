@@ -60,6 +60,50 @@ RSpec.describe "Debug Dashboard", type: :request do
         get "/debug"
         expect(response.body).to include("How to Debug LLM Issues")
       end
+
+      context "with LLM invocations" do
+        before { sign_in admin }
+
+        it "displays word identifier as clickable link for word enrichment" do
+          word = create(:noun, name: "Haus")
+          create(:word_llm_invocation,
+            key: "Noun##{word.id}",
+            invocation_type: "enrichment",
+            state: "completed")
+
+          get "/debug"
+          expect(response.body).to include(polymorphic_path(word))
+          expect(response.body).to include("Noun##{word.id}")
+          expect(response.body).to include(word.name)
+        end
+
+        it "displays word information for check_base_form invocations" do
+          create(:word_llm_invocation,
+            key: "Hund#Animals#Noun",
+            invocation_type: "check_base_form",
+            state: "completed")
+
+          get "/debug"
+          expect(response.body).to include("Hund")
+          expect(response.body).to include("Animals")
+        end
+      end
+
+      context "with word imports" do
+        before { sign_in admin }
+
+        it "displays word import information with name and topic" do
+          create(:word_import,
+            name: "Katze",
+            topic: "Pets",
+            word_type: "Noun",
+            state: "completed")
+
+          get "/debug"
+          expect(response.body).to include("Katze")
+          expect(response.body).to include("Pets")
+        end
+      end
     end
   end
 end

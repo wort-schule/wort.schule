@@ -141,15 +141,41 @@
           %thead
             %tr.border-b
               %th.text-left.px-4.py-2 Key
+              %th.text-left.px-4.py-2 Word Info
               %th.text-left.px-4.py-2 Type
               %th.text-left.px-4.py-2 State
               %th.text-left.px-4.py-2 Error
               %th.text-left.px-4.py-2 Created At
           %tbody
             - @llm_invocations.each do |invocation|
+              - word_info = parse_word_key(invocation.key)
               %tr.border-b.hover:bg-gray-50
                 %td.px-4.py-2
-                  %code.text-xs.bg-gray-100.px-2.py-1.rounded= invocation.key
+                  - if word_info && word_info[:type] == :word_enrichment && word_info[:word]
+                    = link_to invocation.key, polymorphic_path(word_info[:word]), class: "text-blue-600 hover:text-blue-800 underline font-mono text-xs"
+                  - else
+                    %code.text-xs.bg-gray-100.px-2.py-1.rounded= invocation.key
+                %td.px-4.py-2
+                  - if word_info
+                    - if word_info[:type] == :word_enrichment
+                      - if word_info[:word]
+                        .text-sm
+                          %strong= word_info[:word].name
+                          %br
+                          %span.text-gray-600.text-xs= "#{word_info[:word_type]} (ID: #{word_info[:word_id]})"
+                      - else
+                        %span.text-gray-500.text-xs Word not found (ID: #{word_info[:word_id]})
+                    - elsif word_info[:type] == :check_base_form
+                      .text-sm
+                        %strong= word_info[:name]
+                        %br
+                        %span.text-gray-600.text-xs
+                          Topic:
+                          = word_info[:topic]
+                          |
+                          = word_info[:word_type]
+                  - else
+                    %span.text-gray-400 —
                 %td.px-4.py-2.text-sm
                   %span.px-2.py-1.rounded.bg-blue-100.text-blue-800= invocation.invocation_type || "unknown"
                 %td.px-4.py-2
@@ -182,7 +208,8 @@
         %table.w-full.text-sm
           %thead
             %tr.border-b
-              %th.text-left.px-4.py-2 Name
+              %th.text-left.px-4.py-2 Word
+              %th.text-left.px-4.py-2 Topic
               %th.text-left.px-4.py-2 Status
               %th.text-left.px-4.py-2 Word Type
               %th.text-left.px-4.py-2 Error
@@ -191,7 +218,10 @@
             - @word_imports.each do |import|
               %tr.border-b.hover:bg-gray-50
                 %td.px-4.py-2
-                  %span.text-gray-600= import.name
+                  .text-sm
+                    %strong= import.name
+                %td.px-4.py-2
+                  %span.text-gray-700.text-sm= import.topic
                 %td.px-4.py-2
                   - case import.state
                   - when "pending", "new"
@@ -203,7 +233,7 @@
                   - else
                     %span.px-2.py-1.rounded.bg-gray-100.text-gray-800= import.state
                 %td.px-4.py-2
-                  %code= import.word_type
+                  %code.text-xs= import.word_type
                 %td.px-4.py-2.text-xs.max-w-xs
                   - if import.error.present?
                     %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": import.error, type: "button"} Show error
