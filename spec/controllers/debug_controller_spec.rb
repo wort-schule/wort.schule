@@ -108,7 +108,7 @@ RSpec.describe "Debug Dashboard", type: :request do
       context "with failed LLM invocations" do
         before { sign_in admin }
 
-        it "displays error button without file path" do
+        it "displays full error button" do
           error_message = "Faraday::BadRequestError: the server responded with status 400\n/path/to/file.rb:123"
           create(:word_llm_invocation,
             key: "Noun#123",
@@ -118,10 +118,9 @@ RSpec.describe "Debug Dashboard", type: :request do
 
           get "/debug"
           expect(response.body).to include("Show full error")
-          expect(response.body).not_to include("/path/to/file.rb:123")
         end
 
-        it "displays JSON error response in modal when available" do
+        it "displays separate JSON API Error column when JSON is present" do
           error_with_json = <<~ERROR
             Faraday::BadRequestError: the server responded with status 400
             {"error":{"message":"Invalid request","type":"invalid_request_error","code":"invalid_value"}}
@@ -133,7 +132,20 @@ RSpec.describe "Debug Dashboard", type: :request do
             error: error_with_json)
 
           get "/debug"
-          expect(response.body).to include("Show full error")
+          expect(response.body).to include("JSON API Error")
+          expect(response.body).to include("Show JSON")
+        end
+
+        it "shows dash when no JSON API error is present" do
+          error_without_json = "Some error without JSON"
+          create(:word_llm_invocation,
+            key: "Noun#789",
+            invocation_type: "enrichment",
+            state: "failed",
+            error: error_without_json)
+
+          get "/debug"
+          expect(response.body).to include("JSON API Error")
         end
       end
     end

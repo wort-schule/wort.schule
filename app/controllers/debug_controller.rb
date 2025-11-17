@@ -18,47 +18,33 @@ class DebugController < ApplicationController
     Rails.logger.error(e.backtrace.join("\n"))
   end
 
-  # Helper method to format error messages for better readability
-  helper_method :format_error_message
-  def format_error_message(error)
-    return "" if error.blank?
-
-    lines = error.split("\n")
-    formatted_lines = []
-    json_content = nil
+  # Helper method to extract JSON error from API responses
+  helper_method :extract_json_error
+  def extract_json_error(error)
+    return nil if error.blank?
 
     # Try to extract JSON from the error message
     json_match = error.match(/(\{.*\})/m)
     if json_match
       begin
         json_data = JSON.parse(json_match[1])
-        json_content = JSON.pretty_generate(json_data)
+        JSON.pretty_generate(json_data)
       rescue JSON::ParserError
-        # Not valid JSON, continue with normal processing
+        nil
       end
     end
+  end
 
-    # Process each line
-    lines.each do |line|
-      # Skip lines that look like file paths (start with / or contain .rb: followed by line numbers)
-      next if line.match?(%r{^/.*\.rb:\d+}) || line.match?(%r{^\s+/.*\.rb:\d+})
+  # Helper method to get a short error summary
+  helper_method :error_summary
+  def error_summary(error)
+    return "" if error.blank?
 
-      # Skip lines that are part of a stack trace
-      next if line.match?(/^\s+from /)
+    # Get the first line which usually contains the main error
+    first_line = error.lines.first&.strip || ""
 
-      formatted_lines << line
-    end
-
-    result = formatted_lines.join("\n").strip
-
-    # If we found JSON, append it nicely formatted
-    if json_content
-      # Remove the raw JSON from the result if it's there
-      result = result.gsub(/\{[^}]*\}/m, "").strip
-      result += "\n\nJSON Response:\n#{json_content}"
-    end
-
-    result
+    # Remove ANSI color codes
+    first_line.gsub(/\e\[[0-9;]*m/, "")
   end
 
   # Helper method to parse word key and return word details
