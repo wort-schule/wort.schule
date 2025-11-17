@@ -1,5 +1,16 @@
-.container.mx-auto.p-6
+.container.mx-auto.p-6{"data-controller": "modal"}
   %h1.text-3xl.font-bold.mb-6 Debug Dashboard
+
+  / Modal for error display
+  .fixed.inset-0.bg-black.bg-opacity-50.z-50.hidden.flex.items-center.justify-center{"data-modal-target": "container", "data-action": "click->modal#closeOnBackdrop"}
+    .bg-white.rounded-lg.shadow-2xl.max-w-6xl.w-full.mx-4.max-h-[90vh].flex.flex-col
+      .flex.justify-between.items-center.p-6.border-b
+        %h3.text-2xl.font-bold.text-red-800 Error Details
+        %button.text-gray-500.hover:text-gray-700.text-3xl.font-bold{"data-action": "click->modal#close", type: "button"} ×
+      .overflow-auto.p-6.flex-1
+        %pre.bg-gray-900.text-gray-100.p-4.rounded.text-sm.whitespace-pre-wrap.break-words.font-mono{"data-modal-target": "content"}
+      .p-4.border-t.flex.justify-end
+        %button.px-6.py-2.bg-gray-500.text-white.rounded.hover:bg-gray-600{"data-action": "click->modal#close", type: "button"} Close
 
   - if @error
     .bg-red-50.border-4.border-red-600.p-6.mb-6.rounded
@@ -114,9 +125,7 @@
                 %td.px-4.py-2
                   %code.text-xs.bg-gray-100.px-2.py-1.rounded= job.job_class
                 %td.px-4.py-2.text-xs.max-w-xs
-                  %details
-                    %summary.cursor-pointer.text-red-600.font-semibold Show error
-                    %pre.bg-gray-800.text-gray-100.p-3.rounded.mt-2.overflow-auto.text-xs= job.error
+                  %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": job.error, type: "button"} Show error
                 %td.px-4.py-2.text-xs
                   - if job.finished_at
                     = time_ago_in_words(job.finished_at)
@@ -155,9 +164,7 @@
                     %span.px-2.py-1.rounded.bg-gray-100.text-gray-800= invocation.state
                 %td.px-4.py-2.text-xs.max-w-xs
                   - if invocation.error.present?
-                    %details
-                      %summary.cursor-pointer.text-red-600.font-semibold Show error
-                      %pre.bg-gray-800.text-gray-100.p-3.rounded.mt-2.overflow-auto.text-xs= invocation.error
+                    %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": invocation.error, type: "button"} Show error
                   - else
                     %span.text-gray-400 —
                 %td.px-4.py-2.text-xs
@@ -199,9 +206,7 @@
                   %code= import.word_type
                 %td.px-4.py-2.text-xs.max-w-xs
                   - if import.error.present?
-                    %details
-                      %summary.cursor-pointer.text-red-600.font-semibold Show error
-                      %pre.bg-gray-800.text-gray-100.p-3.rounded.mt-2.overflow-auto.text-xs= import.error
+                    %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": import.error, type: "button"} Show error
                   - else
                     %span.text-gray-400 —
                 %td.px-4.py-2.text-xs
