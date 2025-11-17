@@ -78,6 +78,7 @@ task :deploy do
     # Bundle install with deployment settings
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
+    command %(#{fetch(:bundle_prefix)} rake change_groups:fix_limbo)
     command %(#{fetch(:bundle_prefix)} rake change_groups:process_waiting_reviews)
 
     # Generate deployment info file with timestamp and git commit
