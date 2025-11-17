@@ -10,6 +10,12 @@ class DebugController < ApplicationController
     @llm_invocations = WordLlmInvocation.order(created_at: :desc).limit(50)
     @word_imports = WordImport.order(created_at: :desc).limit(20)
     @llm_queue_stats = GoodJob::Job.where(queue_name: "llm").group(:finished_at).count
+  rescue => e
+    @error = e
+    @error_message = e.message
+    @error_backtrace = e.backtrace
+    Rails.logger.error("Debug Controller Error: #{e.class} - #{e.message}")
+    Rails.logger.error(e.backtrace.join("\n"))
   end
 
   private

@@ -1,6 +1,24 @@
 .container.mx-auto.p-6
   %h1.text-3xl.font-bold.mb-6 Debug Dashboard
 
+  - if @error
+    .bg-red-50.border-4.border-red-600.p-6.mb-6.rounded
+      %h2.text-2xl.font-bold.text-red-800.mb-4 ❌ Error Loading Debug Dashboard
+      %div.bg-white.p-4.rounded.mb-4
+        %p.font-mono.text-sm.text-red-700.font-bold= "#{@error.class}: #{@error_message}"
+      - if @error_backtrace.present?
+        %details.mt-4
+          %summary.cursor-pointer.font-semibold.text-red-800 Stack Trace
+          %pre.bg-gray-900.text-gray-100.p-4.rounded.mt-2.overflow-auto.text-xs
+            = @error_backtrace.first(20).join("\n")
+      %div.mt-4.p-4.bg-red-100.rounded.text-sm.text-red-900
+        %strong Next Steps:
+        %ul.list-disc.list-inside.mt-2
+          %li Check the production logs for more details
+          %li Verify database connection is working
+          %li Ensure GoodJob and related tables exist in the database
+          %li Contact support if the issue persists
+
   .grid.grid-cols-1.md:grid-cols-2.gap-6.mb-6
     / LLM Service Status
     .bg-white.rounded-lg.shadow.p-6
