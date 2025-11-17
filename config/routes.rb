@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   authenticate :user, ->(user) { user.role == "Admin" } do
     mount GoodJob::Engine => "seite/good_job"
+    get "debug", to: "debug#index", as: :debug
   end
 
   concern :themeable do

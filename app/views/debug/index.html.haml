@@ -1,0 +1,226 @@
+.container.mx-auto.p-6
+  %h1.text-3xl.font-bold.mb-6 Debug Dashboard
+
+  .grid.grid-cols-1.md:grid-cols-2.gap-6.mb-6
+    / LLM Service Status
+    .bg-white.rounded-lg.shadow.p-6
+      %h2.text-xl.font-bold.mb-4 LLM Service Status
+      - if @llm_service
+        %dl
+          %div.mb-4
+            %dt.font-semibold Provider
+            %dd.text-gray-700= @llm_service.service_klass
+          %div.mb-4
+            %dt.font-semibold Status
+            %dd
+              %span.px-3.py-1.rounded-full.text-white.bg-green-500 Active
+          %div.mb-4
+            %dt.font-semibold Model
+            %dd.text-gray-700= @llm_service.model || "Not configured"
+          %div.mb-4
+            %dt.font-semibold API Key Set
+            %dd
+              - if @llm_service.api_key.present?
+                %span.px-3.py-1.rounded-full.text-white.bg-green-500 ✓ Yes
+              - else
+                %span.px-3.py-1.rounded-full.text-white.bg-red-500 ✗ No
+      - else
+        %p.text-red-600.font-semibold No LLM service configured
+        = link_to "Configure LLM Service", llm_services_path, class: "mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded"
+
+    / Queue Statistics
+    .bg-white.rounded-lg.shadow.p-6
+      %h2.text-xl.font-bold.mb-4 Queue Statistics
+      %dl
+        %div.mb-4
+          %dt.font-semibold Total Jobs (Recent)
+          %dd.text-gray-700= @recent_jobs.count
+        %div.mb-4
+          %dt.font-semibold Pending Jobs
+          %dd
+            %span.text-orange-600.font-bold= @pending_jobs.count
+        %div.mb-4
+          %dt.font-semibold Failed Jobs (Recent)
+          %dd
+            %span.text-red-600.font-bold= @failed_jobs.count
+        %div.mt-4
+          = link_to "View Full Job Dashboard", good_job.root_path, class: "text-blue-500 underline", target: "_blank"
+
+  / Pending Jobs
+  - if @pending_jobs.any?
+    .bg-yellow-50.border-l-4.border-yellow-400.p-6.mb-6
+      %h2.text-xl.font-bold.mb-4 ⚠️ Pending Jobs (#{@pending_jobs.count})
+      .overflow-x-auto
+        %table.w-full.text-sm
+          %thead
+            %tr.border-b
+              %th.text-left.px-4.py-2 Queue
+              %th.text-left.px-4.py-2 Job Class
+              %th.text-left.px-4.py-2 Created At
+              %th.text-left.px-4.py-2 Updated At
+          %tbody
+            - @pending_jobs.first(10).each do |job|
+              %tr.border-b.hover:bg-yellow-100
+                %td.px-4.py-2
+                  %span.px-2.py-1.rounded.bg-yellow-200.text-sm= job.queue_name
+                %td.px-4.py-2
+                  %code.text-xs.bg-gray-100.px-2.py-1.rounded= job.job_class
+                %td.px-4.py-2.text-xs
+                  = time_ago_in_words(job.created_at)
+                  %br
+                  %span.text-gray-500= job.created_at.strftime("%H:%M:%S")
+                %td.px-4.py-2.text-xs
+                  = time_ago_in_words(job.updated_at)
+                  %br
+                  %span.text-gray-500= job.updated_at.strftime("%H:%M:%S")
+        - if @pending_jobs.count > 10
+          %p.text-sm.text-gray-600.mt-4 Showing 10 of #{@pending_jobs.count} pending jobs. #{link_to 'View all in GoodJob Dashboard', good_job.root_path, target: '_blank', class: 'text-blue-500 underline'}
+
+  / Failed Jobs
+  - if @failed_jobs.any?
+    .bg-red-50.border-l-4.border-red-400.p-6.mb-6
+      %h2.text-xl.font-bold.mb-4 ❌ Failed Jobs (Last 20)
+      .overflow-x-auto
+        %table.w-full.text-sm
+          %thead
+            %tr.border-b
+              %th.text-left.px-4.py-2 Queue
+              %th.text-left.px-4.py-2 Job Class
+              %th.text-left.px-4.py-2 Error
+              %th.text-left.px-4.py-2 Failed At
+          %tbody
+            - @failed_jobs.each do |job|
+              %tr.border-b.hover:bg-red-100
+                %td.px-4.py-2
+                  %span.px-2.py-1.rounded.bg-red-200.text-sm= job.queue_name
+                %td.px-4.py-2
+                  %code.text-xs.bg-gray-100.px-2.py-1.rounded= job.job_class
+                %td.px-4.py-2.text-xs.max-w-xs
+                  %details
+                    %summary.cursor-pointer.text-red-600.font-semibold Show error
+                    %pre.bg-gray-800.text-gray-100.p-3.rounded.mt-2.overflow-auto.text-xs= job.error
+                %td.px-4.py-2.text-xs
+                  - if job.finished_at
+                    = time_ago_in_words(job.finished_at)
+                    %br
+                    %span.text-gray-500= job.finished_at.strftime("%H:%M:%S")
+
+  / LLM Invocations
+  .bg-white.rounded-lg.shadow.p-6.mb-6
+    %h2.text-xl.font-bold.mb-4 Recent LLM Invocations (#{@llm_invocations.count})
+    - if @llm_invocations.any?
+      .overflow-x-auto
+        %table.w-full.text-sm
+          %thead
+            %tr.border-b
+              %th.text-left.px-4.py-2 Key
+              %th.text-left.px-4.py-2 Type
+              %th.text-left.px-4.py-2 State
+              %th.text-left.px-4.py-2 Error
+              %th.text-left.px-4.py-2 Created At
+          %tbody
+            - @llm_invocations.each do |invocation|
+              %tr.border-b.hover:bg-gray-50
+                %td.px-4.py-2
+                  %code.text-xs.bg-gray-100.px-2.py-1.rounded= invocation.key
+                %td.px-4.py-2.text-sm
+                  %span.px-2.py-1.rounded.bg-blue-100.text-blue-800= invocation.invocation_type || "unknown"
+                %td.px-4.py-2
+                  - case invocation.state
+                  - when "invoked"
+                    %span.px-2.py-1.rounded.bg-yellow-100.text-yellow-800.font-semibold= invocation.state
+                  - when "completed"
+                    %span.px-2.py-1.rounded.bg-green-100.text-green-800.font-semibold= invocation.state
+                  - when "failed"
+                    %span.px-2.py-1.rounded.bg-red-100.text-red-800.font-semibold= invocation.state
+                  - else
+                    %span.px-2.py-1.rounded.bg-gray-100.text-gray-800= invocation.state
+                %td.px-4.py-2.text-xs.max-w-xs
+                  - if invocation.error.present?
+                    %details
+                      %summary.cursor-pointer.text-red-600.font-semibold Show error
+                      %pre.bg-gray-800.text-gray-100.p-3.rounded.mt-2.overflow-auto.text-xs= invocation.error
+                  - else
+                    %span.text-gray-400 —
+                %td.px-4.py-2.text-xs
+                  = time_ago_in_words(invocation.created_at)
+                  %br
+                  %span.text-gray-500= invocation.created_at.strftime("%H:%M:%S")
+    - else
+      %p.text-gray-600 No LLM invocations found.
+
+  / Word Imports
+  .bg-white.rounded-lg.shadow.p-6.mb-6
+    %h2.text-xl.font-bold.mb-4 Recent Word Imports (#{@word_imports.count})
+    - if @word_imports.any?
+      .overflow-x-auto
+        %table.w-full.text-sm
+          %thead
+            %tr.border-b
+              %th.text-left.px-4.py-2 User
+              %th.text-left.px-4.py-2 Status
+              %th.text-left.px-4.py-2 Word Count
+              %th.text-left.px-4.py-2 Error
+              %th.text-left.px-4.py-2 Created At
+          %tbody
+            - @word_imports.each do |import|
+              %tr.border-b.hover:bg-gray-50
+                %td.px-4.py-2
+                  = import.user&.email || "Unknown"
+                %td.px-4.py-2
+                  - case import.state
+                  - when "pending"
+                    %span.px-2.py-1.rounded.bg-yellow-100.text-yellow-800.font-semibold= import.state
+                  - when "completed"
+                    %span.px-2.py-1.rounded.bg-green-100.text-green-800.font-semibold= import.state
+                  - when "failed"
+                    %span.px-2.py-1.rounded.bg-red-100.text-red-800.font-semibold= import.state
+                  - else
+                    %span.px-2.py-1.rounded.bg-gray-100.text-gray-800= import.state
+                %td.px-4.py-2
+                  %code= import.word_count || 0
+                %td.px-4.py-2.text-xs.max-w-xs
+                  - if import.error.present?
+                    %details
+                      %summary.cursor-pointer.text-red-600.font-semibold Show error
+                      %pre.bg-gray-800.text-gray-100.p-3.rounded.mt-2.overflow-auto.text-xs= import.error
+                  - else
+                    %span.text-gray-400 —
+                %td.px-4.py-2.text-xs
+                  = time_ago_in_words(import.created_at)
+                  %br
+                  %span.text-gray-500= import.created_at.strftime("%H:%M:%S")
+    - else
+      %p.text-gray-600 No word imports found.
+
+  / Help Section
+  .bg-blue-50.border-l-4.border-blue-400.p-6.mt-6
+    %h2.text-xl.font-bold.mb-4 🔍 How to Debug LLM Issues
+    %ul.list-disc.list-inside.space-y-2
+      %li
+        %strong Pending Jobs:
+        If you see jobs stuck in "Pending", the good_job worker might not be running. Check if
+        %code bundle exec good_job
+        is active.
+      %li
+        %strong Failed Jobs:
+        Click "Show error" to see the full error message and stacktrace. Common issues include:
+        %ul.list-circle.list-inside.ml-4.mt-2.space-y-1
+          %li Invalid API key for the LLM provider
+          %li Model name mismatch (check OpenAI model names)
+          %li Network/connection issues to LLM provider
+          %li Rate limiting from the provider
+      %li
+        %strong LLM Invocations (Failed):
+        Shows LLM enrichment attempts with state and errors. Look for patterns in which words/operations fail.
+      %li
+        %strong Word Imports (Failed):
+        Tracks import job results. Check the error message to understand what went wrong during import.
+      %li
+        %strong Next Steps:
+        %ol.list-decimal.list-inside.ml-4.mt-2.space-y-1
+          %li Verify LLM provider credentials (API key, model name)
+          %li Check the LLM provider's status (is the service up?)
+          %li Review the full error messages in this dashboard
+          %li Check production logs (if available) for more context
+          %li Ensure the good_job worker is actually running
