@@ -56,9 +56,16 @@ module Llm
 
       word_llm_invocation.update!(state: :completed)
     rescue => e
+      error_message = e.full_message
+
+      # For Faraday errors, append the response body which contains the JSON error
+      if e.respond_to?(:response) && e.response&.dig(:body).present?
+        error_message += "\n\nAPI Response Body:\n#{e.response[:body]}"
+      end
+
       word_llm_invocation&.update!(
         state: :failed,
-        error: e.full_message
+        error: error_message
       )
 
       raise e if word_llm_invocation.blank?

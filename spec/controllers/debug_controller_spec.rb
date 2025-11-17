@@ -136,6 +136,25 @@ RSpec.describe "Debug Dashboard", type: :request do
           expect(response.body).to include("Show JSON")
         end
 
+        it "extracts JSON from API Response Body section" do
+          error_with_api_response = <<~ERROR
+            Faraday::BadRequestError: the server responded with status 400
+            /path/to/file.rb:30:in 'on_complete'
+
+            API Response Body:
+            {"error":{"message":"Invalid API key","type":"invalid_request_error","code":"invalid_api_key"}}
+          ERROR
+          create(:word_llm_invocation,
+            key: "Noun#999",
+            invocation_type: "enrichment",
+            state: "failed",
+            error: error_with_api_response)
+
+          get "/debug"
+          expect(response.body).to include("JSON API Error")
+          expect(response.body).to include("Show JSON")
+        end
+
         it "shows dash when no JSON API error is present" do
           error_without_json = "Some error without JSON"
           create(:word_llm_invocation,

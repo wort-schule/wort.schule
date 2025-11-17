@@ -23,7 +23,18 @@ class DebugController < ApplicationController
   def extract_json_error(error)
     return nil if error.blank?
 
-    # Try to extract JSON from the error message
+    # First, check if there's a dedicated "API Response Body:" section
+    if error.include?("API Response Body:")
+      response_body = error.split("API Response Body:").last&.strip
+      begin
+        json_data = JSON.parse(response_body)
+        return JSON.pretty_generate(json_data)
+      rescue JSON::ParserError
+        # Fall through to try other methods
+      end
+    end
+
+    # Try to extract JSON from anywhere in the error message
     json_match = error.match(/(\{.*\})/m)
     if json_match
       begin
