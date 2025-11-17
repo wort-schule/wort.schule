@@ -3,14 +3,14 @@
 
   / Modal for error display
   .fixed.inset-0.bg-black.bg-opacity-50.z-50.hidden.flex.items-center.justify-center{"data-modal-target": "container", "data-action": "click->modal#closeOnBackdrop"}
-    .bg-white.rounded-lg.shadow-2xl.max-w-6xl.w-full.mx-4.max-h-[90vh].flex.flex-col
+    .bg-white.rounded-lg.shadow-2xl.max-w-6xl.w-full.mx-4.flex.flex-col{class: "max-h-[90vh]"}
       .flex.justify-between.items-center.p-6.border-b
         %h3.text-2xl.font-bold.text-red-800 Error Details
-        %button.text-gray-500.hover:text-gray-700.text-3xl.font-bold{"data-action": "click->modal#close", type: "button"} ×
+        %button.text-gray-500.text-3xl.font-bold{"data-action": "click->modal#close", type: "button", class: "hover:text-gray-700"} ×
       .overflow-auto.p-6.flex-1
         %pre.bg-gray-900.text-gray-100.p-4.rounded.text-sm.whitespace-pre-wrap.break-words.font-mono{"data-modal-target": "content"}
       .p-4.border-t.flex.justify-end
-        %button.px-6.py-2.bg-gray-500.text-white.rounded.hover:bg-gray-600{"data-action": "click->modal#close", type: "button"} Close
+        %button.px-6.py-2.bg-gray-500.text-white.rounded{"data-action": "click->modal#close", type: "button", class: "hover:bg-gray-600"} Close
 
   - if @error
     .bg-red-50.border-4.border-red-600.p-6.mb-6.rounded
