@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_16_195451) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_17_131423) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -710,27 +710,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_16_195451) do
     ORDER BY words.hit_counter DESC, words.name;
   SQL
   create_view "reviewers", sql_definition: <<-SQL
-      WITH RECURSIVE successors(origin_id, edit_id) AS (
-           SELECT cg.id,
-              cg.id
-             FROM change_groups cg
-            WHERE (cg.successor_id IS NULL)
-          UNION
-           SELECT successors.origin_id,
-              cg.id
-             FROM (successors
-               JOIN change_groups cg ON ((cg.successor_id = successors.edit_id)))
-          )
-   SELECT DISTINCT successors.origin_id AS change_group_id,
-      r.reviewer_id
-     FROM (successors
-       JOIN reviews r ON ((((r.reviewable_type)::text = 'ChangeGroup'::text) AND (r.reviewable_id = successors.edit_id))))
-    WHERE (successors.origin_id <> successors.edit_id)
-  UNION
-   SELECT cg.id AS change_group_id,
+      SELECT cg.id AS change_group_id,
       r.reviewer_id
      FROM (change_groups cg
-       JOIN reviews r ON ((((r.reviewable_type)::text = 'ChangeGroup'::text) AND (r.reviewable_id = cg.id))))
-    WHERE (cg.successor_id IS NULL);
+       JOIN reviews r ON ((((r.reviewable_type)::text = 'ChangeGroup'::text) AND (r.reviewable_id = cg.id))));
   SQL
 end

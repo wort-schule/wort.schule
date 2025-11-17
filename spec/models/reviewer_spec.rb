@@ -39,7 +39,7 @@ RSpec.describe Reviewer do
     end
   end
 
-  it "includes reviews of parent reviews" do
+  it "includes only direct reviews, not parent reviews" do
     user_ids = {
       me.id => :me,
       other_user.id => :other_user,
@@ -60,12 +60,13 @@ RSpec.describe Reviewer do
       ]
     end
 
+    # Only direct reviews should be included, not reviews of predecessors
     expect(symbols).to match_array [
       [:reviewable_skipped_by_other, :other_user],
-      [:reviewable_skipped_by_other, :me],
       [:reviewable_fully_confirmed, :other_user],
       [:reviewable_fully_confirmed, :different_user],
-      [:reviewable_origin_edited, :me],
+      [:reviewable_edited, :me],
+      [:reviewable_origin, :me],
       [:reviewable_origin_edited, :other_user]
     ]
   end

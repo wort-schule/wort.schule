@@ -74,8 +74,44 @@ RSpec.describe ChangeGroup do
       expect(symbols).to match_array [
         :reviewable_without_reviews,
         :reviewable_skipped_by_other,
-        :reviewable_confirmed_by_other
+        :reviewable_confirmed_by_other,
+        :reviewable_successor
       ]
+    end
+
+    it "allows reviewer to review successor after editing predecessor" do
+      # Create successor with a word_attribute_edit (using default factory which has attribute_name: "case_1_plural")
+      successor = create(:word_attribute_edit).change_group
+
+      # Create predecessor that was edited by me
+      create(:word_attribute_edit).tap do |reviewable|
+        reviewable.change_group.update!(state: :edited, successor:)
+        reviewable.change_group.reviews.create!(reviewer: me, state: :edited)
+      end
+
+      # The reviewers view should NOT include me for the successor
+      # because I only edited the predecessor, I didn't confirm/skip it on the successor itself
+      reviewers_for_successor = Reviewer.where(change_group_id: successor.id, reviewer_id: me.id)
+      expect(reviewers_for_successor).not_to exist
+
+      # The successor SHOULD appear in my review queue
+      # because editing a predecessor should not prevent reviewing the successor
+      expect(described_class.reviewable(me).pluck(:id)).to include(successor.id)
+    end
+
+    it "excludes successor from reviewer who already reviewed it directly" do
+      # Create successor with a word_attribute_edit
+      successor = create(:word_attribute_edit).change_group
+
+      # Create a review directly on the successor
+      successor.reviews.create!(reviewer: me, state: :skipped)
+
+      # The reviewers view should include me for the successor
+      reviewers_for_successor = Reviewer.where(change_group_id: successor.id, reviewer_id: me.id)
+      expect(reviewers_for_successor).to exist
+
+      # The successor should NOT appear in my review queue
+      expect(described_class.reviewable(me).pluck(:id)).not_to include(successor.id)
     end
   end
 
