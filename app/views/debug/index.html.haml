@@ -175,19 +175,19 @@
         %table.w-full.text-sm
           %thead
             %tr.border-b
-              %th.text-left.px-4.py-2 User
+              %th.text-left.px-4.py-2 Name
               %th.text-left.px-4.py-2 Status
-              %th.text-left.px-4.py-2 Word Count
+              %th.text-left.px-4.py-2 Word Type
               %th.text-left.px-4.py-2 Error
               %th.text-left.px-4.py-2 Created At
           %tbody
             - @word_imports.each do |import|
               %tr.border-b.hover:bg-gray-50
                 %td.px-4.py-2
-                  = import.user&.email || "Unknown"
+                  %span.text-gray-600= import.name
                 %td.px-4.py-2
                   - case import.state
-                  - when "pending"
+                  - when "pending", "new"
                     %span.px-2.py-1.rounded.bg-yellow-100.text-yellow-800.font-semibold= import.state
                   - when "completed"
                     %span.px-2.py-1.rounded.bg-green-100.text-green-800.font-semibold= import.state
@@ -196,7 +196,7 @@
                   - else
                     %span.px-2.py-1.rounded.bg-gray-100.text-gray-800= import.state
                 %td.px-4.py-2
-                  %code= import.word_count || 0
+                  %code= import.word_type
                 %td.px-4.py-2.text-xs.max-w-xs
                   - if import.error.present?
                     %details
