@@ -104,8 +104,9 @@ RSpec.describe "word filter" do
 
       find_button(t("filter.apply"), visible: false).trigger("click")
 
-      # Wait for the filter results to load and verify results
-      expect(page).to have_css("#words", wait: 2)
+      # Wait for Turbo to update the results by waiting for Abend to disappear
+      # (since it should be filtered out)
+      expect(page).not_to have_css('[data-name="Abend"]', wait: 5)
 
       within "#words" do
         # Should show Abfall (starts with "ab" AND has Bach as keyword)
