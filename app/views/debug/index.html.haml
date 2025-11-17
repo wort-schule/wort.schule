@@ -161,8 +161,6 @@
                       - if word_info[:word]
                         .text-sm
                           %strong= word_info[:word].name
-                          %br
-                          %span.text-gray-600.text-xs= "#{word_info[:word_type]} (ID: #{word_info[:word_id]})"
                       - else
                         %span.text-gray-500.text-xs Word not found (ID: #{word_info[:word_id]})
                     - elsif word_info[:type] == :check_base_form
@@ -188,9 +186,11 @@
                     %span.px-2.py-1.rounded.bg-red-100.text-red-800.font-semibold= invocation.state
                   - else
                     %span.px-2.py-1.rounded.bg-gray-100.text-gray-800= invocation.state
-                %td.px-4.py-2.text-xs.max-w-xs
+                %td.px-4.py-2.text-xs.max-w-md
                   - if invocation.error.present?
-                    %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": invocation.error, type: "button"} Show error
+                    .space-y-1
+                      %button.cursor-pointer.text-red-600.font-semibold.underline.hover:text-red-800{"data-action": "click->modal#open", "data-error-content": invocation.error, type: "button"} Show full error
+                      %div.text-red-700.mt-1.truncate{title: invocation.error}= invocation.error
                   - else
                     %span.text-gray-400 —
                 %td.px-4.py-2.text-xs
