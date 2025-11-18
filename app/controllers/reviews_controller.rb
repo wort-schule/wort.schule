@@ -34,6 +34,20 @@ class ReviewsController < ApplicationController
 
   private
 
+  def page_title
+    return "" unless @reviewable
+
+    word_name = if @reviewable.word_attribute_edits.present?
+      @reviewable.word_attribute_edits.first.word.name
+    elsif @reviewable.new_word.present?
+      @reviewable.new_word.name
+    end
+
+    return "Review" unless word_name
+
+    "Review: #{word_name}"
+  end
+
   def set_reviewable
     @reviewable = ChangeGroup
       .includes(word_attribute_edits: {word: {compound_entities: :part}})
