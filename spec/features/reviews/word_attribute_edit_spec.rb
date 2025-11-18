@@ -124,7 +124,8 @@ RSpec.describe "reviews for enriched attributes" do
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array [cat.name, rabbit.name]
 
-      click_on cat.name
+      # All suggestions are preselected, so we deselect rabbit to keep only cat
+      click_on rabbit.name
 
       expect(page.find_all('button[class~="bg-primary"]').map(&:text)).to match_array [cat.name]
     end

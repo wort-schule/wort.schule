@@ -129,6 +129,28 @@ RSpec.describe Import::Word do
         state: "completed"
       )
     end
+
+    context "with unlisted keywords" do
+      let!(:original_word) { create(:noun, name: "Adler", topics: [build(:topic, name: "Tiere")]) }
+      let!(:unlisted_keyword) { create(:unlisted_keyword, word: original_word, word_import: WordImport.last, state: "new") }
+
+      it "processes unlisted keywords when word already exists" do
+        expect(Llm::Enrich).to receive(:new).with(word:).and_call_original
+        expect_any_instance_of(Llm::Enrich).to receive(:call)
+
+        expect { subject }
+          .to change { original_word.reload.keywords.count }.by(1)
+          .and change { unlisted_keyword.reload.state }.from("new").to("processed")
+
+        expect(original_word.keywords).to include(word)
+        expect(WordImport.last).to have_attributes(
+          name:,
+          topic:,
+          word_type:,
+          state: "completed"
+        )
+      end
+    end
   end
 
   context "with a new word" do

@@ -10,12 +10,15 @@
       %div= example_sentence
     = form.input :value, as: :hidden
   - else
-    %div(data-controller="toggle-buttons" data-toggle-buttons-fixed-value=value data-toggle-buttons-items-value=collection){ 'data-toggle-buttons-checked-value': form.object.change_group.predecessors.present? ? "true" : "false" }
+    %div(data-controller="toggle-buttons" data-toggle-buttons-fixed-value=value data-toggle-buttons-items-value=collection data-toggle-buttons-checked-value="true")
       %select.hidden(multiple data-toggle-buttons-target="input" name="#{form.object_name}[value][]")
 
       %template#item-template
         %button.rounded-lg.border.border-primary.p-2.select-none(type="button" data-action="click->toggle-buttons#toggle")
 
+      .flex.items-center.justify-between.mb-2
+        .text-sm.text-gray-600= t '.instruction'
+        %button.text-sm.text-primary.underline{ type: "button", data: { action: "click->toggle-buttons#toggleAll", toggle_buttons_target: "toggleAllButton", select_all_text: t('.select_all'), deselect_all_text: t('.deselect_all') } }= t '.deselect_all'
       .flex.flex-wrap.gap-1(data-toggle-buttons-target="list")
 
       .mt-4.mb-1= t '.add'

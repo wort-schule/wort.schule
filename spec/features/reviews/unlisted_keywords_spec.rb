@@ -45,12 +45,9 @@ RSpec.describe "reviews for a new keyword" do
     login_as me
     visit reviews_path
     expect(page).to have_content edit.word.name
-    within '[data-toggle-buttons-target="list"]' do
-      click_on "Tier"
-      click_on "klein"
-    end
 
-    # Clicking buttons might create a new edit, need to check
+    # All suggestions are now preselected by default, so we just confirm
+    # without clicking anything
     click_on I18n.t("reviews.show.actions.confirm")
 
     # Check if edit was changed (buttons might have deselected "klein")

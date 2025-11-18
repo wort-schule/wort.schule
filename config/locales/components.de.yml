@@ -26,6 +26,9 @@ de:
     duplicate_words_component:
       choose: Wort wählen
     llm_value_component:
+      instruction: "Alle Vorschläge sind vorausgewählt. Klicken Sie auf Begriffe, um sie abzuwählen."
+      deselect_all: "Alle abwählen"
+      select_all: "Alle auswählen"
       add: "Hinzufügen:"
   request_image_component:
     request: Wort-Illustration beantragen

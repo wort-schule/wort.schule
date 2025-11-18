@@ -18,8 +18,8 @@ RSpec.describe "reviews for keywords" do
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name]
     end
-    click_on "Neues Stichwort"
-    click_on word.name
+
+    # All suggestions are now preselected by default, so we just confirm
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
     end.to change(Review, :count).by(1)
@@ -46,16 +46,15 @@ RSpec.describe "reviews for keywords" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    click_on "Neues Stichwort"
-    click_on word.name
+    # All suggestions are preselected, so we don't need to click them
+    # Just add a new keyword
     fill_in "tomselect-1-ts-control", with: keyword.name
     within ".ts-dropdown" do
       find(:css, "[data-value=\"#{keyword.id}\"]").click
     end
-    # Click somewhere to close autocomplete popup
-    click_on "Hase"
-    # Re-enable selection again
-    click_on "Hase"
+    # Click somewhere else to close the dropdown
+    find("body").click
+    # The new keyword is automatically added and selected
     click_on I18n.t("reviews.show.actions.confirm")
 
     # Adding a keyword creates a new edit, get the latest one

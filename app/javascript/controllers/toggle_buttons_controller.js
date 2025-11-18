@@ -6,7 +6,8 @@ export default class extends Controller {
   static targets = [
     "list",
     "input",
-    "add"
+    "add",
+    "toggleAllButton"
   ]
 
   static values = {
@@ -96,6 +97,44 @@ export default class extends Controller {
     this.updateButtons()
   }
 
+  toggleAll() {
+    const allChecked = this.areAllChecked()
+
+    this.listTarget.querySelectorAll("button").forEach(button => {
+      if (allChecked) {
+        if (button.dataset.checked === "true") {
+          this.deactivate(button.dataset.value)
+          button.dataset.checked = "false"
+        }
+      } else {
+        if (button.dataset.checked === "false") {
+          this.activate(button.dataset.value)
+          button.dataset.checked = "true"
+        }
+      }
+    })
+
+    this.updateButtons()
+    this.updateToggleAllButton()
+  }
+
+  areAllChecked() {
+    const buttons = this.listTarget.querySelectorAll("button")
+    return Array.from(buttons).every(button => button.dataset.checked === "true")
+  }
+
+  updateToggleAllButton() {
+    if (!this.hasToggleAllButtonTarget) return
+
+    const allChecked = this.areAllChecked()
+    const translations = {
+      selectAll: this.toggleAllButtonTarget.dataset.selectAllText || "Alle auswählen",
+      deselectAll: this.toggleAllButtonTarget.dataset.deselectAllText || "Alle abwählen"
+    }
+
+    this.toggleAllButtonTarget.textContent = allChecked ? translations.deselectAll : translations.selectAll
+  }
+
   updateButtons() {
     const activeClasses = ['bg-primary', 'text-white', 'shadow']
     const inactiveClasses = ['bg-gray-background', 'text-primary']
@@ -109,5 +148,7 @@ export default class extends Controller {
         activeClasses.forEach(klass => button.classList.remove(klass))
       }
     })
+
+    this.updateToggleAllButton()
   }
 }

@@ -21,6 +21,8 @@ module Import
           Llm::Enrich.new(word: existing_word).call
         end
 
+        process_unlisted_keywords_for_existing_word(existing_words(name:, topic:).first)
+
         @word_import.update!(state: :completed)
         return
       end
@@ -51,6 +53,23 @@ module Import
     end
 
     private
+
+    def process_unlisted_keywords_for_existing_word(existing_word)
+      unlisted_keywords = UnlistedKeyword.unprocessed.where(word_import:).includes(:word).to_a
+      return if unlisted_keywords.empty?
+
+      ActiveRecord::Base.transaction do
+        # Batch update all words' keywords at once
+        word_ids = unlisted_keywords.map(&:word_id).uniq
+        ::Word.where(id: word_ids).find_each do |word|
+          word.keywords << existing_word unless word.keywords.include?(existing_word)
+          word.save!
+        end
+
+        # Batch update all unlisted keywords to processed
+        UnlistedKeyword.where(id: unlisted_keywords.map(&:id)).update_all(state: "processed")
+      end
+    end
 
     def existing_words(name:, topic:)
       ::Word
