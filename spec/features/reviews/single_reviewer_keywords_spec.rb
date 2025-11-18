@@ -71,7 +71,7 @@ RSpec.describe "Single reviewer confirming keywords", :js do
 
     # Check the select element
     select_element = page.find('select[data-toggle-buttons-target="input"]', visible: false)
-    puts "Select options: #{select_element.all('option', visible: false).map { |o| [o.value, o['selected']] }.inspect}"
+    puts "Select options: #{select_element.all("option", visible: false).map { |o| [o.value, o["selected"]] }.inspect}"
 
     click_on I18n.t("reviews.show.actions.confirm")
 
@@ -89,6 +89,6 @@ RSpec.describe "Single reviewer confirming keywords", :js do
     visit "/adler"
     puts "\n=== ON WORD PAGE ==="
     puts "Current path: #{current_path}"
-    puts "Page text includes 'Vogel': #{page.has_content?('Vogel')}"
+    puts "Page text includes 'Vogel': #{page.has_content?("Vogel")}"
   end
 end

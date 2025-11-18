@@ -16,7 +16,7 @@ namespace :debug do
     end
 
     puts "ChangeGroup State: #{cg.state}"
-    puts "Successor ID: #{cg.successor_id || 'none'}"
+    puts "Successor ID: #{cg.successor_id || "none"}"
     puts "Created at: #{cg.created_at}"
     puts "Updated at: #{cg.updated_at}"
     puts ""
@@ -62,7 +62,7 @@ namespace :debug do
         first_edit.proposed_value.each do |val|
           if val.to_i.to_s == val.to_s
             kw = Word.find_by(id: val)
-            puts "  - #{kw&.name || 'WORD NOT FOUND'} (ID: #{val})"
+            puts "  - #{kw&.name || "WORD NOT FOUND"} (ID: #{val})"
           else
             puts "  - #{val} (unlisted)"
           end
@@ -76,16 +76,17 @@ namespace :debug do
     admin = User.where("review_attributes @> ARRAY['noun.keywords']::varchar[]").first
     if admin
       reviewable = ChangeGroup.reviewable(admin).where(id: change_group_id).exists?
-      puts "Would be reviewable by #{admin.email}: #{reviewable ? '✅ YES' : '❌ NO'}"
+      puts "Would be reviewable by #{admin.email}: #{reviewable ? "✅ YES" : "❌ NO"}"
 
       # Check why not reviewable
       unless reviewable
         puts "\nReasons why NOT reviewable:"
-        puts "  - Has successor: #{cg.successor_id.present? ? '❌ YES' : '✅ NO'}"
-        puts "  - State is waiting_for_review: #{cg.state == 'waiting_for_review' ? '✅ YES' : '❌ NO (state: #{cg.state})'}"
+        puts "  - Has successor: #{cg.successor_id.present? ? "❌ YES" : "✅ NO"}"
+        state_message = (cg.state == "waiting_for_review") ? "✅ YES" : "❌ NO (state: #{cg.state})"
+        puts "  - State is waiting_for_review: #{state_message}"
 
         reviewer_exists = Reviewer.where(change_group_id: cg.id, reviewer_id: admin.id).exists?
-        puts "  - Already reviewed by this admin: #{reviewer_exists ? '❌ YES' : '✅ NO'}"
+        puts "  - Already reviewed by this admin: #{reviewer_exists ? "❌ YES" : "✅ NO"}"
 
         if reviewer_exists
           puts "\n    Reviews by #{admin.email} on this change_group:"
@@ -114,7 +115,7 @@ namespace :debug do
           puts "  ❌ Missing keywords on #{word.name}:"
           missing.each do |id|
             kw = Word.find_by(id: id)
-            puts "    - #{kw&.name || 'NOT FOUND'} (ID: #{id})"
+            puts "    - #{kw&.name || "NOT FOUND"} (ID: #{id})"
           end
         else
           puts "  ✅ All proposed listed keywords are applied to #{word.name}"
