@@ -32,8 +32,8 @@ RSpec.describe "pending reviews page" do
     keyword1 = create(:noun, name: "Keyword 1")
     keyword2 = create(:noun, name: "Keyword 2")
 
-    # Create an edit with keyword IDs in JSON format
-    create(:word_attribute_edit, word:, attribute_name: "keyword_ids", value: [keyword1.id, keyword2.id].to_json)
+    # Create an edit with keyword IDs using the correct attribute name "keywords"
+    create(:word_attribute_edit, word:, attribute_name: "keywords", value: [keyword1.id, keyword2.id].to_json)
 
     login_as me
     visit pending_reviews_path
@@ -50,7 +50,7 @@ RSpec.describe "pending reviews page" do
     keyword2 = create(:noun, name: "Keyword B")
 
     # Create an edit with keyword IDs in string format (comma-separated)
-    create(:word_attribute_edit, word:, attribute_name: "keyword_ids", value: "\"#{keyword1.id}, #{keyword2.id}\"")
+    create(:word_attribute_edit, word:, attribute_name: "keywords", value: "\"#{keyword1.id}, #{keyword2.id}\"")
 
     login_as me
     visit pending_reviews_path

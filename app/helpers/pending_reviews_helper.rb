@@ -37,39 +37,44 @@ module PendingReviewsHelper
 
   def format_proposed_attribute(edit)
     proposed = edit.proposed_value
-    return truncate_value(proposed) unless edit.attribute_name.end_with?("_ids")
+    attribute_name = edit.attribute_name
 
-    # Handle both array and string formats for ID lists
-    ids = if proposed.is_a?(Array)
-      proposed
-    elsif proposed.is_a?(String)
-      # Try to parse as comma-separated string of IDs
-      proposed.split(",").map(&:strip).map(&:to_i)
+    # List of association attributes that should display names instead of IDs
+    association_attributes = %w[keywords synonyms opposites rimes topics strategies phenomenons]
+    return truncate_value(proposed) unless association_attributes.include?(attribute_name)
+
+    # Extract IDs from proposed values
+    ids = extract_ids_from_proposed(proposed)
+    return truncate_value(proposed) if ids.empty?
+
+    # Fetch and display the actual names based on the attribute type
+    names = case attribute_name
+    when "keywords", "synonyms", "opposites", "rimes"
+      Word.where(id: ids).pluck(:name).sort
+    when "topics"
+      Topic.where(id: ids).pluck(:name).sort
+    when "strategies"
+      Strategy.where(id: ids).pluck(:name).sort
+    when "phenomenons"
+      Phenomenon.where(id: ids).pluck(:name).sort
     else
       []
     end
 
-    return truncate_value(proposed) if ids.empty?
+    truncate(names.join(", "), length: 120)
+  end
 
-    # For association IDs (e.g., keyword_ids, topic_ids), fetch the actual names
-    case edit.attribute_name
-    when "keyword_ids"
-      names = Word.where(id: ids).pluck(:name).sort
-      truncate(names.join(", "), length: 120)
-    when "synonym_ids", "opposite_ids", "rime_ids"
-      names = Word.where(id: ids).pluck(:name).sort
-      truncate(names.join(", "), length: 120)
-    when "topic_ids"
-      names = Topic.where(id: ids).pluck(:name).sort
-      truncate(names.join(", "), length: 120)
-    when "strategy_ids"
-      names = Strategy.where(id: ids).pluck(:name).sort
-      truncate(names.join(", "), length: 120)
-    when "phenomenon_ids"
-      names = Phenomenon.where(id: ids).pluck(:name).sort
-      truncate(names.join(", "), length: 120)
+  private
+
+  def extract_ids_from_proposed(proposed)
+    case proposed
+    when Array
+      proposed.select { |item| item.is_a?(Integer) || (item.is_a?(String) && item.to_i.to_s == item) }
+        .map { |item| item.is_a?(Integer) ? item : item.to_i }
+    when String
+      proposed.split(",").map(&:strip).map(&:to_i).reject(&:zero?)
     else
-      truncate_value(proposed)
+      []
     end
   end
 end
