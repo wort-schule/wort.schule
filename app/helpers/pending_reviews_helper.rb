@@ -37,24 +37,36 @@ module PendingReviewsHelper
 
   def format_proposed_attribute(edit)
     proposed = edit.proposed_value
-    return truncate_value(proposed) unless proposed.is_a?(Array) && edit.attribute_name.end_with?("_ids")
+    return truncate_value(proposed) unless edit.attribute_name.end_with?("_ids")
+
+    # Handle both array and string formats for ID lists
+    ids = if proposed.is_a?(Array)
+      proposed
+    elsif proposed.is_a?(String)
+      # Try to parse as comma-separated string of IDs
+      proposed.split(",").map(&:strip).map(&:to_i)
+    else
+      []
+    end
+
+    return truncate_value(proposed) if ids.empty?
 
     # For association IDs (e.g., keyword_ids, topic_ids), fetch the actual names
     case edit.attribute_name
     when "keyword_ids"
-      names = Word.where(id: proposed).pluck(:name).sort
+      names = Word.where(id: ids).pluck(:name).sort
       truncate(names.join(", "), length: 120)
     when "synonym_ids", "opposite_ids", "rime_ids"
-      names = Word.where(id: proposed).pluck(:name).sort
+      names = Word.where(id: ids).pluck(:name).sort
       truncate(names.join(", "), length: 120)
     when "topic_ids"
-      names = Topic.where(id: proposed).pluck(:name).sort
+      names = Topic.where(id: ids).pluck(:name).sort
       truncate(names.join(", "), length: 120)
     when "strategy_ids"
-      names = Strategy.where(id: proposed).pluck(:name).sort
+      names = Strategy.where(id: ids).pluck(:name).sort
       truncate(names.join(", "), length: 120)
     when "phenomenon_ids"
-      names = Phenomenon.where(id: proposed).pluck(:name).sort
+      names = Phenomenon.where(id: ids).pluck(:name).sort
       truncate(names.join(", "), length: 120)
     else
       truncate_value(proposed)

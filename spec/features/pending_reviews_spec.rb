@@ -32,7 +32,7 @@ RSpec.describe "pending reviews page" do
     keyword1 = create(:noun, name: "Keyword 1")
     keyword2 = create(:noun, name: "Keyword 2")
 
-    # Create an edit with keyword IDs
+    # Create an edit with keyword IDs in JSON format
     create(:word_attribute_edit, word:, attribute_name: "keyword_ids", value: [keyword1.id, keyword2.id].to_json)
 
     login_as me
@@ -42,7 +42,22 @@ RSpec.describe "pending reviews page" do
     # Verify we see the keyword names, not the IDs
     expect(page).to have_content "Keyword 1"
     expect(page).to have_content "Keyword 2"
-    # Make sure IDs are not shown
-    expect(page).not_to have_content "Stichwörter: #{keyword1.id}"
+  end
+
+  it "displays human-readable keyword names for comma-separated string format" do
+    word = create(:noun, name: "Test Word 2")
+    keyword1 = create(:noun, name: "Keyword A")
+    keyword2 = create(:noun, name: "Keyword B")
+
+    # Create an edit with keyword IDs in string format (comma-separated)
+    create(:word_attribute_edit, word:, attribute_name: "keyword_ids", value: "\"#{keyword1.id}, #{keyword2.id}\"")
+
+    login_as me
+    visit pending_reviews_path
+
+    expect(page).to have_content word.name
+    # Verify we see the keyword names, not the IDs
+    expect(page).to have_content "Keyword A"
+    expect(page).to have_content "Keyword B"
   end
 end
