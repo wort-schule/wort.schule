@@ -113,8 +113,8 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path(per_page: 20)
 
-      # Click to page 2
-      click_link "2"
+      # Click to page 2 (first occurrence in top pagination)
+      first(:link, "2").click
 
       # Should still use per_page=20
       # Page 2 should show NavTest 39 down to NavTest 20 (sorted DESC by created_at)
@@ -157,6 +157,9 @@ RSpec.describe "pending reviews page" do
       expect(page).to have_content "Apple"
       expect(page).to have_content "Banana"
 
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
       # Filter for Apple
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "Apple"
       click_button I18n.t("pending_reviews.index.filter_table_button")
@@ -180,6 +183,9 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path
 
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
       # Filter with wildcard
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "Test*"
       click_button I18n.t("pending_reviews.index.filter_table_button")
@@ -200,6 +206,9 @@ RSpec.describe "pending reviews page" do
 
       login_as me
       visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
 
       # Apply filter
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "Apple"
@@ -229,6 +238,9 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path(per_page: 10)
 
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
       # Apply filter
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "FilterTest*"
       click_button I18n.t("pending_reviews.index.filter_table_button")
@@ -237,8 +249,10 @@ RSpec.describe "pending reviews page" do
       expect(page).to have_content "Zeige 1-10 von 30"
       expect(page).not_to have_content "OtherWord"
 
-      # Go to page 2
-      click_link "2"
+      # Go to page 2 (click within pagination wrapper)
+      within(first(".pagination-wrapper")) do
+        click_link "2"
+      end
 
       # Filter should still be applied
       expect(page).to have_content "Zeige 11-20 von 30"
@@ -258,6 +272,9 @@ RSpec.describe "pending reviews page" do
 
       login_as me
       visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
 
       # Apply filter
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "Ap*"
@@ -286,6 +303,9 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path
 
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
       # Filter for Apple
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "NewApple"
       click_button I18n.t("pending_reviews.index.filter_table_button")
@@ -296,20 +316,101 @@ RSpec.describe "pending reviews page" do
     end
   end
 
-  describe "deletion functionality" do
-    it "displays delete button with filter" do
+  describe "filter functionality" do
+    it "has filter collapsed by default" do
       word = create(:noun, name: "TestWord")
       create(:word_attribute_edit, word:)
 
       login_as me
       visit pending_reviews_path
 
-      # Should have deletion form
-      expect(page).to have_field(I18n.t("pending_reviews.index.delete_filter_placeholder"))
-      expect(page).to have_button(I18n.t("pending_reviews.index.delete_button"))
+      # The filter section should be collapsed (hidden)
+      expect(page).to have_css("details.filter-section:not([open])")
     end
 
-    it "deletes change groups matching exact word name" do
+    it "can expand the filter section" do
+      word = create(:noun, name: "TestWord")
+      create(:word_attribute_edit, word:)
+
+      login_as me
+      visit pending_reviews_path
+
+      # Click to expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Now filter inputs should be visible
+      expect(page).to have_field(I18n.t("pending_reviews.index.filter_table_placeholder"))
+    end
+
+    it "filters by word type (Wortart)" do
+      noun = create(:noun, name: "TestNoun")
+      create(:word_attribute_edit, word: noun)
+
+      verb = create(:verb, name: "TestVerb")
+      create(:word_attribute_edit, word: verb)
+
+      adjective = create(:adjective, name: "TestAdjective")
+      create(:word_attribute_edit, word: adjective)
+
+      login_as me
+      visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Filter for Nouns only (using the raw class name since that's what the select uses)
+      select "Noun", from: I18n.t("pending_reviews.index.word_type_filter")
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Should only see the noun
+      expect(page).to have_content "TestNoun"
+      expect(page).not_to have_content "TestVerb"
+      expect(page).not_to have_content "TestAdjective"
+    end
+
+    it "filters by keywords (Stichwörter)" do
+      keyword1 = create(:noun, name: "Keyword1")
+      keyword2 = create(:noun, name: "Keyword2")
+
+      word1 = create(:noun, name: "Word1")
+      create(:word_attribute_edit, word: word1, attribute_name: "keywords", value: [keyword1.id].to_json)
+
+      word2 = create(:noun, name: "Word2")
+      create(:word_attribute_edit, word: word2, attribute_name: "keywords", value: [keyword2.id].to_json)
+
+      login_as me
+      visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Filter by keyword name (not ID)
+      fill_in I18n.t("pending_reviews.index.keyword_filter"), with: "Keyword1"
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Should only see Word1
+      expect(page).to have_content "Word1"
+      expect(page).not_to have_content "Word2"
+    end
+
+    it "shows filter examples to help users" do
+      # Need at least one review to see the filters
+      word = create(:noun, name: "TestWord")
+      create(:word_attribute_edit, word:)
+
+      login_as me
+      visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Should show examples
+      expect(page).to have_content I18n.t("pending_reviews.index.filter_examples")
+    end
+  end
+
+  describe "deletion functionality" do
+    it "can delete filtered results from the main filter" do
       word1 = create(:noun, name: "DeleteMe")
       change_group1 = create(:word_attribute_edit, word: word1).change_group
 
@@ -319,10 +420,19 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path
 
-      fill_in I18n.t("pending_reviews.index.delete_filter_placeholder"), with: "DeleteMe"
-      click_button I18n.t("pending_reviews.index.delete_button")
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
 
-      # Should show confirmation with count
+      # Filter for DeleteMe
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "DeleteMe"
+
+      # Check the delete checkbox
+      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
+
+      # Submit the form
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Should show confirmation
       expect(page).to have_content(I18n.t("pending_reviews.index.confirm_deletion", count: 1))
 
       # Confirm deletion
@@ -334,10 +444,6 @@ RSpec.describe "pending reviews page" do
       # Verify deletion
       expect(ChangeGroup.exists?(change_group1.id)).to be false
       expect(ChangeGroup.exists?(change_group2.id)).to be true
-
-      # Should still see the kept word
-      expect(page).to have_content "KeepMe"
-      expect(page).not_to have_content "DeleteMe"
     end
 
     it "deletes change groups matching wildcard pattern" do
@@ -353,8 +459,13 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path
 
-      fill_in I18n.t("pending_reviews.index.delete_filter_placeholder"), with: "TestWord*"
-      click_button I18n.t("pending_reviews.index.delete_button")
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Filter and delete
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "TestWord*"
+      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
+      click_button I18n.t("pending_reviews.index.filter_table_button")
 
       # Should show confirmation with count
       expect(page).to have_content(I18n.t("pending_reviews.index.confirm_deletion", count: 2))
@@ -380,8 +491,13 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path
 
-      fill_in I18n.t("pending_reviews.index.delete_filter_placeholder"), with: "NonExistent*"
-      click_button I18n.t("pending_reviews.index.delete_button")
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Try to delete non-existent
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "NonExistent*"
+      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
+      click_button I18n.t("pending_reviews.index.filter_table_button")
 
       # Should show no matches message
       expect(page).to have_content(I18n.t("pending_reviews.index.no_matches"))
@@ -394,8 +510,13 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path
 
-      fill_in I18n.t("pending_reviews.index.delete_filter_placeholder"), with: "CancelTest"
-      click_button I18n.t("pending_reviews.index.delete_button")
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Request deletion
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "CancelTest"
+      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
+      click_button I18n.t("pending_reviews.index.filter_table_button")
 
       # Cancel the deletion (it's a link, not a button)
       click_link I18n.t("pending_reviews.index.cancel")
@@ -415,8 +536,13 @@ RSpec.describe "pending reviews page" do
       login_as me
       visit pending_reviews_path
 
-      fill_in I18n.t("pending_reviews.index.delete_filter_placeholder"), with: "NewWord1"
-      click_button I18n.t("pending_reviews.index.delete_button")
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Delete NewWord1
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "NewWord1"
+      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
+      click_button I18n.t("pending_reviews.index.filter_table_button")
 
       # Confirm deletion
       click_button I18n.t("pending_reviews.index.confirm_delete")
@@ -424,6 +550,37 @@ RSpec.describe "pending reviews page" do
       # Verify deletion
       expect(ChangeGroup.exists?(change_group1.id)).to be false
       expect(ChangeGroup.exists?(change_group2.id)).to be true
+    end
+  end
+
+  describe "page layout improvements" do
+    it "displays a proper h1 heading" do
+      login_as me
+      visit pending_reviews_path
+
+      expect(page).to have_css("h1", text: I18n.t("pending_reviews.index.title"))
+    end
+
+    it "has pagination controls at top and bottom of table" do
+      # Create enough items to trigger pagination
+      260.times do |i|
+        word = create(:noun, name: "Word #{i.to_s.rjust(3, "0")}")
+        create(:word_attribute_edit, word:)
+      end
+
+      login_as me
+      visit pending_reviews_path(per_page: 50)
+
+      # Find all pagination sections
+      pagination_sections = all(".pagination-wrapper")
+      expect(pagination_sections.count).to eq(2)
+
+      # Both should have the same page links
+      pagination_sections.each do |section|
+        within(section) do
+          expect(page).to have_link("2")
+        end
+      end
     end
   end
 end

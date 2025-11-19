@@ -1,4 +1,6 @@
-= title t('.title')
+- set_meta_tags title: t('.page_title')
+
+%h1.text-3xl.font-bold.mb-6= t('.title')
 
 - if @no_matches
   = box do
@@ -15,27 +17,50 @@
     %p.text-center.text-gray-600= t('.no_pending_reviews')
 - elsif !@no_matches
   = box do
-    .mb-4
-      = form_with url: pending_reviews_path, method: :get, class: 'flex gap-2 items-center' do |f|
-        = f.text_field :filter, value: @filter, placeholder: t('.filter_table_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm flex-grow'
-        = f.hidden_field :sort_by, value: @sort_by
-        = f.hidden_field :sort_direction, value: @sort_direction
-        = f.hidden_field :per_page, value: @per_page
-        = f.submit t('.filter_table_button'), class: 'button button-sm primary'
-        - if @filter.present?
-          = link_to t('.clear_filter'), pending_reviews_path(sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page), class: 'button button-sm'
+    %details.filter-section.mb-4{ open: (@filter.present? || @word_type_filter.present? || @keyword_filter.present?) }
+      %summary.cursor-pointer.text-blue-600.hover:text-blue-800.font-medium.py-2
+        = t('.show_filters')
+      .mt-4.p-4.bg-gray-50.rounded-lg
+        = form_with url: delete_filtered_pending_reviews_path, method: :post, class: 'space-y-4' do |f|
+          .grid.grid-cols-1.md:grid-cols-3.gap-4
+            .flex.flex-col
+              = f.label :filter, t('.filter_table_placeholder'), class: 'text-sm font-medium text-gray-700 mb-1'
+              = f.text_field :filter, value: @filter, placeholder: "z.B. Haus*", class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
 
-    .mb-6.flex.justify-between.items-center
+            .flex.flex-col
+              = f.label :word_type_filter, t('.word_type_filter'), class: 'text-sm font-medium text-gray-700 mb-1'
+              = f.select :word_type_filter, options_for_select([[t('.word_type_all'), '']] + [['Noun', 'Noun'], ['Verb', 'Verb'], ['Adjective', 'Adjective'], ['FunctionWord', 'FunctionWord']], @word_type_filter), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+            .flex.flex-col
+              = f.label :keyword_filter, t('.keyword_filter'), class: 'text-sm font-medium text-gray-700 mb-1'
+              = f.text_field :keyword_filter, value: @keyword_filter, placeholder: "z.B. Tier*", class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+          .text-xs.text-gray-500.italic
+            = t('.filter_examples')
+
+          = f.hidden_field :sort_by, value: @sort_by
+          = f.hidden_field :sort_direction, value: @sort_direction
+          = f.hidden_field :per_page, value: @per_page
+
+          .flex.gap-3.items-center
+            = f.submit t('.filter_table_button'), class: 'button button-sm primary'
+            - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
+              = link_to t('.clear_filter'), pending_reviews_path(sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page), class: 'button button-sm'
+
+            .ml-auto.flex.items-center.gap-2
+              = f.check_box :delete_filtered, { class: 'rounded border-gray-300' }, '1', '0'
+              = f.label :delete_filtered, t('.delete_filtered_checkbox'), class: 'text-sm font-medium text-red-600'
+
+    .mb-4.flex.justify-between.items-center
       %div
         %p.text-sm.text-gray-600
           = t('.showing', from: @change_groups.offset_value + 1, to: [@change_groups.offset_value + @change_groups.size, @change_groups.total_count].min, total: @change_groups.total_count)
-        - if @filter.present?
+        - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
           %p.text-xs.text-gray-500
-            = t('.filtered_by', filter: @filter)
+            = t('.filtered_by', filter: [@filter, @word_type_filter, @keyword_filter].compact.join(", "))
 
-      = form_with url: delete_filtered_pending_reviews_path, method: :post, class: 'flex gap-2 items-center' do |f|
-        = f.text_field :filter, placeholder: t('.delete_filter_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
-        = f.submit t('.delete_button'), class: 'button button-sm danger', data: { confirm: false }
+    .pagination-wrapper.mb-4
+      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter, word_type_filter: @word_type_filter, keyword_filter: @keyword_filter}
 
     .overflow-x-auto
       %table.w-full.text-sm
@@ -120,8 +145,8 @@
               %td.px-4.py-3.text-right
                 = link_to t('.review'), review_path(change_group), class: 'button button-sm primary'
 
-    .mt-6.flex.justify-between.items-center
-      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter}
+    .pagination-wrapper.mt-6.flex.justify-between.items-center
+      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter, word_type_filter: @word_type_filter, keyword_filter: @keyword_filter}
 
       .flex.items-center.gap-2
         %label.text-sm.text-gray-600
@@ -130,4 +155,6 @@
           = f.hidden_field :sort_by, value: @sort_by
           = f.hidden_field :sort_direction, value: @sort_direction
           = f.hidden_field :filter, value: @filter
+          = f.hidden_field :word_type_filter, value: @word_type_filter
+          = f.hidden_field :keyword_filter, value: @keyword_filter
           = f.select :per_page, [25, 50, 100, 250, 500], { selected: @per_page }, { class: 'px-3 py-2 border border-gray-300 rounded-md text-sm', onchange: 'this.form.submit()' }

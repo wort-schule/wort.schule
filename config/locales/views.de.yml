@@ -381,6 +381,7 @@ de:
   pending_reviews:
     index:
       title: Ausstehende Reviews
+      page_title: Ausstehende Reviews - Qualitätssicherung
       no_pending_reviews: Keine ausstehenden Reviews
       total_pending: "%{count} ausstehende Reviews"
       word: Wort
@@ -402,11 +403,17 @@ de:
       meaning: Bedeutung
       no_reviews: Keine
       review: Review starten
-      filter_table_placeholder: "Tabelle filtern (z.B. Wort* oder Test?)"
+      show_filters: "Filter anzeigen"
+      hide_filters: "Filter verbergen"
+      filter_table_placeholder: "Wort filtern (z.B. Wort* oder Test?)"
       filter_table_button: "Filtern"
       clear_filter: "Filter zurücksetzen"
       filtered_by: "Gefiltert nach: %{filter}"
-      delete_filter_placeholder: "Zum Löschen filtern (z.B. Wort* oder Test?)"
+      word_type_filter: "Nach Wortart filtern"
+      word_type_all: "Alle Wortarten"
+      keyword_filter: "Nach Stichwort filtern"
+      delete_filtered_checkbox: "Gefilterte Ergebnisse löschen"
+      filter_examples: "Beispiele: 'Haus' (exakt), 'Haus*' (beginnt mit), '*haus' (endet mit), '*haus*' (enthält)"
       delete_button: "Löschen"
       confirm_deletion:
         one: "Möchten Sie wirklich 1 Review löschen?"
