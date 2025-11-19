@@ -10,7 +10,7 @@
       %div= example_sentence
     = form.input :value, as: :hidden
   - else
-    %div(data-controller="toggle-buttons" data-toggle-buttons-fixed-value=value data-toggle-buttons-items-value=collection data-toggle-buttons-checked-value="false")
+    %div(data-controller="toggle-buttons" data-toggle-buttons-fixed-value=value data-toggle-buttons-items-value=collection data-toggle-buttons-checked-value="true")
       %select.hidden(multiple data-toggle-buttons-target="input" name="#{form.object_name}[value][]")
 
       %template#item-template

@@ -46,26 +46,10 @@ RSpec.describe "reviews for a new keyword" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    # No keywords are selected by default, so we select both
+    # Keywords are now preselected by default
     within '[data-toggle-buttons-target="list"]' do
-      click_on existing_keyword.name
-      click_on "klein"
-    end
-
-    click_on I18n.t("reviews.show.actions.confirm")
-
-    # Check if edit was changed (buttons might have deselected "klein")
-    latest_edit = WordAttributeEdit.order(:created_at).last
-
-    # Another reviewer confirms (with REVIEWS_REQUIRED=1, only need 1 more)
-    login_as other_admin
-    visit reviews_path
-    expect(page).to have_content edit.word.name
-
-    # No keywords are selected by default, so we select both
-    within '[data-toggle-buttons-target="list"]' do
-      click_on existing_keyword.name
-      click_on "klein"
+      # Verify both are selected
+      expect(page.find_all('button[data-checked="true"]').map(&:text)).to match_array [existing_keyword.name, "klein"]
     end
 
     expect do
@@ -75,9 +59,9 @@ RSpec.describe "reviews for a new keyword" do
       .and change(WordImport, :count).by(1)
       .and enqueue_job(ImportWordJob)
 
-    # After the second review, change should be applied (REVIEWS_REQUIRED=1)
+    # After the first review, change should be applied immediately (REVIEWS_REQUIRED=1)
     # Only the existing keyword has been updated
-    expect(latest_edit.reload.change_group.state).to eq "confirmed"
+    expect(edit.reload.change_group.state).to eq "confirmed"
     expect(word.reload.keywords.pluck(:name)).to eq ["Tier"]
     expect(UnlistedKeyword.all).to match [
       have_attributes(

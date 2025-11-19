@@ -18,9 +18,9 @@ RSpec.describe "reviews for keywords" do
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name]
 
-      # No keywords are selected by default, so we select both
-      click_on "Neues Stichwort"
-      click_on word.name
+      # Keywords are now preselected by default, so we can confirm directly
+      # Verify both are selected
+      expect(page.find_all('button[data-checked="true"]').map(&:text)).to match_array ["Neues Stichwort", word.name]
     end
 
     expect do
@@ -49,10 +49,10 @@ RSpec.describe "reviews for keywords" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    # No keywords are selected by default, so we select the suggestions first
+    # Keywords are now preselected by default
     within '[data-toggle-buttons-target="list"]' do
-      click_on "Neues Stichwort"
-      click_on word.name
+      # Verify the proposed keywords are selected
+      expect(page.find_all('button[data-checked="true"]').map(&:text)).to match_array ["Neues Stichwort", word.name]
     end
 
     # Add a new keyword
@@ -75,10 +75,8 @@ RSpec.describe "reviews for keywords" do
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name, keyword.name]
 
-      # No keywords are selected by default, so we select all three
-      click_on "Neues Stichwort"
-      click_on word.name
-      click_on keyword.name
+      # All three keywords are now preselected by default
+      expect(page.find_all('button[data-checked="true"]').map(&:text)).to match_array ["Neues Stichwort", word.name, keyword.name]
     end
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
