@@ -41,7 +41,7 @@
               %td.px-4.py-3
                 - if change_group.word_attribute_edits.present?
                   %span.text-xs.bg-blue-100.text-blue-800.px-2.py-1.rounded
-                    = change_group.word_attribute_edits.first.word.class.human_name
+                    = change_group.word_attribute_edits.first.word.class.model_name.human
                 - elsif change_group.new_word.present?
                   %span.text-xs.bg-blue-100.text-blue-800.px-2.py-1.rounded
                     = change_group.new_word.word_type
@@ -68,10 +68,6 @@
                       %div
                         %span.font-medium= t('.topic') + ":"
                         %span.text-gray-600= change_group.new_word.topic
-                    - if change_group.new_word.meaning.present?
-                      %div
-                        %span.font-medium= t('.meaning') + ":"
-                        %span.text-gray-600= truncate(change_group.new_word.meaning, length: 50)
 
               %td.px-4.py-3.text-sm.text-gray-500
                 = time_ago_in_words(change_group.created_at)
