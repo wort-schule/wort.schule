@@ -7,7 +7,8 @@ namespace :change_groups do
     skipped_count = 0
 
     ChangeGroup.where(state: :waiting_for_review).find_each do |change_group|
-      if change_group.confirmed_review_count >= Reviewable::REVIEWS_REQUIRED
+      required_reviews = GlobalSetting.reviews_required
+      if change_group.confirmed_review_count >= required_reviews
         puts "[PROCESS] ChangeGroup ##{change_group.id} (#{change_group.confirmed_review_count} confirmed reviews)"
         change_group.try_to_finish_review
         processed_count += 1
