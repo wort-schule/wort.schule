@@ -174,11 +174,8 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abstrakt"
 
       click_on t("filter.add_words_to_list")
-      if !page.has_select?("list_id")
-        sleep 1
-        click_on t("filter.add_words_to_list")
-      end
-      expect(page).to have_select "list_id"
+      # Wait for the modal to appear with the select box
+      expect(page).to have_select "list_id", wait: 5
       click_on t("words.show.lists.add")
 
       expect(list.words).to match_array [noun, verb, adjective]
