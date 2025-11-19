@@ -69,6 +69,26 @@ config.hide_blank_items = true
 
 Restart the Rails server when changing the configuration.
 
+### Configure Review Requirements
+
+Control how many confirmed reviews are required before LLM enrichment changes are automatically applied to words. Set via Rails console:
+
+```ruby
+# Require 1 confirmed review (default - auto-applies immediately)
+GlobalSetting.reviews_required = 1
+
+# Require 2 confirmed reviews for higher quality control
+GlobalSetting.reviews_required = 2
+
+# Require 3 or more confirmed reviews
+GlobalSetting.reviews_required = 3
+
+# Check current setting
+GlobalSetting.reviews_required # => 1
+```
+
+When `reviews_required = 1`, reviewers do not need to review the same item twice. Skipped items stay in the queue for possible re-review later, but confirmed changes are immediately applied.
+
 ### Create an Administrator
 
 The first administrator needs to be created manually in the Rails console (`bin/rails c`):

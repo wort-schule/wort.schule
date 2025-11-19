@@ -120,12 +120,97 @@ RSpec.describe ChangeGroup do
 
     let(:reviewable) { create(:word_attribute_edit) }
 
-    it "completes the review with enough reviews" do
-      reviewable.change_group.store_review(reviewer: create(:user), state: :skipped)
-      expect(reviewable.change_group.state).to eq "waiting_for_review"
+    context "when reviews_required = 1" do
+      before { GlobalSetting.reviews_required = 1 }
 
-      reviewable.change_group.store_review(reviewer: create(:user), state: :confirmed)
-      expect(reviewable.change_group.state).to eq "confirmed"
+      it "auto-confirms on first confirmed review" do
+        change_group = reviewable.change_group
+        expect(change_group.state).to eq "waiting_for_review"
+
+        change_group.store_review(reviewer: create(:user), state: :confirmed)
+
+        expect(change_group.reload.state).to eq "confirmed"
+      end
+
+      it "does not confirm on skip" do
+        change_group = reviewable.change_group
+        change_group.store_review(reviewer: create(:user), state: :skipped)
+
+        expect(change_group.reload.state).to eq "waiting_for_review"
+      end
+
+      it "applies word attribute edits when confirmed" do
+        word_attribute_edit = reviewable
+        word = word_attribute_edit.word
+        original_value = word.case_1_plural
+
+        word_attribute_edit.update!(value: "test_value".to_json)
+        change_group = word_attribute_edit.change_group
+
+        change_group.store_review(reviewer: create(:user), state: :confirmed)
+
+        expect(word.reload.case_1_plural).to eq "test_value"
+      end
+    end
+
+    context "when reviews_required = 2" do
+      before { GlobalSetting.reviews_required = 2 }
+
+      it "does not auto-confirm on first confirmed review" do
+        user1 = create(:user)
+        change_group = reviewable.change_group
+        expect(change_group.state).to eq "waiting_for_review"
+
+        change_group.store_review(reviewer: user1, state: :confirmed)
+
+        expect(change_group.reload.state).to eq "waiting_for_review"
+        expect(change_group.confirmed_review_count).to eq 1
+      end
+
+      it "confirms on second confirmed review" do
+        user1 = create(:user)
+        user2 = create(:user)
+        change_group = reviewable.change_group
+
+        change_group.store_review(reviewer: user1, state: :confirmed)
+        expect(change_group.reload.state).to eq "waiting_for_review"
+
+        change_group.store_review(reviewer: user2, state: :confirmed)
+
+        expect(change_group.reload.state).to eq "confirmed"
+      end
+
+      it "does not confirm with one confirmed and one skipped" do
+        user1 = create(:user)
+        user2 = create(:user)
+        change_group = reviewable.change_group
+
+        change_group.store_review(reviewer: user1, state: :confirmed)
+        change_group.store_review(reviewer: user2, state: :skipped)
+
+        expect(change_group.reload.state).to eq "waiting_for_review"
+        expect(change_group.confirmed_review_count).to eq 1
+      end
+    end
+
+    context "when reviews_required = 3" do
+      before { GlobalSetting.reviews_required = 3 }
+
+      it "requires 3 confirmed reviews" do
+        user1 = create(:user)
+        user2 = create(:user)
+        user3 = create(:user)
+        change_group = reviewable.change_group
+
+        change_group.store_review(reviewer: user1, state: :confirmed)
+        expect(change_group.reload.state).to eq "waiting_for_review"
+
+        change_group.store_review(reviewer: user2, state: :confirmed)
+        expect(change_group.reload.state).to eq "waiting_for_review"
+
+        change_group.store_review(reviewer: user3, state: :confirmed)
+        expect(change_group.reload.state).to eq "confirmed"
+      end
     end
   end
 end

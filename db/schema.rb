@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_17_131423) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_19_071248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -103,6 +103,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_17_131423) do
     t.datetime "updated_at", null: false
     t.string "genus_keys", default: [], array: true
     t.index ["genus_keys"], name: "index_genera_on_genus_keys", using: :gin
+  end
+
+  create_table "global_settings", force: :cascade do |t|
+    t.string "key", null: false
+    t.integer "integer_value"
+    t.boolean "boolean_value"
+    t.text "string_value"
+    t.index ["key"], name: "index_global_settings_on_key", unique: true
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

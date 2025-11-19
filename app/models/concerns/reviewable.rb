@@ -3,8 +3,6 @@
 module Reviewable
   extend ActiveSupport::Concern
 
-  REVIEWS_REQUIRED = 1
-
   included do
     attr_accessor :action
 
@@ -45,7 +43,8 @@ module Reviewable
     end
 
     def try_to_finish_review
-      return if confirmed_review_count < REVIEWS_REQUIRED
+      required_reviews = GlobalSetting.reviews_required
+      return if confirmed_review_count < required_reviews
 
       transaction do
         update!(state: :confirmed)
