@@ -17,12 +17,12 @@
     %p.text-center.text-gray-600= t('.no_pending_reviews')
 - elsif !@no_matches
   = box do
-    %details.filter-section.mb-4{ open: (@filter.present? || @word_type_filter.present? || @keyword_filter.present?) }
+    %details.filter-section.mb-4{ open: (@filter.present? || @word_type_filter.present? || @keyword_filter.present? || @review_type_filter.present?) }
       %summary.cursor-pointer.text-blue-600.hover:text-blue-800.font-medium.py-2
         = t('.show_filters')
       .mt-4.p-4.bg-gray-50.rounded-lg
         = form_with url: pending_reviews_path, method: :get, class: 'space-y-4' do |f|
-          .grid.grid-cols-1.md:grid-cols-3.gap-4
+          .grid.grid-cols-1.md:grid-cols-4.gap-4
             .flex.flex-col
               = f.label :filter, t('.filter_table_placeholder'), class: 'text-sm font-medium text-gray-700 mb-1'
               = f.text_field :filter, value: @filter, placeholder: "z.B. Haus*", class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
@@ -30,6 +30,10 @@
             .flex.flex-col
               = f.label :word_type_filter, t('.word_type_filter'), class: 'text-sm font-medium text-gray-700 mb-1'
               = f.select :word_type_filter, options_for_select([[t('.word_type_all'), '']] + [['Noun', 'Noun'], ['Verb', 'Verb'], ['Adjective', 'Adjective'], ['FunctionWord', 'FunctionWord']], @word_type_filter), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+            .flex.flex-col
+              = f.label :review_type_filter, t('.review_type_filter'), class: 'text-sm font-medium text-gray-700 mb-1'
+              = f.select :review_type_filter, options_for_select([[t('.review_type_all'), ''], [t('.review_type_attribute_edit'), 'attribute_edit'], [t('.review_type_new_word'), 'new_word']], @review_type_filter), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
 
             .flex.flex-col
               = f.label :keyword_filter, t('.keyword_filter'), class: 'text-sm font-medium text-gray-700 mb-1'
@@ -44,10 +48,10 @@
 
           .flex.gap-3.items-center
             = f.submit t('.filter_table_button'), class: 'button button-sm primary !mt-0'
-            - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
+            - if @filter.present? || @word_type_filter.present? || @keyword_filter.present? || @review_type_filter.present?
               = link_to t('.clear_filter'), pending_reviews_path(sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page), class: 'button button-sm !mt-0'
 
-    - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
+    - if @filter.present? || @word_type_filter.present? || @keyword_filter.present? || @review_type_filter.present?
       .mb-4{"data-controller": "delete-confirmation"}
         %button.button.button-sm.danger{"data-action": "click->delete-confirmation#open", type: "button"}
           = t('.delete_filtered_button', count: @change_groups.total_count)
@@ -62,7 +66,7 @@
               = t('.confirm_deletion', count: @change_groups.total_count)
 
             %p.text-gray-600.mb-2.text-center
-              = t('.filtered_by', filter: [@filter, @word_type_filter, @keyword_filter].compact.join(", "))
+              = t('.filtered_by', filter: [@filter, @word_type_filter, @review_type_filter, @keyword_filter].compact.join(", "))
 
             %p.text-sm.text-gray-500.mb-8.text-center.font-semibold.text-red-600
               = t('.warning')
@@ -72,6 +76,7 @@
                 = f.hidden_field :filter, value: @filter
                 = f.hidden_field :word_type_filter, value: @word_type_filter
                 = f.hidden_field :keyword_filter, value: @keyword_filter
+                = f.hidden_field :review_type_filter, value: @review_type_filter
                 = f.hidden_field :sort_by, value: @sort_by
                 = f.hidden_field :sort_direction, value: @sort_direction
                 = f.hidden_field :per_page, value: @per_page
@@ -83,12 +88,12 @@
       %div
         %p.text-sm.text-gray-600
           = t('.showing', from: @change_groups.offset_value + 1, to: [@change_groups.offset_value + @change_groups.size, @change_groups.total_count].min, total: @change_groups.total_count)
-        - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
+        - if @filter.present? || @word_type_filter.present? || @keyword_filter.present? || @review_type_filter.present?
           %p.text-xs.text-gray-500
-            = t('.filtered_by', filter: [@filter, @word_type_filter, @keyword_filter].compact.join(", "))
+            = t('.filtered_by', filter: [@filter, @word_type_filter, @review_type_filter, @keyword_filter].compact.join(", "))
 
     .pagination-wrapper.mb-4
-      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter, word_type_filter: @word_type_filter, keyword_filter: @keyword_filter}
+      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter, word_type_filter: @word_type_filter, keyword_filter: @keyword_filter, review_type_filter: @review_type_filter}
 
     .overflow-x-auto
       %table.w-full.text-sm
@@ -174,7 +179,7 @@
                 = link_to t('.review'), review_path(change_group), class: 'button button-sm primary'
 
     .pagination-wrapper.mt-6.flex.justify-between.items-center
-      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter, word_type_filter: @word_type_filter, keyword_filter: @keyword_filter}
+      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter, word_type_filter: @word_type_filter, keyword_filter: @keyword_filter, review_type_filter: @review_type_filter}
 
       .flex.items-center.gap-2
         %label.text-sm.text-gray-600
@@ -185,4 +190,5 @@
           = f.hidden_field :filter, value: @filter
           = f.hidden_field :word_type_filter, value: @word_type_filter
           = f.hidden_field :keyword_filter, value: @keyword_filter
+          = f.hidden_field :review_type_filter, value: @review_type_filter
           = f.select :per_page, [25, 50, 100, 250, 500], { selected: @per_page }, { class: 'px-3 py-2 border border-gray-300 rounded-md text-sm', onchange: 'this.form.submit()' }

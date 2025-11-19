@@ -393,6 +393,39 @@ RSpec.describe "pending reviews page" do
       expect(page).not_to have_content "Word2"
     end
 
+    it "filters by review type (Reviewtyp)" do
+      # Create an attribute edit review
+      word = create(:noun, name: "EditWord")
+      create(:word_attribute_edit, word:)
+
+      # Create a new word proposal
+      create(:new_word, name: "NewWordProposal")
+
+      login_as me
+      visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Filter for attribute edits only
+      select I18n.t("pending_reviews.index.review_type_attribute_edit"), from: I18n.t("pending_reviews.index.review_type_filter")
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Should only see the edit
+      expect(page).to have_content "EditWord"
+      expect(page).not_to have_content "NewWordProposal"
+
+      # Clear and filter for new words only
+      click_link I18n.t("pending_reviews.index.clear_filter")
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+      select I18n.t("pending_reviews.index.review_type_new_word"), from: I18n.t("pending_reviews.index.review_type_filter")
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Should only see the new word
+      expect(page).to have_content "NewWordProposal"
+      expect(page).not_to have_content "EditWord"
+    end
+
     it "shows filter examples to help users" do
       # Need at least one review to see the filters
       word = create(:noun, name: "TestWord")

@@ -10,10 +10,11 @@ class PendingReviewsController < ApplicationController
     @filter = params[:filter]&.strip
     @word_type_filter = params[:word_type_filter]
     @keyword_filter = params[:keyword_filter]&.strip
+    @review_type_filter = params[:review_type_filter]
 
     # Apply filters if present
-    if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
-      matching_ids = find_matching_change_groups(@filter, @word_type_filter, @keyword_filter)
+    if @filter.present? || @word_type_filter.present? || @keyword_filter.present? || @review_type_filter.present?
+      matching_ids = find_matching_change_groups(@filter, @word_type_filter, @keyword_filter, @review_type_filter)
       @change_groups = @change_groups.where(id: matching_ids)
     end
 
@@ -28,14 +29,15 @@ class PendingReviewsController < ApplicationController
     filter = params[:filter]&.strip
     word_type_filter = params[:word_type_filter]
     keyword_filter = params[:keyword_filter]&.strip
+    review_type_filter = params[:review_type_filter]
 
-    if filter.blank? && word_type_filter.blank? && keyword_filter.blank?
+    if filter.blank? && word_type_filter.blank? && keyword_filter.blank? && review_type_filter.blank?
       redirect_to pending_reviews_path, alert: t("pending_reviews.index.no_filter_provided")
       return
     end
 
     # Find matching change groups
-    matching_ids = find_matching_change_groups(filter, word_type_filter, keyword_filter)
+    matching_ids = find_matching_change_groups(filter, word_type_filter, keyword_filter, review_type_filter)
 
     if matching_ids.empty?
       redirect_to pending_reviews_path(
@@ -69,7 +71,7 @@ class PendingReviewsController < ApplicationController
       .order(created_at: :desc)
   end
 
-  def find_matching_change_groups(filter, word_type_filter, keyword_filter)
+  def find_matching_change_groups(filter, word_type_filter, keyword_filter, review_type_filter = nil)
     matching_ids = []
 
     # Start with all change groups if no name filter
@@ -149,6 +151,29 @@ class PendingReviewsController < ApplicationController
         # No matching keywords found, return empty result
         matching_ids = []
       end
+    end
+
+    # Apply review type filter
+    if review_type_filter.present?
+      review_type_filtered_ids = case review_type_filter
+      when "attribute_edit"
+        # Find change groups with word_attribute_edits
+        WordAttributeEdit.joins(:change_group)
+          .where(change_groups: {state: :waiting_for_review, successor_id: nil})
+          .pluck(:change_group_id)
+          .uniq
+      when "new_word"
+        # Find change groups with new_words
+        NewWord.joins(:change_group)
+          .where(change_groups: {state: :waiting_for_review, successor_id: nil})
+          .pluck(:change_group_id)
+          .uniq
+      else
+        matching_ids
+      end
+
+      # Intersect with existing matching IDs
+      matching_ids &= review_type_filtered_ids
     end
 
     matching_ids.uniq
