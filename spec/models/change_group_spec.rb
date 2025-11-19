@@ -142,7 +142,6 @@ RSpec.describe ChangeGroup do
       it "applies word attribute edits when confirmed" do
         word_attribute_edit = reviewable
         word = word_attribute_edit.word
-        original_value = word.case_1_plural
 
         word_attribute_edit.update!(value: "test_value".to_json)
         change_group = word_attribute_edit.change_group
