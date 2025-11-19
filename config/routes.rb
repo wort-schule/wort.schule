@@ -118,6 +118,7 @@ Rails.application.routes.draw do
       resource :garbage_collection, only: %i[show new create]
     end
     resources :reviews, only: %i[index show update]
+    resources :pending_reviews, only: :index
     resources :word_imports, only: %i[new create]
     resources :word_images, only: :index
 

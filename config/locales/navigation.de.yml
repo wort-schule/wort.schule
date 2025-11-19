@@ -10,6 +10,7 @@ de:
     miscellaneous: Sonstiges
     site_title: wort.schule
     reviews: Reviews
+    pending_reviews: Ausstehende Reviews
     word_imports: Wörter-Import
     word_images: Wörter mit Bildern
     image_requests: Wort-Illustration Anträge
@@ -53,6 +54,7 @@ de:
 
     # Help texts for Quality Assurance
     reviews_help: "Überprüfen und genehmigen Sie Wortbeiträge"
+    pending_reviews_help: "Übersicht aller ausstehenden Reviews mit Filteroption"
     image_requests_help: "Verwalten Sie Anfragen für Wort-Illustrationen"
     delete_reviews_help: "Bereinigen Sie verwaiste Review-Einträge aus der Datenbank"
 

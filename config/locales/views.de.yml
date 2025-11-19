@@ -378,6 +378,31 @@ de:
       related_keywords:
         title: Verwandte Stichwörter
 
+  pending_reviews:
+    index:
+      title: Ausstehende Reviews
+      no_pending_reviews: Keine ausstehenden Reviews
+      total_pending: "%{count} ausstehende Reviews"
+      word: Wort
+      word_type: Wortart
+      review_type: Reviewtyp
+      changes: Änderungen
+      created: Erstellt
+      reviews: Reviews
+      actions: Aktionen
+      new: "(Neu)"
+      attribute_edits:
+        one: "1 Attribut-Edit"
+        other: "%{count} Attribut-Edits"
+      new_word_proposal: Neue Wort-Vorschlag
+      and_more:
+        one: "und 1 weitere"
+        other: "und %{count} weitere"
+      topic: Thema
+      meaning: Bedeutung
+      no_reviews: Keine
+      review: Review starten
+
   reviews:
     index:
       empty:

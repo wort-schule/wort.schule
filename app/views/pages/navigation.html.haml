@@ -164,6 +164,14 @@
 
           - if can?(:manage, :review)
             .nav-card
+              = link_to pending_reviews_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('list-bullet', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.pending_reviews')
+                  %p.text-sm.text-gray-600= t('navigation.pending_reviews_help')
+
+          - if can?(:manage, :review)
+            .nav-card
               = link_to reviews_path, class: 'nav-card-link' do
                 .nav-card-icon= heroicon('document-check', options: {class: 'w-5 h-5'})
                 %div
