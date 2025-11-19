@@ -58,7 +58,7 @@
                     - change_group.word_attribute_edits.limit(3).each do |edit|
                       %div
                         %span.font-medium= edit.attribute_label + ":"
-                        %span.text-gray-600= truncate_value(edit.proposed_value)
+                        %span.text-gray-600= format_proposed_attribute(edit)
                     - if change_group.word_attribute_edits.count > 3
                       %div.text-gray-500
                         = t('.and_more', count: change_group.word_attribute_edits.count - 3)

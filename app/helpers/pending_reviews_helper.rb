@@ -34,4 +34,30 @@ module PendingReviewsHelper
       truncate(value.to_s, length: 40)
     end
   end
+
+  def format_proposed_attribute(edit)
+    proposed = edit.proposed_value
+    return truncate_value(proposed) unless proposed.is_a?(Array) && edit.attribute_name.end_with?("_ids")
+
+    # For association IDs (e.g., keyword_ids, topic_ids), fetch the actual names
+    case edit.attribute_name
+    when "keyword_ids"
+      names = Word.where(id: proposed).pluck(:name).sort
+      truncate(names.join(", "), length: 120)
+    when "synonym_ids", "opposite_ids", "rime_ids"
+      names = Word.where(id: proposed).pluck(:name).sort
+      truncate(names.join(", "), length: 120)
+    when "topic_ids"
+      names = Topic.where(id: proposed).pluck(:name).sort
+      truncate(names.join(", "), length: 120)
+    when "strategy_ids"
+      names = Strategy.where(id: proposed).pluck(:name).sort
+      truncate(names.join(", "), length: 120)
+    when "phenomenon_ids"
+      names = Phenomenon.where(id: proposed).pluck(:name).sort
+      truncate(names.join(", "), length: 120)
+    else
+      truncate_value(proposed)
+    end
+  end
 end
