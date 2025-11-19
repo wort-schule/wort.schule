@@ -43,9 +43,9 @@
           = f.hidden_field :per_page, value: @per_page
 
           .flex.gap-3.items-center
-            = f.submit t('.filter_table_button'), class: 'button button-sm primary'
+            = f.submit t('.filter_table_button'), class: 'button button-sm primary !mt-0'
             - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
-              = link_to t('.clear_filter'), pending_reviews_path(sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page), class: 'button button-sm'
+              = link_to t('.clear_filter'), pending_reviews_path(sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page), class: 'button button-sm !mt-0'
 
     - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
       .mb-4{"data-controller": "delete-confirmation"}

@@ -637,6 +637,39 @@ RSpec.describe "pending reviews page" do
       expect(page).to have_css("h1", text: I18n.t("pending_reviews.index.title"))
     end
 
+    it "aligns filter buttons horizontally", js: true do
+      word = create(:noun, name: "TestWord")
+      create(:word_attribute_edit, word:)
+
+      login_as me
+      visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Apply filter so both buttons are visible
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "Test*"
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Find the buttons (filter section should still be open after submission since we have active filters)
+      within(".filter-section") do
+        # Use JavaScript to get the element positions
+        filter_button_y = page.evaluate_script(<<~JS)
+          document.querySelector('.filter-section input[type="submit"]').getBoundingClientRect().top
+        JS
+
+        clear_button_y = page.evaluate_script(<<~JS)
+          Array.from(document.querySelectorAll('.filter-section a.button'))
+            .find(el => el.textContent.includes('#{I18n.t("pending_reviews.index.clear_filter")}'))
+            .getBoundingClientRect().top
+        JS
+
+        # The buttons should be on the same vertical line (y-coordinate should match within a small tolerance)
+        # Allow a tolerance of 2 pixels for any rendering differences
+        expect((filter_button_y - clear_button_y).abs).to be <= 2
+      end
+    end
+
     it "has pagination controls at top and bottom of table" do
       # Create enough items to trigger pagination
       260.times do |i|
