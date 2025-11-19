@@ -124,8 +124,11 @@ RSpec.describe "reviews for enriched attributes" do
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array [cat.name, rabbit.name]
 
-      # All suggestions are preselected, so we deselect rabbit to keep only cat
-      click_on rabbit.name
+      # Verify no suggestions are preselected by default
+      expect(page.find_all('button[class~="bg-primary"]').map(&:text)).to match_array []
+
+      # Select only cat
+      click_on cat.name
 
       expect(page.find_all('button[class~="bg-primary"]').map(&:text)).to match_array [cat.name]
     end
@@ -145,6 +148,12 @@ RSpec.describe "reviews for enriched attributes" do
     visit reviews_path
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array [cat.name]
+
+      # Verify no suggestions are preselected by default
+      expect(page.find_all('button[class~="bg-primary"]').map(&:text)).to match_array []
+
+      # Select cat to confirm the proposal
+      click_on cat.name
     end
     expect do
       click_on I18n.t("reviews.show.actions.confirm")

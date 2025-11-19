@@ -17,9 +17,12 @@ RSpec.describe "reviews for keywords" do
     expect(page).to have_content edit.word.name
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name]
+
+      # No keywords are selected by default, so we select both
+      click_on "Neues Stichwort"
+      click_on word.name
     end
 
-    # All suggestions are now preselected by default, so we just confirm
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
     end.to change(Review, :count).by(1)
@@ -46,8 +49,13 @@ RSpec.describe "reviews for keywords" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    # All suggestions are preselected, so we don't need to click them
-    # Just add a new keyword
+    # No keywords are selected by default, so we select the suggestions first
+    within '[data-toggle-buttons-target="list"]' do
+      click_on "Neues Stichwort"
+      click_on word.name
+    end
+
+    # Add a new keyword
     fill_in "tomselect-1-ts-control", with: keyword.name
     within ".ts-dropdown" do
       find(:css, "[data-value=\"#{keyword.id}\"]").click
@@ -66,6 +74,11 @@ RSpec.describe "reviews for keywords" do
     visit reviews_path
     within '[data-toggle-buttons-target="list"]' do
       expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name, keyword.name]
+
+      # No keywords are selected by default, so we select all three
+      click_on "Neues Stichwort"
+      click_on word.name
+      click_on keyword.name
     end
     expect do
       click_on I18n.t("reviews.show.actions.confirm")

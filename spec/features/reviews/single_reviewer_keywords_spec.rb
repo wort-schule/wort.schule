@@ -27,7 +27,12 @@ RSpec.describe "Single reviewer confirming keywords", :js do
     # Should see the word
     expect(page).to have_content word.name
 
-    # Confirm the review (all suggestions preselected)
+    # Select the keyword (no longer preselected by default)
+    within '[data-toggle-buttons-target="list"]' do
+      click_on keyword.name
+    end
+
+    # Confirm the review
     click_on I18n.t("reviews.show.actions.confirm")
 
     # After confirmation, check database state
@@ -72,6 +77,11 @@ RSpec.describe "Single reviewer confirming keywords", :js do
     # Check the select element
     select_element = page.find('select[data-toggle-buttons-target="input"]', visible: false)
     puts "Select options: #{select_element.all("option", visible: false).map { |o| [o.value, o["selected"]] }.inspect}"
+
+    # Select the keyword (no longer preselected by default)
+    within '[data-toggle-buttons-target="list"]' do
+      click_on keyword.name
+    end
 
     click_on I18n.t("reviews.show.actions.confirm")
 

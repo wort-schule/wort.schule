@@ -46,8 +46,12 @@ RSpec.describe "reviews for a new keyword" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    # All suggestions are now preselected by default, so we just confirm
-    # without clicking anything
+    # No keywords are selected by default, so we select both
+    within '[data-toggle-buttons-target="list"]' do
+      click_on existing_keyword.name
+      click_on "klein"
+    end
+
     click_on I18n.t("reviews.show.actions.confirm")
 
     # Check if edit was changed (buttons might have deselected "klein")
@@ -57,6 +61,13 @@ RSpec.describe "reviews for a new keyword" do
     login_as other_admin
     visit reviews_path
     expect(page).to have_content edit.word.name
+
+    # No keywords are selected by default, so we select both
+    within '[data-toggle-buttons-target="list"]' do
+      click_on existing_keyword.name
+      click_on "klein"
+    end
+
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
     end.to change(Review, :count).by(1)
