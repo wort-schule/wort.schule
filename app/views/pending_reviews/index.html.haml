@@ -1,13 +1,41 @@
 = title t('.title')
 
-- if @change_groups.empty?
-  = box do
-    %p.text-center.text-gray-600= t('.no_pending_reviews')
-- else
+- if @no_matches
   = box do
     .mb-6
-      %p.text-sm.text-gray-600
-        = t('.total_pending', count: @change_groups.length)
+      %p.text-center.text-red-600
+        = t('.no_matches')
+      %p.text-center.text-sm.text-gray-600
+        = t('.filter_was', filter: @filter)
+      .text-center.mt-4
+        = link_to t('.back'), pending_reviews_path, class: 'button primary'
+
+- if @change_groups.empty? && !@no_matches
+  = box do
+    %p.text-center.text-gray-600= t('.no_pending_reviews')
+- elsif !@no_matches
+  = box do
+    .mb-4
+      = form_with url: pending_reviews_path, method: :get, class: 'flex gap-2 items-center' do |f|
+        = f.text_field :filter, value: @filter, placeholder: t('.filter_table_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm flex-grow'
+        = f.hidden_field :sort_by, value: @sort_by
+        = f.hidden_field :sort_direction, value: @sort_direction
+        = f.hidden_field :per_page, value: @per_page
+        = f.submit t('.filter_table_button'), class: 'button button-sm primary'
+        - if @filter.present?
+          = link_to t('.clear_filter'), pending_reviews_path(sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page), class: 'button button-sm'
+
+    .mb-6.flex.justify-between.items-center
+      %div
+        %p.text-sm.text-gray-600
+          = t('.showing', from: @change_groups.offset_value + 1, to: [@change_groups.offset_value + @change_groups.size, @change_groups.total_count].min, total: @change_groups.total_count)
+        - if @filter.present?
+          %p.text-xs.text-gray-500
+            = t('.filtered_by', filter: @filter)
+
+      = form_with url: delete_filtered_pending_reviews_path, method: :post, class: 'flex gap-2 items-center' do |f|
+        = f.text_field :filter, placeholder: t('.delete_filter_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+        = f.submit t('.delete_button'), class: 'button button-sm danger', data: { confirm: false }
 
     .overflow-x-auto
       %table.w-full.text-sm
@@ -91,3 +119,15 @@
 
               %td.px-4.py-3.text-right
                 = link_to t('.review'), review_path(change_group), class: 'button button-sm primary'
+
+    .mt-6.flex.justify-between.items-center
+      = paginate @change_groups, params: {sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page, filter: @filter}
+
+      .flex.items-center.gap-2
+        %label.text-sm.text-gray-600
+          = t('.per_page')
+        = form_with url: pending_reviews_path, method: :get, class: 'inline' do |f|
+          = f.hidden_field :sort_by, value: @sort_by
+          = f.hidden_field :sort_direction, value: @sort_direction
+          = f.hidden_field :filter, value: @filter
+          = f.select :per_page, [25, 50, 100, 250, 500], { selected: @per_page }, { class: 'px-3 py-2 border border-gray-300 rounded-md text-sm', onchange: 'this.form.submit()' }

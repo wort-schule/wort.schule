@@ -8,7 +8,7 @@ module PendingReviewsHelper
       "desc"
     end
 
-    params_copy = params.permit(:sort_by, :sort_direction).to_h
+    params_copy = params.permit(:sort_by, :sort_direction, :per_page, :page, :filter).to_h
     params_copy[:sort_by] = sort_column
     params_copy[:sort_direction] = direction
 

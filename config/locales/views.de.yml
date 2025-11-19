@@ -402,6 +402,28 @@ de:
       meaning: Bedeutung
       no_reviews: Keine
       review: Review starten
+      filter_table_placeholder: "Tabelle filtern (z.B. Wort* oder Test?)"
+      filter_table_button: "Filtern"
+      clear_filter: "Filter zurücksetzen"
+      filtered_by: "Gefiltert nach: %{filter}"
+      delete_filter_placeholder: "Zum Löschen filtern (z.B. Wort* oder Test?)"
+      delete_button: "Löschen"
+      confirm_deletion:
+        one: "Möchten Sie wirklich 1 Review löschen?"
+        other: "Möchten Sie wirklich %{count} Reviews löschen?"
+      confirm_delete: "Ja, löschen"
+      cancel: "Abbrechen"
+      deletion_success:
+        one: "1 Review wurde erfolgreich gelöscht"
+        other: "%{count} Reviews wurden erfolgreich gelöscht"
+      no_matches: "Keine passenden Reviews gefunden"
+      filter_was: "Filter war: %{filter}"
+      back: "Zurück"
+      per_page: "Pro Seite:"
+      showing: "Zeige %{from}-%{to} von %{total}"
+      warning: "Diese Aktion kann nicht rückgängig gemacht werden!"
+      no_filter_provided: "Bitte geben Sie einen Filter ein"
+      session_expired: "Ihre Sitzung ist abgelaufen. Bitte versuchen Sie es erneut."
 
   reviews:
     index:
