@@ -60,7 +60,11 @@ class ReviewProcessor
 
       existing_edit.errors.add(:value, :blank) if human_value.blank?
 
-      existing_edit.proposed_value == human_value && human_value.present?
+      # Normalize both sides for comparison (convert numeric strings to integers)
+      proposed = normalize_for_comparison(existing_edit.proposed_value)
+      submitted = normalize_for_comparison(human_value)
+
+      proposed == submitted && human_value.present?
     end
   end
 
@@ -188,5 +192,12 @@ class ReviewProcessor
     value = true if value == "1"
     value = false if value == "0"
     value
+  end
+
+  def normalize_for_comparison(value)
+    return value unless value.is_a?(Array)
+
+    # Convert numeric strings to integers for comparison
+    value.map { |v| (v.to_s.to_i.to_s == v.to_s) ? v.to_i : v }
   end
 end
