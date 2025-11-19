@@ -114,9 +114,6 @@ Rails.application.routes.draw do
     end
     resources :global_settings, only: %i[index update]
     resource :llm_enrichment, only: %i[show new create]
-    namespace :reviewables do
-      resource :garbage_collection, only: %i[show new create]
-    end
     resources :reviews, only: %i[index show update]
     resources :pending_reviews, only: :index do
       collection do

@@ -19,7 +19,6 @@ de:
     llm_services: LLM Services
     global_settings: Globale Einstellungen
     llm_enrichments: LLM Ergänzung starten
-    delete_reviews: Reviews löschen
 
     # Welcome section
     welcome_title: Willkommen im Verwaltungsbereich
@@ -57,7 +56,6 @@ de:
     reviews_help: "Überprüfen und genehmigen Sie Wortbeiträge"
     pending_reviews_help: "Übersicht aller ausstehenden Reviews mit Filteroption"
     image_requests_help: "Verwalten Sie Anfragen für Wort-Illustrationen"
-    delete_reviews_help: "Bereinigen Sie verwaiste Review-Einträge aus der Datenbank"
 
     # Help texts for AI
     llm_prompts_help: "Verwalten Sie KI-Aufforderungen für automatische Ergänzungen"

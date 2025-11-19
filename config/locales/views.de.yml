@@ -508,13 +508,3 @@ de:
       title: LLM Ergänzung gestartet
       description: Die LLM Ergänzung wurde für alle Wörter in der Liste gestartet.
 
-  reviewables:
-    garbage_collections:
-      new:
-        title: Offene Reviews löschen
-        delete_all:
-          label: Alle offenen Reviews löschen
-          confirmation: Sicher? Dies kann nicht rückgängig gemacht werden. Es werden alle nicht abgeschlossenen Reviews unwiderruflich gelöscht.
-      show:
-        title: Offene Reviews werden gelöscht
-        description: Alle offenen Reviews werden gelöscht. Dies kann einige Zeit dauern. Bitte bei den Reviews nachschauen ob der Prozess bereits abgeschlossen ist.

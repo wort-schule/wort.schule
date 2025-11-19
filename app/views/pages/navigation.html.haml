@@ -186,14 +186,6 @@
                   .font-semibold= t('navigation.image_requests')
                   %p.text-sm.text-gray-600= t('navigation.image_requests_help')
 
-          - if can?(:manage, :review)
-            .nav-card
-              = link_to new_reviewables_garbage_collection_path, class: 'nav-card-link' do
-                .nav-card-icon= heroicon('trash', options: {class: 'w-5 h-5'})
-                %div
-                  .font-semibold= t('navigation.delete_reviews')
-                  %p.text-sm.text-gray-600= t('navigation.delete_reviews_help')
-
     / AI & Advanced Features Section (only for logged in users)
     - if user_signed_in? && (can?(:manage, LlmPrompt) || can?(:manage, LlmService) || can?(:manage, GlobalSetting) || can?(:manage, :llm_enrichment))
       .mb-8
