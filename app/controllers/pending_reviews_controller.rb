@@ -25,20 +25,6 @@ class PendingReviewsController < ApplicationController
   end
 
   def delete_filtered
-    # Check if deletion was requested via checkbox
-    if params[:delete_filtered] != "1"
-      # Just apply filters without deletion
-      redirect_to pending_reviews_path(
-        filter: params[:filter],
-        word_type_filter: params[:word_type_filter],
-        keyword_filter: params[:keyword_filter],
-        sort_by: params[:sort_by],
-        sort_direction: params[:sort_direction],
-        per_page: params[:per_page]
-      )
-      return
-    end
-
     filter = params[:filter]&.strip
     word_type_filter = params[:word_type_filter]
     keyword_filter = params[:keyword_filter]&.strip
@@ -52,48 +38,20 @@ class PendingReviewsController < ApplicationController
     matching_ids = find_matching_change_groups(filter, word_type_filter, keyword_filter)
 
     if matching_ids.empty?
-      @no_matches = true
-      @filter = filter
-      @word_type_filter = word_type_filter
-      @keyword_filter = keyword_filter
-      # Re-fetch data for index view
-      @change_groups = fetch_pending_reviews
-      @sort_by = params[:sort_by] || "created_at"
-      @sort_direction = params[:sort_direction] || "desc"
-      @change_groups = sort_change_groups(@change_groups, @sort_by, @sort_direction)
-      @per_page = (params[:per_page] || 250).to_i
-      @change_groups = Kaminari.paginate_array(@change_groups).page(params[:page]).per(@per_page)
-      render :index
+      redirect_to pending_reviews_path(
+        filter: filter,
+        word_type_filter: word_type_filter,
+        keyword_filter: keyword_filter,
+        sort_by: params[:sort_by],
+        sort_direction: params[:sort_direction],
+        per_page: params[:per_page]
+      ), alert: t("pending_reviews.index.no_matches")
       return
     end
 
-    # Store the IDs in session for confirmation
-    session[:pending_deletion_ids] = matching_ids
-    session[:pending_deletion_filter] = [filter, word_type_filter, keyword_filter].compact.join(", ")
+    # Delete the matching change groups immediately
+    count = ChangeGroup.where(id: matching_ids).destroy_all.count
 
-    # Redirect to confirmation
-    redirect_to confirm_delete_pending_reviews_path(
-      count: matching_ids.count,
-      filter: session[:pending_deletion_filter]
-    )
-  end
-
-  def confirm_delete
-    @count = params[:count].to_i
-    @filter = params[:filter]
-  end
-
-  def destroy_confirmed
-    ids = session.delete(:pending_deletion_ids)
-
-    if ids.blank?
-      redirect_to pending_reviews_path, alert: t("pending_reviews.index.session_expired")
-      return
-    end
-
-    count = ChangeGroup.where(id: ids).destroy_all.count
-
-    session.delete(:pending_deletion_filter)
     redirect_to pending_reviews_path, notice: t("pending_reviews.index.deletion_success", count: count)
   end
 

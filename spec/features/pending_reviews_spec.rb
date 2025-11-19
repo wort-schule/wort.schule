@@ -410,7 +410,26 @@ RSpec.describe "pending reviews page" do
   end
 
   describe "deletion functionality" do
-    it "can delete filtered results from the main filter" do
+    it "shows delete button only when filters are active" do
+      word1 = create(:noun, name: "DeleteMe")
+      create(:word_attribute_edit, word: word1)
+
+      login_as me
+      visit pending_reviews_path
+
+      # Delete button should not be visible initially
+      expect(page).not_to have_css(".button.danger", text: "Gefilterte Ergebnisse löschen")
+
+      # Expand filter and apply a filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "DeleteMe"
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Now delete button should be visible
+      expect(page).to have_css(".button.danger", text: "Gefilterte Ergebnisse löschen")
+    end
+
+    it "can delete filtered results with modal confirmation" do
       word1 = create(:noun, name: "DeleteMe")
       change_group1 = create(:word_attribute_edit, word: word1).change_group
 
@@ -425,18 +444,20 @@ RSpec.describe "pending reviews page" do
 
       # Filter for DeleteMe
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "DeleteMe"
-
-      # Check the delete checkbox
-      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
-
-      # Submit the form
       click_button I18n.t("pending_reviews.index.filter_table_button")
 
-      # Should show confirmation
-      expect(page).to have_content(I18n.t("pending_reviews.index.confirm_deletion", count: 1))
+      # Click the delete button (opens modal)
+      find(".button.danger", text: "Gefilterte Ergebnisse löschen").click
+
+      # Should show modal with confirmation
+      within("dialog") do
+        expect(page).to have_content(I18n.t("pending_reviews.index.confirm_deletion", count: 1))
+      end
 
       # Confirm deletion
-      click_button I18n.t("pending_reviews.index.confirm_delete")
+      within("dialog") do
+        click_button I18n.t("pending_reviews.index.confirm_delete")
+      end
 
       # Should show success message
       expect(page).to have_content(I18n.t("pending_reviews.index.deletion_success", count: 1))
@@ -462,16 +483,22 @@ RSpec.describe "pending reviews page" do
       # Expand filter
       find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
 
-      # Filter and delete
+      # Filter
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "TestWord*"
-      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
       click_button I18n.t("pending_reviews.index.filter_table_button")
 
-      # Should show confirmation with count
-      expect(page).to have_content(I18n.t("pending_reviews.index.confirm_deletion", count: 2))
+      # Click delete button
+      find(".button.danger", text: "Gefilterte Ergebnisse löschen").click
+
+      # Should show modal with confirmation count
+      within("dialog") do
+        expect(page).to have_content(I18n.t("pending_reviews.index.confirm_deletion", count: 2))
+      end
 
       # Confirm deletion
-      click_button I18n.t("pending_reviews.index.confirm_delete")
+      within("dialog") do
+        click_button I18n.t("pending_reviews.index.confirm_delete")
+      end
 
       # Should show success message
       expect(page).to have_content(I18n.t("pending_reviews.index.deletion_success", count: 2))
@@ -484,7 +511,7 @@ RSpec.describe "pending reviews page" do
       expect(page).to have_content "KeepThis"
     end
 
-    it "shows message when no matches found for filter" do
+    it "does not show delete button when no matches found for filter" do
       word = create(:noun, name: "ExistingWord")
       create(:word_attribute_edit, word:)
 
@@ -494,16 +521,16 @@ RSpec.describe "pending reviews page" do
       # Expand filter
       find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
 
-      # Try to delete non-existent
+      # Try to filter for non-existent
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "NonExistent*"
-      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
       click_button I18n.t("pending_reviews.index.filter_table_button")
 
-      # Should show no matches message
-      expect(page).to have_content(I18n.t("pending_reviews.index.no_matches"))
+      # Should show no pending reviews message and no delete button
+      expect(page).to have_content(I18n.t("pending_reviews.index.no_pending_reviews"))
+      expect(page).not_to have_css(".button.danger", text: "Gefilterte Ergebnisse löschen")
     end
 
-    it "allows canceling deletion confirmation" do
+    it "allows canceling deletion from modal" do
       word = create(:noun, name: "CancelTest")
       change_group = create(:word_attribute_edit, word:).change_group
 
@@ -513,13 +540,17 @@ RSpec.describe "pending reviews page" do
       # Expand filter
       find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
 
-      # Request deletion
+      # Apply filter
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "CancelTest"
-      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
       click_button I18n.t("pending_reviews.index.filter_table_button")
 
-      # Cancel the deletion (it's a link, not a button)
-      click_link I18n.t("pending_reviews.index.cancel")
+      # Click delete button to open modal
+      find(".button.danger", text: "Gefilterte Ergebnisse löschen").click
+
+      # Cancel the deletion from modal
+      within("dialog") do
+        click_button I18n.t("pending_reviews.index.cancel")
+      end
 
       # Should still exist
       expect(ChangeGroup.exists?(change_group.id)).to be true
@@ -539,13 +570,17 @@ RSpec.describe "pending reviews page" do
       # Expand filter
       find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
 
-      # Delete NewWord1
+      # Filter for NewWord1
       fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "NewWord1"
-      check I18n.t("pending_reviews.index.delete_filtered_checkbox")
       click_button I18n.t("pending_reviews.index.filter_table_button")
 
-      # Confirm deletion
-      click_button I18n.t("pending_reviews.index.confirm_delete")
+      # Click delete button
+      find(".button.danger", text: "Gefilterte Ergebnisse löschen").click
+
+      # Confirm deletion in modal
+      within("dialog") do
+        click_button I18n.t("pending_reviews.index.confirm_delete")
+      end
 
       # Verify deletion
       expect(ChangeGroup.exists?(change_group1.id)).to be false

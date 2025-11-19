@@ -121,8 +121,6 @@ Rails.application.routes.draw do
     resources :pending_reviews, only: :index do
       collection do
         post :delete_filtered
-        get :confirm_delete
-        delete :destroy_confirmed
       end
     end
     resources :word_imports, only: %i[new create]

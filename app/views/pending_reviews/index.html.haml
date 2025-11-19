@@ -21,7 +21,7 @@
       %summary.cursor-pointer.text-blue-600.hover:text-blue-800.font-medium.py-2
         = t('.show_filters')
       .mt-4.p-4.bg-gray-50.rounded-lg
-        = form_with url: delete_filtered_pending_reviews_path, method: :post, class: 'space-y-4' do |f|
+        = form_with url: pending_reviews_path, method: :get, class: 'space-y-4' do |f|
           .grid.grid-cols-1.md:grid-cols-3.gap-4
             .flex.flex-col
               = f.label :filter, t('.filter_table_placeholder'), class: 'text-sm font-medium text-gray-700 mb-1'
@@ -47,9 +47,37 @@
             - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
               = link_to t('.clear_filter'), pending_reviews_path(sort_by: @sort_by, sort_direction: @sort_direction, per_page: @per_page), class: 'button button-sm'
 
-            .ml-auto.flex.items-center.gap-2
-              = f.check_box :delete_filtered, { class: 'rounded border-gray-300' }, '1', '0'
-              = f.label :delete_filtered, t('.delete_filtered_checkbox'), class: 'text-sm font-medium text-red-600'
+    - if @filter.present? || @word_type_filter.present? || @keyword_filter.present?
+      .mb-4{"data-controller": "delete-confirmation"}
+        %button.button.button-sm.danger{"data-action": "click->delete-confirmation#open", type: "button"}
+          = t('.delete_filtered_button', count: @change_groups.total_count)
+
+        %dialog.rounded-lg.shadow-2xl.p-0{"data-delete-confirmation-target": "dialog"}
+          .p-6
+            .mb-6.text-center
+              %svg.mx-auto.h-12.w-12.text-red-600{viewBox: "0 0 24 24", fill: "none", stroke: "currentColor"}
+                %path{stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"}
+
+            %h2.text-2xl.font-bold.mb-4.text-gray-900.text-center
+              = t('.confirm_deletion', count: @change_groups.total_count)
+
+            %p.text-gray-600.mb-2.text-center
+              = t('.filtered_by', filter: [@filter, @word_type_filter, @keyword_filter].compact.join(", "))
+
+            %p.text-sm.text-gray-500.mb-8.text-center.font-semibold.text-red-600
+              = t('.warning')
+
+            .flex.justify-center.gap-4
+              = form_with url: delete_filtered_pending_reviews_path, method: :post do |f|
+                = f.hidden_field :filter, value: @filter
+                = f.hidden_field :word_type_filter, value: @word_type_filter
+                = f.hidden_field :keyword_filter, value: @keyword_filter
+                = f.hidden_field :sort_by, value: @sort_by
+                = f.hidden_field :sort_direction, value: @sort_direction
+                = f.hidden_field :per_page, value: @per_page
+                = f.submit t('.confirm_delete'), class: 'button danger px-6 py-3'
+              %button.button.primary.px-6.py-3{"data-action": "click->delete-confirmation#close", type: "button"}
+                = t('.cancel')
 
     .mb-4.flex.justify-between.items-center
       %div
