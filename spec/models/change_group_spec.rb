@@ -212,4 +212,75 @@ RSpec.describe ChangeGroup do
       end
     end
   end
+
+  describe "destroying change groups" do
+    around do |example|
+      # Temporarily use GoodJob adapter to test job cancellation
+      original_adapter = ActiveJob::Base.queue_adapter
+      ActiveJob::Base.queue_adapter = :good_job
+      example.run
+      ActiveJob::Base.queue_adapter = original_adapter
+    end
+
+    it "cancels queued EnrichWordJobs for associated words when destroying change groups" do
+      # Create a word and enqueue an EnrichWordJob
+      word = create(:noun)
+      job = EnrichWordJob.set(wait: 1.hour).perform_later(word.id)
+
+      # Create change groups associated with this word
+      change_group = create(:word_attribute_edit, word: word).change_group
+
+      # Verify job is queued
+      queued_job = GoodJob::Job.find_by(active_job_id: job.job_id)
+      expect(queued_job).not_to be_nil
+      expect(queued_job.finished_at).to be_nil
+
+      # Destroy the change group
+      change_group.destroy
+
+      # Verify the job has been discarded
+      queued_job.reload
+      expect(queued_job.finished_at).not_to be_nil
+      expect(queued_job.error).to include("Discarded")
+    end
+
+    it "cancels multiple EnrichWordJobs when destroying multiple change groups" do
+      # Create two words with jobs
+      word1 = create(:noun)
+      word2 = create(:verb)
+      job1 = EnrichWordJob.set(wait: 1.hour).perform_later(word1.id)
+      job2 = EnrichWordJob.set(wait: 1.hour).perform_later(word2.id)
+
+      # Create change groups
+      change_group1 = create(:word_attribute_edit, word: word1).change_group
+      change_group2 = create(:word_attribute_edit, word: word2).change_group
+
+      # Destroy both change groups
+      ChangeGroup.where(id: [change_group1.id, change_group2.id]).destroy_all
+
+      # Verify both jobs have been discarded
+      expect(GoodJob::Job.find_by(active_job_id: job1.job_id).finished_at).not_to be_nil
+      expect(GoodJob::Job.find_by(active_job_id: job2.job_id).finished_at).not_to be_nil
+    end
+
+    it "does not affect jobs for words without associated change groups being deleted" do
+      # Create two words
+      word_with_deletion = create(:noun)
+      word_without_deletion = create(:verb)
+
+      # Enqueue jobs for both
+      job_deleted = EnrichWordJob.set(wait: 1.hour).perform_later(word_with_deletion.id)
+      job_kept = EnrichWordJob.set(wait: 1.hour).perform_later(word_without_deletion.id)
+
+      # Create change group only for first word
+      change_group = create(:word_attribute_edit, word: word_with_deletion).change_group
+
+      # Destroy only the first change group
+      change_group.destroy
+
+      # Verify only the first job was discarded
+      expect(GoodJob::Job.find_by(active_job_id: job_deleted.job_id).finished_at).not_to be_nil
+      expect(GoodJob::Job.find_by(active_job_id: job_kept.job_id).finished_at).to be_nil
+    end
+  end
 end
