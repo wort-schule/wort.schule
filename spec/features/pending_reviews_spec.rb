@@ -586,6 +586,47 @@ RSpec.describe "pending reviews page" do
       expect(ChangeGroup.exists?(change_group1.id)).to be false
       expect(ChangeGroup.exists?(change_group2.id)).to be true
     end
+
+    it "handles deletion of new word proposals with unlisted keywords" do
+      # Create a word import for the unlisted keyword relationship
+      word_import = create(:word_import)
+
+      # Create a new word with an unlisted keyword
+      new_word = create(:new_word, name: "NewWordWithKeyword")
+      change_group = new_word.change_group
+
+      # Create an unlisted keyword that references this new word
+      keyword_word = create(:noun, name: "KeywordReference")
+      unlisted_keyword = UnlistedKeyword.create!(
+        word: keyword_word,
+        word_import: word_import,
+        new_word: new_word,
+        state: "new"
+      )
+
+      login_as me
+      visit pending_reviews_path
+
+      # Expand filter
+      find("summary", text: I18n.t("pending_reviews.index.show_filters")).click
+
+      # Filter for the new word
+      fill_in I18n.t("pending_reviews.index.filter_table_placeholder"), with: "NewWordWithKeyword"
+      click_button I18n.t("pending_reviews.index.filter_table_button")
+
+      # Click delete button
+      find(".button.danger", text: "Gefilterte Ergebnisse löschen").click
+
+      # Confirm deletion in modal
+      within("dialog") do
+        click_button I18n.t("pending_reviews.index.confirm_delete")
+      end
+
+      # Verify deletion - should not raise foreign key error
+      expect(ChangeGroup.exists?(change_group.id)).to be false
+      expect(NewWord.exists?(new_word.id)).to be false
+      expect(UnlistedKeyword.exists?(unlisted_keyword.id)).to be false
+    end
   end
 
   describe "page layout improvements" do

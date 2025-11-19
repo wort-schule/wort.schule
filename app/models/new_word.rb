@@ -7,6 +7,7 @@ class NewWord < ApplicationRecord
   belongs_to :change_group
   belongs_to :duplicate_word, class_name: "Word", optional: true
   belongs_to :created_word, class_name: "Word", optional: true
+  has_many :unlisted_keywords, dependent: :destroy
 
   enumerize :word_type, in: %w[Noun Verb Adjective FunctionWord]
 

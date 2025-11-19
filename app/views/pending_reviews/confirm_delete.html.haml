@@ -16,5 +16,5 @@
       = t('pending_reviews.index.warning')
 
     .flex.justify-center.gap-4
-      = button_to t('pending_reviews.index.confirm_delete'), destroy_confirmed_pending_reviews_path, method: :delete, class: 'button danger px-6 py-3'
-      = link_to t('pending_reviews.index.cancel'), pending_reviews_path, class: 'button primary px-6 py-3'
+      = button_to t('pending_reviews.index.confirm_delete'), destroy_confirmed_pending_reviews_path, method: :delete, class: 'px-6 py-3 bg-red-600 text-white rounded hover:bg-red-700 font-medium min-w-[140px]'
+      = link_to t('pending_reviews.index.cancel'), pending_reviews_path, class: 'px-6 py-3 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 font-medium min-w-[140px]'

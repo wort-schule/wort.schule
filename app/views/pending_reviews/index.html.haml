@@ -75,8 +75,8 @@
                 = f.hidden_field :sort_by, value: @sort_by
                 = f.hidden_field :sort_direction, value: @sort_direction
                 = f.hidden_field :per_page, value: @per_page
-                = f.submit t('.confirm_delete'), class: 'button danger px-6 py-3'
-              %button.button.primary.px-6.py-3{"data-action": "click->delete-confirmation#close", type: "button"}
+                = f.submit t('.confirm_delete'), class: 'px-6 py-3 bg-red-600 text-white rounded hover:bg-red-700 font-medium'
+              %button{"data-action": "click->delete-confirmation#close", type: "button", class: "px-6 py-3 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 font-medium"}
                 = t('.cancel')
 
     .mb-4.flex.justify-between.items-center
