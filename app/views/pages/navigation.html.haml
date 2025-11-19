@@ -187,7 +187,7 @@
                   %p.text-sm.text-gray-600= t('navigation.delete_reviews_help')
 
     / AI & Advanced Features Section (only for logged in users)
-    - if user_signed_in? && (can?(:manage, LlmPrompt) || can?(:manage, LlmService) || can?(:manage, :llm_enrichment))
+    - if user_signed_in? && (can?(:manage, LlmPrompt) || can?(:manage, LlmService) || can?(:manage, GlobalSetting) || can?(:manage, :llm_enrichment))
       .mb-8
         %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
           = heroicon('spark', options: {class: 'w-6 h-6 text-yellow-600'})
@@ -209,6 +209,14 @@
                 %div
                   .font-semibold= t('navigation.llm_services')
                   %p.text-sm.text-gray-600= t('navigation.llm_services_help')
+
+          - if can?(:manage, GlobalSetting)
+            .nav-card
+              = link_to global_settings_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('cog-6-tooth', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.global_settings')
+                  %p.text-sm.text-gray-600= t('navigation.global_settings_help')
 
           - if can?(:manage, :llm_enrichment)
             .nav-card

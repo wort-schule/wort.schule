@@ -90,6 +90,7 @@ class Ability
 
         can :manage, LlmPrompt
         can :manage, LlmService
+        can :manage, GlobalSetting
         can :manage, :llm_enrichment
         can :manage, :review
         can :manage, :word_import

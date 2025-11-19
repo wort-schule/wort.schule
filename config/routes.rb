@@ -112,6 +112,7 @@ Rails.application.routes.draw do
     resources :llm_services, except: :show do
       resource :activation, only: :create, module: :llm_services
     end
+    resources :global_settings, only: %i[index update]
     resource :llm_enrichment, only: %i[show new create]
     namespace :reviewables do
       resource :garbage_collection, only: %i[show new create]

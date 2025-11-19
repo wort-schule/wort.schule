@@ -15,6 +15,7 @@ de:
     image_requests: Wort-Illustration Anträge
     llm_prompts: LLM Prompts
     llm_services: LLM Services
+    global_settings: Globale Einstellungen
     llm_enrichments: LLM Ergänzung starten
     delete_reviews: Reviews löschen
 
@@ -58,6 +59,7 @@ de:
     # Help texts for AI
     llm_prompts_help: "Verwalten Sie KI-Aufforderungen für automatische Ergänzungen"
     llm_services_help: "Konfigurieren Sie verfügbare KI-Sprachmodelle"
+    global_settings_help: "Konfigurieren Sie globale Einstellungen wie Review-Anforderungen"
     llm_enrichments_help: "Starten Sie KI-gestützte Wortbereicherungsprozesse"
 
     # Help texts for Admin

@@ -432,6 +432,14 @@ de:
     new:
       title: Neuen Service erstellen
 
+  global_settings:
+    index:
+      title: Globale Einstellungen
+      reviews_required_label: Anzahl erforderlicher Reviews
+      reviews_required_help: "Wie viele Bestätigungen sind erforderlich, bevor LLM-Änderungen automatisch angewendet werden?"
+      reviews_required_description: "1 = Änderungen werden sofort angewendet (Standard), 2+ = mehrere Reviews erforderlich"
+      save: Speichern
+
   llm_enrichments:
     new:
       title: LLM Ergänzung starten

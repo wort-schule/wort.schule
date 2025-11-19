@@ -1,0 +1,13 @@
+= title t('.title')
+
+= box do
+  = form_with url: global_settings_path(@reviews_required_setting), method: :patch, local: true do |f|
+    .space-y-6
+      .form-group
+        = f.label :reviews_required, t('.reviews_required_label')
+        %p.text-sm.text-gray-600= t('.reviews_required_help')
+        = f.number_field :reviews_required, value: @reviews_required_setting.integer_value, min: 1, max: 10, class: 'input'
+        %p.text-xs.text-gray-500= t('.reviews_required_description')
+
+      .form-actions
+        = f.submit t('.save'), class: 'button primary'
