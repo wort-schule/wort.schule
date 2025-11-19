@@ -14,7 +14,7 @@ RSpec.describe "flash cards" do
     let(:word_list) { create :list, user: lecturer, visibility: :public }
     let(:user) { create :guest }
     let(:noun1) { create :noun, name: "Adler" }
-    let(:noun2) { create :noun, name: "Bauer" }
+    let(:noun2) { create :noun, name: "Wolke" }
 
     before do
       word_list.words << noun1
@@ -92,7 +92,7 @@ RSpec.describe "flash cards" do
     let(:word_list) { create :list, user: lecturer, visibility: :public }
     let(:user) { create :guest }
     let(:noun1) { create :noun, name: "Adler" }
-    let(:noun2) { create :noun, name: "Bauer" }
+    let(:noun2) { create :noun, name: "Wolke" }
 
     before do
       word_list.words << noun1
