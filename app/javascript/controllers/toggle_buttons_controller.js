@@ -30,11 +30,17 @@ export default class extends Controller {
         this.refreshOptions()
 
         self.addItem(value, item.innerText, true)
+      },
+      render: {
+        option_create: function(data, escape) {
+          return '<div class="create">Hinzufügen: <strong>' + escape(data.input) + '</strong></div>'
+        }
       }
     }
 
     new TomSelect(this.addTarget, {
       valueField: 'value',
+      create: true,
       ...options
     })
     this.addTarget.style.display = 'none'

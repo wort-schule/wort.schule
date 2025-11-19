@@ -60,8 +60,8 @@ RSpec.describe "reviews for keywords" do
     within ".ts-dropdown" do
       find(:css, "[data-value=\"#{keyword.id}\"]").click
     end
-    # Click somewhere else to close the dropdown
-    find("body").click
+    # Close the dropdown by pressing Escape
+    find(".ts-control input").send_keys(:escape)
     # The new keyword is automatically added and selected
     click_on I18n.t("reviews.show.actions.confirm")
 
