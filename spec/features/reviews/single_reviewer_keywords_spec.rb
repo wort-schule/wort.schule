@@ -27,14 +27,12 @@ RSpec.describe "Single reviewer confirming keywords", :js do
     # Should see the word
     expect(page).to have_content word.name
 
-    # The keyword should be preselected by default now
-    # We can verify it's selected by checking if the button has the active classes
+    # Manually select the keyword (keywords are not preselected)
     within '[data-toggle-buttons-target="list"]' do
-      button = find("button[data-value='#{keyword.id}']")
-      expect(button["data-checked"]).to eq "true"
+      click_on keyword.name
     end
 
-    # Confirm the review (no need to manually select the keyword anymore)
+    # Confirm the review
     click_on I18n.t("reviews.show.actions.confirm")
 
     # After confirmation, check database state
@@ -80,10 +78,9 @@ RSpec.describe "Single reviewer confirming keywords", :js do
     select_element = page.find('select[data-toggle-buttons-target="input"]', visible: false)
     puts "Select options: #{select_element.all("option", visible: false).map { |o| [o.value, o["selected"]] }.inspect}"
 
-    # The keyword should be preselected now
+    # Manually select the keyword (keywords are not preselected)
     within '[data-toggle-buttons-target="list"]' do
-      button = find("button[data-value='#{keyword.id}']")
-      puts "Button data-checked: #{button["data-checked"]}"
+      click_on keyword.name
     end
 
     click_on I18n.t("reviews.show.actions.confirm")

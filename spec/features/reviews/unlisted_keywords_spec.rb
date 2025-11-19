@@ -46,10 +46,10 @@ RSpec.describe "reviews for a new keyword" do
     visit reviews_path
     expect(page).to have_content edit.word.name
 
-    # Keywords are now preselected by default
+    # Manually select both keywords
     within '[data-toggle-buttons-target="list"]' do
-      # Verify both are selected
-      expect(page.find_all('button[data-checked="true"]').map(&:text)).to match_array [existing_keyword.name, "klein"]
+      click_on existing_keyword.name
+      click_on "klein"
     end
 
     expect do
