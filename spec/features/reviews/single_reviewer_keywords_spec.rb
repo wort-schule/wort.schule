@@ -101,4 +101,53 @@ RSpec.describe "Single reviewer confirming keywords", :js do
     puts "Current path: #{current_path}"
     puts "Page text includes 'Vogel': #{page.has_content?("Vogel")}"
   end
+
+  it "allows selecting a subset of proposed keywords when reviews_required is 1" do
+    # Set reviews_required to 1
+    GlobalSetting.reviews_required = 1
+
+    # Create additional keywords
+    keyword2 = create(:noun, name: "Tier")
+    keyword3 = create(:noun, name: "Fliegen")
+
+    # Create a word_attribute_edit with multiple keywords
+    edit = create(
+      :word_attribute_edit,
+      attribute_name: "keywords",
+      value: [keyword.id.to_s, keyword2.id.to_s, keyword3.id.to_s].to_json,
+      word: word
+    )
+
+    # Verify word has no keywords initially
+    expect(word.keywords).to be_empty
+    expect(edit.change_group.state).to eq "waiting_for_review"
+
+    # Login and visit reviews page
+    login_as admin
+    visit reviews_path
+
+    # Should see the word
+    expect(page).to have_content word.name
+
+    # Manually select only SOME of the keywords (not all)
+    within '[data-toggle-buttons-target="list"]' do
+      click_on keyword.name
+      click_on keyword2.name
+      # Deliberately NOT selecting keyword3
+    end
+
+    # Confirm the review
+    click_on I18n.t("reviews.show.actions.confirm")
+
+    # After confirmation, the selected keywords should be applied immediately
+    # since reviews_required is 1
+    edit.reload
+    expect(edit.change_group.state).to eq "confirmed"
+    expect(edit.change_group.reviews.count).to eq 1
+
+    # Check that the selected keywords were applied
+    word.reload
+    expect(word.keywords.map(&:name)).to match_array([keyword.name, keyword2.name])
+    expect(word.keywords.map(&:name)).not_to include(keyword3.name)
+  end
 end

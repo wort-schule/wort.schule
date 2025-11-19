@@ -43,6 +43,9 @@ class ReviewProcessor
     if all_confirmed?
       confirm_edits
       true
+    elsif single_reviewer_mode? && any_value_submitted?
+      confirm_edits_with_changes
+      true
     elsif has_validation_errors?
       false
     else
@@ -65,6 +68,51 @@ class ReviewProcessor
       submitted = normalize_for_comparison(human_value)
 
       proposed == submitted && human_value.present?
+    end
+  end
+
+  def single_reviewer_mode?
+    params[:state] == "confirmed" && GlobalSetting.reviews_required == 1
+  end
+
+  def any_value_submitted?
+    word_edits_params.all? do |attributes|
+      existing_edit = find_existing_edit(attributes[:id])
+      human_value = normalize_value(attributes[:value])
+
+      # Only allow single-reviewer confirmation for keywords
+      # where the submitted value is a non-empty subset of proposed values
+      # Other array attributes (like synonyms) still require creating a new edit
+      if human_value.present? && human_value.is_a?(Array) && existing_edit.attribute_name == "keywords"
+        proposed = normalize_for_comparison(existing_edit.proposed_value)
+        submitted = normalize_for_comparison(human_value)
+
+        # All submitted values must be in the proposed values
+        # (allows subset but not additions)
+        submitted.all? { |v| proposed.include?(v) }
+      else
+        false
+      end
+    end
+  end
+
+  def confirm_edits_with_changes
+    reviewable.transaction do
+      # Apply the changes directly
+      reviewable.word_attribute_edits.each do |word_attribute_edit|
+        value = find_edit_value(word_attribute_edit.id.to_s)
+        value = normalize_value(value)
+
+        Llm::Attributes.update!(
+          word: word_attribute_edit.word,
+          attribute_name: word_attribute_edit.attribute_name,
+          value: value
+        )
+      end
+
+      # Mark as confirmed
+      reviewable.update!(state: :confirmed)
+      Review.create!(state: :confirmed, reviewable:, reviewer:)
     end
   end
 
