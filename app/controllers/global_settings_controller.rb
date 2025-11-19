@@ -14,6 +14,11 @@ class GlobalSettingsController < ApplicationController
 
   private
 
+  def page_title
+    t("global_settings.index.title")
+  end
+  helper_method :page_title
+
   def set_settings
     @reviews_required_setting = GlobalSetting.find_or_create_by(key: "reviews_required") do |setting|
       setting.integer_value = 1

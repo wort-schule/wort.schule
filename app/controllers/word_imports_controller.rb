@@ -20,6 +20,11 @@ class WordImportsController < ApplicationController
 
   private
 
+  def page_title
+    t("word_imports.#{action_name}.title")
+  end
+  helper_method :page_title
+
   def word_import_params
     params
       .require(:word_import)

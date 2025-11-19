@@ -75,7 +75,16 @@ class WordTypeController < PublicController
   private
 
   def page_title
-    resource&.name || super
+    case action_name
+    when "index"
+      word_type.constantize.model_name.human(count: 2)
+    when "new"
+      t("#{controller_name}.new.title")
+    when "edit"
+      t("#{controller_name}.edit.title")
+    else
+      resource&.name || super
+    end
   end
 
   def resource

@@ -44,4 +44,16 @@ class KeywordsController < PublicController
       .per(12)
     @words = @all_words.page(params[:page])
   end
+
+  private
+
+  def page_title
+    case action_name
+    when "index"
+      t("keywords.index.title")
+    when "show"
+      @keywords.map(&:name).join(" + ")
+    end
+  end
+  helper_method :page_title
 end

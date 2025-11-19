@@ -13,4 +13,11 @@ class WordImagesController < PublicController
         ActiveStorage::Blob.arel_table[:filename]
       )
   end
+
+  private
+
+  def page_title
+    t("word_images.index.title")
+  end
+  helper_method :page_title
 end

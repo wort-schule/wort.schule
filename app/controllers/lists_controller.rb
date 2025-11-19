@@ -96,6 +96,20 @@ class ListsController < ApplicationController
 
   private
 
+  def page_title
+    case action_name
+    when "index"
+      t("lists.index.title")
+    when "show"
+      @list.name
+    when "new"
+      t("lists.new.title")
+    when "edit"
+      t("lists.edit.title")
+    end
+  end
+  helper_method :page_title
+
   def list_params
     params.require(:list).permit(
       :name, :description, :visibility

@@ -46,6 +46,20 @@ class WordViewSettingsController < ApplicationController
 
   private
 
+  def page_title
+    case action_name
+    when "index"
+      WordViewSetting.model_name.human(count: 2)
+    when "show"
+      @word_view_setting.name
+    when "new"
+      t("word_view_settings.new.title")
+    when "edit"
+      t("word_view_settings.edit.title")
+    end
+  end
+  helper_method :page_title
+
   def word_view_setting_params
     params.require(:word_view_setting).permit(
       :name,

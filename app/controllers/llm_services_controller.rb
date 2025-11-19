@@ -37,6 +37,18 @@ class LlmServicesController < ApplicationController
 
   private
 
+  def page_title
+    case action_name
+    when "index"
+      t("llm_services.index.title")
+    when "new"
+      t("llm_services.new.title")
+    when "edit"
+      @llm_service.name
+    end
+  end
+  helper_method :page_title
+
   def llm_service_params
     params.require(:llm_service).permit(
       :name,

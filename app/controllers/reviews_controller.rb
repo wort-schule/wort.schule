@@ -47,6 +47,7 @@ class ReviewsController < ApplicationController
 
     "Review: #{word_name}"
   end
+  helper_method :page_title
 
   def set_reviewable
     @reviewable = ChangeGroup

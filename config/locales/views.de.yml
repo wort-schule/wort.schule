@@ -266,6 +266,7 @@ de:
         back: Zurück zur Lerngruppe
   themes:
     index:
+      title: Wortkarten-Varianten
       new: Neue Wortkarten-Variante
     new:
       title: Wortkarten-Variante erstellen
@@ -282,6 +283,7 @@ de:
       standard: Standardansicht
   lists:
     index:
+      title: Wortlisten
       new: Neue Wortliste
     new:
       title: Wortliste erstellen
@@ -363,6 +365,10 @@ de:
   homes:
     show:
       advanced_search: Erweiterte Suche
+
+  pages:
+    imprint:
+      title: Impressum
 
   keywords:
     index:

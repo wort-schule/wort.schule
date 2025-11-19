@@ -20,6 +20,7 @@ module CrudActions
 
   included do
     # Override these methods in the including controller if needed
+    helper_method :page_title
   end
 
   def index
@@ -108,5 +109,18 @@ module CrudActions
 
   def destroy_alert
     t("alerts.shared.destroyed", name: resource.name)
+  end
+
+  def page_title
+    case action_name
+    when "index"
+      resource_class.model_name.human(count: 2)
+    when "show"
+      resource.name
+    when "new"
+      t("#{controller_name}.new.title")
+    when "edit"
+      t("#{controller_name}.edit.title")
+    end
   end
 end

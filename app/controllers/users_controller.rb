@@ -52,6 +52,20 @@ class UsersController < ApplicationController
 
   private
 
+  def page_title
+    case action_name
+    when "index"
+      User.model_name.human(count: 2)
+    when "show"
+      t("users.show.title")
+    when "new"
+      t("users.new.title")
+    when "edit"
+      t("users.edit.title")
+    end
+  end
+  helper_method :page_title
+
   def user_params
     params.require(:user).permit(
       :first_name,

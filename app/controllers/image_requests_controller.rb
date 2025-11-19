@@ -18,4 +18,11 @@ class ImageRequestsController < ApplicationController
 
     redirect_to @word
   end
+
+  private
+
+  def page_title
+    t("image_requests.index.title")
+  end
+  helper_method :page_title
 end

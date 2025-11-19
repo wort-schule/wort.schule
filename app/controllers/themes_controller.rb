@@ -55,6 +55,20 @@ class ThemesController < ApplicationController
 
   private
 
+  def page_title
+    case action_name
+    when "index"
+      t("themes.index.title")
+    when "show"
+      @theme.name
+    when "new"
+      t("themes.new.title")
+    when "edit"
+      t("themes.edit.title")
+    end
+  end
+  helper_method :page_title
+
   def theme_params
     params.require(:theme).permit(
       :name, :description, :word_type, :template, :visibility

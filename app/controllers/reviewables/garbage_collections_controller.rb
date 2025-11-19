@@ -15,5 +15,17 @@ module Reviewables
 
       redirect_to reviewables_garbage_collection_path
     end
+
+    private
+
+    def page_title
+      case action_name
+      when "new"
+        t("reviewables.garbage_collections.new.title")
+      when "show"
+        t("reviewables.garbage_collections.show.title")
+      end
+    end
+    helper_method :page_title
   end
 end

@@ -54,6 +54,20 @@ class HierarchiesController < PublicController
 
   private
 
+  def page_title
+    case action_name
+    when "index"
+      Hierarchy.model_name.human(count: 2)
+    when "show"
+      @hierarchy.name
+    when "new"
+      t("hierarchies.new.title")
+    when "edit"
+      t("hierarchies.edit.title")
+    end
+  end
+  helper_method :page_title
+
   def hierarchy_params
     params.require(:hierarchy).permit(
       :name, :top_hierarchy_id, :image

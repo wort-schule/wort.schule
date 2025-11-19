@@ -24,6 +24,16 @@ class LlmEnrichmentsController < ApplicationController
 
   private
 
+  def page_title
+    case action_name
+    when "new"
+      t("llm_enrichments.new.title")
+    when "show"
+      t("llm_enrichments.show.title")
+    end
+  end
+  helper_method :page_title
+
   def llm_enrichment_params
     params
       .require(:llm_enrichment)

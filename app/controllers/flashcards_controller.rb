@@ -12,4 +12,11 @@ class FlashcardsController < ApplicationController
     @list = current_user.flashcard_list(requested_list_id)
     raise ActionController::RoutingError, "Not Found" if @list.blank?
   end
+
+  private
+
+  def page_title
+    t("flashcards.index.title")
+  end
+  helper_method :page_title
 end

@@ -20,6 +20,11 @@ class LlmPromptsController < ApplicationController
 
   private
 
+  def page_title
+    t("llm_prompts.index.title")
+  end
+  helper_method :page_title
+
   def llm_prompt_params
     params.require(:llm_prompt).permit(:content)
   end

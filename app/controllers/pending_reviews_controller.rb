@@ -99,6 +99,11 @@ class PendingReviewsController < ApplicationController
 
   private
 
+  def page_title
+    t("pending_reviews.index.page_title")
+  end
+  helper_method :page_title
+
   def fetch_pending_reviews
     ChangeGroup.where(state: :waiting_for_review)
       .where(successor_id: nil)
