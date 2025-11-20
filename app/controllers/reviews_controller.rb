@@ -25,7 +25,8 @@ class ReviewsController < ApplicationController
         name: params.dig(:change_group, :new_word_attributes, :name),
         topic: params.dig(:change_group, :new_word_attributes, :topic)
       )
-      @reviewable.valid?
+      @reviewable.new_word.errors.add(:name, :blank) if @reviewable.new_word.name.blank?
+      @reviewable.new_word.errors.add(:topic, :blank) if @reviewable.new_word.topic.blank?
       render :show
     else
       render :show, status: :unprocessable_entity

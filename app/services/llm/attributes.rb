@@ -101,7 +101,7 @@ module Llm
 
               word_import = WordImport.create!(
                 name: keyword,
-                topic: keyword,
+                topic: "",
                 word_type:
               )
               UnlistedKeyword.create!(

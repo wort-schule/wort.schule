@@ -73,7 +73,7 @@ RSpec.describe "reviews for a new keyword" do
     expect(WordImport.all).to match [
       have_attributes(
         name: "klein",
-        topic: "klein",
+        topic: "",
         word_type: "Adjective"
       )
     ]
@@ -82,10 +82,17 @@ RSpec.describe "reviews for a new keyword" do
       perform_enqueued_jobs
     end.to change(NewWord, :count).by(1)
 
-    # Confirm the new word
+    # Confirm the new word - need to select a topic first
+    topic = create(:topic, name: "Eigenschaften")
     login_as me
     visit reviews_path
     expect(page).to have_content "klein"
+
+    # Select topic from Tom-Select dropdown
+    find("#change_group_new_word_attributes_topic + .ts-wrapper .ts-control").click
+    find(".ts-dropdown .option", text: topic.name).click
+    find(".ts-control input").send_keys(:escape)
+
     expect do
       click_on I18n.t("reviews.new_word_component.create")
     end.to change(UnlistedKeyword.unprocessed, :count).by(-1)

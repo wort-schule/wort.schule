@@ -63,14 +63,15 @@ RSpec.describe "reviews for new words" do
     ENV.replace(original_env)
   end
 
-  it "confirms the new word" do
-    new_word = create(:new_word)
+  it "confirms the new word", :js do
+    topic = create(:topic, name: "Tiere")
+    new_word = create(:new_word, topic: topic.name)
 
     login_as me
     visit reviews_path
     expect(page).to have_content new_word.name
-    expect(page).to have_content new_word.topic
 
+    # Topic should already be selected in the Tom-Select
     expect do
       click_on I18n.t("reviews.new_word_component.create")
     end.to change(Review, :count).by(1)
@@ -92,18 +93,22 @@ RSpec.describe "reviews for new words" do
     )
   end
 
-  it "changes and creates the new word" do
-    new_word = create(:new_word)
+  it "changes and creates the new word", :js do
+    create(:topic, name: "Tiere")
+    corrected_topic = create(:topic, name: "Lebewesen")
+    new_word = create(:new_word, topic: "Tiere")
     corrected_name = "Kater"
-    corrected_topic = "Lebewesen"
 
     login_as me
     visit reviews_path
     expect(page).to have_content new_word.name
-    expect(page).to have_content new_word.topic
 
     fill_in NewWord.human_attribute_name(:name), with: corrected_name
-    fill_in NewWord.human_attribute_name(:topic), with: corrected_topic
+
+    # Clear current selection and select new topic using Tom-Select
+    find("#change_group_new_word_attributes_topic + .ts-wrapper .ts-control").click
+    find(".ts-dropdown .option", text: corrected_topic.name).click
+    find(".ts-control input").send_keys(:escape)
 
     expect do
       click_on I18n.t("reviews.new_word_component.create")
@@ -115,7 +120,7 @@ RSpec.describe "reviews for new words" do
     expect(created_word).to have_attributes(
       name: corrected_name,
       topics: match_array([
-        have_attributes(name: corrected_topic)
+        have_attributes(name: corrected_topic.name)
       ])
     )
 
@@ -125,40 +130,69 @@ RSpec.describe "reviews for new words" do
     )
   end
 
-  it "does not allow to create a word without name or topic" do
-    new_word = create(:new_word)
+  it "shows topic as Tom-Select with existing topics", :js do
+    create(:topic, name: "Tiere")
+    create(:topic, name: "Pflanzen")
+    new_word = create(:new_word, topic: "")
 
     login_as me
-    visit reviews_path
-    expect(page).to have_content new_word.name
-    expect(page).to have_content new_word.topic
+    visit review_path(new_word.change_group)
 
-    fill_in NewWord.human_attribute_name(:name), with: ""
-    fill_in NewWord.human_attribute_name(:topic), with: ""
+    # Click on the Tom-Select control to open dropdown
+    find("#change_group_new_word_attributes_topic + .ts-wrapper .ts-control").click
+
+    # Both topics should be available in the dropdown
+    expect(page).to have_css(".ts-dropdown .option", text: "Tiere")
+    expect(page).to have_css(".ts-dropdown .option", text: "Pflanzen")
+  end
+
+  it "creates a new word with empty topic field initially", :js do
+    # Simulate a new word created from keyword review (topic is empty)
+    new_word = create(:new_word, topic: "")
+    existing_topic = create(:topic, name: "Tiere")
+
+    login_as me
+    visit review_path(new_word.change_group)
+    expect(page).to have_content new_word.name
+
+    # Topic field should be empty initially and use Tom-Select
+    fill_in NewWord.human_attribute_name(:name), with: "Hund"
+
+    # Select existing topic from Tom-Select dropdown
+    find("#change_group_new_word_attributes_topic + .ts-wrapper .ts-control").click
+    find(".ts-dropdown .option", text: existing_topic.name).click
 
     expect do
       click_on I18n.t("reviews.new_word_component.create")
-    end.to not_change(Review, :count)
-      .and not_change(Word, :count)
+    end.to change(Review, :count).by(1)
+      .and change(Word, :count).by(1)
 
-    expect(page).to have_content(I18n.t("errors.messages.blank"))
-    expect(new_word.reload.name).to be_present
-    expect(new_word.topic).to be_present
+    created_word = Word.last
+    expect(created_word).to have_attributes(
+      name: "Hund",
+      topics: match_array([
+        have_attributes(name: existing_topic.name)
+      ])
+    )
   end
 
-  it "does not create a new word if that word already exists" do
-    new_word = create(:new_word)
+  it "does not create a new word if that word already exists", :js do
+    create(:topic, name: "Tiere")
+    corrected_topic = create(:topic, name: "Lebewesen")
+    new_word = create(:new_word, topic: "Tiere")
     corrected_name = "Kater"
-    corrected_topic = "Lebewesen"
-    existing_word = create(:noun, name: corrected_name, topics: [build(:topic, name: corrected_topic)])
+    existing_word = create(:noun, name: corrected_name, topics: [corrected_topic])
 
     login_as me
     visit reviews_path
     expect(page).to have_content new_word.name
-    expect(page).to have_content new_word.topic
 
     fill_in NewWord.human_attribute_name(:name), with: corrected_name
-    fill_in NewWord.human_attribute_name(:topic), with: corrected_topic
+
+    # Select the topic that matches the existing word using Tom-Select
+    find("#change_group_new_word_attributes_topic + .ts-wrapper .ts-control").click
+    find(".ts-dropdown .option", text: corrected_topic.name).click
+    find(".ts-control input").send_keys(:escape)
 
     expect do
       click_on I18n.t("reviews.new_word_component.create")

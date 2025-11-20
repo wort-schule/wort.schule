@@ -11,6 +11,8 @@ RSpec.describe "Single reviewer confirming new word", :js do
   end
 
   it "creates the word immediately when a single reviewer confirms" do
+    # Create topic record so it shows in Tom-Select
+    create(:topic, name: "Tiere")
     # Create a new word proposal
     new_word = create(:new_word, name: "TestWort", topic: "Tiere", word_type: "Noun")
 
@@ -24,9 +26,8 @@ RSpec.describe "Single reviewer confirming new word", :js do
 
     # Should see the new word proposal
     expect(page).to have_content "TestWort"
-    expect(page).to have_content "Tiere"
 
-    # Fill in the form fields (they should be pre-filled from the new_word data)
+    # The topic should be pre-selected in the Tom-Select
     # and click the create button
     click_button I18n.t("reviews.new_word_component.create")
 
@@ -49,6 +50,8 @@ RSpec.describe "Single reviewer confirming new word", :js do
   end
 
   it "does not require a second review when reviews_required is 1" do
+    # Create topic record so it shows in Tom-Select
+    create(:topic, name: "Natur")
     new_word = create(:new_word, name: "EinzigesWort", topic: "Natur", word_type: "Noun")
 
     login_as admin

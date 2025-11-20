@@ -13,9 +13,10 @@ module Import
 
     def call
       return if word_import.blank?
-      return if [word_type, name, topic].any?(&:blank?)
+      return if [word_type, name].any?(&:blank?)
 
-      if existing_words(name:, topic:).present?
+      # Only check for existing words if topic is provided
+      if topic.present? && existing_words(name:, topic:).present?
         Rails.logger.info("Word exists, starting enrichment. name=#{name} topic=#{topic} word_type=#{word_type}")
         existing_words(name:, topic:).each do |existing_word|
           Llm::Enrich.new(word: existing_word).call
@@ -31,7 +32,7 @@ module Import
       change_group = ChangeGroup.new
       new_word.change_group = change_group
 
-      change_group.state = if existing_words(name: new_word.llm_name, topic: new_word.llm_topic).present?
+      change_group.state = if new_word.llm_topic.present? && existing_words(name: new_word.llm_name, topic: new_word.llm_topic).present?
         Rails.logger.info("New word, but exists after LLM corrections. name=#{name} topic=#{topic} word_type=#{word_type} llm_name=#{new_word.llm_name} llm_topic=#{new_word.llm_topic}")
         :discarded
       else

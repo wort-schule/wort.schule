@@ -35,7 +35,7 @@
     = f.fields_for :new_word do |n|
       = n.input :word_type, include_blank: false
       = n.input :name
-      = n.input :topic
+      = n.input :topic, collection: Topic.all.pluck(:name), include_blank: true, input_html: {'data-controller': 'select'}
 
   .flex.flex-wrap.md:gap-2.md:justify-end.mt-6
     = form_tag review_path(change_group), method: :patch, class: 'grow md:grow-0' do
