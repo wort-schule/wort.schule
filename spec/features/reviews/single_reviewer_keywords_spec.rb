@@ -150,4 +150,57 @@ RSpec.describe "Single reviewer confirming keywords", :js do
     expect(word.keywords.map(&:name)).to match_array([keyword.name, keyword2.name])
     expect(word.keywords.map(&:name)).not_to include(keyword3.name)
   end
+
+  it "allows adding new keywords when reviews_required is 1" do
+    # Set reviews_required to 1
+    GlobalSetting.reviews_required = 1
+
+    # Create an existing keyword to add via TomSelect
+    new_keyword = create(:noun, name: "Schnabel")
+
+    # Create a word_attribute_edit with one proposed keyword
+    edit = create(
+      :word_attribute_edit,
+      attribute_name: "keywords",
+      value: [keyword.id.to_s].to_json,
+      word: word
+    )
+
+    # Verify word has no keywords initially
+    expect(word.keywords).to be_empty
+    expect(edit.change_group.state).to eq "waiting_for_review"
+
+    # Login and visit reviews page
+    login_as admin
+    visit reviews_path
+
+    # Should see the word
+    expect(page).to have_content word.name
+
+    # Select the proposed keyword
+    within '[data-toggle-buttons-target="list"]' do
+      click_on keyword.name
+    end
+
+    # Add a new keyword using TomSelect
+    tom_select_input = find('[data-toggle-buttons-target="add"] + .ts-wrapper .ts-control input')
+    tom_select_input.fill_in with: new_keyword.name
+    find(".ts-dropdown .option", text: new_keyword.name).click
+
+    # Close the TomSelect dropdown by pressing Escape
+    tom_select_input.send_keys(:escape)
+
+    # Confirm the review
+    click_on I18n.t("reviews.show.actions.confirm")
+
+    # After confirmation, the keywords should be applied immediately
+    # (including the newly added one) since reviews_required is 1
+    edit.reload
+    expect(edit.change_group.state).to eq "confirmed"
+    expect(edit.change_group.reviews.count).to eq 1
+
+    # Check that both keywords were applied
+    word.reload
+    expect(word.keywords.map(&:name)).to match_array([keyword.name, new_keyword.name])
+  end
 end

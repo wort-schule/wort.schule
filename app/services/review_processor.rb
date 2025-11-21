@@ -80,19 +80,11 @@ class ReviewProcessor
       existing_edit = find_existing_edit(attributes[:id])
       human_value = normalize_value(attributes[:value])
 
-      # Only allow single-reviewer confirmation for keywords
-      # where the submitted value is a non-empty subset of proposed values
+      # Allow single-reviewer confirmation for keywords
+      # when the submitted value is a non-empty array
+      # This allows selecting subsets, adding new keywords, or any combination
       # Other array attributes (like synonyms) still require creating a new edit
-      if human_value.present? && human_value.is_a?(Array) && existing_edit.attribute_name == "keywords"
-        proposed = normalize_for_comparison(existing_edit.proposed_value)
-        submitted = normalize_for_comparison(human_value)
-
-        # All submitted values must be in the proposed values
-        # (allows subset but not additions)
-        submitted.all? { |v| proposed.include?(v) }
-      else
-        false
-      end
+      human_value.present? && human_value.is_a?(Array) && existing_edit.attribute_name == "keywords"
     end
   end
 

@@ -62,30 +62,15 @@ RSpec.describe "reviews for keywords" do
     end
     # Close the dropdown by pressing Escape
     find(".ts-control input").send_keys(:escape)
+
     # The new keyword is automatically added and selected
-    click_on I18n.t("reviews.show.actions.confirm")
-
-    # Adding a keyword creates a new edit, get the latest one
-    edit = WordAttributeEdit.order(:created_at).last
-    expect(JSON.parse(edit.value)).to match_array ["Neues Stichwort", word.id.to_s, keyword.id.to_s]
-
-    # Another reviewer confirms the edited value (with REVIEWS_REQUIRED=1, only need 1 more)
-    login_as other_admin
-    visit reviews_path
-    within '[data-toggle-buttons-target="list"]' do
-      expect(page.find_all("button").map(&:text)).to match_array ["Neues Stichwort", word.name, keyword.name]
-
-      # Manually select all three keywords
-      click_on "Neues Stichwort"
-      click_on word.name
-      click_on keyword.name
-    end
+    # With REVIEWS_REQUIRED=1, this should apply immediately
     expect do
       click_on I18n.t("reviews.show.actions.confirm")
     end.to change(Review, :count).by(1)
       .and change(WordImport, :count).by(1)
 
-    # Now it's applied
+    # With single reviewer mode, changes including additions are applied immediately
     expect(edit.reload.change_group.state).to eq "confirmed"
     expect(edit.word.keywords.map(&:name)).to match_array [word.name, keyword.name]
     expect(WordImport.all).to match_array [
