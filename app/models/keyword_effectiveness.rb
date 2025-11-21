@@ -2,7 +2,11 @@
 
 class KeywordEffectiveness < ApplicationRecord
   self.table_name = "keyword_effectiveness"
-  self.record_timestamps = false # MiMiMi manages timestamps
+
+  # Phoenix/Ecto uses inserted_at instead of Rails' created_at
+  def self.timestamp_attributes_for_create
+    ["inserted_at"]
+  end
 
   belongs_to :word, optional: true
   belongs_to :keyword, class_name: "Word", foreign_key: :keyword_id, optional: true
