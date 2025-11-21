@@ -104,13 +104,11 @@ RSpec.describe "word filter" do
 
       find_button(t("filter.apply"), visible: false).trigger("click")
 
-      # Wait for Turbo to update the results by waiting for Abend to disappear
-      # (since it should be filtered out)
-      expect(page).not_to have_css('[data-name="Abend"]', wait: 5)
-
+      # Wait for Turbo to update the results within the words container
       within "#words" do
-        # Should show Abfall (starts with "ab" AND has Bach as keyword)
-        expect(page).to have_css '[data-name="Abfall"]'
+        # Wait for the expected result to appear first (positive assertion)
+        expect(page).to have_css '[data-name="Abfall"]', wait: 5
+        # Then check negative assertions (these should already be true once Abfall appears)
         # Should NOT show Abend (starts with "ab" but doesn't have Bach as keyword)
         expect(page).not_to have_css '[data-name="Abend"]'
         # Should NOT show Bach (has itself as keyword but doesn't start with "ab")
