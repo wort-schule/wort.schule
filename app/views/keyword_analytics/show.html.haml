@@ -1,0 +1,91 @@
+- set_meta_tags title: "Keyword Analytics: #{@word.name}"
+
+%h1.text-3xl.font-bold.mb-6
+  = t('.title')
+  = link_to @word.name, @word, class: 'text-blue-600 hover:text-blue-900'
+
+= box do
+  .mb-6
+    %h2.text-xl.font-semibold.mb-4= t('.overview')
+    .grid.grid-cols-1.md:grid-cols-3.gap-4
+      .bg-blue-50.p-4.rounded-lg
+        %p.text-sm.text-gray-600= t('.total_attempts')
+        %p.text-2xl.font-bold.text-blue-600= number_with_delimiter(@total_attempts)
+      .bg-green-50.p-4.rounded-lg
+        %p.text-sm.text-gray-600= t('.success_rate')
+        %p.text-2xl.font-bold.text-green-600= "#{@success_rate}%"
+      .bg-gray-50.p-4.rounded-lg
+        %p.text-sm.text-gray-600= t('.word_type')
+        %p.text-2xl.font-bold.text-gray-600= @word.class.model_name.human
+
+- if @keyword_stats.any?
+  = box do
+    %h2.text-xl.font-semibold.mb-4= t('.keyword_performance')
+    %p.text-sm.text-gray-600.mb-4= t('.keyword_performance_description')
+
+    .overflow-x-auto
+      %table.w-full.text-sm
+        %thead
+          %tr.border-b.border-gray-300
+            %th.px-4.py-3.text-left.font-semibold= t('.keyword')
+            %th.px-4.py-3.text-right.font-semibold= t('.times_shown')
+            %th.px-4.py-3.text-right.font-semibold= t('.times_correct')
+            %th.px-4.py-3.text-right.font-semibold= t('.success_rate')
+            %th.px-4.py-3.text-right.font-semibold= t('.avg_time_ms')
+
+        %tbody
+          - @keyword_stats.each do |stat|
+            %tr.border-b.border-gray-100.hover:bg-gray-50
+              %td.px-4.py-3
+                - if stat[:keyword]
+                  = link_to stat[:keyword].name, stat[:keyword], class: 'text-blue-600 hover:text-blue-900 font-medium'
+                - else
+                  %span.text-gray-400= t('.unknown_keyword')
+              %td.px-4.py-3.text-right= stat[:shown]
+              %td.px-4.py-3.text-right.text-green-600= stat[:correct]
+              %td.px-4.py-3.text-right
+                - rate = stat[:success_rate]
+                %span{ class: rate >= 80 ? 'text-green-600' : (rate >= 50 ? 'text-yellow-600' : 'text-red-600 font-bold') }
+                  = "#{rate}%"
+              %td.px-4.py-3.text-right
+                - if stat[:avg_time_ms]
+                  = number_with_delimiter(stat[:avg_time_ms])
+                  %span.text-gray-500 ms
+                - else
+                  %span.text-gray-400 -
+
+- if @position_stats.any?
+  = box do
+    %h2.text-xl.font-semibold.mb-4= t('.position_analysis')
+    %p.text-sm.text-gray-600.mb-4= t('.position_analysis_description')
+
+    .overflow-x-auto
+      %table.w-full.text-sm
+        %thead
+          %tr.border-b.border-gray-300
+            %th.px-4.py-3.text-left.font-semibold= t('.position')
+            %th.px-4.py-3.text-right.font-semibold= t('.total')
+            %th.px-4.py-3.text-right.font-semibold= t('.correct')
+            %th.px-4.py-3.text-right.font-semibold= t('.success_rate')
+            %th.px-4.py-3.text-right.font-semibold= t('.avg_time_ms')
+
+        %tbody
+          - @position_stats.each do |stat|
+            %tr.border-b.border-gray-100.hover:bg-gray-50
+              %td.px-4.py-3
+                %span.font-medium= "#{stat[:position]}."
+              %td.px-4.py-3.text-right= stat[:total]
+              %td.px-4.py-3.text-right.text-green-600= stat[:correct]
+              %td.px-4.py-3.text-right
+                - rate = stat[:success_rate]
+                %span{ class: rate >= 80 ? 'text-green-600' : (rate >= 50 ? 'text-yellow-600' : 'text-red-600') }
+                  = "#{rate}%"
+              %td.px-4.py-3.text-right
+                - if stat[:avg_time_ms]
+                  = number_with_delimiter(stat[:avg_time_ms])
+                  %span.text-gray-500 ms
+                - else
+                  %span.text-gray-400 -
+
+.mt-6
+  = link_to t('.back_to_list'), keyword_analytics_path, class: 'button secondary'

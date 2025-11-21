@@ -186,6 +186,14 @@
                   .font-semibold= t('navigation.image_requests')
                   %p.text-sm.text-gray-600= t('navigation.image_requests_help')
 
+          - if can?(:manage, :keyword_analytics)
+            .nav-card
+              = link_to keyword_analytics_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('chart-bar', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.keyword_analytics')
+                  %p.text-sm.text-gray-600= t('navigation.keyword_analytics_help')
+
     / AI & Advanced Features Section (only for logged in users)
     - if user_signed_in? && (can?(:manage, LlmPrompt) || can?(:manage, LlmService) || can?(:manage, GlobalSetting) || can?(:manage, :llm_enrichment))
       .mb-8

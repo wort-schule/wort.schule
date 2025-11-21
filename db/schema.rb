@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_19_071248) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_21_082819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -219,6 +219,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_19_071248) do
     t.index ["user_id"], name: "index_image_requests_on_user_id"
     t.index ["word_id", "user_id"], name: "index_image_requests_on_word_id_and_user_id", unique: true
     t.index ["word_id"], name: "index_image_requests_on_word_id"
+  end
+
+  create_table "keyword_effectiveness", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "word_id", null: false
+    t.integer "keyword_id", null: false
+    t.uuid "pick_id"
+    t.uuid "round_id"
+    t.integer "keyword_position"
+    t.datetime "revealed_at"
+    t.datetime "picked_at"
+    t.boolean "led_to_correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["keyword_id"], name: "index_keyword_effectiveness_on_keyword_id"
+    t.index ["pick_id"], name: "index_keyword_effectiveness_on_pick_id"
+    t.index ["round_id"], name: "index_keyword_effectiveness_on_round_id"
+    t.index ["word_id", "keyword_id"], name: "index_keyword_effectiveness_on_word_id_and_keyword_id"
   end
 
   create_table "keywords", id: false, force: :cascade do |t|

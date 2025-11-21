@@ -94,6 +94,7 @@ class Ability
         can :manage, :llm_enrichment
         can :manage, :review
         can :manage, :word_import
+        can :manage, :keyword_analytics
         can :read, ImageRequest
 
         # User management

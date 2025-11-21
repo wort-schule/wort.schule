@@ -114,6 +114,7 @@ Rails.application.routes.draw do
     end
     resources :global_settings, only: %i[index update]
     resource :llm_enrichment, only: %i[show new create]
+    resources :keyword_analytics, only: %i[index show]
     resources :reviews, only: %i[index show update]
     resources :pending_reviews, only: :index do
       collection do

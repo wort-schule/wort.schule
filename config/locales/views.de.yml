@@ -512,3 +512,42 @@ de:
       title: LLM Ergänzung gestartet
       description: Die LLM Ergänzung wurde für alle Wörter in der Liste gestartet.
 
+  keyword_analytics:
+    index:
+      title: Keyword Analytics
+      page_title: Keyword Analytics - MiMiMi Spielanalyse
+      overview: Übersicht
+      total_records: Datensätze gesamt
+      overall_success_rate: Erfolgsrate gesamt
+      problematic_words: Problematische Wörter
+      no_data: Noch keine Analytics-Daten vorhanden.
+      problematic_words_title: Problematische Wörter
+      problematic_words_description: Wörter mit hoher Fehlerrate bei MiMiMi-Spielen (mind. 5 Versuche)
+      word: Wort
+      word_type: Wortart
+      total_attempts: Versuche
+      correct: Richtig
+      failures: Fehler
+      failure_rate: Fehlerrate
+      actions: Aktionen
+      details: Details
+    show:
+      title: "Keyword Analytics: "
+      overview: Übersicht
+      total_attempts: Versuche gesamt
+      success_rate: Erfolgsrate
+      word_type: Wortart
+      keyword_performance: Keyword-Performance
+      keyword_performance_description: Wie gut helfen die einzelnen Keywords den Spielern, das Wort zu erraten?
+      keyword: Keyword
+      times_shown: Angezeigt
+      times_correct: Richtig
+      avg_time_ms: Ø Zeit
+      unknown_keyword: Unbekanntes Keyword
+      position_analysis: Positions-Analyse
+      position_analysis_description: Erfolgsrate nach Position der Keyword-Anzeige
+      position: Position
+      total: Gesamt
+      correct: Richtig
+      back_to_list: "← Zurück zur Übersicht"
+

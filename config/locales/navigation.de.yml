@@ -56,6 +56,8 @@ de:
     reviews_help: "Überprüfen und genehmigen Sie Wortbeiträge"
     pending_reviews_help: "Übersicht aller ausstehenden Reviews mit Filteroption"
     image_requests_help: "Verwalten Sie Anfragen für Wort-Illustrationen"
+    keyword_analytics: Keyword Analytics
+    keyword_analytics_help: "Analysieren Sie die Effektivität von Keywords bei MiMiMi-Spielen"
 
     # Help texts for AI
     llm_prompts_help: "Verwalten Sie KI-Aufforderungen für automatische Ergänzungen"
