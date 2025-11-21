@@ -14,6 +14,7 @@ class KeywordAnalyticsController < ApplicationController
     @worst_keywords = find_worst_keywords
     @recent_activity = find_recent_activity
     @avg_time_to_guess = calculate_avg_time_to_guess
+    @all_keyword_pairs = find_all_keyword_pairs
   end
 
   def show
@@ -213,5 +214,42 @@ class KeywordAnalyticsController < ApplicationController
       .average("EXTRACT(EPOCH FROM (picked_at - revealed_at)) * 1000")
 
     result&.round(0)&.to_i || 0
+  end
+
+  def find_all_keyword_pairs
+    sql = <<-SQL
+      SELECT
+        word_id,
+        keyword_id,
+        COUNT(*) as times_shown,
+        SUM(CASE WHEN led_to_correct THEN 1 ELSE 0 END) as times_correct,
+        ROUND(SUM(CASE WHEN led_to_correct THEN 1.0 ELSE 0.0 END) / COUNT(*) * 100, 1) as success_rate,
+        ROUND(AVG(EXTRACT(EPOCH FROM (picked_at - revealed_at)) * 1000)) as avg_time_ms,
+        ROUND(AVG(keyword_position), 1) as avg_position
+      FROM keyword_effectiveness
+      GROUP BY word_id, keyword_id
+      HAVING COUNT(*) >= 3
+      ORDER BY success_rate DESC, times_shown DESC
+    SQL
+
+    results = ActiveRecord::Base.connection.execute(sql)
+
+    word_ids = results.map { |r| r["word_id"] }.uniq
+    keyword_ids = results.map { |r| r["keyword_id"] }.uniq
+    all_ids = (word_ids + keyword_ids).uniq
+
+    words = Word.where(id: all_ids).index_by(&:id)
+
+    results.map do |row|
+      {
+        word: words[row["word_id"]],
+        keyword: words[row["keyword_id"]],
+        times_shown: row["times_shown"],
+        times_correct: row["times_correct"],
+        success_rate: row["success_rate"].to_f,
+        avg_time_ms: row["avg_time_ms"]&.to_i,
+        avg_position: row["avg_position"].to_f
+      }
+    end.select { |r| r[:word].present? && r[:keyword].present? }
   end
 end

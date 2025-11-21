@@ -145,6 +145,54 @@
               %td.px-4.py-3.text-right
                 = link_to t('.details'), keyword_analytic_path(row[:word]), class: 'button button-sm primary'
 
+/ All Keyword-Word Pairs Table
+- if @all_keyword_pairs.any?
+  = box do
+    %h2.text-xl.font-semibold.mb-2.text-blue-700
+      %span.inline-block.mr-2 📊
+      = t('.all_pairs_title')
+    %p.text-sm.text-gray-600.mb-4= t('.all_pairs_description')
+
+    .overflow-x-auto
+      %table.w-full.text-sm
+        %thead
+          %tr.border-b-2.border-gray-300.bg-gray-50
+            %th.px-4.py-3.text-left.font-semibold= t('.target_word')
+            %th.px-4.py-3.text-left.font-semibold= t('.keyword')
+            %th.px-4.py-3.text-right.font-semibold= t('.times_shown')
+            %th.px-4.py-3.text-right.font-semibold= t('.times_correct')
+            %th.px-4.py-3.text-center.font-semibold= t('.success_rate_header')
+            %th.px-4.py-3.text-right.font-semibold= t('.avg_time_header')
+            %th.px-4.py-3.text-right.font-semibold= t('.avg_position_header')
+
+        %tbody
+          - @all_keyword_pairs.each do |pair|
+            - rate = pair[:success_rate]
+            - row_class = rate >= 80 ? 'bg-green-50' : (rate >= 50 ? 'bg-yellow-50' : 'bg-red-50')
+            %tr.border-b.border-gray-100.hover:opacity-80.transition-opacity{ class: row_class }
+              %td.px-4.py-3
+                = link_to pair[:word].name, pair[:word], class: 'text-blue-600 hover:text-blue-900 font-medium'
+              %td.px-4.py-3
+                = link_to pair[:keyword].name, pair[:keyword], class: 'text-blue-600 hover:text-blue-900'
+              %td.px-4.py-3.text-right.font-medium= pair[:times_shown]
+              %td.px-4.py-3.text-right.text-green-600.font-medium= pair[:times_correct]
+              %td.px-4.py-3
+                .flex.items-center.justify-center
+                  .w-full.max-w-28
+                    .flex.items-center.justify-between.mb-1
+                      %span{ class: rate >= 80 ? 'text-green-600 font-bold text-sm' : (rate >= 50 ? 'text-yellow-600 font-medium text-sm' : 'text-red-600 font-bold text-sm') }
+                        = "#{rate}%"
+                    .h-2.bg-gray-200.rounded-full.overflow-hidden
+                      - bar_class = rate >= 80 ? 'bg-green-500' : (rate >= 50 ? 'bg-yellow-500' : 'bg-red-500')
+                      .h-full.rounded-full{ class: bar_class, style: "width: #{rate}%" }
+              %td.px-4.py-3.text-right
+                - if pair[:avg_time_ms]
+                  = "#{(pair[:avg_time_ms] / 1000.0).round(1)}s"
+                - else
+                  %span.text-gray-400 -
+              %td.px-4.py-3.text-right
+                %span.text-gray-600= pair[:avg_position]
+
 / Legend/Help Section
 = box do
   %h2.text-xl.font-semibold.mb-4= t('.understanding_data')
@@ -158,3 +206,43 @@
     .p-3.bg-red-50.rounded-lg.border.border-red-200
       %p.font-semibold.text-red-800.mb-1= t('.poor_keyword')
       %p.text-gray-600= t('.poor_keyword_description')
+
+/ How it works Section
+= box do
+  %h2.text-xl.font-semibold.mb-4= t('.how_it_works_title')
+
+  .space-y-4.text-sm.text-gray-700
+    .p-4.bg-blue-50.rounded-lg.border.border-blue-200
+      %h3.font-semibold.text-blue-800.mb-2= t('.data_collection_title')
+      %p.mb-2= t('.data_collection_description')
+      %ul.list-disc.list-inside.space-y-1.text-gray-600
+        %li= t('.data_collection_item1')
+        %li= t('.data_collection_item2')
+        %li= t('.data_collection_item3')
+
+    .grid.grid-cols-1.md:grid-cols-2.gap-4
+      .p-4.bg-gray-50.rounded-lg.border.border-gray-200
+        %h3.font-semibold.text-gray-800.mb-2= t('.metric_success_rate_title')
+        %p.mb-2= t('.metric_success_rate_description')
+        %code.text-xs.bg-gray-200.px-2.py-1.rounded= t('.metric_success_rate_formula')
+
+      .p-4.bg-gray-50.rounded-lg.border.border-gray-200
+        %h3.font-semibold.text-gray-800.mb-2= t('.metric_avg_time_title')
+        %p.mb-2= t('.metric_avg_time_description')
+        %code.text-xs.bg-gray-200.px-2.py-1.rounded= t('.metric_avg_time_formula')
+
+      .p-4.bg-gray-50.rounded-lg.border.border-gray-200
+        %h3.font-semibold.text-gray-800.mb-2= t('.metric_position_title')
+        %p= t('.metric_position_description')
+
+      .p-4.bg-gray-50.rounded-lg.border.border-gray-200
+        %h3.font-semibold.text-gray-800.mb-2= t('.metric_min_samples_title')
+        %p= t('.metric_min_samples_description')
+
+    .p-4.bg-amber-50.rounded-lg.border.border-amber-200
+      %h3.font-semibold.text-amber-800.mb-2= t('.interpretation_title')
+      %ul.list-disc.list-inside.space-y-1.text-gray-600
+        %li= t('.interpretation_item1')
+        %li= t('.interpretation_item2')
+        %li= t('.interpretation_item3')
+        %li= t('.interpretation_item4')

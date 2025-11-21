@@ -552,6 +552,35 @@ de:
       average_keyword_description: Funktioniert, könnte aber verbessert werden
       poor_keyword: "Schlechtes Keyword (<50%)"
       poor_keyword_description: Verwirrt Spieler oder ist zu unspezifisch
+      all_pairs_title: Alle Keyword-Wort-Paare
+      all_pairs_description: Vollständige Übersicht aller Keyword-Wort-Kombinationen mit Leistungsdaten (mind. 3 Anzeigen)
+      target_word: Zielwort
+      times_shown: Angezeigt
+      times_correct: Richtig
+      success_rate_header: Erfolgsrate
+      avg_time_header: Ø Zeit
+      avg_position_header: Ø Position
+      how_it_works_title: So funktioniert die Berechnung
+      data_collection_title: Datenerfassung
+      data_collection_description: "Die Daten werden während MiMiMi-Spielen erfasst:"
+      data_collection_item1: Jedes Mal wenn ein Spieler rät, wird aufgezeichnet welche Keywords sichtbar waren
+      data_collection_item2: Zeitstempel erfassen wann jedes Keyword angezeigt wurde und wann der Spieler geraten hat
+      data_collection_item3: Pro Keyword-Anzeige wird ein Datensatz erstellt (ein Rateversuch mit 3 Keywords = 3 Datensätze)
+      metric_success_rate_title: Erfolgsrate
+      metric_success_rate_description: Anteil der richtigen Rateversuche wenn dieses Keyword sichtbar war
+      metric_success_rate_formula: "Richtig geraten / Gesamt angezeigt × 100"
+      metric_avg_time_title: Durchschnittliche Zeit
+      metric_avg_time_description: Zeit zwischen Keyword-Anzeige und Spieler-Raten
+      metric_avg_time_formula: "Zeitpunkt Raten − Zeitpunkt Anzeige"
+      metric_position_title: Durchschnittliche Position
+      metric_position_description: An welcher Stelle das Keyword typischerweise angezeigt wird (1 = erstes Keyword, 2 = zweites, etc.)
+      metric_min_samples_title: Mindestanzahl
+      metric_min_samples_description: "Für zuverlässige Statistiken werden nur Daten mit ausreichend Stichproben angezeigt: Top/Schlechteste Keywords (5+), Wort-Keyword-Paare (3+)"
+      interpretation_title: Interpretation der Daten
+      interpretation_item1: "Hohe Erfolgsrate + kurze Zeit = Sehr effektives Keyword (Spieler erkennen sofort)"
+      interpretation_item2: "Hohe Erfolgsrate + lange Zeit = Gutes Keyword (Spieler brauchen Denkzeit)"
+      interpretation_item3: "Niedrige Erfolgsrate + kurze Zeit = Verwirrendes Keyword (führt zu schnellen Fehlern)"
+      interpretation_item4: "Niedrige Erfolgsrate + lange Zeit = Unspezifisches Keyword (hilft nicht beim Erraten)"
     show:
       title: "Keyword Analytics: "
       overview: Übersicht

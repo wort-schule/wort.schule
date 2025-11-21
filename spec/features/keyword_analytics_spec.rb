@@ -113,6 +113,28 @@ RSpec.describe "keyword analytics page" do
       expect(page).to have_content I18n.t("keyword_analytics.index.good_keyword")
       expect(page).to have_content I18n.t("keyword_analytics.index.poor_keyword")
     end
+
+    it "displays all keyword-word pairs table" do
+      word = create(:noun, name: "ZielWort")
+      keyword = create(:noun, name: "HilfeKeyword")
+
+      # Create enough data for the pair to show
+      3.times do
+        create(:keyword_effectiveness,
+          word: word,
+          keyword: keyword,
+          pick_id: SecureRandom.uuid,
+          led_to_correct: true,
+          keyword_position: 1)
+      end
+
+      login_as admin
+      visit keyword_analytics_path
+
+      expect(page).to have_content I18n.t("keyword_analytics.index.all_pairs_title")
+      expect(page).to have_content "ZielWort"
+      expect(page).to have_content "HilfeKeyword"
+    end
   end
 
   describe "show page" do
