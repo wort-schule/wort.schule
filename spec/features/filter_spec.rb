@@ -173,9 +173,11 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abbauen"
       expect(page).to have_content "abstrakt"
 
-      click_on t("filter.add_words_to_list")
-      # Wait for the form to be visible (not hidden) after reveal toggle
-      expect(page).to have_css("select#list_id", visible: true, wait: 5)
+      # Find and click the reveal toggle button, wait for JS to be ready
+      toggle_button = find("button[data-action='click->reveal#toggle']", text: t("filter.add_words_to_list"), wait: 5)
+      toggle_button.click
+      # Wait for the parent container to lose its hidden class
+      expect(page).to have_css("[data-reveal-target='item']:not(.hidden) select#list_id", wait: 5)
       select list.name, from: "list_id"
       click_on t("words.show.lists.add")
 
