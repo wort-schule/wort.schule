@@ -2,6 +2,7 @@
 
 class KeywordEffectiveness < ApplicationRecord
   self.table_name = "keyword_effectiveness"
+  self.record_timestamps = false # MiMiMi manages timestamps
 
   belongs_to :word, optional: true
   belongs_to :keyword, class_name: "Word", foreign_key: :keyword_id, optional: true

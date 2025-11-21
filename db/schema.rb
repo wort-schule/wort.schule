@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_21_082819) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_21_095107) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -230,7 +230,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_082819) do
     t.datetime "revealed_at"
     t.datetime "picked_at"
     t.boolean "led_to_correct"
-    t.datetime "created_at", null: false
+    t.datetime "inserted_at", null: false
     t.datetime "updated_at", null: false
     t.index ["keyword_id"], name: "index_keyword_effectiveness_on_keyword_id"
     t.index ["pick_id"], name: "index_keyword_effectiveness_on_pick_id"
