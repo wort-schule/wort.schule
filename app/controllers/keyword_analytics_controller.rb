@@ -7,6 +7,13 @@ class KeywordAnalyticsController < ApplicationController
     @problematic_words = find_problematic_words
     @total_records = KeywordEffectiveness.count
     @overall_success_rate = calculate_overall_success_rate
+    @total_unique_picks = KeywordEffectiveness.select(:pick_id).distinct.count
+    @total_words_played = KeywordEffectiveness.select(:word_id).distinct.count
+    @total_keywords_used = KeywordEffectiveness.select(:keyword_id).distinct.count
+    @top_keywords = find_top_keywords
+    @worst_keywords = find_worst_keywords
+    @recent_activity = find_recent_activity
+    @avg_time_to_guess = calculate_avg_time_to_guess
   end
 
   def show
@@ -129,5 +136,82 @@ class KeywordAnalyticsController < ApplicationController
 
     correct = KeywordEffectiveness.for_word(word_id).correct.select(:pick_id).distinct.count
     (correct.to_f / total * 100).round(1)
+  end
+
+  def find_top_keywords
+    sql = <<-SQL
+      SELECT
+        keyword_id,
+        COUNT(*) as times_shown,
+        SUM(CASE WHEN led_to_correct THEN 1 ELSE 0 END) as times_correct,
+        ROUND(SUM(CASE WHEN led_to_correct THEN 1.0 ELSE 0.0 END) / COUNT(*) * 100, 1) as success_rate,
+        ROUND(AVG(EXTRACT(EPOCH FROM (picked_at - revealed_at)) * 1000)) as avg_time_ms
+      FROM keyword_effectiveness
+      GROUP BY keyword_id
+      HAVING COUNT(*) >= 5
+      ORDER BY success_rate DESC, avg_time_ms ASC
+      LIMIT 10
+    SQL
+
+    results = ActiveRecord::Base.connection.execute(sql)
+    keyword_ids = results.map { |r| r["keyword_id"] }
+    keywords = Word.where(id: keyword_ids).index_by(&:id)
+
+    results.map do |row|
+      {
+        keyword: keywords[row["keyword_id"]],
+        times_shown: row["times_shown"],
+        times_correct: row["times_correct"],
+        success_rate: row["success_rate"].to_f,
+        avg_time_ms: row["avg_time_ms"]&.to_i
+      }
+    end.select { |r| r[:keyword].present? }
+  end
+
+  def find_worst_keywords
+    sql = <<-SQL
+      SELECT
+        keyword_id,
+        COUNT(*) as times_shown,
+        SUM(CASE WHEN led_to_correct THEN 1 ELSE 0 END) as times_correct,
+        ROUND(SUM(CASE WHEN led_to_correct THEN 1.0 ELSE 0.0 END) / COUNT(*) * 100, 1) as success_rate,
+        ROUND(AVG(EXTRACT(EPOCH FROM (picked_at - revealed_at)) * 1000)) as avg_time_ms
+      FROM keyword_effectiveness
+      GROUP BY keyword_id
+      HAVING COUNT(*) >= 5
+      ORDER BY success_rate ASC, avg_time_ms DESC
+      LIMIT 10
+    SQL
+
+    results = ActiveRecord::Base.connection.execute(sql)
+    keyword_ids = results.map { |r| r["keyword_id"] }
+    keywords = Word.where(id: keyword_ids).index_by(&:id)
+
+    results.map do |row|
+      {
+        keyword: keywords[row["keyword_id"]],
+        times_shown: row["times_shown"],
+        times_correct: row["times_correct"],
+        success_rate: row["success_rate"].to_f,
+        avg_time_ms: row["avg_time_ms"]&.to_i
+      }
+    end.select { |r| r[:keyword].present? }
+  end
+
+  def find_recent_activity
+    {
+      last_24h: KeywordEffectiveness.where("inserted_at >= ?", 24.hours.ago).count,
+      last_7d: KeywordEffectiveness.where("inserted_at >= ?", 7.days.ago).count,
+      last_30d: KeywordEffectiveness.where("inserted_at >= ?", 30.days.ago).count
+    }
+  end
+
+  def calculate_avg_time_to_guess
+    result = KeywordEffectiveness
+      .where(led_to_correct: true)
+      .where("keyword_position = 1")
+      .average("EXTRACT(EPOCH FROM (picked_at - revealed_at)) * 1000")
+
+    result&.round(0)&.to_i || 0
   end
 end

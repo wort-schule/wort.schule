@@ -60,6 +60,59 @@ RSpec.describe "keyword analytics page" do
       expect(page).to have_content "TestWort"
       expect(page).to have_content "100" # 100% failure rate
     end
+
+    it "displays top and worst performing keywords" do
+      good_keyword = create(:noun, name: "GutesKeyword")
+      bad_keyword = create(:noun, name: "SchlechtesKeyword")
+      word = create(:noun, name: "TestWort")
+
+      # Create successful attempts for good keyword
+      5.times do
+        create(:keyword_effectiveness,
+          word: word,
+          keyword: good_keyword,
+          pick_id: SecureRandom.uuid,
+          led_to_correct: true,
+          keyword_position: 1)
+      end
+
+      # Create failed attempts for bad keyword
+      5.times do
+        create(:keyword_effectiveness,
+          word: word,
+          keyword: bad_keyword,
+          pick_id: SecureRandom.uuid,
+          led_to_correct: false,
+          keyword_position: 1)
+      end
+
+      login_as admin
+      visit keyword_analytics_path
+
+      expect(page).to have_content I18n.t("keyword_analytics.index.top_keywords_title")
+      expect(page).to have_content I18n.t("keyword_analytics.index.worst_keywords_title")
+      expect(page).to have_content "GutesKeyword"
+      expect(page).to have_content "SchlechtesKeyword"
+    end
+
+    it "displays recent activity statistics" do
+      login_as admin
+      visit keyword_analytics_path
+
+      expect(page).to have_content I18n.t("keyword_analytics.index.recent_activity")
+      expect(page).to have_content I18n.t("keyword_analytics.index.last_24h")
+      expect(page).to have_content I18n.t("keyword_analytics.index.last_7d")
+      expect(page).to have_content I18n.t("keyword_analytics.index.last_30d")
+    end
+
+    it "displays data interpretation help" do
+      login_as admin
+      visit keyword_analytics_path
+
+      expect(page).to have_content I18n.t("keyword_analytics.index.understanding_data")
+      expect(page).to have_content I18n.t("keyword_analytics.index.good_keyword")
+      expect(page).to have_content I18n.t("keyword_analytics.index.poor_keyword")
+    end
   end
 
   describe "show page" do

@@ -517,8 +517,12 @@ de:
       title: Keyword Analytics
       page_title: Keyword Analytics - MiMiMi Spielanalyse
       overview: Übersicht
-      total_records: Datensätze gesamt
-      overall_success_rate: Erfolgsrate gesamt
+      total_records: Datensätze
+      overall_success_rate: Erfolgsrate
+      unique_guesses: Rateversuche
+      words_played: Wörter gespielt
+      keywords_used: Keywords genutzt
+      avg_guess_time: Ø Ratezeit
       problematic_words: Problematische Wörter
       no_data: Noch keine Analytics-Daten vorhanden.
       problematic_words_title: Problematische Wörter
@@ -531,6 +535,23 @@ de:
       failure_rate: Fehlerrate
       actions: Aktionen
       details: Details
+      recent_activity: Aktivität
+      last_24h: Letzte 24 Stunden
+      last_7d: Letzte 7 Tage
+      last_30d: Letzte 30 Tage
+      top_keywords_title: Top Keywords
+      top_keywords_description: Keywords mit höchster Erfolgsrate (mind. 5 Anzeigen)
+      worst_keywords_title: Schlechteste Keywords
+      worst_keywords_description: Keywords mit niedrigster Erfolgsrate - sollten überarbeitet werden
+      correct_of_shown: richtig
+      avg_time: Ø Zeit
+      understanding_data: Daten verstehen
+      good_keyword: "Gutes Keyword (>80%)"
+      good_keyword_description: Spieler erraten das Wort schnell und zuverlässig
+      average_keyword: "Durchschnittliches Keyword (50-80%)"
+      average_keyword_description: Funktioniert, könnte aber verbessert werden
+      poor_keyword: "Schlechtes Keyword (<50%)"
+      poor_keyword_description: Verwirrt Spieler oder ist zu unspezifisch
     show:
       title: "Keyword Analytics: "
       overview: Übersicht

@@ -2,55 +2,159 @@
 
 %h1.text-3xl.font-bold.mb-6= t('.title')
 
+/ Main Stats Grid
 = box do
   .mb-6
     %h2.text-xl.font-semibold.mb-4= t('.overview')
-    .grid.grid-cols-1.md:grid-cols-3.gap-4
-      .bg-blue-50.p-4.rounded-lg
-        %p.text-sm.text-gray-600= t('.total_records')
+    .grid.grid-cols-2.md:grid-cols-4.lg:grid-cols-6.gap-4
+      .bg-blue-50.p-4.rounded-lg.text-center
+        %p.text-xs.text-gray-600.uppercase.tracking-wide= t('.total_records')
         %p.text-2xl.font-bold.text-blue-600= number_with_delimiter(@total_records)
-      .bg-green-50.p-4.rounded-lg
-        %p.text-sm.text-gray-600= t('.overall_success_rate')
+      .bg-green-50.p-4.rounded-lg.text-center
+        %p.text-xs.text-gray-600.uppercase.tracking-wide= t('.overall_success_rate')
         %p.text-2xl.font-bold.text-green-600= "#{@overall_success_rate}%"
-      .bg-yellow-50.p-4.rounded-lg
-        %p.text-sm.text-gray-600= t('.problematic_words')
-        %p.text-2xl.font-bold.text-yellow-600= @problematic_words.count
+      .bg-purple-50.p-4.rounded-lg.text-center
+        %p.text-xs.text-gray-600.uppercase.tracking-wide= t('.unique_guesses')
+        %p.text-2xl.font-bold.text-purple-600= number_with_delimiter(@total_unique_picks)
+      .bg-indigo-50.p-4.rounded-lg.text-center
+        %p.text-xs.text-gray-600.uppercase.tracking-wide= t('.words_played')
+        %p.text-2xl.font-bold.text-indigo-600= number_with_delimiter(@total_words_played)
+      .bg-pink-50.p-4.rounded-lg.text-center
+        %p.text-xs.text-gray-600.uppercase.tracking-wide= t('.keywords_used')
+        %p.text-2xl.font-bold.text-pink-600= number_with_delimiter(@total_keywords_used)
+      .bg-amber-50.p-4.rounded-lg.text-center
+        %p.text-xs.text-gray-600.uppercase.tracking-wide= t('.avg_guess_time')
+        %p.text-2xl.font-bold.text-amber-600
+          - if @avg_time_to_guess > 0
+            = "#{(@avg_time_to_guess / 1000.0).round(1)}s"
+          - else
+            = "-"
 
+/ Recent Activity
+= box do
+  %h2.text-xl.font-semibold.mb-4= t('.recent_activity')
+  .grid.grid-cols-1.md:grid-cols-3.gap-4
+    .bg-gradient-to-br.from-blue-500.to-blue-600.p-4.rounded-lg.text-white
+      %p.text-sm.opacity-90= t('.last_24h')
+      %p.text-3xl.font-bold= number_with_delimiter(@recent_activity[:last_24h])
+    .bg-gradient-to-br.from-purple-500.to-purple-600.p-4.rounded-lg.text-white
+      %p.text-sm.opacity-90= t('.last_7d')
+      %p.text-3xl.font-bold= number_with_delimiter(@recent_activity[:last_7d])
+    .bg-gradient-to-br.from-indigo-500.to-indigo-600.p-4.rounded-lg.text-white
+      %p.text-sm.opacity-90= t('.last_30d')
+      %p.text-3xl.font-bold= number_with_delimiter(@recent_activity[:last_30d])
+
+/ Top and Worst Keywords Side by Side
+.grid.grid-cols-1.lg:grid-cols-2.gap-6.my-6
+  / Top Performing Keywords
+  - if @top_keywords.any?
+    = box do
+      %h2.text-xl.font-semibold.mb-2.text-green-700
+        %span.inline-block.mr-2 ★
+        = t('.top_keywords_title')
+      %p.text-sm.text-gray-600.mb-4= t('.top_keywords_description')
+
+      .space-y-3
+        - @top_keywords.each_with_index do |kw, index|
+          .flex.items-center.p-3.bg-green-50.rounded-lg.border.border-green-100
+            .flex-shrink-0.w-8.h-8.bg-green-500.text-white.rounded-full.flex.items-center.justify-center.font-bold.text-sm
+              = index + 1
+            .ml-3.flex-grow
+              .flex.items-center.justify-between
+                = link_to kw[:keyword].name, kw[:keyword], class: 'font-medium text-green-800 hover:text-green-900'
+                %span.text-lg.font-bold.text-green-600= "#{kw[:success_rate]}%"
+              .flex.items-center.text-xs.text-gray-600.mt-1
+                %span= "#{kw[:times_correct]}/#{kw[:times_shown]} #{t('.correct_of_shown')}"
+                - if kw[:avg_time_ms]
+                  %span.mx-2 •
+                  %span= "#{(kw[:avg_time_ms] / 1000.0).round(1)}s #{t('.avg_time')}"
+              / Progress bar
+              .mt-2.h-2.bg-green-200.rounded-full.overflow-hidden
+                .h-full.bg-green-500.rounded-full{ style: "width: #{kw[:success_rate]}%" }
+
+  / Worst Performing Keywords
+  - if @worst_keywords.any?
+    = box do
+      %h2.text-xl.font-semibold.mb-2.text-red-700
+        %span.inline-block.mr-2 ⚠
+        = t('.worst_keywords_title')
+      %p.text-sm.text-gray-600.mb-4= t('.worst_keywords_description')
+
+      .space-y-3
+        - @worst_keywords.each_with_index do |kw, index|
+          .flex.items-center.p-3.bg-red-50.rounded-lg.border.border-red-100
+            .flex-shrink-0.w-8.h-8.bg-red-500.text-white.rounded-full.flex.items-center.justify-center.font-bold.text-sm
+              = index + 1
+            .ml-3.flex-grow
+              .flex.items-center.justify-between
+                = link_to kw[:keyword].name, kw[:keyword], class: 'font-medium text-red-800 hover:text-red-900'
+                %span.text-lg.font-bold.text-red-600= "#{kw[:success_rate]}%"
+              .flex.items-center.text-xs.text-gray-600.mt-1
+                %span= "#{kw[:times_correct]}/#{kw[:times_shown]} #{t('.correct_of_shown')}"
+                - if kw[:avg_time_ms]
+                  %span.mx-2 •
+                  %span= "#{(kw[:avg_time_ms] / 1000.0).round(1)}s #{t('.avg_time')}"
+              / Progress bar
+              .mt-2.h-2.bg-red-200.rounded-full.overflow-hidden
+                .h-full.bg-red-500.rounded-full{ style: "width: #{kw[:success_rate]}%" }
+
+/ Problematic Words Section
 - if @problematic_words.empty?
   = box do
     %p.text-center.text-gray-600= t('.no_data')
 - else
   = box do
-    %h2.text-xl.font-semibold.mb-4= t('.problematic_words_title')
+    %h2.text-xl.font-semibold.mb-2.text-yellow-700
+      %span.inline-block.mr-2 ⚡
+      = t('.problematic_words_title')
     %p.text-sm.text-gray-600.mb-4= t('.problematic_words_description')
 
     .overflow-x-auto
       %table.w-full.text-sm
         %thead
-          %tr.border-b.border-gray-300
+          %tr.border-b-2.border-gray-300.bg-gray-50
             %th.px-4.py-3.text-left.font-semibold= t('.word')
             %th.px-4.py-3.text-left.font-semibold= t('.word_type')
             %th.px-4.py-3.text-right.font-semibold= t('.total_attempts')
             %th.px-4.py-3.text-right.font-semibold= t('.correct')
             %th.px-4.py-3.text-right.font-semibold= t('.failures')
-            %th.px-4.py-3.text-right.font-semibold= t('.failure_rate')
+            %th.px-4.py-3.text-center.font-semibold= t('.failure_rate')
             %th.px-4.py-3.text-right.font-semibold= t('.actions')
 
         %tbody
           - @problematic_words.each do |row|
             - next unless row[:word]
-            %tr.border-b.border-gray-100.hover:bg-gray-50
+            %tr.border-b.border-gray-100.hover:bg-yellow-50.transition-colors
               %td.px-4.py-3
                 = link_to row[:word].name, row[:word], class: 'text-blue-600 hover:text-blue-900 font-medium'
               %td.px-4.py-3
                 %span.text-xs.bg-blue-100.text-blue-800.px-2.py-1.rounded
                   = row[:word].class.model_name.human
-              %td.px-4.py-3.text-right= row[:total_attempts]
-              %td.px-4.py-3.text-right.text-green-600= row[:correct_count]
-              %td.px-4.py-3.text-right.text-red-600= row[:failures]
-              %td.px-4.py-3.text-right
+              %td.px-4.py-3.text-right.font-medium= row[:total_attempts]
+              %td.px-4.py-3.text-right.text-green-600.font-medium= row[:correct_count]
+              %td.px-4.py-3.text-right.text-red-600.font-medium= row[:failures]
+              %td.px-4.py-3
                 - rate = row[:failure_rate].to_f
-                %span{ class: rate >= 50 ? 'text-red-600 font-bold' : 'text-yellow-600' }
-                  = "#{rate}%"
+                .flex.items-center.justify-center
+                  .w-full.max-w-24
+                    .flex.items-center.justify-between.mb-1
+                      %span{ class: rate >= 50 ? 'text-red-600 font-bold text-sm' : 'text-yellow-600 font-medium text-sm' }
+                        = "#{rate}%"
+                    .h-2.bg-gray-200.rounded-full.overflow-hidden
+                      .h-full.rounded-full{ class: rate >= 50 ? 'bg-red-500' : 'bg-yellow-500', style: "width: #{rate}%" }
               %td.px-4.py-3.text-right
                 = link_to t('.details'), keyword_analytic_path(row[:word]), class: 'button button-sm primary'
+
+/ Legend/Help Section
+= box do
+  %h2.text-xl.font-semibold.mb-4= t('.understanding_data')
+  .grid.grid-cols-1.md:grid-cols-3.gap-4.text-sm
+    .p-3.bg-green-50.rounded-lg.border.border-green-200
+      %p.font-semibold.text-green-800.mb-1= t('.good_keyword')
+      %p.text-gray-600= t('.good_keyword_description')
+    .p-3.bg-yellow-50.rounded-lg.border.border-yellow-200
+      %p.font-semibold.text-yellow-800.mb-1= t('.average_keyword')
+      %p.text-gray-600= t('.average_keyword_description')
+    .p-3.bg-red-50.rounded-lg.border.border-red-200
+      %p.font-semibold.text-red-800.mb-1= t('.poor_keyword')
+      %p.text-gray-600= t('.poor_keyword_description')
