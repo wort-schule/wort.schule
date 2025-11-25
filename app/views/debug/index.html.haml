@@ -30,6 +30,23 @@
           %li Ensure GoodJob and related tables exist in the database
           %li Contact support if the issue persists
 
+  / System Information
+  .bg-white.rounded-lg.shadow.p-6.mb-6
+    %h2.text-xl.font-bold.mb-4 System Information
+    %dl.grid.grid-cols-2.md:grid-cols-4.gap-4
+      %div
+        %dt.font-semibold.text-gray-600 Ruby Version
+        %dd.text-gray-900.font-mono= RUBY_VERSION
+      %div
+        %dt.font-semibold.text-gray-600 Rails Version
+        %dd.text-gray-900.font-mono= Rails::VERSION::STRING
+      %div
+        %dt.font-semibold.text-gray-600 Environment
+        %dd.text-gray-900= Rails.env
+      %div
+        %dt.font-semibold.text-gray-600 Database
+        %dd.text-gray-900= ActiveRecord::Base.connection.adapter_name
+
   .grid.grid-cols-1.md:grid-cols-2.gap-6.mb-6
     / LLM Service Status
     .bg-white.rounded-lg.shadow.p-6

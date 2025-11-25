@@ -61,6 +61,13 @@ RSpec.describe "Debug Dashboard", type: :request do
         expect(response.body).to include("How to Debug LLM Issues")
       end
 
+      it "displays system information with Ruby version" do
+        get "/debug"
+        expect(response.body).to include("System Information")
+        expect(response.body).to include("Ruby Version")
+        expect(response.body).to include(RUBY_VERSION)
+      end
+
       context "with LLM invocations" do
         before { sign_in admin }
 
