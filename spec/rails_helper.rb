@@ -23,6 +23,7 @@ WebMock.disable_net_connect!(allow: ["127.0.0.1", "localhost"])
 
 Capybara.asset_host = "http://localhost:3000"
 Capybara.javascript_driver = :cuprite
+Capybara.default_max_wait_time = 5
 Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app,
     window_size: [1200, 800],

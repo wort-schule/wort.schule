@@ -108,11 +108,14 @@ RSpec.describe "word filter" do
       within "#words" do
         # Wait for the expected result to appear first (positive assertion)
         expect(page).to have_css '[data-name="Abfall"]', wait: 5
-        # Then check negative assertions (these should already be true once Abfall appears)
+        # Then check negative assertions — use have_no_css with explicit wait
+        # so we keep polling until Turbo finishes removing the old rows. Without
+        # the wait the assertion runs once on whatever DOM is present at that
+        # instant, which is racy on slow CI runners.
         # Should NOT show Abend (starts with "ab" but doesn't have Bach as keyword)
-        expect(page).not_to have_css '[data-name="Abend"]'
+        expect(page).to have_no_css '[data-name="Abend"]', wait: 5
         # Should NOT show Bach (has itself as keyword but doesn't start with "ab")
-        expect(page).not_to have_css '[data-name="Bach"]'
+        expect(page).to have_no_css '[data-name="Bach"]', wait: 5
       end
     end
   end
@@ -174,8 +177,11 @@ RSpec.describe "word filter" do
       # Find and click the reveal toggle button, wait for JS to be ready
       toggle_button = find("button[data-action='click->reveal#toggle']", text: t("filter.add_words_to_list"), wait: 5)
       toggle_button.click
-      # Wait for the parent container to lose its hidden class
+      # Wait for the parent container to lose its hidden class AND for the
+      # select itself to become visible to Capybara — checking the parent class
+      # alone leaves a small race where the select is still considered hidden.
       expect(page).to have_css("[data-reveal-target='item']:not(.hidden) select#list_id", wait: 5)
+      expect(page).to have_select("list_id", visible: true, wait: 5)
       select list.name, from: "list_id"
       click_on t("words.show.lists.add")
 
