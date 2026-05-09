@@ -4,12 +4,17 @@
 @plugin "@tailwindcss/aspect-ratio";
 @plugin "@tailwindcss/typography";
 
-@source "../../../app/helpers";
-@source "../../../app/controllers";
-@source "../../../app/javascript";
-@source "../../../app/views";
-@source "../../../app/components";
-@source "../../../config/initializers/simple_form.rb";
+/*
+ * Restrict scanning to template/JS extensions only. Tailwind 4.2.4's Rust
+ * Ruby pre-processor (crates/oxide/src/extractor/pre_processors/ruby.rs)
+ * panics with a Utf8Error on at least one of this project's .rb files
+ * during production asset compile, which kills the deploy. The classes we
+ * care about live in HAML/ERB/JS anyway; the rare helper-only class can
+ * be added back via `@source inline(…)` if a regression shows up.
+ */
+@source "../../../app/javascript/**/*.js";
+@source "../../../app/views/**/*.{erb,haml,html,slim,liquid}";
+@source "../../../app/components/**/*.{erb,haml,html,slim}";
 
 @theme {
   --color-primary: #2A7BF7;
