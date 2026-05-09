@@ -2,7 +2,9 @@
 
 module Llm
   class CheckBaseForm
-    attr_reader :name, :topic, :word_type, :word_llm_invocation
+    include InvocationTracker
+
+    attr_reader :name, :topic, :word_type
 
     def initialize(name:, topic:, word_type:)
       @name = name
@@ -11,41 +13,12 @@ module Llm
     end
 
     def call
-      return if pending_llm_response?
-
-      initialize_word_llm_invocation
-      response = llm_response
-      word_llm_invocation.update!(state: :completed)
-
-      initialize_new_word_reviewable(response)
-    rescue => e
-      word_llm_invocation&.update!(
-        state: :failed,
-        error: e.full_message
-      )
-
-      raise e if word_llm_invocation.blank?
+      track_invocation(key: [name, topic, word_type].join("#"), invocation_type: :check_base_form) do
+        initialize_new_word_reviewable(llm_response)
+      end
     end
 
     private
-
-    def pending_llm_response?
-      WordLlmInvocation
-        .exists?(
-          key: [name, topic, word_type].join("#"),
-          invocation_type: "check_base_form",
-          state: %w[new invoked]
-        )
-    end
-
-    def initialize_word_llm_invocation
-      @word_llm_invocation ||= WordLlmInvocation
-        .create!(
-          key: [name, topic, word_type].join("#"),
-          invocation_type: "check_base_form",
-          state: :invoked
-        )
-    end
 
     def llm_response
       @llm_response ||= Invoke.new(

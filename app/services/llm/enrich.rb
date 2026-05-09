@@ -2,6 +2,8 @@
 
 module Llm
   class Enrich
+    include InvocationTracker
+
     ATTRIBUTE_GROUPS = [
       [:case_1_singular, :case_2_singular, :case_3_singular, :case_4_singular, :case_1_plural, :case_2_plural, :case_3_plural, :case_4_plural],
       [:imperative_singular, :imperative_plural],
@@ -12,7 +14,7 @@ module Llm
       [:comparative, :superlative]
     ]
 
-    attr_reader :word, :word_llm_invocation
+    attr_reader :word
 
     def initialize(word:)
       @word = word
@@ -40,35 +42,15 @@ module Llm
     end
 
     def call
-      return if pending_llm_response?
+      track_invocation(key: "#{word.class}##{word.id}", invocation_type: :enrichment) do
+        if @llm_invoke_all_properties.full_prompt.present?
+          create_enriched_attributes(all_properties_llm_response, all_properties_response_model)
+        end
 
-      initialize_word_llm_invocation
-
-      if @llm_invoke_all_properties.full_prompt.present?
-        response = all_properties_llm_response
-        create_enriched_attributes(response, all_properties_response_model)
+        if @llm_invoke_keywords.full_prompt.present?
+          create_enriched_attributes(keywords_llm_response, keywords_response_model)
+        end
       end
-
-      if @llm_invoke_keywords.full_prompt.present?
-        response = keywords_llm_response
-        create_enriched_attributes(response, keywords_response_model)
-      end
-
-      word_llm_invocation.update!(state: :completed)
-    rescue => e
-      error_message = e.full_message
-
-      # For Faraday errors, append the response body which contains the JSON error
-      if e.respond_to?(:response) && e.response&.dig(:body).present?
-        error_message += "\n\nAPI Response Body:\n#{e.response[:body]}"
-      end
-
-      word_llm_invocation&.update!(
-        state: :failed,
-        error: error_message
-      )
-
-      raise e if word_llm_invocation.blank?
     end
 
     def supported?
@@ -85,24 +67,6 @@ module Llm
     end
 
     private
-
-    def pending_llm_response?
-      WordLlmInvocation
-        .exists?(
-          key: "#{word.class}##{word.id}",
-          invocation_type: "enrichment",
-          state: %w[new invoked]
-        )
-    end
-
-    def initialize_word_llm_invocation
-      @word_llm_invocation ||= WordLlmInvocation
-        .create!(
-          key: "#{word.class}##{word.id}",
-          invocation_type: :enrichment,
-          state: :invoked
-        )
-    end
 
     def all_properties_llm_response
       @llm_invoke_all_properties.call.reject { |key, _| key.to_s == "keywords" }
