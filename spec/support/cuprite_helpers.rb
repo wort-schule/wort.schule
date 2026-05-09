@@ -23,14 +23,16 @@ module CupriteHelpers
     JS
   end
 
-  # Run a Capybara interaction that can race a Turbo re-render. Cuprite
-  # raises one of three transient errors when the DOM moves under us
-  # mid-action; retry up to `times` times before giving up.
+  # Run a Capybara interaction that can race a Turbo re-render. The
+  # rescue list covers the four ways Cuprite signals "the DOM moved under
+  # us mid-action" — ObsoleteNode (node detached), CoordinatesNotFound
+  # (node has no box), NodeNotFound (Ferrum lost the node id), and
+  # ElementNotFound (the target was replaced before we could click).
   def with_node_churn_retry(times: 3)
     attempts = 0
     begin
       yield
-    rescue Capybara::Cuprite::ObsoleteNode, Ferrum::CoordinatesNotFoundError, Ferrum::NodeNotFoundError
+    rescue Capybara::Cuprite::ObsoleteNode, Ferrum::CoordinatesNotFoundError, Ferrum::NodeNotFoundError, Capybara::ElementNotFound
       attempts += 1
       retry if attempts < times
       raise
