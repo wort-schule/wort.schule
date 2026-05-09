@@ -11,7 +11,7 @@ module SelfReferencingAssociations
     # Override << to prevent adding self-references and duplicates
     def <<(group)
       group -= self if group.respond_to?(:to_a)
-      super(group) unless include?(group)
+      super unless include?(group)
     end
   end
 

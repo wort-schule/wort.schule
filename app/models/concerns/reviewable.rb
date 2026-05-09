@@ -18,7 +18,7 @@ module Reviewable
         )
         .where(
           id: select(:id)
-        .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.change_group_id = change_groups.id AND reviewers.reviewer_id = ?)", reviewer_id)
+            .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.change_group_id = change_groups.id AND reviewers.reviewer_id = ?)", reviewer_id)
         )
         .order(:created_at)
     }

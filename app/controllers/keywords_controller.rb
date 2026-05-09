@@ -21,16 +21,16 @@ class KeywordsController < PublicController
     @keywords = Word.where(id: @keyword_ids)
     @all_words = Word.where(
       id: Keyword
-      .select(:word_id)
-      .where(keyword_id: @keyword_ids)
-      .group(:word_id)
-      .having("count(word_id) = ?", @keyword_ids.count)
+        .select(:word_id)
+        .where(keyword_id: @keyword_ids)
+        .group(:word_id)
+        .having("count(word_id) = ?", @keyword_ids.count)
     )
     @related_keywords = Word.where(
       id: Keyword
-      .where(word_id: @all_words.select(:id))
-      .where.not(keyword_id: @keyword_ids)
-      .select(:keyword_id)
+        .where(word_id: @all_words.select(:id))
+        .where.not(keyword_id: @keyword_ids)
+        .select(:keyword_id)
     )
       .joins(<<~SQL)
         join (

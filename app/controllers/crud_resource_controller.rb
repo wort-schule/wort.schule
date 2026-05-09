@@ -13,5 +13,6 @@
 #   end
 class CrudResourceController < ApplicationController
   include CrudActions
+
   load_and_authorize_resource
 end

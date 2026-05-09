@@ -3,7 +3,7 @@ module SeoHelper
     return word.name unless word.name === Noun
 
     article_singular = word.article_definite(case_number: 1, singular: true)
-    "#{word.name}#{article_singular.present? ? ", #{article_singular}" : ""}"
+    "#{word.name}#{", #{article_singular}" if article_singular.present?}"
   end
 
   def variants_for(word)

@@ -38,7 +38,7 @@ module WordFilter
       else
         where(
           "words.id": Word.joins(attribute)
-          .where(attribute => {id: attribute_values})
+            .where(attribute => {id: attribute_values})
         )
       end
     end
@@ -222,7 +222,7 @@ module WordFilter
 
       where(
         "words.id": Word.joins(:sources)
-        .where("sources.id": source)
+          .where("sources.id": source)
       )
     }
 
@@ -231,8 +231,8 @@ module WordFilter
 
       where(
         "words.id": Word
-        .joins(:topics)
-        .where(topics: {id: topic})
+          .joins(:topics)
+          .where(topics: {id: topic})
       )
     }
 
@@ -278,12 +278,12 @@ module WordFilter
       if query.to_s == "yes"
         where.not(
           "words.id": Word
-          .where("example_sentences = '[]'")
+            .where("example_sentences = '[]'")
         )
       elsif query.to_s == "no"
         where(
           "words.id": Word
-          .where("example_sentences = '[]'")
+            .where("example_sentences = '[]'")
         )
       end
     }

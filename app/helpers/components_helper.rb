@@ -9,7 +9,7 @@ module ComponentsHelper
   end
 
   def box(options = {}, &block)
-    padding = options[:padding].nil? ? true : options.delete(:padding)
+    padding = options[:padding].nil? || options.delete(:padding)
     classes = options.delete(:class) || ""
 
     classes += padding ? " px-4 py-5 sm:px-6" : ""
@@ -20,7 +20,7 @@ module ComponentsHelper
   end
 
   def box_title(title, options = {})
-    padding = options[:padding].nil? ? true : options[:padding]
+    padding = options[:padding].nil? || options[:padding]
     padding_classes = padding ? "px-4 py-5 sm:px-6" : ""
     heading = options[:heading].presence || "h1"
 

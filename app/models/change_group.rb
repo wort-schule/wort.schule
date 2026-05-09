@@ -50,10 +50,10 @@ class ChangeGroup < ApplicationRecord
         .where("serialized_params->'arguments' @> ?", "[#{word_id}]")
         .where(finished_at: nil)
         .find_each do |job|
-        job.update!(
-          finished_at: Time.current,
-          error: "Discarded: Associated ChangeGroup was deleted"
-        )
+          job.update!(
+            finished_at: Time.current,
+            error: "Discarded: Associated ChangeGroup was deleted"
+          )
       end
     end
   end

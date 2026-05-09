@@ -4,6 +4,7 @@
 # because topics are publicly accessible
 class TopicsController < PublicController
   include CrudActions
+
   load_and_authorize_resource
 
   private
