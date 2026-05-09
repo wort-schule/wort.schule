@@ -30,11 +30,27 @@ set :user, "wortschule"
 set :shared_files, fetch(:shared_files, []).push("config/database.yml", ".env", "config/google-tts-credentials.json")
 set :shared_dirs, fetch(:shared_dirs, []).push("public/packs", "node_modules", "storage", "tmp/pids")
 
+# Source of truth for the Ruby version: the project's .ruby-version file.
+# Hardcoding here let it drift from the rest of the repo and contributed to
+# the May 2026 outage where the server didn't have the bumped Ruby installed.
+RUBY_VERSION_FOR_DEPLOY = File.read(File.expand_path("../.ruby-version", __dir__)).strip
+
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
 task :remote_environment do
-  # Use RVM with Ruby 3.4.9
-  invoke :"rvm:use", "3.4.9"
+  invoke :"rvm:use", RUBY_VERSION_FOR_DEPLOY
+end
+
+desc "Abort if the server is missing the Ruby version this deploy targets."
+task :verify_remote_ruby do
+  command %(
+    if ! /usr/local/rvm/bin/rvm list strings | grep -qx 'ruby-#{RUBY_VERSION_FOR_DEPLOY}'; then
+      echo "ERROR: ruby-#{RUBY_VERSION_FOR_DEPLOY} is not installed on the server."
+      echo "Install it first:  ssh root@#{fetch(:domain)} '/usr/local/rvm/bin/rvm install #{RUBY_VERSION_FOR_DEPLOY}'"
+      echo "(Then re-run the deploy.)"
+      exit 1
+    fi
+  )
 end
 
 # Put any custom commands you need to run at setup
@@ -73,6 +89,7 @@ task :deploy do
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
+    invoke :verify_remote_ruby
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
     # Bundle install with deployment settings
