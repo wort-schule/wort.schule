@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-wort.schule is a Ruby on Rails 7.2 application for German language learning, using PostgreSQL as the database. It features word management, learning groups, text-to-speech functionality via Google Cloud, and AI-powered enrichments.
+wort.schule is a Ruby on Rails 8.1 application (running on Ruby 3.4) for German language learning, using PostgreSQL as the database. It features word management, learning groups, text-to-speech functionality via Google Cloud, and AI-powered enrichments.
 
 ## Core Commands
 
