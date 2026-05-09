@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "~> 3.4.9"
+ruby "~> 4.0.3"
 
 gem "rails", "~> 8.1.0"
 gem "activerecord-session_store"
@@ -12,6 +12,7 @@ gem "clamped"
 gem "cologne_phonetics"
 gem "country_select"
 gem "csv"
+gem "ostruct" # Ruby 4 dropped ostruct from default gems; filterrific still uses it
 gem "device_detector"
 gem "devise"
 gem "devise-i18n"
