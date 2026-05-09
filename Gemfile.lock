@@ -395,7 +395,6 @@ GEM
     matrix (0.4.3)
     meta-tags (2.23.0)
       actionpack (>= 6.0.0)
-    method_source (1.1.0)
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
@@ -647,10 +646,10 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
-    view_component (3.24.0)
-      activesupport (>= 5.2.0, < 8.2)
+    view_component (4.9.0)
+      actionview (>= 7.1.0)
+      activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
-      method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.3.0)
@@ -744,7 +743,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   validate_url
-  view_component (~> 3.24)
+  view_component
   web-console
   webmock
 

@@ -55,7 +55,7 @@ gem "ttfunk"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "validate_url"
-gem "view_component", "~> 3.24"
+gem "view_component"
 
 group :development do
   gem "better_errors"

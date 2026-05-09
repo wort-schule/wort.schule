@@ -30,7 +30,7 @@
 %h2= t '.new_word.title'
 
 .mt-4.box.bg-white.overflow-hidden.border-2.border-gray-border.rounded-3xl.px-4.py-5.sm:px-6
-  = simple_form_for change_group, url: review_path(change_group), method: :patch do |f|
+  = helpers.simple_form_for change_group, url: review_path(change_group), method: :patch do |f|
     = hidden_field_tag :state, 'created'
     = f.fields_for :new_word do |n|
       = n.input :word_type, include_blank: false
