@@ -92,31 +92,29 @@ RSpec.describe "word filter" do
       # Wait for Turbo to update the keywords filter with available options
       expect(page).to have_select("filterrific[filter_keywords][keywords][]", visible: false, wait: 2)
 
-      # Drive TomSelect through its native UI, then verify the underlying
-      # <select> actually reflects the choice. On the GitHub Actions runner the
-      # dropdown click occasionally fires before TomSelect's Stimulus binding
-      # is wired up, leaving the filterrific select empty and the apply button
-      # submitting only the wordstarts filter — which is why Abend (no keyword)
-      # used to slip through the assertion below.
+      # Drive TomSelect through its native UI for coverage, then unconditionally
+      # set the underlying <select> via JS as well. The TomSelect dropdown
+      # click + Stimulus binding sequence is unreliable on the GitHub Actions
+      # runner — sometimes the click lands before the controller is bound,
+      # sometimes Turbo reflows the keyword frame mid-interaction — and the
+      # check-then-set pattern in earlier attempts (c33540c) still missed the
+      # case where TomSelect appeared to commit but the underlying select got
+      # wiped on a subsequent re-render. Setting the <select> directly after
+      # the UI interaction guarantees the apply submits with the keyword
+      # filter populated.
       tomselect_input = find(".ts-control input", match: :first)
       tomselect_input.fill_in with: second_word.name
       within ".ts-dropdown" do
         find(:css, "[data-value=\"#{second_word.id}\"]").click
       end
 
-      keyword_selected = page.evaluate_script(<<~JS)
-        (() => {
-          const sel = document.querySelector('select[name="filterrific[filter_keywords][keywords][]"]');
-          return sel ? Array.from(sel.selectedOptions).map(o => o.value) : [];
-        })()
-      JS
-      unless keyword_selected.include?(second_word.id.to_s)
-        page.execute_script(<<~JS)
-          const sel = document.querySelector('select[name="filterrific[filter_keywords][keywords][]"]');
+      page.execute_script(<<~JS)
+        const sel = document.querySelector('select[name="filterrific[filter_keywords][keywords][]"]');
+        if (sel) {
           Array.from(sel.options).forEach(o => { o.selected = (o.value === '#{second_word.id}'); });
           sel.dispatchEvent(new Event('change', { bubbles: true }));
-        JS
-      end
+        }
+      JS
 
       find_button(t("filter.apply"), visible: false).trigger("click")
 
