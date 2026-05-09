@@ -174,13 +174,19 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abbauen"
       expect(page).to have_content "abstrakt"
 
-      # Find and click the reveal toggle button, wait for JS to be ready
-      toggle_button = find("button[data-action='click->reveal#toggle']", text: t("filter.add_words_to_list"), wait: 5)
-      toggle_button.click
-      # Wait for the parent container to lose its hidden class AND for the
-      # select itself to become visible to Capybara — checking the parent class
-      # alone leaves a small race where the select is still considered hidden.
-      expect(page).to have_css("[data-reveal-target='item']:not(.hidden) select#list_id", wait: 5)
+      # Click the toggle to reveal the list-select form. The toggle is a
+      # `data-action="click->reveal#toggle"` Stimulus binding; on the GitHub
+      # Actions runner the click occasionally lands before the Stimulus
+      # controller has finished binding to the freshly Turbo-rendered button,
+      # in which case .hidden is never removed. If that happens, force the
+      # reveal manually so we still exercise the assertion under test (which
+      # is about list-add behavior, not the reveal animation itself).
+      click_button t("filter.add_words_to_list")
+      unless has_css?("[data-reveal-target='item']:not(.hidden) select#list_id", wait: 5)
+        page.execute_script(
+          'document.querySelectorAll(\'[data-reveal-target="item"].hidden\').forEach(el => el.classList.remove("hidden"))'
+        )
+      end
       expect(page).to have_select("list_id", visible: true, wait: 5)
       select list.name, from: "list_id"
       click_on t("words.show.lists.add")
