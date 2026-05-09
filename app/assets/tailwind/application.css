@@ -1,12 +1,126 @@
-@import 'components/tabbed_radio_buttons' layer(components);
-@import 'components/word_header';
-@import 'components/box_grid';
-@import 'components/word_symbol' layer(components);
-@import 'form' layer(components);
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/aspect-ratio";
+@plugin "@tailwindcss/typography";
+
+@source "../../../app/helpers";
+@source "../../../app/controllers";
+@source "../../../app/javascript";
+@source "../../../app/views";
+@source "../../../app/components";
+@source "../../../config/initializers/simple_form.rb";
+
+@theme {
+  --color-primary: #2A7BF7;
+  --color-primary-hover: #4D91F7;
+  --color-primary-selected: #1E6CE3;
+  --color-gray-background: #F3F4F6;
+  --color-gray-border: #E6E6E7;
+  --color-gray-background-highlight: #E6E6E6;
+  --color-gray-footer: #FAFAFB;
+  --color-search-highlight: #FFE085;
+  --font-sans: "Inter var", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* tabbed_radio_buttons */
+.tabbed-radio-buttons input[type="radio"] {
+  @apply hidden;
+}
+
+.tabbed-radio-buttons input[type="radio"] + label {
+  @apply pb-2 border-transparent border-b-4 cursor-pointer;
+}
+
+.tabbed-radio-buttons input[type="radio"]:checked + label {
+  @apply font-bold border-primary;
+}
+
+/* word_header */
+.word-header {
+  @apply grid gap-4;
+
+  grid-template-columns: 6fr 4fr;
+  grid-template-areas:
+  "name image"
+  "speech speech"
+  "properties properties";
+}
+
+@media(min-width: 1024px) {
+  .word-header {
+    grid-template-columns: auto 35% 25%;
+    grid-template-areas:
+    "name properties image"
+    "speech properties image";
+  }
+}
+
+.word-header h1 {
+  @apply m-0 font-medium md:font-bold md:text-4xl;
+}
+
+.word-header .properties {
+  @apply grid gap-4 bg-gray-background p-6;
+
+  grid-template-columns: 6fr 4fr;
+}
+
+@media(min-width: 1024px) {
+  .word-header .properties {
+    @apply bg-white;
+    grid-template-columns: auto 40%;
+  }
+}
+
+/* box_grid */
+.box-grid > div {
+  @apply p-6;
+}
+
+.box-grid.cols-2 > div:nth-child(2n + 1) {
+  @apply font-bold;
+}
+
+.box-grid.cols-2 > div:nth-child(4n + 3),
+.box-grid.cols-2 > div:nth-child(4n + 4) {
+  @apply bg-gray-50;
+}
+
+.box-grid.cols-3 > div:nth-child(3n + 1) {
+  @apply font-bold;
+}
+
+.box-grid.cols-3 > div:nth-child(6n + 4),
+.box-grid.cols-3 > div:nth-child(6n + 5),
+.box-grid.cols-3 > div:nth-child(6n + 6) {
+  @apply bg-gray-50;
+}
+
+.box-grid.cols-4 > div:nth-child(4n + 1) {
+  @apply font-bold;
+}
+
+.box-grid.cols-4 > div:nth-child(8n + 5),
+.box-grid.cols-4 > div:nth-child(8n + 6),
+.box-grid.cols-4 > div:nth-child(8n + 7),
+.box-grid.cols-4 > div:nth-child(8n + 8) {
+  @apply bg-gray-50;
+}
+
+/* word_symbol */
+.word-symbol {
+  @apply max-w-24 shadow rounded-3xl bg-white;
+}
+
+/* form */
+.checkbox label {
+  @apply flex gap-2;
+}
+
+.checkbox input {
+  @apply w-4;
+}
 
 @layer components {
   .content {

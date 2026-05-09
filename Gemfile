@@ -50,7 +50,7 @@ gem "sanitize"
 gem "scenic"
 gem "simple_form"
 gem "stimulus-rails"
-gem "tailwindcss-rails", "~> 3.3"
+gem "tailwindcss-rails"
 gem "ttfunk"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
