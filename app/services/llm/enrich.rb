@@ -16,15 +16,25 @@ module Llm
 
     attr_reader :word
 
+    # Cached so `Llm::Enrich.new(word:)` from per-request paths
+    # (e.g. ThemeComponent's prompt-preview UI) doesn't run a full table
+    # scan over `keywords` plus a Word lookup on every render.
+    def self.valid_keywords_string
+      Rails.cache.fetch("llm/enrich/valid_keywords", expires_in: 1.hour) do
+        Word.where(id: Keyword.distinct.pluck(:keyword_id)).pluck(:name).join(", ")
+      end
+    end
+
     def initialize(word:)
       @word = word
+      topics = word.topics.map(&:name).join(", ")
       @llm_invoke_all_properties = Invoke.new(
         include_format_instructions: false,
         response_model: all_properties_response_model,
         prompt_variables: {
           input_dataset: all_properties_response_model.from_word(word).to_json,
           meaning: word.meaning,
-          topics: word.topics.map(&:name).join(", ")
+          topics: topics
         },
         prompt: LlmPrompt.find_by(identifier: "all_properties").content
       )
@@ -33,9 +43,9 @@ module Llm
         response_model: keywords_response_model,
         prompt_variables: {
           word: word.name,
-          valid_keywords: Word.where(id: Keyword.distinct.pluck(:keyword_id)).pluck(:name).join(", "),
+          valid_keywords: self.class.valid_keywords_string,
           meaning: word.meaning,
-          topics: word.topics.map(&:name).join(", ")
+          topics: topics
         },
         prompt: LlmPrompt.find_by(identifier: "keywords").content
       )

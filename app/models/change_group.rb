@@ -18,27 +18,21 @@ class ChangeGroup < ApplicationRecord
   private
 
   def cancel_related_enrich_word_jobs
-    # Get all word IDs associated with this change group
-    word_ids = word_attribute_edits.pluck(:word_id).compact.uniq
-
-    # Also check new_word if it exists and has a created_word
+    word_ids = word_attribute_edits.pluck(:word_id).compact
     word_ids << new_word.created_word_id if new_word&.created_word_id
+    word_ids.uniq!
 
-    return if word_ids.empty?
+    return if word_ids.blank?
 
-    # Find and discard all queued EnrichWordJobs for these words
-    word_ids.each do |word_id|
-      GoodJob::Job
-        .where(job_class: "EnrichWordJob")
-        .where("serialized_params->>'job_class' = ?", "EnrichWordJob")
-        .where("serialized_params->'arguments' @> ?", "[#{word_id}]")
-        .where(finished_at: nil)
-        .find_each do |job|
-          job.update!(
-            finished_at: Time.current,
-            error: "Discarded: Associated ChangeGroup was deleted"
-          )
-      end
-    end
+    or_clauses = (["serialized_params->'arguments' @> ?::jsonb"] * word_ids.size).join(" OR ")
+    bindings = word_ids.map { |id| "[#{id}]" }
+
+    GoodJob::Job
+      .where(job_class: "EnrichWordJob", finished_at: nil)
+      .where(or_clauses, *bindings)
+      .update_all(
+        finished_at: Time.current,
+        error: "Discarded: Associated ChangeGroup was deleted"
+      )
   end
 end
