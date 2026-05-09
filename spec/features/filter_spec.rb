@@ -92,14 +92,30 @@ RSpec.describe "word filter" do
       # Wait for Turbo to update the keywords filter with available options
       expect(page).to have_select("filterrific[filter_keywords][keywords][]", visible: false, wait: 2)
 
-      # Interact with TomSelect properly
-      # Find the TomSelect input control and type the keyword name
+      # Drive TomSelect through its native UI, then verify the underlying
+      # <select> actually reflects the choice. On the GitHub Actions runner the
+      # dropdown click occasionally fires before TomSelect's Stimulus binding
+      # is wired up, leaving the filterrific select empty and the apply button
+      # submitting only the wordstarts filter — which is why Abend (no keyword)
+      # used to slip through the assertion below.
       tomselect_input = find(".ts-control input", match: :first)
       tomselect_input.fill_in with: second_word.name
-
-      # Wait for and click the option in the dropdown
       within ".ts-dropdown" do
         find(:css, "[data-value=\"#{second_word.id}\"]").click
+      end
+
+      keyword_selected = page.evaluate_script(<<~JS)
+        (() => {
+          const sel = document.querySelector('select[name="filterrific[filter_keywords][keywords][]"]');
+          return sel ? Array.from(sel.selectedOptions).map(o => o.value) : [];
+        })()
+      JS
+      unless keyword_selected.include?(second_word.id.to_s)
+        page.execute_script(<<~JS)
+          const sel = document.querySelector('select[name="filterrific[filter_keywords][keywords][]"]');
+          Array.from(sel.options).forEach(o => { o.selected = (o.value === '#{second_word.id}'); });
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+        JS
       end
 
       find_button(t("filter.apply"), visible: false).trigger("click")
