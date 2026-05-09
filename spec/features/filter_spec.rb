@@ -191,20 +191,28 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abstrakt"
 
       # The form for "add filtered words to a list" lives behind a Stimulus
-      # `click->reveal#toggle` button. The button click + reveal sequence is
-      # racy on the GitHub Actions runner — the click sometimes lands before
-      # the controller binding is wired up, sometimes a Turbo re-render
-      # snaps the reveal state back to .hidden between click and assertion.
-      # The behavior under test here is filter-then-add-to-list, not the
-      # reveal animation, so unconditionally strip .hidden via JS instead of
-      # going through the toggle. Reveal interaction itself is covered by
-      # the navigation/menu specs.
+      # `click->reveal#toggle` button. On the GitHub Actions runner the
+      # toggle click sometimes lands before the Stimulus controller is
+      # bound, and the surrounding turbo_frame auto-re-renders, which
+      # together produce a string of flaky failure modes (.hidden never
+      # removed, ObsoleteNode mid-interaction, etc). Force the reveal in
+      # JS so we don't depend on Stimulus timing at all, then retry the
+      # submit click on ObsoleteNode in case Turbo reflows the form
+      # between select and click.
       page.execute_script(
         'document.querySelectorAll(\'[data-reveal-target="item"]\').forEach(el => el.classList.remove("hidden"))'
       )
       expect(page).to have_select("list_id", visible: true, wait: 5)
       select list.name, from: "list_id"
-      click_on t("words.show.lists.add")
+
+      submit_attempts = 0
+      begin
+        click_on t("words.show.lists.add")
+      rescue Capybara::Cuprite::ObsoleteNode
+        submit_attempts += 1
+        retry if submit_attempts < 3
+        raise
+      end
 
       expect(list.words).to match_array [noun, verb, adjective]
     end
