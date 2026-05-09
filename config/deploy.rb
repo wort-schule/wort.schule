@@ -33,8 +33,8 @@ set :shared_dirs, fetch(:shared_dirs, []).push("public/packs", "node_modules", "
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
 task :remote_environment do
-  # Use RVM with Ruby 3.3.7
-  invoke :"rvm:use", "3.3.7"
+  # Use RVM with Ruby 3.4.9
+  invoke :"rvm:use", "3.4.9"
 end
 
 # Put any custom commands you need to run at setup
