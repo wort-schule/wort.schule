@@ -100,8 +100,11 @@ class WordTypeController < PublicController
   end
 
   def filtered_words
+    # WordPanelComponent only renders word.image, word.name, word.meaning;
+    # the other associations were preloaded but never read. Each one was a
+    # separate IN(...) query against a HABTM join table per index page.
     @filterrific.find
-      .includes(:topics, :keywords, :synonyms, :image_attachment, :hierarchy, :sources, :phenomenons, :strategies)
+      .includes(image_attachment: :blob)
       .ordered_lexigraphically
       .page(params[:page])
   end

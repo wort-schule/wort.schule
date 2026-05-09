@@ -4,7 +4,7 @@
       .px-4.py-5.sm:px-6
         .flex.items-baseline.gap-1
           .text-xl.font-bold= topic.name
-        .text-xs.font-light.mt-3= t('.words_count', count: topic.words.count)
+        .text-xs.font-light.mt-3= t('.words_count', count: topic.words_count)
 
       .p-1.pr-4.flex.items-center.object-cover
         - if topic.image.attached?
