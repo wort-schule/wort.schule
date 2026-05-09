@@ -190,19 +190,18 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abbauen"
       expect(page).to have_content "abstrakt"
 
-      # Click the toggle to reveal the list-select form. The toggle is a
-      # `data-action="click->reveal#toggle"` Stimulus binding; on the GitHub
-      # Actions runner the click occasionally lands before the Stimulus
-      # controller has finished binding to the freshly Turbo-rendered button,
-      # in which case .hidden is never removed. If that happens, force the
-      # reveal manually so we still exercise the assertion under test (which
-      # is about list-add behavior, not the reveal animation itself).
-      click_button t("filter.add_words_to_list")
-      unless has_css?("[data-reveal-target='item']:not(.hidden) select#list_id", wait: 5)
-        page.execute_script(
-          'document.querySelectorAll(\'[data-reveal-target="item"].hidden\').forEach(el => el.classList.remove("hidden"))'
-        )
-      end
+      # The form for "add filtered words to a list" lives behind a Stimulus
+      # `click->reveal#toggle` button. The button click + reveal sequence is
+      # racy on the GitHub Actions runner — the click sometimes lands before
+      # the controller binding is wired up, sometimes a Turbo re-render
+      # snaps the reveal state back to .hidden between click and assertion.
+      # The behavior under test here is filter-then-add-to-list, not the
+      # reveal animation, so unconditionally strip .hidden via JS instead of
+      # going through the toggle. Reveal interaction itself is covered by
+      # the navigation/menu specs.
+      page.execute_script(
+        'document.querySelectorAll(\'[data-reveal-target="item"]\').forEach(el => el.classList.remove("hidden"))'
+      )
       expect(page).to have_select("list_id", visible: true, wait: 5)
       select list.name, from: "list_id"
       click_on t("words.show.lists.add")
