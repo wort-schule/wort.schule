@@ -116,38 +116,40 @@
 
         %tbody
           - @change_groups.each do |change_group|
+            - edits = change_group.word_attribute_edits
+            - first_edit = edits.first
             %tr.border-b.border-gray-100.hover:bg-gray-50
               %td.px-4.py-3
-                - if change_group.word_attribute_edits.present?
-                  = link_to change_group.word_attribute_edits.first.word.name, change_group.word_attribute_edits.first.word, class: 'text-blue-600 hover:text-blue-900 font-medium'
+                - if first_edit
+                  = link_to first_edit.word.name, first_edit.word, class: 'text-blue-600 hover:text-blue-900 font-medium'
                 - elsif change_group.new_word.present?
                   %span.font-medium= change_group.new_word.name
                   %span.ml-2.text-xs.bg-yellow-100.text-yellow-800.px-2.py-1.rounded= t('.new')
 
               %td.px-4.py-3
-                - if change_group.word_attribute_edits.present?
+                - if first_edit
                   %span.text-xs.bg-blue-100.text-blue-800.px-2.py-1.rounded
-                    = change_group.word_attribute_edits.first.word.class.model_name.human
+                    = first_edit.word.class.model_name.human
                 - elsif change_group.new_word.present?
                   %span.text-xs.bg-blue-100.text-blue-800.px-2.py-1.rounded
                     = change_group.new_word.word_type
 
               %td.px-4.py-3
-                - if change_group.word_attribute_edits.present?
-                  %span.text-xs.bg-green-100.text-green-800.px-2.py-1.rounded= t('.attribute_edits', count: change_group.word_attribute_edits.count)
+                - if first_edit
+                  %span.text-xs.bg-green-100.text-green-800.px-2.py-1.rounded= t('.attribute_edits', count: edits.size)
                 - elsif change_group.new_word.present?
                   %span.text-xs.bg-purple-100.text-purple-800.px-2.py-1.rounded= t('.new_word_proposal')
 
               %td.px-4.py-3
-                - if change_group.word_attribute_edits.present?
+                - if first_edit
                   .text-xs.space-y-1
-                    - change_group.word_attribute_edits.limit(3).each do |edit|
+                    - edits.first(3).each do |edit|
                       %div
                         %span.font-medium= edit.attribute_label + ":"
                         %span.text-gray-600= format_proposed_attribute(edit)
-                    - if change_group.word_attribute_edits.count > 3
+                    - if edits.size > 3
                       %div.text-gray-500
-                        = t('.and_more', count: change_group.word_attribute_edits.count - 3)
+                        = t('.and_more', count: edits.size - 3)
                 - elsif change_group.new_word.present?
                   .text-xs.space-y-1
                     - if change_group.new_word.topic.present?
@@ -159,9 +161,10 @@
                 = time_ago_in_words(change_group.created_at)
 
               %td.px-4.py-3
-                - confirmed_count = change_group.reviews.where(state: :confirmed).count
-                - skipped_count = change_group.reviews.where(state: :skipped).count
-                - other_count = change_group.reviews.where.not(state: [:confirmed, :skipped]).count
+                - reviews = change_group.reviews
+                - confirmed_count = reviews.count { |r| r.state == "confirmed" }
+                - skipped_count = reviews.count { |r| r.state == "skipped" }
+                - other_count = reviews.size - confirmed_count - skipped_count
 
                 - if confirmed_count > 0
                   %span.inline-block.mr-1.text-xs.bg-green-100.text-green-800.px-2.py-1.rounded

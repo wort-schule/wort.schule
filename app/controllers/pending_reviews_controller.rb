@@ -65,9 +65,18 @@ class PendingReviewsController < ApplicationController
   helper_method :page_title
 
   def fetch_pending_reviews
+    # `preload(word_attribute_edits: :word)` (rather than `includes`) is
+    # deliberate: WordAttributeEdit#word is polymorphic, and includes
+    # auto-upgrades to eager_load (LEFT JOIN) when a sibling `.where(...)`
+    # references an included table — which doesn't work for polymorphic
+    # associations. preload always issues a separate query, so the table
+    # view gets its words in one round-trip without breaking the filter
+    # branches that call `pluck(:id)` after a `.where(reviews:)`-style
+    # condition.
     ChangeGroup.where(state: :waiting_for_review)
       .where(successor_id: nil)
-      .includes(:word_attribute_edits, :new_word, :reviews)
+      .includes(:new_word, :reviews)
+      .preload(word_attribute_edits: :word)
       .order(created_at: :desc)
   end
 
