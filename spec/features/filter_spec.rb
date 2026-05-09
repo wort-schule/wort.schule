@@ -92,44 +92,22 @@ RSpec.describe "word filter" do
       # Wait for Turbo to update the keywords filter with available options
       expect(page).to have_select("filterrific[filter_keywords][keywords][]", visible: false, wait: 2)
 
-      # Drive TomSelect through its native UI for coverage, then unconditionally
-      # set the underlying <select> via JS as well. The TomSelect dropdown
-      # click + Stimulus binding sequence is unreliable on the GitHub Actions
-      # runner — sometimes the click lands before the controller is bound,
-      # sometimes Turbo reflows the keyword frame mid-interaction — and the
-      # check-then-set pattern in earlier attempts (c33540c) still missed the
-      # case where TomSelect appeared to commit but the underlying select got
-      # wiped on a subsequent re-render. Setting the <select> directly after
-      # the UI interaction guarantees the apply submits with the keyword
-      # filter populated.
+      # Drive TomSelect through its UI for coverage, then force the
+      # underlying <select>: Turbo can re-render the keyword frame and
+      # wipe what TomSelect wrote before the apply fires.
       tomselect_input = find(".ts-control input", match: :first)
       tomselect_input.fill_in with: second_word.name
       within ".ts-dropdown" do
         find(:css, "[data-value=\"#{second_word.id}\"]").click
       end
-
-      page.execute_script(<<~JS)
-        const sel = document.querySelector('select[name="filterrific[filter_keywords][keywords][]"]');
-        if (sel) {
-          Array.from(sel.options).forEach(o => { o.selected = (o.value === '#{second_word.id}'); });
-          sel.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      JS
+      force_select_value("filterrific[filter_keywords][keywords][]", second_word.id)
 
       find_button(t("filter.apply"), visible: false).trigger("click")
 
-      # Wait for Turbo to update the results within the words container
       within "#words" do
-        # Wait for the expected result to appear first (positive assertion)
-        expect(page).to have_css '[data-name="Abfall"]', wait: 5
-        # Then check negative assertions — use have_no_css with explicit wait
-        # so we keep polling until Turbo finishes removing the old rows. Without
-        # the wait the assertion runs once on whatever DOM is present at that
-        # instant, which is racy on slow CI runners.
-        # Should NOT show Abend (starts with "ab" but doesn't have Bach as keyword)
-        expect(page).to have_no_css '[data-name="Abend"]', wait: 5
-        # Should NOT show Bach (has itself as keyword but doesn't start with "ab")
-        expect(page).to have_no_css '[data-name="Bach"]', wait: 5
+        expect(page).to have_css '[data-name="Abfall"]'
+        expect(page).to have_no_css '[data-name="Abend"]'
+        expect(page).to have_no_css '[data-name="Bach"]'
       end
     end
   end
@@ -188,41 +166,23 @@ RSpec.describe "word filter" do
       expect(page).to have_content "abbauen"
       expect(page).to have_content "abstrakt"
 
-      # The form for "add filtered words to a list" lives behind a Stimulus
-      # `click->reveal#toggle` button. On the GitHub Actions runner the
-      # toggle click sometimes lands before the Stimulus controller is
-      # bound, and the surrounding turbo_frame auto-re-renders, which
-      # together produce a string of flaky failure modes (.hidden never
-      # removed, ObsoleteNode mid-interaction, etc). Force the reveal in
-      # JS so we don't depend on Stimulus timing at all, then retry the
-      # submit click on ObsoleteNode in case Turbo reflows the form
-      # between select and click.
-      page.execute_script(
-        'document.querySelectorAll(\'[data-reveal-target="item"]\').forEach(el => el.classList.remove("hidden"))'
-      )
-      expect(page).to have_select("list_id", visible: true, wait: 5)
+      # The form lives behind a Stimulus `click->reveal#toggle` button
+      # inside an auto-re-rendering turbo_frame. The click + reveal +
+      # submit sequence races on Cuprite, so flip the targets ourselves
+      # and retry the submit if Turbo replaces the form mid-click.
+      force_reveal!
+      expect(page).to have_select("list_id", visible: true)
       select list.name, from: "list_id"
 
-      submit_attempts = 0
-      begin
-        # Re-strip .hidden each attempt: Turbo can re-render the frame
-        # between iterations and snap the reveal state back to collapsed.
-        page.execute_script(
-          'document.querySelectorAll(\'[data-reveal-target="item"]\').forEach(el => el.classList.remove("hidden"))'
-        )
+      with_node_churn_retry do
+        force_reveal!
         click_on t("words.show.lists.add")
-      rescue Capybara::Cuprite::ObsoleteNode, Ferrum::CoordinatesNotFoundError, Ferrum::NodeNotFoundError
-        submit_attempts += 1
-        retry if submit_attempts < 3
-        raise
       end
 
-      # Wait for the server to confirm the add through the Turbo Stream
-      # response before checking list.words. `click_on` returns as soon as
-      # the click is dispatched; on the GitHub Actions runner the POST
-      # round-trip can land after a bare `list.words` query, leaving the
-      # assertion empty even though the action eventually succeeds.
-      expect(page).to have_content(t("filter.added_words_to_list", count: 3), wait: 5)
+      # Wait for the Turbo Stream success render before querying list.words —
+      # click_on returns as soon as the click is dispatched, not when the
+      # POST round-trip lands.
+      expect(page).to have_content(t("filter.added_words_to_list", count: 3))
       expect(list.words).to match_array [noun, verb, adjective]
     end
   end

@@ -5,16 +5,15 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * Restrict scanning to template/JS extensions only. Tailwind 4.2.4's Rust
- * Ruby pre-processor (crates/oxide/src/extractor/pre_processors/ruby.rs)
- * panics with a Utf8Error on at least one of this project's .rb files
- * during production asset compile, which kills the deploy. The classes we
- * care about live in HAML/ERB/JS anyway; the rare helper-only class can
- * be added back via `@source inline(…)` if a regression shows up.
+ * `source(none)` above disables Tailwind 4's auto-scan; the deploy used to
+ * hit a UTF-8 panic in oxide's Ruby pre-processor while it was scanning
+ * something under the build dir. Each path below is enumerated explicitly.
  */
 @source "../../../app/javascript/**/*.js";
 @source "../../../app/views/**/*.{erb,haml,html,slim,liquid}";
-@source "../../../app/components/**/*.{erb,haml,html,slim}";
+@source "../../../app/components/**/*.{erb,haml,html,slim,rb}";
+@source "../../../app/helpers/**/*.rb";
+@source "../../../app/decorators/**/*.rb";
 
 @theme {
   --color-primary: #2A7BF7;
