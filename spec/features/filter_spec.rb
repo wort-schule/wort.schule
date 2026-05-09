@@ -217,6 +217,12 @@ RSpec.describe "word filter" do
         raise
       end
 
+      # Wait for the server to confirm the add through the Turbo Stream
+      # response before checking list.words. `click_on` returns as soon as
+      # the click is dispatched; on the GitHub Actions runner the POST
+      # round-trip can land after a bare `list.words` query, leaving the
+      # assertion empty even though the action eventually succeeds.
+      expect(page).to have_content(t("filter.added_words_to_list", count: 3), wait: 5)
       expect(list.words).to match_array [noun, verb, adjective]
     end
   end
