@@ -544,6 +544,8 @@ GEM
       rspec-expectations (>= 3.13.0, < 5.0.0)
       rspec-mocks (>= 3.13.0, < 5.0.0)
       rspec-support (>= 3.13.0, < 5.0.0)
+    rspec-retry (0.6.2)
+      rspec-core (> 3.3)
     rspec-support (3.13.7)
     rubocop (1.84.2)
       json (~> 2.3)
@@ -726,6 +728,7 @@ DEPENDENCIES
   redis (~> 5.3)
   route_downcaser
   rspec-rails
+  rspec-retry
   ruby-openai (~> 8.1)
   ruby-vips
   sanitize

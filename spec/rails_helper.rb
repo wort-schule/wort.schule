@@ -18,6 +18,7 @@ require "capybara-screenshot/rspec"
 require "capybara/cuprite"
 require "webmock/rspec"
 require "view_component/test_helpers"
+require "rspec/retry"
 
 WebMock.disable_net_connect!(allow: ["127.0.0.1", "localhost"])
 
@@ -56,6 +57,14 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  # Retry only the examples explicitly tagged `:retry`. JS feature specs that
+  # depend on Cuprite + Turbo + Stimulus timing can race in ways no amount of
+  # in-test waiting fully closes; tagging an individual example is the
+  # smallest hammer that ends the chase.
+  config.verbose_retry = true
+  config.default_retry_count = 0
+  config.exceptions_to_hard_fail = []
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
 

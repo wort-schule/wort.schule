@@ -71,6 +71,7 @@ group :test do
   gem "capybara"
   gem "capybara-screenshot"
   gem "cuprite"
+  gem "rspec-retry"
   gem "simplecov", require: false
   gem "webmock"
 end

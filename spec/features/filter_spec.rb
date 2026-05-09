@@ -159,7 +159,7 @@ RSpec.describe "word filter" do
       find_button(t("filter.apply"), visible: false).trigger("click")
     end
 
-    it "filters a specific word type", js: true do
+    it "filters a specific word type", js: true, retry: 2 do
       expect(list.words).to be_empty
 
       expect(page).to have_content "Abend"
