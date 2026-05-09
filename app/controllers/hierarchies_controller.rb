@@ -1,76 +1,19 @@
 # frozen_string_literal: true
 
 class HierarchiesController < PublicController
+  include CrudActions
+
   load_and_authorize_resource
 
   def index
-    @hierarchies = @hierarchies.order(:name).page(params[:page])
+    super
     @show_children = ActiveRecord::Type::Boolean.new.cast(params[:show_children])
     @hierarchies = @hierarchies.where(parent: nil) unless @show_children
   end
 
-  def show
-    @words = @hierarchy.words.ordered_lexigraphically.page(params[:page])
-  end
-
-  def new
-  end
-
-  def create
-    if @hierarchy.save
-      redirect_to @hierarchy, notice: t("notices.shared.created", name: @hierarchy.name, class_name: Hierarchy.model_name.human)
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def edit
-  end
-
-  def update
-    if @hierarchy.update(hierarchy_params)
-      redirect_to @hierarchy, notice: t("notices.shared.updated", name: @hierarchy.name, class_name: Hierarchy.model_name.human)
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    destroyed = @hierarchy.destroy
-    notice = if destroyed
-      {notice: t("notices.shared.destroyed", name: @hierarchy.name, class_name: Hierarchy.model_name.human)}
-    else
-      {alert: t("alerts.shared.destroyed", name: @hierarchy.name)}
-    end
-
-    redirect_to hierarchies_url, notice
-  end
-
-  def remove_image
-    @hierarchy.image.purge if @hierarchy.image.attached?
-
-    redirect_to @hierarchy
-  end
-
   private
 
-  def page_title
-    case action_name
-    when "index"
-      Hierarchy.model_name.human(count: 2)
-    when "show"
-      @hierarchy.name
-    when "new"
-      t("hierarchies.new.title")
-    when "edit"
-      t("hierarchies.edit.title")
-    end
-  end
-  helper_method :page_title
-
-  def hierarchy_params
-    params.require(:hierarchy).permit(
-      :name, :top_hierarchy_id, :image
-    )
+  def permitted_attributes
+    [:name, :top_hierarchy_id, :image]
   end
 end
