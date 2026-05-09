@@ -207,8 +207,13 @@ RSpec.describe "word filter" do
 
       submit_attempts = 0
       begin
+        # Re-strip .hidden each attempt: Turbo can re-render the frame
+        # between iterations and snap the reveal state back to collapsed.
+        page.execute_script(
+          'document.querySelectorAll(\'[data-reveal-target="item"]\').forEach(el => el.classList.remove("hidden"))'
+        )
         click_on t("words.show.lists.add")
-      rescue Capybara::Cuprite::ObsoleteNode
+      rescue Capybara::Cuprite::ObsoleteNode, Ferrum::CoordinatesNotFoundError, Ferrum::NodeNotFoundError
         submit_attempts += 1
         retry if submit_attempts < 3
         raise
