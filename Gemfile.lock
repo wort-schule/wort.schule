@@ -148,7 +148,6 @@ GEM
     devise-i18n (1.16.0)
       devise (>= 5.0.0)
       rails-i18n
-    diff-lcs (1.6.2)
     docile (1.4.1)
     draper (4.0.6)
       actionpack (>= 5.0)
@@ -393,9 +392,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.6)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.27.0)
     msgpack (1.8.0)
     multi_json (1.21.1)
     multipart-post (2.4.1)
@@ -512,25 +509,6 @@ GEM
     rouge (4.7.0)
     route_downcaser (2.0.0)
       activesupport (>= 3.2)
-    rspec-core (3.13.6)
-      rspec-support (~> 3.13.0)
-    rspec-expectations (3.13.5)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.8)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.13.0)
-    rspec-rails (8.0.4)
-      actionpack (>= 7.2)
-      activesupport (>= 7.2)
-      railties (>= 7.2)
-      rspec-core (>= 3.13.0, < 5.0.0)
-      rspec-expectations (>= 3.13.0, < 5.0.0)
-      rspec-mocks (>= 3.13.0, < 5.0.0)
-      rspec-support (>= 3.13.0, < 5.0.0)
-    rspec-retry (0.6.2)
-      rspec-core (> 3.3)
-    rspec-support (3.13.7)
     rubocop (1.84.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -693,6 +671,7 @@ DEPENDENCIES
   liquid
   meta-tags
   mina (= 1.2.5)
+  minitest (~> 5.25)
   ostruct
   paper_trail
   pg (~> 1.5)
@@ -704,8 +683,6 @@ DEPENDENCIES
   rb-gravatar
   redis (~> 5.3)
   route_downcaser
-  rspec-rails
-  rspec-retry
   ruby-openai (~> 8.1)
   ruby-vips
   sanitize

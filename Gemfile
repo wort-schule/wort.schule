@@ -68,7 +68,9 @@ group :test do
   gem "capybara"
   gem "capybara-screenshot"
   gem "cuprite"
-  gem "rspec-retry"
+  # Pinned to 5.x because Minitest 6 dropped Mock and Object#stub. We use the
+  # built-in vanilla mocks rather than adding mocha or another gem.
+  gem "minitest", "~> 5.25"
   gem "simplecov", require: false
   gem "webmock"
 end
@@ -78,7 +80,6 @@ group :development, :test do
   gem "factory_bot"
   gem "factory_bot_rails"
   gem "faker"
-  gem "rspec-rails"
   gem "standardrb"
   gem "mina", "1.2.5"
 end

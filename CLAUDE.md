@@ -21,11 +21,13 @@ bin/dev
 # Access Tidewave AI coding agent
 # Navigate to http://localhost:3000/tidewave after starting the server
 
-# Run tests
-bin/rails spec
+# Run tests (Rails default Minitest)
+bin/rails test            # unit, integration, controller, mailer, job, etc.
+bin/rails test:system     # Cuprite-driven browser tests (slower)
 
-# Run a single test file
-bin/rails spec spec/path/to/spec_file.rb
+# Run a single test file or test
+bin/rails test test/models/word_test.rb
+bin/rails test test/models/word_test.rb:42
 
 # Linting (uses StandardRB/RuboCop)
 bin/rubocop
@@ -69,9 +71,15 @@ Uses `good_job` gem for job processing, including:
 - Separate Admin model for administrative access
 
 ### Testing
-RSpec with:
-- Feature specs using Capybara and Cuprite (headless Chrome)
-- FactoryBot for test data
+Vanilla Rails Minitest with:
+- System tests under `test/system/` using Capybara + Cuprite (headless Chrome)
+- Unit/integration tests under `test/{models,controllers,services,jobs,...}`
+- FactoryBot for test data (factories live in `test/factories/`)
+- Vanilla `Minitest::Mock` and `Object#stub` for mocking — no Mocha
+- Shared test helpers in `test/support/`:
+  - `CrudTests` — class method `crud_tests_for(klass)` for CRUD UI flows
+  - `TtsTests` — class method `tts_tests_for(klass)` for TTS audio flows
+  - `CrudRequestTests` — class method `crud_request_tests_for(...)` for request-level CRUD
 - SimpleCov for coverage reporting
 
 ### Assets

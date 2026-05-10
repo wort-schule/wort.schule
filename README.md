@@ -46,8 +46,11 @@ This project includes [Tidewave](https://github.com/tidewave-ai/tidewave_rails),
 ## Tests
 
 ```
-bin/rails spec
+bin/rails test            # unit, integration, controller, job, mailer, ...
+bin/rails test:system     # browser tests via Cuprite (slower)
 ```
+
+Tests use Rails' default Minitest, with FactoryBot for test data.
 
 ## Production Setup
 
