@@ -73,6 +73,9 @@ class FlashcardsTest < ApplicationSystemTestCase
     visit noun_path(noun3)
     select word_list.name
     click_on I18n.t("words.show.lists.add")
+    # add_word redirects to the list page; wait for that landing so the
+    # subsequent login swap doesn't race the in-flight POST on slow CI.
+    assert_current_path list_path(word_list)
 
     login_as user
     visit flashcards_path
@@ -85,6 +88,7 @@ class FlashcardsTest < ApplicationSystemTestCase
     within "##{dom_id(noun3)}" do
       click_on I18n.t("actions.remove")
     end
+    assert_no_selector "##{dom_id(noun3)}"
 
     login_as user
     visit flashcards_path
