@@ -102,3 +102,6 @@ Always start new features or bugfixes by writing or updating tests first.
 bundle exec standardrb --no-fix
 ```
 If there are any lint errors, fix them before considering the task complete.
+
+## Code Conventions
+- Start every Ruby file with `# frozen_string_literal: true` (project-wide convention, matches the Rails framework's own AGENTS.md guidance).
