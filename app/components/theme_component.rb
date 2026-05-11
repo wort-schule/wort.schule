@@ -25,7 +25,7 @@ class ThemeComponent < ViewComponent::Base
       sanitize_template(template)
     end
 
-    template_renderer = Liquid::Template.parse(sanitized_template)
+    template_renderer = Liquid::Template.parse(sanitized_template, environment: Liquid::Environment.default)
     template_renderer.render(params.with_indifferent_access.merge(view_context:)).html_safe
   end
 
