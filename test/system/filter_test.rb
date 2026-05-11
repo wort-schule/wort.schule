@@ -82,17 +82,16 @@ class FilterTest < ApplicationSystemTestCase
 
     click_on t("filter.open")
 
-    select I18n.t("filter.and"), from: "filterrific[filter_keywords][conjunction]"
+    # Stop the filter form's `form-submission` Stimulus controller from
+    # auto-fetching on each input event. With it enabled, `fill_in "ab"`
+    # fires a fetch per keystroke and `force_select_value` fires a third —
+    # all racing, all replacing #words via turbo_stream in arbitrary order.
+    # Apply all filter values silently, then submit once via the apply
+    # button for a single deterministic response.
+    disable_form_auto_submit
 
     fill_in "filterrific[filter_wordstarts]", with: "ab"
-
-    assert_selector "select[name='filterrific[filter_keywords][keywords][]']", visible: false, wait: 2
-
-    tomselect_input = find(".ts-control input", match: :first)
-    tomselect_input.fill_in with: second_word.name
-    within ".ts-dropdown" do
-      find(:css, "[data-value=\"#{second_word.id}\"]").click
-    end
+    force_select_value("filterrific[filter_keywords][conjunction]", "and")
     force_select_value("filterrific[filter_keywords][keywords][]", second_word.id)
 
     find_button(t("filter.apply"), visible: false).trigger("click")
