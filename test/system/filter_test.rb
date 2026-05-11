@@ -22,6 +22,7 @@ class FilterTest < ApplicationSystemTestCase
     end
 
     click_on t("filter.open")
+    disable_form_auto_submit
     fill_in "filterrific[filter_wordstarts]", with: "a"
     find_button(t("filter.apply"), visible: false).trigger("click")
 
@@ -110,6 +111,7 @@ class FilterTest < ApplicationSystemTestCase
 
     visit search_path
     click_on t("filter.open")
+    disable_form_auto_submit
     fill_in "filterrific[filter_wordstarts]", with: "ab"
     find_button(t("filter.apply"), visible: false).trigger("click")
 
