@@ -6,6 +6,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 wort.schule is a Ruby on Rails 8.1 application (running on Ruby 4.0) for German language learning, using PostgreSQL as the database. It features word management, learning groups, text-to-speech functionality via Google Cloud, and AI-powered enrichments.
 
+## Working with me
+
+I'm learning Ruby on Rails. Treat me as a beginner.
+
+- **Pause and ask before anything non-trivial.** If my request is ambiguous, or the approach I'm suggesting doesn't make sense, stop and interview me before writing code. Don't silently work around a bad idea. Call it out.
+- **Teach actively.** When you make a non-obvious choice (which test layer, why a validation instead of a callback, why a scope instead of a class method), explain the reasoning in one or two sentences and name the Rails concept involved. Mention alternatives you rejected when it helps me build a mental model.
+- **Polish my English.** English isn't my first language. Improve wording in:
+  - Your own output: code comments, commit messages, PR descriptions, chat replies.
+  - Variable, method, and class names you introduce (no drive-by renames in unrelated code).
+  - The way you echo my prompts back. If my request was awkwardly worded, restate it in cleaner English before answering so I see the improved phrasing.
+
+  Do **not** rewrite user-facing app text (UI labels, flash messages, German content) unless I explicitly ask.
+
 ## Core Commands
 
 ### Development
@@ -98,18 +111,36 @@ Vanilla Rails Minitest with:
   - Requires Rails server to run with `RAILS_MAX_THREADS=1 WEB_CONCURRENCY=1` (automatically configured in bin/dev)
   - Deep integration for full-stack Rails development from database to UI
 
-## Testing Philosophy
-Always start new features or bugfixes by writing or updating tests first.
-- Keep the use of JavaScript to a minimum.
-- When creating a new feature or fixing a bug: Always start by creating a test for that.
-- Always run the tests and fix any issue after you implimented a new feature or fixed a bug.
+## Rails feature workflow
 
-## Code Quality
-**IMPORTANT**: After making any code changes, ALWAYS run the linter to ensure code quality:
-```bash
-bundle exec standardrb --no-fix
-```
-If there are any lint errors, fix them before considering the task complete.
+Every new feature or bugfix follows the same shape:
+
+1. **Write the test first.** Pick the cheapest layer that actually covers the change:
+   - **Model test** for domain logic, validations, scopes, business rules.
+   - **Request test** for controller behavior and end-to-end flows that don't need a real browser.
+   - **System test (Cuprite)** for behavior that depends on the browser: JavaScript, Turbo Stream updates, real form interaction.
+
+   Start at the lowest layer that catches the bug. Add a higher-layer test only when the lower one can't see the behavior.
+
+2. **Implement the change** to make the test pass.
+
+3. **Run the tests** (`bin/rails test` and, if a system test was added, `bin/rails test:system`). Fix every failure before declaring done, including tests you didn't touch.
+
+4. **Run the linter**: `bundle exec standardrb --no-fix`. Fix issues before declaring done.
+
+## Validation lives in the model
+
+Anything checkable about a record (presence, format, uniqueness, length, business invariants like "a published word must have an author", cross-record constraints) is enforced as a **model validation** or model-level guard.
+
+The rule of thumb: **the Rails console must behave the same as the web form.** If I can create an invalid record from `bin/rails c` that the web form rejects, the validation is in the wrong place.
+
+- Don't put validation logic in controllers, form objects, or service objects.
+- Don't rely on the HTML form (`required`, `pattern`) as the only check.
+- Authorization (who is allowed to do this?) stays in `Ability` / CanCanCan. That is a separate concern from validity.
 
 ## Code Conventions
+
 - Start every Ruby file with `# frozen_string_literal: true` (project-wide convention, matches the Rails framework's own AGENTS.md guidance).
+- **Prefer boring Rails.** Reach for what ships with Rails first: validations, callbacks, scopes, partials, ViewComponent, Stimulus, Turbo. Don't add a new gem or invent a pattern when stock Rails covers it.
+- **Avoid metaprogramming and clever Ruby.** Plain methods beat `define_method`, `method_missing`, and monkey patches. Readable beats short.
+- **Keep JavaScript minimal.** Prefer Turbo plus small Stimulus controllers over hand-written JS. If a feature can be done server-rendered, do it server-rendered.
