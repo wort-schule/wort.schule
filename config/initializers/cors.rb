@@ -1,7 +1,17 @@
 # Be sure to restart your server when you modify this file.
 
-# Allow CORS requests for images and other assets from spiel.wort.schule and localhost:4000
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  # Public API - open to all origins
+  allow do
+    origins "*"
+
+    resource "/api/*",
+      headers: :any,
+      methods: [:get, :head, :options],
+      credentials: false
+  end
+
+  # ActiveStorage assets for known frontends
   allow do
     origins "spiel.wort.schule", "localhost:4000", "http://localhost:4000"
 
@@ -10,7 +20,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       methods: [:get, :head, :options],
       credentials: false
 
-    # Also allow access to any uploaded images/assets
     resource "/uploads/*",
       headers: :any,
       methods: [:get, :head, :options],

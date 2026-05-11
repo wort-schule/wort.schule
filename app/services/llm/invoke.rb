@@ -60,7 +60,7 @@ module Llm
     end
 
     def default_model
-      LlmService.active.model
+      LlmService.active&.model
     end
 
     def output_parser

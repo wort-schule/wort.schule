@@ -1,0 +1,111 @@
+- set_meta_tags title: t('.page_title')
+
+= title_with_actions t('.title') do
+  - if llm_available?
+    = button_to t('.suggest_sentences_button'), suggest_sentences_batch_example_sentences_overview_index_path(filter_params), method: :post, class: 'button', data: {turbo_confirm: t('.suggest_sentences_confirm')}
+    = button_to t('.suggest_alt_texts_button'), suggest_alt_texts_batch_example_sentences_overview_index_path(filter_params), method: :post, class: 'button', data: {turbo_confirm: t('.suggest_alt_texts_confirm')}
+
+.mt-6
+  = box do
+    = form_with url: example_sentences_overview_index_path, method: :get, class: 'space-y-4' do |f|
+      .grid.grid-cols-1.md:grid-cols-4.gap-4
+        .flex.flex-col
+          = f.label :q, t('.search_label'), class: 'text-sm font-medium text-gray-700 mb-1'
+          = f.text_field :q, value: params[:q], placeholder: t('.search_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+        .flex.flex-col
+          = f.label :image_filter, t('.image_filter'), class: 'text-sm font-medium text-gray-700 mb-1'
+          = f.select :image_filter, options_for_select([[t('.all'), ''], [t('.with_image'), 'with_image'], [t('.without_image'), 'without_image'], [t('.without_alt_text'), 'without_alt_text'], [t('.with_alt_text'), 'with_alt_text']], params[:image_filter]), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+        .flex.flex-col
+          = f.label :sentence_filter, t('.sentence_filter'), class: 'text-sm font-medium text-gray-700 mb-1'
+          = f.select :sentence_filter, options_for_select([[t('.all'), ''], [t('.with_sentences'), 'with_sentences'], [t('.without_sentences'), 'without_sentences'], [t('.verified'), 'verified'], [t('.unverified'), 'unverified']], params[:sentence_filter]), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+        .flex.flex-col
+          = f.label :per_page, t('.per_page'), class: 'text-sm font-medium text-gray-700 mb-1'
+          = f.select :per_page, options_for_select([[50, 50], [100, 100], [200, 200], [t('.show_all'), 0]], @per_page), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+      .flex.gap-3.items-center
+        = f.submit t('.filter_button'), class: 'button button-sm primary !mt-0'
+        - if params[:q].present? || params[:image_filter].present? || params[:sentence_filter].present?
+          = link_to t('.clear'), example_sentences_overview_index_path, class: 'button button-sm !mt-0'
+
+  .mb-4.mt-6.flex.justify-between.items-center
+    %p.text-sm.text-gray-600
+      = t('.showing', count: @words_total_count)
+
+  - @words.each do |word|
+    .mt-4
+      = form_with url: example_sentences_overview_path(word), method: :patch, class: 'block' do |f|
+        = f.hidden_field :q, value: params[:q]
+        = f.hidden_field :image_filter, value: params[:image_filter]
+        = f.hidden_field :sentence_filter, value: params[:sentence_filter]
+        = f.hidden_field :per_page, value: params[:per_page]
+        = f.hidden_field :page, value: params[:page]
+
+        = box padding: false do
+          %div{"data-controller": "llm-suggest", "data-llm-suggest-url-value": suggest_example_sentences_overview_path(word)}
+            .flex.items-start
+              / Linke Seite: Bild + Wortname + Alt-Text
+              .flex-shrink-0.w-48.p-4.border-r.border-gray-100
+                .text-center
+                  - if word.image.attached?
+                    = image_tag word.image.variant(:thumb), class: 'w-20 h-20 object-cover rounded-lg mx-auto mb-2', alt: word.image_alt_text.presence || word.name
+                  - else
+                    .w-20.h-20.bg-gray-100.rounded-lg.mx-auto.mb-2.flex.items-center.justify-center
+                      %span.text-gray-400.text-xs= t('.no_image')
+                  = link_to word.name, word, class: 'text-blue-600 hover:text-blue-900 font-medium text-sm block'
+                  %span.text-xs.text-gray-500= word.class.model_name.human
+                  - if word.example_sentences_verified?
+                    %span.inline-block.text-xs.bg-green-100.text-green-800.px-2.py-0.5.rounded.mt-1= t('.is_verified')
+
+                / Alt-Text Feld (nur bei Wörtern mit Bild)
+                - if word.image.attached?
+                  .mt-3
+                    %label.text-xs.text-gray-500.block.mb-1= t('.alt_text')
+                    = text_field_tag :image_alt_text, word.image_alt_text, class: 'w-full px-2 py-1 border border-gray-300 rounded-md text-xs', placeholder: t('.alt_text_placeholder'), "data-llm-suggest-target": "altTextField"
+                    %div{"data-llm-suggest-target": "altTextSuggestion"}
+
+              / Rechte Seite: Beispielsätze + LLM-Vorschläge
+              .flex-grow.p-4{"data-controller": "nested-form"}
+                %template{"data-nested-form-target": "template"}
+                  .nested-form-wrapper.flex.gap-2.mb-2
+                    = text_field_tag "example_sentences[]", "", class: 'flex-grow px-3 py-2 border border-gray-300 rounded-md text-sm', placeholder: t('.sentence_placeholder')
+                    %button.text-gray-400.hover:text-red-500{type: "button", "data-action": "nested-form#remove"}
+                      = heroicon 'x-mark', options: {class: 'w-5 h-5'}
+
+                - word.example_sentences.each do |sentence|
+                  .nested-form-wrapper.flex.gap-2.mb-2
+                    = text_field_tag "example_sentences[]", sentence, class: 'flex-grow px-3 py-2 border border-gray-300 rounded-md text-sm'
+                    %button.text-gray-400.hover:text-red-500{type: "button", "data-action": "nested-form#remove"}
+                      = heroicon 'x-mark', options: {class: 'w-5 h-5'}
+
+                - if word.example_sentences.empty?
+                  .nested-form-wrapper.flex.gap-2.mb-2
+                    = text_field_tag "example_sentences[]", "", class: 'flex-grow px-3 py-2 border border-gray-300 rounded-md text-sm', placeholder: t('.sentence_placeholder')
+                    %button.text-gray-400.hover:text-red-500{type: "button", "data-action": "nested-form#remove"}
+                      = heroicon 'x-mark', options: {class: 'w-5 h-5'}
+
+                %div{"data-nested-form-target": "target"}
+
+                .flex.items-center.gap-3.mt-1.flex-wrap
+                  %button.text-gray-500.text-sm{type: "button", "data-action": "nested-form#add"}
+                    = t('.add_sentence')
+                  .flex.items-center.gap-4.ml-auto
+                    %label.flex.items-center.gap-2.cursor-pointer
+                      = check_box_tag :example_sentences_verified, "1", word.example_sentences_verified, class: 'rounded'
+                      %span.text-sm{class: word.example_sentences_verified? ? "text-green-600 font-medium" : "text-gray-500"}
+                        = t('.verified')
+                    = f.submit t('.save'), class: 'button button-sm primary !mt-0'
+
+                / LLM-Vorschläge
+                - if llm_available?
+                  .mt-3.pt-3.border-t.border-gray-100
+                    .flex.items-center.gap-2.mb-2
+                      %span.text-xs.font-medium.text-gray-500= t('.llm_suggestions')
+                      %button.text-xs.text-blue-600.hover:text-blue-800.font-medium{type: "button", "data-action": "llm-suggest#suggest", "data-llm-suggest-target": "button"}
+                        = t('.load_suggestions')
+                      %span.text-xs.text-gray-400{style: "display: none", "data-llm-suggest-target": "loading"}
+                        = t('.loading_suggestions')
+                    %div{"data-llm-suggest-target": "suggestions"}
+
+  - if @words.respond_to?(:total_pages) && @words.total_pages > 1
+    .mt-6
+      = paginate @words, params: {q: params[:q], image_filter: params[:image_filter], sentence_filter: params[:sentence_filter], per_page: @per_page}

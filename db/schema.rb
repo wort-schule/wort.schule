@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_22_080726) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -43,6 +43,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "bulk_edits", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "operation", null: false
+    t.string "field", null: false
+    t.jsonb "word_ids", default: [], null: false
+    t.jsonb "assigned_values", default: [], null: false
+    t.jsonb "previous_values", default: {}, null: false
+    t.string "search_query"
+    t.boolean "undone", default: false
+    t.datetime "undone_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bulk_edits_on_user_id"
   end
 
   create_table "change_groups", force: :cascade do |t|
@@ -113,7 +128,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
     t.index ["key"], name: "index_global_settings_on_key", unique: true
   end
 
-  create_table "good_job_batches", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
@@ -129,7 +144,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
     t.datetime "jobs_finished_at"
   end
 
-  create_table "good_job_executions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_executions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "active_job_id", null: false
@@ -147,14 +162,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
     t.index ["process_id", "created_at"], name: "index_good_job_executions_on_process_id_and_created_at"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "state"
     t.integer "lock_type", limit: 2
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "key"
@@ -162,7 +177,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -659,6 +674,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
     t.bigint "hit_counter", default: 0, null: false
     t.boolean "with_tts", default: true, null: false
     t.string "cologne_phonetics", default: [], array: true
+    t.boolean "example_sentences_verified", default: false, null: false
+    t.boolean "syllables_verified", default: false, null: false
+    t.string "wiktionary_syllables"
+    t.string "image_alt_text"
     t.index "lower((name)::text)", name: "idx_words_lower_name"
     t.index ["cologne_phonetics"], name: "index_words_on_cologne_phonetics", using: :gin
     t.index ["compound"], name: "index_words_on_compound"
@@ -696,6 +715,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_21_125321) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bulk_edits", "users"
   add_foreign_key "change_groups", "change_groups", column: "successor_id"
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "image_requests", "users"

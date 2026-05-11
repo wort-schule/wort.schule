@@ -90,6 +90,30 @@
                   .font-semibold= t('navigation.word_images')
                   %p.text-sm.text-gray-600= t('navigation.word_images_help')
 
+          - if can?(:manage, :bulk_edit)
+            .nav-card
+              = link_to bulk_edits_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('pencil-square', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.bulk_edits')
+                  %p.text-sm.text-gray-600= t('navigation.bulk_edits_help')
+
+          - if can?(:manage, :example_sentences_overview)
+            .nav-card
+              = link_to example_sentences_overview_index_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('chat-bubble-left-right', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.example_sentences_overview')
+                  %p.text-sm.text-gray-600= t('navigation.example_sentences_overview_help')
+
+          - if can?(:manage, :syllables_overview)
+            .nav-card
+              = link_to syllables_overview_index_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('scissors', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.syllables_overview')
+                  %p.text-sm.text-gray-600= t('navigation.syllables_overview_help')
+
     / Learning & Practice Section (only for logged in users)
     - if user_signed_in? && [Theme, List].any? { |klass| can? :read, klass }
       .mb-8

@@ -601,3 +601,147 @@ de:
       correct: Richtig
       back_to_list: "← Zurück zur Übersicht"
 
+  bulk_edits:
+    index:
+      page_title: Massenbearbeitung
+      title: Massenbearbeitung
+      tab_edit: Massenbearbeitung
+      tab_log: Protokoll
+      search_label: Wörter suchen
+      search_placeholder: "z.B. ^Haus*, *ung$, H?nd, Zel-le"
+      search_button: Suchen
+      clear: Filter zurücksetzen
+      wildcard_help: "Platzhalter: * = beliebig viele Zeichen, ? = ein Zeichen. Anker: ^ = Wortanfang, $ = Wortende. Beispiele: ^Haus* (beginnt mit Haus), *ung$ (endet auf ung). Bei Silbensuche: Zel-le, *-tion"
+      search_field: Suche in
+      search_by_name: Wortname
+      search_by_syllables: Silben
+      word_type: Wortart
+      all_types: Alle Wortarten
+      per_page: Pro Seite
+      show_all: Alle
+      no_results: Keine Wörter gefunden.
+      showing:
+        one: "%{count} Wort gefunden"
+        other: "%{count} Wörter gefunden"
+      select_all: Alle auswählen
+      assign_title: Felder zuweisen
+      field_label: Feld
+      choose_field: Bitte wählen...
+      operation: Operation
+      op_add: Hinzufügen
+      op_remove: Entfernen
+      values: Werte
+      apply: Auf ausgewählte Wörter anwenden
+      scroll_to_panel: "Aktion oben anpassen"
+      log_date: Datum
+      log_user: "Benutzer*in"
+      log_operation: Operation
+      log_field: Feld
+      log_values: Werte
+      log_count: Anzahl
+      log_query: Suchabfrage
+      log_actions: Aktionen
+      undo: Rückgängig
+      undo_confirm: Soll diese Operation wirklich rückgängig gemacht werden?
+      undone_at: "Rückgängig am %{time}"
+      no_log_entries: Noch keine Massenbearbeitungen durchgeführt.
+    execute:
+      success:
+        one: "%{count} Wort wurde aktualisiert."
+        other: "%{count} Wörter wurden aktualisiert."
+      no_words_selected: Bitte wählen Sie mindestens ein Wort aus.
+      no_field_selected: Bitte wählen Sie ein Feld aus.
+    undo:
+      undo_success: Die Operation wurde erfolgreich rückgängig gemacht.
+    operations:
+      add: Hinzufügen
+      remove: Entfernen
+      set: Setzen
+
+  example_sentences_overview:
+    index:
+      page_title: Beispielsätze
+      title: Beispielsätze
+      search_label: Wort suchen
+      search_placeholder: "z.B. Haus*, *tier"
+      image_filter: Bild
+      sentence_filter: Beispielsätze
+      all: Alle
+      with_image: Mit Bild
+      without_image: Ohne Bild
+      without_alt_text: Bild ohne Alt-Text
+      with_alt_text: Bild mit Alt-Text
+      with_sentences: Mit Sätzen
+      without_sentences: Ohne Sätze
+      verified: Geprüft
+      unverified: Nicht geprüft
+      is_verified: Geprüft
+      per_page: Pro Seite
+      show_all: Alle
+      filter_button: Filtern
+      clear: Filter zurücksetzen
+      showing:
+        one: "%{count} Wort"
+        other: "%{count} Wörter"
+      no_image: Kein Bild
+      sentence_placeholder: Beispielsatz eingeben...
+      add_sentence: + Satz hinzufügen
+      save: Speichern
+      alt_text: Alt-Text
+      alt_text_placeholder: Bildbeschreibung für Screenreader...
+      llm_suggestions: "KI-Vorschläge:"
+      load_suggestions: Vorschläge laden
+      loading_suggestions: Wird geladen...
+      suggest_sentences_button: Beispielsätze vorschlagen
+      suggest_sentences_confirm: "Für alle Wörter ohne Beispielsätze KI-Vorschläge generieren und speichern? Das kann einige Minuten dauern."
+      suggest_alt_texts_button: Alternativtexte vorschlagen
+      suggest_alt_texts_confirm: "Für alle Bilder ohne Alt-Text KI-Vorschläge generieren und speichern? Das kann einige Minuten dauern."
+    update:
+      success: "Beispielsätze für \"%{word}\" gespeichert."
+    suggest_sentences_batch:
+      suggest_sentences_success:
+        one: "Beispielsätze für %{count} Wort generiert."
+        other: "Beispielsätze für %{count} Wörter generiert."
+    suggest_alt_texts_batch:
+      suggest_alt_texts_success:
+        one: "Alt-Text für %{count} Bild generiert."
+        other: "Alt-Texte für %{count} Bilder generiert."
+
+  syllables_overview:
+    index:
+      page_title: Silbenübersicht
+      title: Silbenübersicht
+      search_label: Wort suchen
+      search_placeholder: "z.B. Haus*, *tier"
+      filter: Filter
+      all: Alle
+      missing_syllables: Ohne Sprechsilben
+      missing_written: Ohne Schreibsilben
+      has_both: Mit beiden Silbenarten
+      mismatch: Abweichungen (Wiktionary)
+      not_fetched: Noch nicht abgerufen
+      verified: Geprüft
+      unverified: Nicht geprüft
+      is_verified: Geprüft
+      per_page: Pro Seite
+      show_all: Alle
+      filter_button: Filtern
+      clear: Filter zurücksetzen
+      showing:
+        one: "%{count} Wort"
+        other: "%{count} Wörter"
+      syllables_speak: "Sprechsilben (—)"
+      syllables_write: "Schreibsilben (|)"
+      wikidata: Wiktionary
+      save: Speichern
+      fetch_single: Von Wiktionary abrufen
+      fetch_all: Alle von Wiktionary abrufen
+      fetch_all_confirm: "Alle noch nicht abgerufenen Wörter von Wiktionary abrufen? Das kann einige Minuten dauern."
+    update:
+      success: "Silben für \"%{word}\" gespeichert."
+    fetch_wiktionary:
+      fetch_success: "Wiktionary für \"%{word}\": %{syllables}"
+    fetch_all_wiktionary:
+      fetch_all_success:
+        one: "%{count} Wort von Wiktionary abgerufen."
+        other: "%{count} Wörter von Wiktionary abgerufen."

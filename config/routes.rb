@@ -6,6 +6,17 @@ Rails.application.routes.draw do
   resources :adjectives, except: %i[index new create], path: "", constraints: SlugConstraint.new(Adjective)
   resources :function_words, except: %i[index new create], path: "", constraints: SlugConstraint.new(FunctionWord)
 
+  namespace :api do
+    namespace :v1 do
+      resources :words, only: %i[index show] do
+        collection do
+          get :topics
+          get :hierarchies
+        end
+      end
+    end
+  end
+
   authenticate :user, ->(user) { user.role == "Admin" } do
     mount GoodJob::Engine => "seite/good_job"
   end
@@ -123,6 +134,22 @@ Rails.application.routes.draw do
     end
     resources :word_imports, only: %i[new create]
     resources :word_images, only: :index
+    resources :bulk_edits, only: :index do
+      collection do
+        post :execute
+        post :undo
+      end
+    end
+    resources :example_sentences_overview, only: %i[index update] do
+      get :suggest, on: :member
+      collection do
+        post :suggest_sentences_batch
+        post :suggest_alt_texts_batch
+      end
+    end
+    resources :syllables_overview, only: %i[index update] do
+      post :fetch_all_wiktionary, on: :collection
+    end
 
     # User's own routes
     resource :profile, only: %i[show edit update] do

@@ -1,0 +1,192 @@
+- set_meta_tags title: t('.page_title')
+
+= title_with_actions t('.title')
+
+%div{"data-controller": "tabs"}
+  / Tab-Navigation
+  .flex.flex-wrap.my-6.border-b
+    %a.px-4.py-2.cursor-pointer{"data-tabs-target": "tab", "data-action": "click->tabs#switch", "data-tabs-panel": "massenbearbeitung", class: "font-bold shadow border bg-white"}
+      = t('.tab_edit')
+    %a.px-4.py-2.cursor-pointer.hover:bg-white{"data-tabs-target": "tab", "data-action": "click->tabs#switch", "data-tabs-panel": "protokoll"}
+      = t('.tab_log')
+
+  / ===== Tab 1: Massenbearbeitung =====
+  #massenbearbeitung{"data-tabs-target": "panel"}
+    = box do
+      = form_with url: bulk_edits_path, method: :get, class: 'space-y-4' do |f|
+        .grid.grid-cols-1.md:grid-cols-5.gap-4
+          .flex.flex-col.md:col-span-2
+            = f.label :q, t('.search_label'), class: 'text-sm font-medium text-gray-700 mb-1'
+            = f.text_field :q, value: params[:q], placeholder: t('.search_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+          .flex.flex-col
+            = f.label :search_field, t('.search_field'), class: 'text-sm font-medium text-gray-700 mb-1'
+            = f.select :search_field, options_for_select([[t('.search_by_name'), 'name'], [t('.search_by_syllables'), 'syllables']], params[:search_field]), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+          .flex.flex-col
+            = f.label :word_type, t('.word_type'), class: 'text-sm font-medium text-gray-700 mb-1'
+            = f.select :word_type, options_for_select([[Noun.model_name.human, 'Noun'], [Verb.model_name.human, 'Verb'], [Adjective.model_name.human, 'Adjective'], [FunctionWord.model_name.human, 'FunctionWord']], params[:word_type]), {include_blank: t('.all_types')}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+          .flex.flex-col
+            = f.label :per_page, t('.per_page'), class: 'text-sm font-medium text-gray-700 mb-1'
+            = f.select :per_page, options_for_select([[50, 50], [100, 100], [t('.show_all'), 0]], params[:per_page].to_i), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+        .flex.gap-3.items-center
+          = f.submit t('.search_button'), class: 'button button-sm primary !mt-0'
+          - if params[:q].present?
+            = link_to t('.clear'), bulk_edits_path, class: 'button button-sm !mt-0'
+
+        .text-xs.text-gray-500.italic
+          = t('.wildcard_help')
+
+    - if params[:q].present? && @words.blank?
+      .mt-6
+        = box do
+          %p.text-center.text-gray-600= t('.no_results')
+
+    - if @words.present?
+      = form_with url: execute_bulk_edits_path, method: :post do |f|
+        = f.hidden_field :q, value: params[:q]
+        = f.hidden_field :search_field, value: params[:search_field]
+        = f.hidden_field :word_type, value: params[:word_type]
+        = f.hidden_field :per_page, value: params[:per_page]
+
+        / Zuweisungs-Panel (oben)
+        #zuweisungs-panel.mt-6
+          = box class: "!overflow-visible" do
+            %h3.text-lg.font-semibold.mb-4= t('.assign_title')
+
+            %div{"data-controller": "bulk-edit-form"}
+              .grid.grid-cols-1.md:grid-cols-3.gap-4
+
+                .flex.flex-col
+                  %label.text-sm.font-medium.text-gray-700.mb-1= t('.field_label')
+                  = f.select :field, bulk_edit_field_options, {include_blank: t('.choose_field')}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm', "data-bulk-edit-form-target": "fieldSelect", "data-action": "change->bulk-edit-form#toggleInputs"
+
+                .flex.flex-col{"data-bulk-edit-form-target": "operationWrapper", style: "display: none"}
+                  %label.text-sm.font-medium.text-gray-700.mb-1= t('.operation')
+                  = f.select :operation, [[t('.op_add'), "add"], [t('.op_remove'), "remove"]], {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "phenomenons", style: "display: none"}
+                  %label.text-sm.font-medium.text-gray-700.mb-1= Phenomenon.model_name.human(count: 2)
+                  = select_tag "values[]", options_from_collection_for_select(Phenomenon.order(:name), :id, :name), multiple: true, "data-controller": "select", class: 'w-full'
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "strategies", style: "display: none"}
+                  %label.text-sm.font-medium.text-gray-700.mb-1= Strategy.model_name.human(count: 2)
+                  = select_tag "values[]", options_from_collection_for_select(Strategy.order(:name), :id, :name), multiple: true, "data-controller": "select", class: 'w-full'
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "topics", style: "display: none"}
+                  %label.text-sm.font-medium.text-gray-700.mb-1= Topic.model_name.human(count: 2)
+                  = select_tag "values[]", options_from_collection_for_select(Topic.order(:name), :id, :name), multiple: true, "data-controller": "select", class: 'w-full'
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "hierarchy_id", style: "display: none"}
+                  %label.text-sm.font-medium.text-gray-700.mb-1= Word.human_attribute_name(:hierarchy)
+                  = select_tag "values[]", options_from_collection_for_select(Hierarchy.order(:name), :id, :name), include_blank: true, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "prefix_id", style: "display: none"}
+                  %label.text-sm.font-medium.text-gray-700.mb-1= Word.human_attribute_name(:prefix)
+                  = select_tag "values[]", options_from_collection_for_select(Prefix.order(:name), :id, :name), include_blank: true, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "postfix_id", style: "display: none"}
+                  %label.text-sm.font-medium.text-gray-700.mb-1= Word.human_attribute_name(:postfix)
+                  = select_tag "values[]", options_from_collection_for_select(Postfix.order(:name), :id, :name), include_blank: true, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "prototype", style: "display: none"}
+                  %label.flex.items-center.gap-2.cursor-pointer.mt-4
+                    = check_box_tag "values[]", "true", false
+                    %span.text-sm.font-medium.text-gray-700= Word.human_attribute_name(:prototype)
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "foreign", style: "display: none"}
+                  %label.flex.items-center.gap-2.cursor-pointer.mt-4
+                    = check_box_tag "values[]", "true", false
+                    %span.text-sm.font-medium.text-gray-700= Word.human_attribute_name(:foreign)
+
+                .flex.flex-col{"data-bulk-edit-form-target": "valueInput", "data-field": "compound", style: "display: none"}
+                  %label.flex.items-center.gap-2.cursor-pointer.mt-4
+                    = check_box_tag "values[]", "true", false
+                    %span.text-sm.font-medium.text-gray-700= Word.human_attribute_name(:compound)
+
+              .mt-4
+                = f.submit t('.apply'), class: 'button primary'
+
+        / Ergebnis-Tabelle
+        .mb-4.mt-6.flex.justify-between.items-center
+          %p.text-sm.text-gray-600
+            = t('.showing', count: @words_total_count)
+
+        = box padding: false do
+          %div{"data-controller": "bulk-select"}
+            .px-4.pt-4.pb-2.flex.items-center.gap-4
+              %label.flex.items-center.gap-2.cursor-pointer
+                %input{type: "checkbox", "data-bulk-select-target": "selectAll", "data-action": "bulk-select#toggleAll"}
+                %span.text-sm.font-medium= t('.select_all')
+              %span.text-sm.text-gray-500{"data-bulk-select-target": "count"}
+
+            .overflow-x-auto
+              %table.w-full.text-sm
+                %thead
+                  %tr.border-b.border-gray-300
+                    %th.px-4.py-3.text-left.w-10
+                    %th.px-4.py-3.text-left.font-semibold= Word.human_attribute_name(:name)
+                    %th.px-4.py-3.text-left.font-semibold= t('.word_type')
+                    %th.px-4.py-3.text-left.font-semibold= Phenomenon.model_name.human(count: 2)
+                    %th.px-4.py-3.text-left.font-semibold= Strategy.model_name.human(count: 2)
+                %tbody
+                  - @words.each do |word|
+                    %tr.border-b.border-gray-100.hover:bg-gray-50
+                      %td.px-4.py-3
+                        %input{type: "checkbox", name: "word_ids[]", value: word.id, "data-bulk-select-target": "checkbox", "data-action": "bulk-select#updateCount"}
+                      %td.px-4.py-3
+                        = link_to word.name, word, class: 'text-blue-600 hover:text-blue-900 font-medium'
+                      %td.px-4.py-3
+                        %span.text-xs.bg-blue-100.text-blue-800.px-2.py-1.rounded
+                          = word.class.model_name.human
+                      %td.px-4.py-3.text-xs= word.phenomenons.map(&:name).join(", ")
+                      %td.px-4.py-3.text-xs= word.strategies.map(&:name).join(", ")
+
+            - if @words.respond_to?(:total_pages) && @words.total_pages > 1
+              .px-4.py-3.border-t.border-gray-100
+                = paginate @words, params: {q: params[:q], search_field: params[:search_field], word_type: params[:word_type], per_page: @per_page}
+
+        / Anwenden-Button unten + Link nach oben
+        .mt-6.flex.items-center.gap-4
+          = f.submit t('.apply'), class: 'button primary'
+          %a.text-sm.text-blue-600.hover:text-blue-900{href: "#zuweisungs-panel"}
+            = t('.scroll_to_panel')
+
+  / ===== Tab 2: Protokoll =====
+  #protokoll{"data-tabs-target": "panel", style: "display: none"}
+    = box do
+      - if @bulk_edits.any?
+        .overflow-x-auto
+          %table.w-full.text-sm
+            %thead
+              %tr.border-b.border-gray-300
+                %th.px-4.py-3.text-left.font-semibold= t('.log_date')
+                %th.px-4.py-3.text-left.font-semibold= t('.log_user')
+                %th.px-4.py-3.text-left.font-semibold= t('.log_operation')
+                %th.px-4.py-3.text-left.font-semibold= t('.log_field')
+                %th.px-4.py-3.text-left.font-semibold= t('.log_values')
+                %th.px-4.py-3.text-left.font-semibold= t('.log_count')
+                %th.px-4.py-3.text-left.font-semibold= t('.log_query')
+                %th.px-4.py-3.text-right.font-semibold= t('.log_actions')
+            %tbody
+              - @bulk_edits.each do |edit|
+                %tr.border-b.border-gray-100.hover:bg-gray-50{class: edit.undone? ? "opacity-50" : ""}
+                  %td.px-4.py-3.text-sm.text-gray-500= l(edit.created_at, format: :short)
+                  %td.px-4.py-3= edit.user.to_s
+                  %td.px-4.py-3
+                    %span.text-xs.px-2.py-1.rounded{class: operation_badge_class(edit.operation)}
+                      = t("bulk_edits.operations.#{edit.operation}")
+                  %td.px-4.py-3= edit.field_label
+                  %td.px-4.py-3.text-xs= display_bulk_edit_values(edit)
+                  %td.px-4.py-3= edit.affected_words_count
+                  %td.px-4.py-3.text-xs.text-gray-500= edit.search_query
+                  %td.px-4.py-3.text-right
+                    - if edit.undoable?
+                      = button_to t('.undo'), undo_bulk_edits_path(id: edit.id), method: :post, class: 'button button-sm danger', data: {turbo_confirm: t('.undo_confirm')}
+                    - else
+                      %span.text-xs.text-gray-400
+                        = t('.undone_at', time: l(edit.undone_at, format: :short))
+
+        .mt-4
+          = paginate @bulk_edits, param_name: :log_page
+      - else
+        %p.text-center.text-gray-600= t('.no_log_entries')

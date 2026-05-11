@@ -79,6 +79,17 @@ class Word < ApplicationRecord
     example_sentences: []
   ]
 
+  def example_sentences
+    value = super
+    return [] if value.blank?
+    return value if value.is_a?(Array)
+
+    parsed = value.is_a?(String) ? JSON.parse(value) : value
+    parsed.is_a?(Array) ? parsed : []
+  rescue JSON::ParserError
+    []
+  end
+
   def syllables_count
     syllables
       .split("-")

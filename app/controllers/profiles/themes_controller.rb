@@ -9,7 +9,7 @@ module Profiles
 
     def index
       @themes = @themes.order(:name).where(word_type:).page(params[:page])
-      @active_theme = current_user.public_send(theme_attribute)
+      @active_theme = current_user.word_view_setting&.public_send(theme_attribute)
     end
 
     def update

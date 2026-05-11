@@ -1,0 +1,79 @@
+- set_meta_tags title: t('.page_title')
+
+= title_with_actions t('.title') do
+  = button_to t('.fetch_all'), fetch_all_wiktionary_syllables_overview_index_path(filter_params), method: :post, class: 'button primary', data: {turbo_confirm: t('.fetch_all_confirm')}
+
+.mt-6
+  = box do
+    = form_with url: syllables_overview_index_path, method: :get, class: 'space-y-4' do |f|
+      .grid.grid-cols-1.md:grid-cols-4.gap-4
+        .flex.flex-col
+          = f.label :q, t('.search_label'), class: 'text-sm font-medium text-gray-700 mb-1'
+          = f.text_field :q, value: params[:q], placeholder: t('.search_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+        .flex.flex-col
+          = f.label :syllable_filter, t('.filter'), class: 'text-sm font-medium text-gray-700 mb-1'
+          = f.select :syllable_filter, options_for_select([[t('.all'), ''], [t('.missing_syllables'), 'missing_syllables'], [t('.missing_written'), 'missing_written'], [t('.has_both'), 'has_both'], [t('.mismatch'), 'mismatch'], [t('.not_fetched'), 'not_fetched'], [t('.verified'), 'verified'], [t('.unverified'), 'unverified']], params[:syllable_filter]), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+        .flex.flex-col
+          = f.label :per_page, t('.per_page'), class: 'text-sm font-medium text-gray-700 mb-1'
+          = f.select :per_page, options_for_select([[50, 50], [100, 100], [200, 200], [t('.show_all'), 0]], @per_page), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+      .flex.gap-3.items-center
+        = f.submit t('.filter_button'), class: 'button button-sm primary !mt-0'
+        - if params[:q].present? || params[:syllable_filter].present?
+          = link_to t('.clear'), syllables_overview_index_path, class: 'button button-sm !mt-0'
+
+  .mb-4.mt-6.flex.justify-between.items-center
+    %p.text-sm.text-gray-600
+      = t('.showing', count: @words_total_count)
+
+  = box padding: false do
+    .overflow-x-auto
+      %table.w-full.text-sm
+        %thead
+          %tr.border-b.border-gray-300
+            %th.px-4.py-3.text-left.font-semibold= Word.human_attribute_name(:name)
+            %th.px-4.py-3.text-left.font-semibold= t('.syllables_speak')
+            %th.px-4.py-3.text-left.font-semibold= t('.syllables_write')
+            %th.px-4.py-3.text-center.font-semibold= t('.wiktionary')
+            %th.px-4.py-3.text-center.font-semibold= t('.verified')
+            %th.px-4.py-3.text-right.font-semibold
+
+        %tbody
+          - @words.each do |word|
+            = form_with url: syllables_overview_path(word), method: :patch, class: 'contents' do |f|
+              = f.hidden_field :q, value: params[:q]
+              = f.hidden_field :syllable_filter, value: params[:syllable_filter]
+              = f.hidden_field :per_page, value: params[:per_page]
+              = f.hidden_field :page, value: params[:page]
+
+              %tr.border-b.border-gray-100.hover:bg-gray-50
+                %td.px-4.py-3
+                  = link_to word.name, word, class: 'text-blue-600 hover:text-blue-900 font-medium'
+                  %span.text-xs.text-gray-500.ml-1= word.class.model_name.human
+                  - if word.syllables_verified?
+                    %span.inline-block.text-xs.bg-green-100.text-green-800.px-1.py-0.5.rounded.ml-1= t('.is_verified')
+                %td.px-4.py-2
+                  = text_field_tag :syllables, word.syllables, class: 'w-full px-2 py-1 border border-gray-300 rounded-md text-sm', placeholder: 'z.B. Ab-hand-lung'
+                %td.px-4.py-2
+                  = text_field_tag :written_syllables, word.written_syllables, class: 'w-full px-2 py-1 border border-gray-300 rounded-md text-sm', placeholder: 'z.B. Ab|hand|lung'
+                %td.px-4.py-2.text-center
+                  - if word.wiktionary_syllables.present? && word.syllables.present?
+                    - if word.syllables == word.wiktionary_syllables
+                      %span.text-green-600{title: word.wiktionary_syllables}
+                        = heroicon 'check-circle', options: {class: 'w-5 h-5 inline'}
+                    - else
+                      %span.text-red-600{title: "Wiktionary: #{word.wiktionary_syllables}"}
+                        = heroicon 'x-circle', options: {class: 'w-5 h-5 inline'}
+                      %span.text-xs.text-red-600.block= word.wiktionary_syllables
+                  - elsif word.wiktionary_syllables.present?
+                    %span.text-gray-400.text-xs= word.wiktionary_syllables
+                  - else
+                    %span.text-gray-300 —
+                %td.px-4.py-2.text-center
+                  = check_box_tag :syllables_verified, "1", word.syllables_verified, class: 'rounded'
+                %td.px-4.py-2.text-right
+                  = f.submit t('.save'), class: 'button button-sm primary !mt-0'
+
+    - if @words.respond_to?(:total_pages) && @words.total_pages > 1
+      .px-4.py-3.border-t.border-gray-100
+        = paginate @words, params: {q: params[:q], syllable_filter: params[:syllable_filter], per_page: @per_page}
