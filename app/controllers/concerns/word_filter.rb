@@ -3,6 +3,8 @@
 module WordFilter
   extend ActiveSupport::Concern
 
+  SEARCHABLE_FIELDS = %i[name syllables].freeze
+
   class_methods do
     def replace_regex(query)
       squeeze query
@@ -12,6 +14,21 @@ module WordFilter
 
     def squeeze(query)
       query.squeeze(" ").strip
+    end
+
+    # Builds an ILIKE scope from a wildcard pattern. Supports:
+    # - `*` (any chars), `?` (single char)
+    # - `^` prefix (anchored start), `$` suffix (anchored end)
+    # `field` is restricted to SEARCHABLE_FIELDS to prevent SQL injection.
+    def matching_pattern(query, field: :name)
+      raise ArgumentError, "Unsupported field: #{field}" unless SEARCHABLE_FIELDS.include?(field.to_sym)
+      q = squeeze(query.to_s.strip)
+      return all if q.empty?
+      anchored_start = q.start_with?("^")
+      anchored_end = q.end_with?("$")
+      q = replace_regex(q.delete_prefix("^").delete_suffix("$"))
+      pattern = "#{"%" unless anchored_start}#{q}#{"%" unless anchored_end}"
+      where("words.#{field} ILIKE ?", pattern)
     end
 
     def filter_with_conjunction(attribute, options)

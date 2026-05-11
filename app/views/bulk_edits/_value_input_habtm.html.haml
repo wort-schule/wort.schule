@@ -1,0 +1,4 @@
+- model = field.classify.constantize
+.flex.flex-col{data: {bulk_edit_form_target: "valueInput", field: field, field_type: "habtm"}, style: "display: none"}
+  %label.text-sm.font-medium.text-gray-700.mb-1= model.model_name.human(count: 2)
+  = select_tag "value[]", options_from_collection_for_select(model.order(:name), :id, :name), multiple: true, data: {controller: "select", action: "change->bulk-edit-form#valueChanged"}, class: 'w-full'

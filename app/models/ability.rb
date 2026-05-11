@@ -65,6 +65,8 @@ class Ability
 
         can :crud, WordViewSetting, owner: user
 
+        can :manage, :bulk_edit
+
       when "Admin"
         can :manage, Noun
         can :manage, Verb
@@ -95,6 +97,7 @@ class Ability
         can :manage, :review
         can :manage, :word_import
         can :manage, :keyword_analytics
+        can :manage, :bulk_edit
         can :read, ImageRequest
 
         # User management

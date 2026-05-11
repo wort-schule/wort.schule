@@ -1,0 +1,13 @@
+.flex.flex-col{data: {bulk_edit_form_target: "valueInput", field: field, field_type: "boolean"}, style: "display: none"}
+  %fieldset
+    %legend.text-sm.font-medium.text-gray-700.mb-1= Word.human_attribute_name(field)
+    .flex.gap-4.items-center
+      %label.flex.items-center.gap-1.cursor-pointer
+        = radio_button_tag "value", "", true, data: {action: "change->bulk-edit-form#valueChanged", field_owner: field}
+        %span.text-sm= t('bulk_edits.values.none')
+      %label.flex.items-center.gap-1.cursor-pointer
+        = radio_button_tag "value", "true", false, data: {action: "change->bulk-edit-form#valueChanged", field_owner: field}
+        %span.text-sm= t('simple_form.yes')
+      %label.flex.items-center.gap-1.cursor-pointer
+        = radio_button_tag "value", "false", false, data: {action: "change->bulk-edit-form#valueChanged", field_owner: field}
+        %span.text-sm= t('simple_form.no')

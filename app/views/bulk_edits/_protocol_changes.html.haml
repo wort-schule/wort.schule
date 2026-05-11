@@ -1,0 +1,25 @@
+- strategy = bulk_edit.strategy
+%turbo-frame{id: "bulk_edit_details_#{bulk_edit.id}"}
+  %div
+    %table.w-full.text-xs
+      %thead
+        %tr.border-b
+          %th.px-2.py-1.text-left.font-semibold= Word.human_attribute_name(:name)
+          %th.px-2.py-1.text-left.font-semibold= t('bulk_edits.index.previous_value')
+          %th.px-2.py-1.text-left.font-semibold= t('bulk_edits.index.applied_value')
+          %th.px-2.py-1.text-right.font-semibold
+      %tbody
+        - bulk_edit.word_changes.order(:id).each do |change|
+          %tr.border-b.border-gray-100{class: (change.reverted? ? "opacity-50" : "")}
+            %td.px-2.py-1
+              - if change.word
+                = link_to change.word.name, change.word, class: 'text-blue-600 hover:text-blue-900'
+              - else
+                %span.text-gray-400= t('bulk_edits.index.deleted_word')
+            %td.px-2.py-1.text-gray-700= strategy.display_value(change.previous_value)
+            %td.px-2.py-1.text-gray-700= strategy.display_value(change.applied_value)
+            %td.px-2.py-1.text-right
+              - if !change.reverted? && bulk_edit.undoable_by?(current_user)
+                = button_to t('bulk_edits.index.undo_word'), undo_bulk_edit_change_path(bulk_edit_id: bulk_edit.id, id: change.id), method: :post, class: 'button button-xs danger', data: {turbo_confirm: t('bulk_edits.index.undo_word_confirm')}
+              - elsif change.reverted?
+                %span.text-xs.text-gray-400= t('bulk_edits.index.reverted_at', time: l(change.reverted_at, format: :short))

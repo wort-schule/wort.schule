@@ -76,6 +76,12 @@ de:
       llm_service:
         one: LLM Service
         other: LLM Services
+      bulk_edit:
+        one: Massenbearbeitung
+        other: Massenbearbeitungen
+      bulk_edit_change:
+        one: Wortänderung
+        other: Wortänderungen
 
     attributes:
       user:
@@ -288,8 +294,37 @@ de:
         endpoint: URL
         api_key: API Key
         model: LLM Modellname
+      bulk_edit:
+        operation: Operation
+        field: Feld
+        intent_value: Wert
+        search_query: Suchabfrage
+        missing_field: Filter "ohne Wert in"
+        affected_count: Anzahl betroffene Wörter
+        undone_at: Rückgängig gemacht am
+
+    errors:
+      models:
+        bulk_edit:
+          attributes:
+            operation:
+              invalid_for_field: ist für das gewählte Feld nicht zulässig
 
   activemodel:
     attributes:
       llm_enrichment:
         list_id: Wortliste
+      forms/bulk_edit_form:
+        field: Feld
+        operation: Operation
+        value: Wert
+    errors:
+      models:
+        forms/bulk_edit_form:
+          no_words_selected: Bitte wähle mindestens ein Wort aus.
+          too_many_words: "Bitte verfeinere deinen Filter — die Massenbearbeitung ist auf %{max} Wörter pro Vorgang begrenzt."
+          attributes:
+            operation:
+              invalid_for_field: ist für das gewählte Feld nicht zulässig
+            value:
+              blank: muss gesetzt werden.

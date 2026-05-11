@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_11_151933) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -43,6 +43,36 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "bulk_edit_changes", force: :cascade do |t|
+    t.jsonb "applied_value", null: false
+    t.bigint "bulk_edit_id", null: false
+    t.datetime "created_at", null: false
+    t.jsonb "previous_value", null: false
+    t.datetime "reverted_at"
+    t.datetime "updated_at", null: false
+    t.bigint "word_id"
+    t.index ["bulk_edit_id", "word_id"], name: "index_bulk_edit_changes_on_bulk_edit_id_and_word_id", unique: true
+    t.index ["bulk_edit_id"], name: "index_bulk_edit_changes_on_bulk_edit_id"
+    t.index ["reverted_at"], name: "index_bulk_edit_changes_on_reverted_at"
+    t.index ["word_id"], name: "index_bulk_edit_changes_on_word_id"
+  end
+
+  create_table "bulk_edits", force: :cascade do |t|
+    t.integer "affected_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.string "field", null: false
+    t.jsonb "intent_value", null: false
+    t.string "missing_field"
+    t.string "operation", null: false
+    t.string "search_query"
+    t.datetime "undone_at"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["undone_at"], name: "index_bulk_edits_on_undone_at"
+    t.index ["user_id", "created_at"], name: "index_bulk_edits_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_bulk_edits_on_user_id"
   end
 
   create_table "change_groups", force: :cascade do |t|
@@ -113,7 +143,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.index ["key"], name: "index_global_settings_on_key", unique: true
   end
 
-  create_table "good_job_batches", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "callback_priority"
     t.text "callback_queue_name"
     t.datetime "created_at", null: false
@@ -129,7 +159,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "good_job_executions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_executions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "active_job_id", null: false
     t.datetime "created_at", null: false
     t.interval "duration"
@@ -147,14 +177,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.index ["process_id", "created_at"], name: "index_good_job_executions_on_process_id_and_created_at"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "lock_type", limit: 2
     t.jsonb "state"
     t.datetime "updated_at", null: false
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "key"
     t.datetime "updated_at", null: false
@@ -162,7 +192,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "active_job_id"
     t.uuid "batch_callback_id"
     t.uuid "batch_id"
@@ -614,6 +644,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.string "consonant_vowel"
     t.datetime "created_at", null: false
     t.jsonb "example_sentences", default: [], null: false
+    t.boolean "example_sentences_verified", default: false, null: false
     t.boolean "foreign", default: false, null: false
     t.integer "function_type"
     t.bigint "genus_feminine_id"
@@ -622,6 +653,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.bigint "genus_neuter_id"
     t.bigint "hierarchy_id"
     t.bigint "hit_counter", default: 0, null: false
+    t.string "image_alt_text"
     t.string "imperative_plural"
     t.string "imperative_singular"
     t.boolean "irregular_comparison", default: false, null: false
@@ -657,8 +689,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
     t.boolean "subjectless", default: false, null: false
     t.string "superlative", default: ""
     t.string "syllables", default: ""
+    t.boolean "syllables_verified", default: false, null: false
     t.string "type", null: false
     t.datetime "updated_at", null: false
+    t.string "wiktionary_syllables"
     t.boolean "with_tts", default: true, null: false
     t.string "written_syllables", default: ""
     t.index "lower((name)::text)", name: "idx_words_lower_name"
@@ -700,6 +734,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_191630) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bulk_edit_changes", "bulk_edits"
+  add_foreign_key "bulk_edit_changes", "words", on_delete: :nullify
+  add_foreign_key "bulk_edits", "users", on_delete: :restrict
   add_foreign_key "change_groups", "change_groups", column: "successor_id"
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "image_requests", "users"
