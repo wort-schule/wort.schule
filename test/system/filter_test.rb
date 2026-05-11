@@ -140,6 +140,15 @@ class FilterTest < ApplicationSystemTestCase
     login_as user
     visit search_path
     click_on t("filter.open")
+
+    # Stop the filter form's `form-submission` Stimulus controller from
+    # firing a fetch on every input event. Otherwise `fill_in "ab"` fires
+    # one fetch per keystroke, each turbo_stream response re-renders the
+    # #add_words_to_list frame, and a click that lands during the re-render
+    # raises ObsoleteNode (or "submits with no list_id" → 404 → no flash).
+    # Set fields silently, then click apply for one deterministic submit.
+    disable_form_auto_submit
+
     fill_in "filterrific[filter_wordstarts]", with: "ab"
     find_button(t("filter.apply"), visible: false).trigger("click")
 
@@ -152,26 +161,10 @@ class FilterTest < ApplicationSystemTestCase
     force_reveal!
     assert_selector "select#list_id", visible: true
 
-    # The add-to-list form lives inside a turbo_frame_tag (:add_words_to_list)
-    # that the filter form's submit may re-render mid-test. Picking the option
-    # via Capybara, then clicking the button as two separate actions, races
-    # that re-render: by the time we click, the <select> we set may have been
-    # replaced by an empty one, the form submits with no list_id, the server
-    # 404s, and we see the empty form instead of the success flash.
-    # Force the value via JS and assert the *outcome* inside a retry loop so
-    # a missed click is caught and the click is re-issued.
-    expected_flash = t("filter.added_words_to_list", count: 3)
-    attempts = 0
-    loop do
-      force_reveal!
-      force_select_value("list_id", list.id.to_s)
-      click_on t("words.show.lists.add")
-      break if page.has_text?(expected_flash, wait: 5)
-      attempts += 1
-      raise "add-to-list flash never appeared after 3 attempts" if attempts >= 3
-    end
+    force_select_value("list_id", list.id.to_s)
+    click_on t("words.show.lists.add")
 
-    assert_text expected_flash
+    assert_text t("filter.added_words_to_list", count: 3)
     assert_equal [noun, verb, adjective].sort_by(&:id), list.words.sort_by(&:id)
   end
 
