@@ -1,0 +1,43 @@
+= box do
+  - if @bulk_edits.any?
+    .overflow-x-auto
+      %table.w-full.text-sm
+        %thead
+          %tr.border-b.border-gray-300
+            %th.px-4.py-3.text-left.font-semibold.w-10
+            %th.px-4.py-3.text-left.font-semibold= t('bulk_edits.index.log_date')
+            %th.px-4.py-3.text-left.font-semibold= t('bulk_edits.index.log_user')
+            %th.px-4.py-3.text-left.font-semibold= t('bulk_edits.index.log_operation')
+            %th.px-4.py-3.text-left.font-semibold= t('bulk_edits.index.log_field')
+            %th.px-4.py-3.text-left.font-semibold= t('bulk_edits.index.log_values')
+            %th.px-4.py-3.text-left.font-semibold= t('bulk_edits.index.log_count')
+            %th.px-4.py-3.text-left.font-semibold= t('bulk_edits.index.log_query')
+            %th.px-4.py-3.text-right.font-semibold= t('bulk_edits.index.log_actions')
+        %tbody
+          - @bulk_edits.each do |edit|
+            %tr.border-b.border-gray-100.hover:bg-gray-50{class: (edit.undone? ? "opacity-50" : ""), data: {controller: "bulk-protocol"}}
+              %td.px-4.py-3
+                %button.text-gray-400.hover:text-gray-700{type: "button", data: {action: "click->bulk-protocol#toggle", url: details_bulk_edit_path(edit), frame_id: "bulk_edit_details_#{edit.id}"}, "aria-label": t('bulk_edits.index.toggle_details')}
+                  = heroicon('chevron-right', options: {class: 'w-4 h-4', data: {bulk_protocol_target: "chevron"}})
+              %td.px-4.py-3.text-sm.text-gray-500= l(edit.created_at, format: :short)
+              %td.px-4.py-3= edit.user.to_s
+              %td.px-4.py-3
+                %span.text-xs.px-2.py-1.rounded{class: operation_badge_class(edit.operation)}= t("bulk_edits.operations.#{edit.operation}")
+              %td.px-4.py-3= edit.field_label
+              %td.px-4.py-3.text-xs= edit.display_intent
+              %td.px-4.py-3= edit.affected_count
+              %td.px-4.py-3.text-xs.text-gray-500= edit.search_query
+              %td.px-4.py-3.text-right
+                - if edit.undoable_by?(current_user)
+                  = button_to t('bulk_edits.index.undo'), undo_bulk_edit_path(edit), method: :post, class: 'button button-sm danger', data: {turbo_confirm: t('bulk_edits.index.undo_confirm')}
+                - elsif edit.undone?
+                  %span.text-xs.text-gray-400= t('bulk_edits.index.undone_at', time: l(edit.undone_at, format: :short))
+            %tr.bg-gray-50{data: {bulk_protocol_target: "detailsRow"}, style: "display: none"}
+              %td.px-4.py-3{colspan: 9}
+                %turbo-frame{id: "bulk_edit_details_#{edit.id}"}
+                  .text-gray-500.text-sm= t('bulk_edits.index.loading')
+
+    .mt-4
+      = paginate @bulk_edits, param_name: :log_page
+  - else
+    %p.text-center.text-gray-600= t('bulk_edits.index.no_log_entries')

@@ -41,6 +41,8 @@ de:
     create_adjective_help: "Fügen Sie neue Adjektive zur Datenbank hinzu"
     word_imports_help: "Importieren Sie Wörter in Großmengen aus Dateien"
     word_images_help: "Verwalten Sie Bilder für Wörter und weisen Sie sie zu"
+    bulk_edits: Massenbearbeitung
+    bulk_edits_help: "Mehrere Wörter gleichzeitig bearbeiten"
 
     # Help texts for Learning
     themes_help: "Erstellen und verwalten Sie benutzerdefinierte Lernthemen"

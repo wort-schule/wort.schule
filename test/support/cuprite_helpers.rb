@@ -25,6 +25,27 @@ module CupriteHelpers
     JS
   end
 
+  # Strip `form-submission` from a form's `data-controller` so its Stimulus
+  # controller stops firing a fetch on every input event. The search page
+  # auto-submits the filter form on each keystroke; combined with `fill_in`
+  # typing one character at a time, that yields overlapping fetches whose
+  # turbo_stream responses re-render frames (including #add_words_to_list)
+  # and detach elements the test is about to interact with. Disable the
+  # auto-submit, set fields, then click the apply button for a single
+  # deterministic form submission.
+  def disable_form_auto_submit
+    page.execute_script(<<~JS)
+      document.querySelectorAll('form[data-controller~="form-submission"]').forEach(form => {
+        const controllers = (form.dataset.controller || '').split(/\\s+/).filter(c => c !== 'form-submission');
+        if (controllers.length) {
+          form.dataset.controller = controllers.join(' ');
+        } else {
+          form.removeAttribute('data-controller');
+        }
+      });
+    JS
+  end
+
   # Run a Capybara interaction that can race a Turbo re-render. The
   # rescue list covers the four ways Cuprite signals "the DOM moved under
   # us mid-action" — ObsoleteNode (node detached), CoordinatesNotFound

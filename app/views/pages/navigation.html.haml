@@ -43,7 +43,7 @@
                   %p.text-sm.text-gray-600= t('navigation.browse_adjectives_help')
 
     / Content Management Section (only for logged in users)
-    - if user_signed_in? && (can?(:create, Noun) || can?(:create, Verb) || can?(:create, Adjective) || can?(:manage, :word_import) || can?(:manage, :word_images))
+    - if user_signed_in? && (can?(:create, Noun) || can?(:create, Verb) || can?(:create, Adjective) || can?(:manage, :word_import) || can?(:manage, :word_images) || can?(:manage, :bulk_edit))
       .mb-8
         %h3.text-2xl.font-bold.text-gray-900.mb-4.flex.items-center.gap-2
           = heroicon('pencil', options: {class: 'w-6 h-6 text-blue-600'})
@@ -89,6 +89,14 @@
                 %div
                   .font-semibold= t('navigation.word_images')
                   %p.text-sm.text-gray-600= t('navigation.word_images_help')
+
+          - if can?(:manage, :bulk_edit)
+            .nav-card
+              = link_to bulk_edits_path, class: 'nav-card-link' do
+                .nav-card-icon= heroicon('pencil-square', options: {class: 'w-5 h-5'})
+                %div
+                  .font-semibold= t('navigation.bulk_edits')
+                  %p.text-sm.text-gray-600= t('navigation.bulk_edits_help')
 
     / Learning & Practice Section (only for logged in users)
     - if user_signed_in? && [Theme, List].any? { |klass| can? :read, klass }

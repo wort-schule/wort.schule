@@ -140,6 +140,15 @@ class FilterTest < ApplicationSystemTestCase
     login_as user
     visit search_path
     click_on t("filter.open")
+
+    # Stop the filter form's `form-submission` Stimulus controller from
+    # firing a fetch on every input event. Otherwise `fill_in "ab"` fires
+    # one fetch per keystroke, each turbo_stream response re-renders the
+    # #add_words_to_list frame, and a click that lands during the re-render
+    # raises ObsoleteNode (or "submits with no list_id" → 404 → no flash).
+    # Set fields silently, then click apply for one deterministic submit.
+    disable_form_auto_submit
+
     fill_in "filterrific[filter_wordstarts]", with: "ab"
     find_button(t("filter.apply"), visible: false).trigger("click")
 
@@ -151,12 +160,9 @@ class FilterTest < ApplicationSystemTestCase
 
     force_reveal!
     assert_selector "select#list_id", visible: true
-    select list.name, from: "list_id"
 
-    with_node_churn_retry do
-      force_reveal!
-      click_on t("words.show.lists.add")
-    end
+    force_select_value("list_id", list.id.to_s)
+    click_on t("words.show.lists.add")
 
     assert_text t("filter.added_words_to_list", count: 3)
     assert_equal [noun, verb, adjective].sort_by(&:id), list.words.sort_by(&:id)

@@ -601,3 +601,86 @@ de:
       correct: Richtig
       back_to_list: "← Zurück zur Übersicht"
 
+  bulk_edits:
+    index:
+      page_title: Massenbearbeitung
+      title: Massenbearbeitung
+      tab_edit: Massenbearbeitung
+      tab_log: Protokoll
+      search_label: Wörter suchen
+      search_placeholder: "z.B. ^Haus*, *ung$, H?nd, Zel-le"
+      search_button: Suchen
+      clear: Filter zurücksetzen
+      wildcard_help: "Platzhalter: * = beliebig viele Zeichen, ? = ein Zeichen. Anker: ^ = Wortanfang, $ = Wortende. Beispiele: ^Haus* (beginnt mit Haus), *ung$ (endet auf ung). Bei Silbensuche: Zel-le, *-tion"
+      search_field: Suche in
+      search_by_name: Wortname
+      search_by_syllables: Silben
+      word_type: Wortart
+      all_types: Alle Wortarten
+      per_page: Pro Seite
+      show_all: Alle
+      missing_field: Nur Wörter ohne Wert in
+      all_words: Alle Wörter (kein Filter)
+      no_results: Keine Wörter gefunden.
+      found:
+        one: "%{count} Wort gefunden"
+        other: "%{count} Wörter gefunden"
+      count_selected:
+        one: "%{count} ausgewählt"
+        other: "%{count} ausgewählt"
+      select_page: Alle auf dieser Seite
+      select_all_matches:
+        one: "Alle %{count} Treffer auswählen"
+        other: "Alle %{count} Treffer auswählen"
+      clear_selection: Auswahl zurücksetzen
+      assign_title: Felder zuweisen
+      field_label: Feld
+      choose_field: Bitte wählen...
+      operation: Operation
+      op_add: Hinzufügen
+      op_remove: Entfernen
+      apply: Auf ausgewählte Wörter anwenden
+      current_value: Aktueller Wert
+      preview_text: "Wirkt sich auf %{effective} von %{total} Wörtern aus (%{noop} unverändert)"
+      preview_all_matches: "Wirkt sich auf alle %{total} Treffer aus"
+      preview_all_matches_unknown: Wirkt sich auf alle Treffer aus
+      confirm_template: "Das wirkt sich auf %{count} Wörter aus. Wirklich fortfahren?"
+      log_date: Datum
+      log_user: "Benutzer*in"
+      log_operation: Operation
+      log_field: Feld
+      log_values: Werte
+      log_count: Anzahl
+      log_query: Suchabfrage
+      log_actions: Aktionen
+      undo: Rückgängig
+      undo_confirm: Soll diese Operation wirklich rückgängig gemacht werden?
+      undone_at: "Rückgängig am %{time}"
+      undo_word: Pro Wort rückgängig
+      undo_word_confirm: Diese eine Wortänderung rückgängig machen?
+      reverted_at: "Pro Wort rückgängig am %{time}"
+      toggle_details: Details ein-/ausklappen
+      previous_value: Vorher
+      applied_value: Nachher
+      deleted_word: "(gelöschtes Wort)"
+      loading: "Lädt…"
+      no_log_entries: Noch keine Massenbearbeitungen durchgeführt.
+    field_groups:
+      habtm: Sammelfelder
+      belongs_to: Wortbildung
+      boolean: Eigenschaften
+    values:
+      none: "—"
+    operations:
+      add: Hinzufügen
+      remove: Entfernen
+      set: Setzen
+    create:
+      success:
+        one: "%{count} Wort wurde aktualisiert."
+        other: "%{count} Wörter wurden aktualisiert."
+      no_changes: Keine Wörter geändert (alle hatten den Wert bereits bzw. nicht).
+    undo:
+      success: Die Operation wurde erfolgreich rückgängig gemacht.
+      already_undone: Diese Operation wurde bereits rückgängig gemacht.
+

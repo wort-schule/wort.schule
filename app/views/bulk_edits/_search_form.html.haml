@@ -1,0 +1,31 @@
+= box do
+  = form_with url: bulk_edits_path, method: :get, local: true, class: 'space-y-4' do |f|
+    .grid.grid-cols-1.md:grid-cols-5.gap-4
+      .flex.flex-col.md:col-span-2
+        = f.label :q, t('bulk_edits.index.search_label'), class: 'text-sm font-medium text-gray-700 mb-1'
+        = f.text_field :q, value: @search.q, placeholder: t('bulk_edits.index.search_placeholder'), class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+      .flex.flex-col
+        = f.label :search_field, t('bulk_edits.index.search_field'), class: 'text-sm font-medium text-gray-700 mb-1'
+        = f.select :search_field, options_for_select([[t('bulk_edits.index.search_by_name'), 'name'], [t('bulk_edits.index.search_by_syllables'), 'syllables']], @search.search_field), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+      .flex.flex-col
+        = f.label :word_type, t('bulk_edits.index.word_type'), class: 'text-sm font-medium text-gray-700 mb-1'
+        = f.select :word_type, options_for_select([[Noun.model_name.human, 'Noun'], [Verb.model_name.human, 'Verb'], [Adjective.model_name.human, 'Adjective'], [FunctionWord.model_name.human, 'FunctionWord']], @search.word_type), {include_blank: t('bulk_edits.index.all_types')}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+      .flex.flex-col
+        = f.label :per_page, t('bulk_edits.index.per_page'), class: 'text-sm font-medium text-gray-700 mb-1'
+        = f.select :per_page, options_for_select([[50, 50], [100, 100], [t('bulk_edits.index.show_all'), 0]], @search.per_page), {}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+    .grid.grid-cols-1.md:grid-cols-2.gap-4
+      .flex.flex-col
+        = f.label :missing_field, t('bulk_edits.index.missing_field'), class: 'text-sm font-medium text-gray-700 mb-1'
+        = f.select :missing_field, options_for_select(BulkEdit::ALL_FIELDS.map { |fld| [BulkEdit::FieldStrategy.for(fld).label, fld] }, @search.missing_field), {include_blank: t('bulk_edits.index.all_words')}, class: 'px-3 py-2 border border-gray-300 rounded-md text-sm'
+
+    .flex.gap-3.items-center
+      = f.submit t('bulk_edits.index.search_button'), class: 'button button-sm primary !mt-0'
+      - if @search.queried?
+        = link_to t('bulk_edits.index.clear'), bulk_edits_path, class: 'button button-sm !mt-0'
+
+    .text-xs.text-gray-500.italic= t('bulk_edits.index.wildcard_help')
+
+  - if @search.queried? && @words_total_count
+    .mt-2.text-sm.text-gray-700
+      %strong= t('bulk_edits.index.found', count: @words_total_count)

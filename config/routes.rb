@@ -123,6 +123,15 @@ Rails.application.routes.draw do
     end
     resources :word_imports, only: %i[new create]
     resources :word_images, only: :index
+    resources :bulk_edits, only: %i[index create] do
+      member do
+        post :undo
+        get :details
+      end
+      resources :changes, only: [], controller: "bulk_edit_changes" do
+        member { post :undo }
+      end
+    end
 
     # User's own routes
     resource :profile, only: %i[show edit update] do
