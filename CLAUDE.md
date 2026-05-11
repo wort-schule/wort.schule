@@ -128,6 +128,24 @@ Every new feature or bugfix follows the same shape:
 
 4. **Run the linter**: `bundle exec standardrb --no-fix`. Fix issues before declaring done.
 
+## Flaky tests are broken tests
+
+A test that passes locally but fails on CI — or passes nine times and fails the tenth — is **broken**, not "flaky". Treat it the same as a hard failure:
+
+- **Never re-run CI to make a red turn green.** Re-running is a diagnostic step (does it reproduce?), not a remediation. If the second run is green, you've learned the failure is non-deterministic — that is the bug.
+- **Don't merge on top of an intermittent red.** A green-on-second-try check is a green-with-an-asterisk; ignore the asterisk and the next person inherits the flake plus a bigger blast radius.
+- **Diagnose, don't paper over.** The usual culprits in this codebase are Stimulus binding races, Turbo Frame re-renders, TomSelect widgets churning the DOM, and Capybara clicking before the element is interactable.
+  - Prefer deterministic waits: `assert_selector`, `assert_text`, `assert_no_text`, `assert_current_path`. They retry internally with Capybara's wait time, so the test waits exactly as long as it needs to.
+  - Reach for explicit waits over `sleep`: `find(...)` / `assert_*` block until the condition holds. Hand-rolled `sleep` is almost always the wrong fix.
+  - When the DOM legitimately churns under you (Turbo re-render mid-action), wrap the racy step in `with_node_churn_retry` and assert *the outcome* immediately after, inside the same retry block — so a no-op click is caught and retried, not silently accepted.
+  - When a JS widget intercepts clicks (TomSelect, reveal toggles), use the dedicated helpers in `test/support/cuprite_helpers.rb` — `force_reveal!`, `force_select_value` — instead of clicking through the widget.
+- **If you genuinely can't fix the test in this PR**, do exactly one of:
+  1. **Skip it** with `skip "flaky: <one-line description of the race>, see #<issue>"` *and* open a GitHub issue capturing the failure. Don't silently leave it red.
+  2. **Quarantine it** by moving it out of the default `bin/rails test:system` run. Don't pretend it's passing.
+
+  Never just retry the CI run, never delete the assertion to make the red go away, never widen the assertion until it matches whatever the page happens to render.
+- **Adding a new flake costs the whole team.** Before merging a system test, run it locally **at least three times in a row**, including under load (`bin/rails test:system test/system/<file>_test.rb -n test_name` in a loop). If it doesn't survive a stress run on your laptop, it won't survive CI.
+
 ## Validation lives in the model
 
 Anything checkable about a record (presence, format, uniqueness, length, business invariants like "a published word must have an author", cross-record constraints) is enforced as a **model validation** or model-level guard.
