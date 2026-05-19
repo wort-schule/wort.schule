@@ -392,7 +392,9 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (5.27.0)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
     msgpack (1.8.0)
     multi_json (1.21.1)
     multipart-post (2.4.1)
@@ -671,7 +673,7 @@ DEPENDENCIES
   liquid
   meta-tags
   mina (= 1.2.5)
-  minitest (~> 5.25)
+  minitest (~> 6.0)
   ostruct
   paper_trail
   pg (~> 1.5)
