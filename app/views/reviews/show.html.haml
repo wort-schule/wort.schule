@@ -1,4 +1,6 @@
 .p-4
+  = render "filter", counts: @filter_counts, user: current_user
+
   - if @reviewable.word_attribute_edits.present?
     = render 'word_attribute_edits'
   - elsif @reviewable.new_word.present?

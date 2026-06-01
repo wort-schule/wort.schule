@@ -15,6 +15,26 @@ class ChangeGroup < ApplicationRecord
 
   accepts_nested_attributes_for :word_attribute_edits, :new_word
 
+  # Pending review counts per type ("new_word" plus each attribute_name),
+  # independent of the reviewer's current selection. The filter uses these to
+  # show how much work waits per type and which types can be toggled on or off.
+  def self.reviewable_type_counts(reviewer)
+    base = where(successor_id: nil)
+      .where(state: :waiting_for_review)
+      .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.change_group_id = change_groups.id AND reviewers.reviewer_id = ?)", reviewer.id)
+
+    counts = base
+      .joins(:word_attribute_edits)
+      .group("word_attribute_edits.attribute_name")
+      .distinct
+      .count("change_groups.id")
+
+    new_word_count = base.joins(:new_word).count
+    counts["new_word"] = new_word_count if new_word_count.positive?
+
+    counts
+  end
+
   private
 
   def cancel_related_enrich_word_jobs

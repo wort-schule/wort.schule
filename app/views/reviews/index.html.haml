@@ -1,3 +1,8 @@
-%h1= t '.empty.title'
+- if @filter_counts.present?
+  %h1= t '.filtered.title'
+  %p.mt-4= t '.filtered.explanation'
+- else
+  %h1= t '.empty.title'
+  %p.mt-4= t '.empty.explanation'
 
-%p.mt-4= t '.empty.explanation'
+.mt-6= render "filter", counts: @filter_counts, user: current_user

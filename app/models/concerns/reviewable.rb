@@ -8,14 +8,21 @@ module Reviewable
 
     scope :reviewable, ->(reviewer) {
       reviewer_id = reviewer.id
+      matching_edit_ids = WordAttributeEdit.where(attribute_name: reviewer.review_attributes_without_types).select(:id)
+
+      # New words are an opt-out review type: they only show up while the
+      # reviewer keeps them enabled (see User#review_new_words).
+      type_condition = if reviewer.review_new_words?
+        ["new_words.id IS NOT NULL OR word_attribute_edits.id IN (?)", matching_edit_ids]
+      else
+        ["word_attribute_edits.id IN (?)", matching_edit_ids]
+      end
 
       where(successor_id: nil)
         .where(state: :waiting_for_review)
         .left_joins(:new_word)
         .left_joins(:word_attribute_edits)
-        .where(
-          "new_words.id IS NOT NULL OR word_attribute_edits.id IN (?)", WordAttributeEdit.where(attribute_name: reviewer.review_attributes_without_types).select(:id)
-        )
+        .where(*type_condition)
         .where(
           id: select(:id)
             .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.change_group_id = change_groups.id AND reviewers.reviewer_id = ?)", reviewer_id)
