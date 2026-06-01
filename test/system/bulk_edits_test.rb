@@ -55,6 +55,29 @@ class BulkEditsTest < ApplicationSystemTestCase
     assert admin_edit.undoable_by?(admin)
   end
 
+  test "deselecting a single word after selecting all matches keeps the rest selected" do
+    admin = create(:admin)
+    create(:noun, name: "Hausboot")
+    create(:noun, name: "Haustier")
+    create(:noun, name: "Hausschuh")
+
+    login_as admin
+    visit bulk_edits_path
+    fill_in "q", with: "Haus*"
+    click_on I18n.t("bulk_edits.index.search_button")
+    assert_text "Hausschuh"
+
+    click_on I18n.t("bulk_edits.index.select_all_matches", count: 3)
+    assert_text I18n.t("bulk_edits.index.count_selected", count: 3)
+
+    # The checkbox must stay interactive: unchecking one cancels "all matches" mode
+    # and falls back to an explicit selection of the rest of the page.
+    deselected = Word.find_by!(name: "Haustier")
+    find("input[type=checkbox][data-word-id='#{deselected.id}']").click
+
+    assert_text I18n.t("bulk_edits.index.count_selected", count: 2)
+  end
+
   test "denies access to guests" do
     login_as create(:guest)
     assert_raises(CanCan::AccessDenied) { visit bulk_edits_path }
