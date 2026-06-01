@@ -1,0 +1,8 @@
+- segments = review_filter_segments(user, counts)
+- if segments.present?
+  .mb-6
+    .flex.flex-wrap.gap-2
+      - segments.each do |segment|
+        = button_to review_filter_path, method: :patch, params: {review_type: segment[:review_type]}, class: review_filter_segment_class(segment[:active]) do
+          = segment[:label]
+          %span{class: review_filter_badge_class(segment[:active])}= number_with_delimiter(segment[:count])

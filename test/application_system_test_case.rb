@@ -5,20 +5,25 @@ require "capybara/cuprite"
 require "capybara/minitest"
 require "capybara-screenshot/minitest"
 
-Capybara.register_driver(:cuprite) do |app|
-  Capybara::Cuprite::Driver.new(app,
-    window_size: [1200, 800],
-    js_errors: true,
-    timeout: 10,
-    process_timeout: 30)
-end
-
 Capybara.javascript_driver = :cuprite
 Capybara.default_max_wait_time = 5
 Capybara.asset_host = "http://localhost:3000"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :cuprite
+  # Configure Cuprite through driven_by, not a standalone
+  # Capybara.register_driver(:cuprite) block. Rails treats :cuprite as a
+  # "registerable" driver, so driven_by re-registers it on the first system
+  # test and silently overwrites any standalone registration. Options passed
+  # here are the ones Rails actually applies.
+  #
+  # process_timeout: 30 gives Chrome a generous budget to produce its websocket
+  # URL on a cold, loaded CI runner. With the old (overwritten) config the
+  # effective value was Ferrum's 10s default, which the first system test in a
+  # run could exceed -> Ferrum::ProcessTimeoutError.
+  driven_by :cuprite, screen_size: [1200, 800], options: {
+    timeout: 10,
+    process_timeout: 30
+  }
 
   include Warden::Test::Helpers
   include Devise::Test::IntegrationHelpers

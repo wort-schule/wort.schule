@@ -116,6 +116,7 @@ Rails.application.routes.draw do
     resource :llm_enrichment, only: %i[show new create]
     resources :keyword_analytics, only: %i[index show]
     resources :reviews, only: %i[index show update]
+    resource :review_filter, only: :update
     resources :pending_reviews, only: :index do
       collection do
         post :delete_filtered

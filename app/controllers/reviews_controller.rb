@@ -4,6 +4,7 @@ class ReviewsController < ApplicationController
   authorize_resource :review, class: false
 
   before_action :set_reviewable, only: %i[show update]
+  before_action :set_filter_counts, only: %i[show update]
 
   rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_next_review
 
@@ -56,13 +57,21 @@ class ReviewsController < ApplicationController
       .find(params[:id])
   end
 
+  def set_filter_counts
+    @filter_counts = ChangeGroup.reviewable_type_counts(current_user)
+  end
+
   def redirect_to_next_review
     @next_review = ChangeGroup.reviewable(current_user).first
 
     if @next_review
       redirect_to review_path(@next_review)
+    elsif params[:action] == "index"
+      # No reviewable change groups left: render the empty index page, but with
+      # the filter so a reviewer who deselected every type can re-enable one.
+      set_filter_counts
     else
-      redirect_to reviews_path unless params[:action] == "index"
+      redirect_to reviews_path
     end
   end
 end

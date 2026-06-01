@@ -95,6 +95,93 @@ class ChangeGroupTest < ActiveSupport::TestCase
     end
   end
 
+  class NewWordFilterTest < ActiveSupport::TestCase
+    test "includes new words when the reviewer reviews new words" do
+      reviewer = create(:user, review_attributes: [], review_new_words: true)
+      new_word = create(:new_word)
+
+      assert_includes ChangeGroup.reviewable(reviewer).pluck(:id), new_word.change_group_id
+    end
+
+    test "excludes new words when the reviewer disabled new words" do
+      reviewer = create(:user, review_attributes: [], review_new_words: false)
+      new_word = create(:new_word)
+
+      refute_includes ChangeGroup.reviewable(reviewer).pluck(:id), new_word.change_group_id
+    end
+
+    test "still includes matching attribute edits when new words are disabled" do
+      reviewer = create(:user, review_attributes: ["noun.keywords"], review_new_words: false)
+      edit = create(:word_attribute_edit, attribute_name: "keywords")
+
+      assert_includes ChangeGroup.reviewable(reviewer).pluck(:id), edit.change_group_id
+    end
+
+    test "returns a change group only once even when several of its edits match" do
+      reviewer = create(:user, review_attributes: ["noun.keywords"], review_new_words: false)
+      change_group = create(:word_attribute_edit, attribute_name: "keywords").change_group
+      create(:word_attribute_edit, attribute_name: "keywords", change_group:)
+
+      ids = ChangeGroup.reviewable(reviewer).pluck(:id)
+
+      assert_equal 1, ids.count(change_group.id)
+    end
+  end
+
+  class ReviewableTypeCountsTest < ActiveSupport::TestCase
+    test "counts pending change groups per type" do
+      reviewer = create(:user)
+      create(:new_word)
+      create(:new_word)
+      create(:word_attribute_edit, attribute_name: "keywords")
+
+      counts = ChangeGroup.reviewable_type_counts(reviewer)
+
+      assert_equal 2, counts["new_word"]
+      assert_equal 1, counts["keywords"]
+    end
+
+    test "ignores change groups the reviewer already reviewed" do
+      reviewer = create(:user)
+      edit = create(:word_attribute_edit, attribute_name: "keywords")
+      edit.change_group.reviews.create!(reviewer: reviewer, state: :skipped)
+
+      counts = ChangeGroup.reviewable_type_counts(reviewer)
+
+      assert_nil counts["keywords"]
+    end
+
+    test "counts a type independently of the reviewer's selection" do
+      reviewer = create(:user, review_attributes: [], review_new_words: false)
+      create(:new_word)
+
+      counts = ChangeGroup.reviewable_type_counts(reviewer)
+
+      assert_equal 1, counts["new_word"]
+    end
+
+    test "counts a change group with edits of different types once per type" do
+      reviewer = create(:user)
+      change_group = create(:word_attribute_edit, attribute_name: "keywords").change_group
+      create(:word_attribute_edit, attribute_name: "synonyms", change_group:)
+
+      counts = ChangeGroup.reviewable_type_counts(reviewer)
+
+      assert_equal 1, counts["keywords"]
+      assert_equal 1, counts["synonyms"]
+    end
+
+    test "counts a change group with several edits of the same type only once" do
+      reviewer = create(:user)
+      change_group = create(:word_attribute_edit, attribute_name: "keywords").change_group
+      create(:word_attribute_edit, attribute_name: "keywords", change_group:)
+
+      counts = ChangeGroup.reviewable_type_counts(reviewer)
+
+      assert_equal 1, counts["keywords"]
+    end
+  end
+
   class StoreReviewTest < ActiveSupport::TestCase
     setup do
       @reviewable = create(:word_attribute_edit)
