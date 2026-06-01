@@ -99,12 +99,18 @@ export default class extends Controller {
 
   toggleCheckbox(event) {
     const cb = event.currentTarget
+
+    // Individual click cancels "Alle Treffer"-mode → fall back to explicit selection.
+    // First materialize the currently visible page into the selection, so unchecking
+    // one row keeps the rest of the page selected instead of clearing everything.
+    if (this.allMatches) {
+      this.checkboxTargets.forEach(c => this.idsSet.add(parseInt(c.dataset.wordId, 10)))
+      this.disableAllMatches()
+    }
+
     const wid = parseInt(cb.dataset.wordId, 10)
     if (cb.checked) this.idsSet.add(wid)
     else this.idsSet.delete(wid)
-
-    // Individual click cancels "Alle Treffer"-mode → fall back to explicit selection.
-    if (this.allMatches) this.disableAllMatches()
 
     this.persist()
     this.refreshUI()
@@ -131,7 +137,7 @@ export default class extends Controller {
       this.disableAllMatches()
     } else {
       this.selectAllFieldTarget.value = "1"
-      this.checkboxTargets.forEach(cb => { cb.checked = true; cb.disabled = true })
+      this.checkboxTargets.forEach(cb => { cb.checked = true })
     }
     this.persist()
     this.refreshUI()
@@ -140,7 +146,6 @@ export default class extends Controller {
 
   disableAllMatches() {
     if (this.hasSelectAllFieldTarget) this.selectAllFieldTarget.value = ""
-    this.checkboxTargets.forEach(cb => { cb.disabled = false })
   }
 
   reset() {
@@ -164,14 +169,14 @@ export default class extends Controller {
       const wid = parseInt(cb.dataset.wordId, 10)
       const isSel = this.idsSet.has(wid) || this.allMatches
       cb.checked = isSel
-      cb.disabled = this.allMatches
+      // Checkboxes stay interactive in "Alle Treffer"-mode so a single click can
+      // cancel that mode and fall back to an explicit per-page selection.
       if (isSel) visibleSelected++
     })
 
     if (this.hasPageSelectAllTarget) {
       this.pageSelectAllTarget.checked = visibleSelected > 0 && visibleSelected === visibleTotal
       this.pageSelectAllTarget.indeterminate = visibleSelected > 0 && visibleSelected < visibleTotal
-      this.pageSelectAllTarget.disabled = this.allMatches
     }
 
     let countText
