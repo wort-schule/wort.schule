@@ -1,0 +1,3 @@
+import{Controller as t}from"@hotwired/stimulus";class src_default extends t{connect(){this.hasButtonTarget&&(this.originalText=this.buttonTarget.innerText)}copy(t){t.preventDefault();navigator.clipboard.writeText(this.sourceTarget.value).then((()=>this.copied()))}copied(){if(this.hasButtonTarget){this.timeout&&clearTimeout(this.timeout);this.buttonTarget.innerText=this.data.get("successContent");this.timeout=setTimeout((()=>{this.buttonTarget.innerText=this.originalText}),this.successDurationValue)}}}src_default.targets=["button","source"];src_default.values={successDuration:{type:Number,default:2e3}};export{src_default as default};
+
+//# sourceMappingURL=stimulus-clipboard.es.js.map
