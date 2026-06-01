@@ -162,10 +162,18 @@ class FilterTest < ApplicationSystemTestCase
     force_reveal!
     assert_selector "select#list_id", visible: true
 
-    force_select_value("list_id", list.id.to_s)
-    click_on t("words.show.lists.add")
+    # Selecting the list dispatches a `change` that re-renders the
+    # #add_words_to_list turbo_frame; a click that lands during that
+    # re-render detaches the "add" button and raises ObsoleteNode. Retry the
+    # select-and-submit as a unit and assert the outcome inside the block, so
+    # a click swallowed by the re-render is retried instead of silently lost.
+    with_node_churn_retry do
+      force_select_value("list_id", list.id.to_s)
+      click_on t("words.show.lists.add")
 
-    assert_text t("filter.added_words_to_list", count: 3)
+      assert_text t("filter.added_words_to_list", count: 3)
+    end
+
     assert_equal [noun, verb, adjective].sort_by(&:id), list.words.sort_by(&:id)
   end
 
