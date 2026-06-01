@@ -116,6 +116,16 @@ class ChangeGroupTest < ActiveSupport::TestCase
 
       assert_includes ChangeGroup.reviewable(reviewer).pluck(:id), edit.change_group_id
     end
+
+    test "returns a change group only once even when several of its edits match" do
+      reviewer = create(:user, review_attributes: ["noun.keywords"], review_new_words: false)
+      change_group = create(:word_attribute_edit, attribute_name: "keywords").change_group
+      create(:word_attribute_edit, attribute_name: "keywords", change_group:)
+
+      ids = ChangeGroup.reviewable(reviewer).pluck(:id)
+
+      assert_equal 1, ids.count(change_group.id)
+    end
   end
 
   class ReviewableTypeCountsTest < ActiveSupport::TestCase
@@ -148,6 +158,27 @@ class ChangeGroupTest < ActiveSupport::TestCase
       counts = ChangeGroup.reviewable_type_counts(reviewer)
 
       assert_equal 1, counts["new_word"]
+    end
+
+    test "counts a change group with edits of different types once per type" do
+      reviewer = create(:user)
+      change_group = create(:word_attribute_edit, attribute_name: "keywords").change_group
+      create(:word_attribute_edit, attribute_name: "synonyms", change_group:)
+
+      counts = ChangeGroup.reviewable_type_counts(reviewer)
+
+      assert_equal 1, counts["keywords"]
+      assert_equal 1, counts["synonyms"]
+    end
+
+    test "counts a change group with several edits of the same type only once" do
+      reviewer = create(:user)
+      change_group = create(:word_attribute_edit, attribute_name: "keywords").change_group
+      create(:word_attribute_edit, attribute_name: "keywords", change_group:)
+
+      counts = ChangeGroup.reviewable_type_counts(reviewer)
+
+      assert_equal 1, counts["keywords"]
     end
   end
 

@@ -37,7 +37,16 @@ class ReviewFiltersControllerTest < ActionDispatch::IntegrationTest
 
     patch review_filter_path, params: {review_type: "keywords"}
 
-    refute_includes admin.reload.review_attributes_without_types, "keywords"
+    assert_equal [], admin.reload.review_attributes
+  end
+
+  test "toggling one selected attribute leaves the others untouched" do
+    admin = create(:admin, review_attributes: ["noun.keywords", "noun.synonyms"])
+    sign_in admin
+
+    patch review_filter_path, params: {review_type: "keywords"}
+
+    assert_equal ["noun.synonyms"], admin.reload.review_attributes
   end
 
   test "ignores an unknown review type" do

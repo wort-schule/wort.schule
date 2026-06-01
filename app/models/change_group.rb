@@ -19,9 +19,7 @@ class ChangeGroup < ApplicationRecord
   # independent of the reviewer's current selection. The filter uses these to
   # show how much work waits per type and which types can be toggled on or off.
   def self.reviewable_type_counts(reviewer)
-    base = where(successor_id: nil)
-      .where(state: :waiting_for_review)
-      .where("NOT EXISTS (SELECT 1 FROM reviewers WHERE reviewers.change_group_id = change_groups.id AND reviewers.reviewer_id = ?)", reviewer.id)
+    base = pending_for_reviewer(reviewer)
 
     counts = base
       .joins(:word_attribute_edits)

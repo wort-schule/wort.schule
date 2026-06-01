@@ -72,11 +72,7 @@ class User < ApplicationRecord
   end
 
   def review_attributes_without_types
-    review_attributes.map do |attribute_with_type|
-      _type, attribute = attribute_with_type.split(".")
-
-      attribute
-    end.flatten.uniq
+    review_attributes.map { |key| Llm::Attributes.bare_name(key) }.uniq
   end
 
   private

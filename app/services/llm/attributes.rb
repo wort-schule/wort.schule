@@ -28,6 +28,22 @@ module Llm
       end.uniq { |title, key| title }
     end
 
+    # The bare attribute name of a canonical "type.attribute" review key
+    # (e.g. "noun.keywords" -> "keywords"). Single home for that key format.
+    def self.bare_name(key)
+      key.split(".").last
+    end
+
+    # Indexes collection by bare attribute name, keeping the first entry per
+    # name (matching collection's title-based dedup). Lets the review filter
+    # resolve a bare name to both its canonical key and human title in one place
+    # and acts as the allow-list of toggleable review types.
+    def self.by_attribute_name
+      collection.each_with_object({}) do |(title, key), map|
+        map[bare_name(key)] ||= {key:, title:}
+      end
+    end
+
     def self.translate(attributes)
       attributes.map do |attribute_with_type|
         type, attribute = attribute_with_type.split(".")

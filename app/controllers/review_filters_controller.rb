@@ -18,24 +18,15 @@ class ReviewFiltersController < ApplicationController
   private
 
   def toggle_attribute(attribute_name)
-    canonical_key = attribute_keys[attribute_name]
+    canonical_key = Llm::Attributes.by_attribute_name.dig(attribute_name, :key)
     return unless canonical_key # ignore unknown types
 
     attributes = if current_user.review_attributes_without_types.include?(attribute_name)
-      current_user.review_attributes.reject { |key| key.split(".").last == attribute_name }
+      current_user.review_attributes.reject { |key| Llm::Attributes.bare_name(key) == attribute_name }
     else
       current_user.review_attributes + [canonical_key]
     end
 
     current_user.update!(review_attributes: attributes)
-  end
-
-  # Maps a bare attribute_name (e.g. "keywords") to its canonical
-  # "type.attribute" profile key (e.g. "noun.keywords"). Also acts as the
-  # allow-list: unknown attribute names map to nil and are ignored.
-  def attribute_keys
-    Llm::Attributes.collection.each_with_object({}) do |(_title, key), map|
-      map[key.split(".").last] ||= key
-    end
   end
 end

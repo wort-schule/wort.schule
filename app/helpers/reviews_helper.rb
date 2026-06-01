@@ -6,11 +6,15 @@ module ReviewsHelper
   # hash with :review_type, :label, :count and :active.
   def review_filter_segments(user, counts)
     selected = user.review_attributes_without_types
+    known_types = Llm::Attributes.by_attribute_name
 
-    attribute_segments = counts.except("new_word").map do |attribute_name, count|
+    # Only render segments for types the toggle can actually act on; an
+    # attribute_name with pending edits but no entry in known_types (e.g. a
+    # renamed/removed LLM schema property) would otherwise be a dead button.
+    attribute_segments = counts.except("new_word").slice(*known_types.keys).map do |attribute_name, count|
       {
         review_type: attribute_name,
-        label: review_attribute_labels[attribute_name] || attribute_name,
+        label: known_types.dig(attribute_name, :title),
         count: count,
         active: selected.include?(attribute_name)
       }
@@ -44,15 +48,5 @@ module ReviewsHelper
     base = "rounded-full px-2 py-0.5 text-xs font-semibold"
 
     active ? "#{base} bg-primary text-white" : "#{base} bg-gray-200 text-gray-700"
-  end
-
-  private
-
-  # Maps a bare attribute_name (e.g. "keywords") to its human label
-  # (e.g. "Stichwörter"), keeping the first label per attribute.
-  def review_attribute_labels
-    Llm::Attributes.collection.each_with_object({}) do |(title, key), map|
-      map[key.split(".").last] ||= title
-    end
   end
 end
