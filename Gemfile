@@ -18,7 +18,7 @@ gem "devise-i18n"
 gem "draper"
 gem "easy_talk"
 gem "enumerize"
-gem "faraday"
+gem "faraday" # required by langchainrb's depends_on mechanism (see LlmService#client)
 gem "filterrific", "~> 5.2"
 gem "friendly_id"
 gem "good_job", "< 5"
