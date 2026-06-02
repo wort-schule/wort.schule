@@ -68,9 +68,11 @@ group :test do
   gem "capybara"
   gem "capybara-screenshot"
   gem "cuprite"
-  # Pinned to 5.x because Minitest 6 dropped Mock and Object#stub. We use the
-  # built-in vanilla mocks rather than adding mocha or another gem.
-  gem "minitest", "~> 5.25"
+  gem "minitest", "~> 6.0"
+  # Minitest 6 extracted Mock and Object#stub into this companion gem (same API).
+  # We keep using the built-in vanilla mocks rather than adding mocha or another
+  # gem. The explicit require path matches the gem's lib file (minitest/mock.rb).
+  gem "minitest-mock", require: "minitest/mock"
   gem "simplecov", require: false
   gem "webmock"
 end
