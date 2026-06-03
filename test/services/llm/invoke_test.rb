@@ -12,6 +12,26 @@ class Llm::InvokeTest < ActiveSupport::TestCase
     )
   end
 
+  def build_invoke_with_default_model
+    Llm::Invoke.new(
+      prompt: "Test prompt",
+      prompt_variables: {word: "Test"},
+      response_model: Llm::Schema::Keywords
+    )
+  end
+
+  test "#model defaults to the active LlmService's model" do
+    create(:llm_service, model: "llama3.1")
+    assert_equal "llama3.1", build_invoke_with_default_model.model
+  end
+
+  test "building without a model does not raise when no LlmService is active" do
+    # Issue #752: with no active LLM service, default_model called .model on
+    # nil and crashed the (function word) detail pages that build an Invoke.
+    assert_nil LlmService.active
+    assert_nil build_invoke_with_default_model.model
+  end
+
   test "#gpt5_model? returns false for gpt-4" do
     assert_equal false, build_invoke("gpt-4").send(:gpt5_model?)
   end
