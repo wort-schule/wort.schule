@@ -12,6 +12,8 @@ de:
     themes:
       index:
         back_to_profile: Zurück zum Profil
+      update:
+        default_word_view_setting_name: Ansicht von %{name}
   users:
     passwords:
       edit:
