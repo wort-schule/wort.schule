@@ -129,4 +129,15 @@ class NounsControllerTest < ActionDispatch::IntegrationTest
     refute_includes json_response["image_url"], "/redirect/"
     assert_no_match(/[?&]exp=/, json_response["image_url"])
   end
+
+  test "#show renders even when example_sentences is double-serialized in the database" do
+    # Reproduce the production data bug (issue #751): the JSONB column holds the
+    # JSON string "[]" instead of the array []. update_column bypasses the model
+    # writer and the sanitizer, mirroring the bad rows already in the database.
+    @word.update_column(:example_sentences, "[]")
+
+    get noun_path(@word)
+
+    assert_response :success
+  end
 end
