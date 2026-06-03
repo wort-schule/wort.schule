@@ -1,0 +1,44 @@
+name: 💡 Funktion vorschlagen
+description: Schlage eine neue Funktion oder eine Verbesserung vor.
+title: "[Wunsch]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für deinen Vorschlag! Erzähl uns am besten zuerst, welches Problem
+        du lösen möchtest – die konkrete Umsetzung finden wir dann gemeinsam.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Zusammenfassung
+      description: Worum geht es in ein, zwei Sätzen?
+      placeholder: Ich möchte Wörter zu mehreren Listen gleichzeitig hinzufügen können.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Problem / Motivation
+      description: Welches Problem löst das? Was ist heute umständlich oder fehlt dir?
+      placeholder: Aktuell muss ich jedes Wort einzeln öffnen, um es einer Liste zuzuordnen …
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Lösungsvorschlag
+      description: Wie könnte das aussehen? (Optional – auch eine vage Idee hilft.)
+    validations:
+      required: false
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Skizzen oder Beispiele
+      description: Ziehe Skizzen oder Screenshots in dieses Feld oder verlinke ähnliche Funktionen aus anderen Anwendungen.
+    validations:
+      required: false

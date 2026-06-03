@@ -1,0 +1,2 @@
+# Reporters may still open a blank, freeform issue if neither form fits.
+blank_issues_enabled: true

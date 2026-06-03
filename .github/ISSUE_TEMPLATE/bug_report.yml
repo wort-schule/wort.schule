@@ -1,0 +1,85 @@
+name: 🐞 Fehler melden
+description: Melde einen Fehler oder etwas, das nicht funktioniert.
+title: "[Fehler]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke, dass du dir die Zeit nimmst, einen Fehler zu melden!
+        Je genauer du den Fehler beschreibst, desto schneller können wir ihn beheben.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Beschreibung des Fehlers
+      description: Beschreibe kurz, was nicht funktioniert.
+      placeholder: Beim Speichern eines neuen Wortes erscheint eine Fehlermeldung …
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Schritte zur Reproduktion
+      description: Wie können wir den Fehler nachstellen? Bitte Schritt für Schritt.
+      placeholder: |
+        1. Auf „Neues Wort“ klicken
+        2. Das Feld „Grundform“ leer lassen
+        3. Auf „Speichern“ klicken
+        4. …
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Erwartetes Verhalten
+      description: Was sollte stattdessen passieren?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Tatsächliches Verhalten
+      description: Was passiert tatsächlich? Falls eine Fehlermeldung erscheint, kopiere sie bitte hierher.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Wie stark stört dich der Fehler?
+      options:
+        - Blockiert mich komplett
+        - Stört, aber umgehbar
+        - Kleinigkeit / Schönheitsfehler
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Seite / URL
+      description: Auf welcher Seite ist der Fehler aufgetreten?
+      placeholder: https://wort.schule/words/123
+    validations:
+      required: false
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, Betriebssystem und Gerät
+      description: Womit hast du den Fehler bemerkt?
+      placeholder: z. B. Chrome 120, macOS 15, MacBook (oder Safari, iOS 18, iPhone)
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots oder Bildschirmaufnahme
+      description: Ziehe Bilder oder Videos einfach in dieses Feld. Hilft uns oft enorm.
+    validations:
+      required: false
