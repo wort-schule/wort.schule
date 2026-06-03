@@ -44,6 +44,14 @@ class FooterPartialTest < ActionView::TestCase
     end
   end
 
+  test "technical bug report link points to the GitHub bug report form" do
+    render partial: "application/footer"
+
+    assert_select "a[href=?]",
+      "https://github.com/wort-schule/wort.schule/issues/new?template=bug_report.yml",
+      text: "Technischen Fehler melden"
+  end
+
   test "does not display deployment information outside production" do
     Rails.env.stub(:production?, false) do
       render partial: "application/footer"
