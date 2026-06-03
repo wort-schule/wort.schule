@@ -85,6 +85,25 @@ class Word < ApplicationRecord
       .count(&:present?)
   end
 
+  # example_sentences is a JSONB column that is meant to hold an Array of
+  # strings. Some legacy rows were written double-serialized: the JSON string
+  # "[]" instead of the array [], so the attribute reads back as a String and
+  # broke every word detail page (issue #751). Normalize on read so views can
+  # always call #each, regardless of what the column happens to contain. A data
+  # migration cleans up the stored values; this guard keeps reads safe.
+  def example_sentences
+    value = super
+
+    case value
+    when Array
+      value
+    when String
+      normalize_serialized_example_sentences(value)
+    else
+      []
+    end
+  end
+
   def assign_compound_entities(compound_entity_ids)
     service = CompoundEntityService.new(self)
     self.compound_entities = service.assign_compound_entities(compound_entity_ids)
@@ -151,6 +170,13 @@ class Word < ApplicationRecord
     example_sentences
       .map!(&:strip)
       .select!(&:present?)
+  end
+
+  def normalize_serialized_example_sentences(value)
+    parsed = JSON.parse(value)
+    parsed.is_a?(Array) ? parsed : []
+  rescue JSON::ParserError
+    []
   end
 
   def cologne_phonetics_terms

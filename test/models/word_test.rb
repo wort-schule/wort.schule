@@ -77,6 +77,26 @@ class WordTest < ActiveSupport::TestCase
     assert_equal [], word.example_sentences
   end
 
+  test "#example_sentences returns an array when the column holds a double-serialized empty array" do
+    word = create(:noun, name: "Haus")
+    # Reproduce the production data bug (issue #751): the JSONB column holds the
+    # JSON string "[]" instead of the array []. update_column bypasses the model
+    # writer and the sanitizer, mirroring the bad rows already in the database.
+    word.update_column(:example_sentences, "[]")
+    word.reload
+
+    assert_instance_of Array, word.example_sentences
+    assert_equal [], word.example_sentences
+  end
+
+  test "#example_sentences parses a double-serialized array back into an array" do
+    word = create(:noun, name: "Haus")
+    word.update_column(:example_sentences, %(["Satz eins", "Satz zwei"]))
+    word.reload
+
+    assert_equal ["Satz eins", "Satz zwei"], word.example_sentences
+  end
+
   test "#set_consonant_vowel detects vowels and consonants" do
     word = create(:noun, name: "Ähre")
     assert_equal "VKKV", word.consonant_vowel
