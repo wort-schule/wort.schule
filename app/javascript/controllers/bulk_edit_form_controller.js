@@ -72,6 +72,16 @@ export default class extends Controller {
       el.style.display = matches ? "" : "none"
       el.querySelectorAll("input, select").forEach(input => {
         input.disabled = !matches
+        // TomSelect wraps the native <select> and doesn't observe its `disabled`
+        // property, so toggling it above leaves the widget greyed-out. Drive the
+        // widget's own enable/disable API to keep the active picker interactive.
+        if (input.tomselect) {
+          if (matches) {
+            input.tomselect.enable()
+          } else {
+            input.tomselect.disable()
+          }
+        }
       })
     })
 

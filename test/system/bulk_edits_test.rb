@@ -82,4 +82,30 @@ class BulkEditsTest < ApplicationSystemTestCase
     login_as create(:guest)
     assert_raises(CanCan::AccessDenied) { visit bulk_edits_path }
   end
+
+  test "choosing a collection field reveals an interactive value picker" do
+    admin = create(:admin)
+    create(:noun, name: "Haus")
+    create(:strategy, name: "Kurze Vokale")
+    create(:phenomenon, name: "Diphthong - au")
+
+    login_as admin
+    visit bulk_edits_path
+    fill_in "q", with: "Haus*"
+    click_on I18n.t("bulk_edits.index.search_button")
+    assert_text "Haus"
+
+    # Regression: the TomSelect widgets for the collection fields (strategies,
+    # phenomenons, …) were initialised while disabled and stayed greyed-out, so
+    # nothing could be picked. Selecting the field must yield an *enabled* widget.
+    %w[strategies phenomenons].each do |field|
+      label = field.classify.constantize.model_name.human(count: 2)
+      select label, from: "field"
+
+      within "[data-bulk-edit-form-target='valueInput'][data-field='#{field}']" do
+        assert_selector ".ts-control"
+        assert_no_selector ".ts-wrapper.disabled"
+      end
+    end
+  end
 end
