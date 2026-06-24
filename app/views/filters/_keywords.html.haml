@@ -1,3 +1,1 @@
-- keywords = Word.where(id: Keyword.where(word_id: @all_words.pluck(:id)).pluck(:keyword_id))
-
-= filter_select_field_with_and_or :keywords, collection: keywords.as_collection
+= filter_select_field_with_and_or :keywords, collection: Word.keywords_of(@all_words).as_collection

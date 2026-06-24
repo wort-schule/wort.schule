@@ -1,3 +1,1 @@
-- sources = @all_words.count == Word.count ? Source.accessible_by(current_ability) : Source.accessible_by(current_ability).where(id: @all_words.joins(:sources).pluck('sources.id'))
-
-= filter_select_field :source, collection: sources.order(:name).map { |s| [s.name, s.id] }
+= filter_select_field :source, collection: Source.accessible_by(current_ability).for_words(@all_words).order(:name).map { |s| [s.name, s.id] }

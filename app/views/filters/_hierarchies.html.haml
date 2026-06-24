@@ -1,3 +1,1 @@
-- hierarchies = @all_words.count == Word.count ? Hierarchy.all : Hierarchy.where(id: @all_words.pluck(:hierarchy_id))
-
-= filter_select_field :hierarchy, collection: hierarchies.as_collection
+= filter_select_field :hierarchy, collection: Hierarchy.for_words(@all_words).as_collection

@@ -53,6 +53,12 @@ class Word < ApplicationRecord
     joins(:topics).where(type:, name:, "topics.name": topic)
   }
 
+  # Words that are keywords of any word in the given relation. Populates the
+  # search keyword filter dropdown.
+  scope :keywords_of, ->(words) {
+    where(id: Keyword.where(word_id: words.pluck(:id)).pluck(:keyword_id))
+  }
+
   before_save :set_consonant_vowel
   before_save :sanitize_slug
   before_save :sanitize_example_sentences, if: -> { respond_to?(:example_sentences) }
