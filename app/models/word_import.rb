@@ -6,6 +6,6 @@ class WordImport < ApplicationRecord
   validates :name, presence: true
   validates :word_type, presence: true
 
-  enumerize :word_type, in: %i[Noun Verb Adjective FunctionWord]
+  enumerize :word_type, in: Word::TYPES.map(&:to_sym)
   enumerize :state, in: %i[new failed completed], default: :new
 end

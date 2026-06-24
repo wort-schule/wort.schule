@@ -74,13 +74,7 @@ module Import
     end
 
     def existing_words(name:, topic:)
-      ::Word
-        .joins(:topics)
-        .where(
-          name:,
-          type: word_type,
-          "topics.name": topic
-        )
+      ::Word.by_type_name_topic(type: word_type, name:, topic:)
     end
   end
 end

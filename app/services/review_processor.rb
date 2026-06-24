@@ -173,11 +173,11 @@ class ReviewProcessor
   def find_duplicate_word
     return Word.find_by(id: params[:duplicate_word_id]) if params[:duplicate_word_id].present?
 
-    Word.joins(:topics).find_by(
+    Word.by_type_name_topic(
       type: new_word_params[:word_type],
       name: new_word_params[:name],
-      "topics.name": new_word_params[:topic]
-    )
+      topic: new_word_params[:topic]
+    ).take
   end
 
   def invalid_new_word?

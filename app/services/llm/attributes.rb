@@ -88,6 +88,15 @@ module Llm
       end
     end
 
+    # Picks the numeric ids out of a mixed array of Integers and id-like
+    # Strings (e.g. ["12", "foo", 7] -> [12, 7]). Shared by the pending-review
+    # helper and controller when resolving proposed association ids.
+    def self.numeric_ids(array)
+      array
+        .select { |item| item.is_a?(Integer) || (item.is_a?(String) && item.to_i.to_s == item) }
+        .map { |item| item.is_a?(Integer) ? item : item.to_i }
+    end
+
     def self.update!(word:, attribute_name:, value:)
       type = response_model(word.type).schema.dig(:properties, attribute_name.to_sym)&.type
 

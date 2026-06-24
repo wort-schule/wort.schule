@@ -2,7 +2,7 @@
 
 module Forms
   class BulkEditSearch
-    WORD_TYPES = %w[Noun Verb Adjective FunctionWord].freeze
+    WORD_TYPES = Word::TYPES
     SEARCH_FIELDS = %w[name syllables].freeze
 
     attr_reader :q, :search_field, :word_type, :per_page, :missing_field
