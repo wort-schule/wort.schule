@@ -194,8 +194,6 @@ class Word < ApplicationRecord
   def delete_image_requests
     return unless image.attached?
 
-    ImageRequest
-      .where(word: self)
-      .delete_all
+    image_requests.delete_all
   end
 end

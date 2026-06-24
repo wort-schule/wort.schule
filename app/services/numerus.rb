@@ -18,20 +18,24 @@ class Numerus
     }
   ].freeze
 
+  def self.config_for(key)
+    NAMES.find { |names| names[:key] == (key || "default") }
+  end
+
   def self.singular(key)
-    NAMES.find { |names| names[:key] == (key || "default") }[:singular]
+    config_for(key)[:singular]
   end
 
   def self.plural(key)
-    NAMES.find { |names| names[:key] == (key || "default") }[:plural]
+    config_for(key)[:plural]
   end
 
   def self.singularetantum(key)
-    NAMES.find { |names| names[:key] == (key || "default") }[:singularetantum]
+    config_for(key)[:singularetantum]
   end
 
   def self.pluraletantum(key)
-    NAMES.find { |names| names[:key] == (key || "default") }[:pluraletantum]
+    config_for(key)[:pluraletantum]
   end
 
   def self.keys

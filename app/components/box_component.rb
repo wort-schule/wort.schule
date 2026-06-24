@@ -10,7 +10,6 @@ class BoxComponent < ViewComponent::Base
 
   def span_class
     case @span
-    when 1 then ""
     when 2 then "col-span-2"
     else ""
     end

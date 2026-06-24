@@ -34,7 +34,7 @@ class WordTypeController < PublicController
   end
 
   def create
-    assign_compound_entities if respond_to?(:assign_compound_entities?, true)
+    assign_compound_entities
 
     if resource.save
       redirect_to resource, notice: create_notice
@@ -47,7 +47,7 @@ class WordTypeController < PublicController
   end
 
   def update
-    assign_compound_entities if respond_to?(:assign_compound_entities?, true)
+    assign_compound_entities
 
     if resource.update(resource_params)
       resource.compound_entities.each(&:save) if resource.respond_to?(:compound_entities)
@@ -116,10 +116,6 @@ class WordTypeController < PublicController
 
   def resource_params
     raise NotImplementedError, "Subclasses must implement #resource_params"
-  end
-
-  def assign_compound_entities?
-    params[resource_name] && params[resource_name][:compound_entity_ids].present?
   end
 
   def assign_compound_entities

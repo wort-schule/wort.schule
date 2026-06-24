@@ -60,7 +60,7 @@ module WordFilter
       end
     end
 
-    def filter_boolean(attribute, query, join_table: nil)
+    def filter_boolean(attribute, query)
       return if query.blank?
 
       if query.to_s == "yes"
@@ -306,43 +306,43 @@ module WordFilter
     }
 
     scope :filter_singularetantum, lambda { |query|
-      filter_boolean :singularetantum, query, join_table: :nouns
+      filter_boolean :singularetantum, query
     }
 
     scope :filter_pluraletantum, lambda { |query|
-      filter_boolean :pluraletantum, query, join_table: :nouns
+      filter_boolean :pluraletantum, query
     }
 
     scope :filter_subjectless, lambda { |query|
-      filter_boolean :subjectless, query, join_table: :verbs
+      filter_boolean :subjectless, query
     }
 
     scope :filter_perfect_haben, lambda { |query|
-      filter_boolean :perfect_haben, query, join_table: :verbs
+      filter_boolean :perfect_haben, query
     }
 
     scope :filter_perfect_sein, lambda { |query|
-      filter_boolean :perfect_sein, query, join_table: :verbs
+      filter_boolean :perfect_sein, query
     }
 
     scope :filter_modal, lambda { |query|
-      filter_boolean :modal, query, join_table: :verbs
+      filter_boolean :modal, query
     }
 
     scope :filter_strong, lambda { |query|
-      filter_boolean :strong, query, join_table: :verbs
+      filter_boolean :strong, query
     }
 
     scope :filter_irregular_declination, lambda { |query|
-      filter_boolean :irregular_declination, query, join_table: :adjectives
+      filter_boolean :irregular_declination, query
     }
 
     scope :filter_absolute, lambda { |query|
-      filter_boolean :absolute, query, join_table: :adjectives
+      filter_boolean :absolute, query
     }
 
     scope :filter_irregular_comparison, lambda { |query|
-      filter_boolean :irregular_comparison, query, join_table: :adjectives
+      filter_boolean :irregular_comparison, query
     }
 
     scope :filter_images, lambda { |query|

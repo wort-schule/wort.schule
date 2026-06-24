@@ -3,6 +3,14 @@
 class Flashcards
   SECTIONS = (1..5).to_a
 
+  def self.word_ids_for(learning_group)
+    Word
+      .joins(lists: :learning_groups)
+      .where(learning_groups: {id: learning_group.id})
+      .distinct
+      .pluck(:id)
+  end
+
   def self.add_list(learning_group, list)
     word_ids = list.word_ids
 
@@ -24,12 +32,7 @@ class Flashcards
   end
 
   def self.remove_obsolete_words(learning_group)
-    # Single query to get all valid word IDs for this learning group
-    valid_word_ids = Word
-      .joins(lists: :learning_groups)
-      .where(learning_groups: {id: learning_group.id})
-      .distinct
-      .pluck(:id)
+    valid_word_ids = word_ids_for(learning_group)
 
     learning_group.users.includes(flashcard_lists: {lists_words: :word}).find_each do |user|
       SECTIONS.each do |section|
@@ -44,12 +47,7 @@ class Flashcards
   end
 
   def self.add_user(learning_group, user)
-    # Single query to get all word IDs for this learning group
-    all_word_ids = Word
-      .joins(lists: :learning_groups)
-      .where(learning_groups: {id: learning_group.id})
-      .distinct
-      .pluck(:id)
+    all_word_ids = word_ids_for(learning_group)
 
     # Single query to get existing word IDs for this user's flashcard lists
     existing_word_ids = Word
@@ -68,11 +66,7 @@ class Flashcards
 
   def self.remove_user(learning_group, user)
     # Single query to get words from the learning group being left
-    remove_word_ids = Word
-      .joins(lists: :learning_groups)
-      .where(learning_groups: {id: learning_group.id})
-      .distinct
-      .pluck(:id)
+    remove_word_ids = word_ids_for(learning_group)
 
     # Single query to get words from user's remaining learning groups
     word_ids_to_keep = Word
