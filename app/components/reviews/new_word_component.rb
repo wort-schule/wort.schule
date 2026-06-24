@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Reviews::NewWordComponent < ViewComponent::Base
+  include ComponentsHelper
+
   attr_reader :change_group
 
   delegate :new_word, to: :change_group

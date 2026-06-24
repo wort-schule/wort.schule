@@ -9,6 +9,6 @@ class LabeledValueComponent < ViewComponent::Base
   end
 
   def render?
-    label.present? && value.present?
+    label.present? && (value.present? || content?)
   end
 end

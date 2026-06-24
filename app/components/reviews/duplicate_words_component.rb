@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Reviews::DuplicateWordsComponent < ViewComponent::Base
+  include ComponentsHelper
+
   attr_reader :change_group, :words
 
   def initialize(change_group:, words:)
