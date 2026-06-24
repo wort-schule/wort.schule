@@ -20,7 +20,7 @@ class LearningGroup < ApplicationRecord
   scope :with_group_admin, ->(user) {
                              LearningGroup.union(
                                where(owner: user),
-                               LearningGroup.where(id: includes(:learning_group_memberships).where(learning_group_memberships: {role: "group_admin", user:}).select(:id))
+                               LearningGroup.where(id: joins(:learning_group_memberships).where(learning_group_memberships: {role: "group_admin", user:}).select(:id))
                              )
                            }
 

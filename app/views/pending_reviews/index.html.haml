@@ -161,20 +161,17 @@
                 = time_ago_in_words(change_group.created_at)
 
               %td.px-4.py-3
-                - reviews = change_group.reviews
-                - confirmed_count = reviews.count { |r| r.state == "confirmed" }
-                - skipped_count = reviews.count { |r| r.state == "skipped" }
-                - other_count = reviews.size - confirmed_count - skipped_count
+                - counts = change_group.review_state_counts
 
-                - if confirmed_count > 0
+                - if counts[:confirmed] > 0
                   %span.inline-block.mr-1.text-xs.bg-green-100.text-green-800.px-2.py-1.rounded
-                    ✓ #{confirmed_count}
-                - if skipped_count > 0
+                    ✓ #{counts[:confirmed]}
+                - if counts[:skipped] > 0
                   %span.inline-block.mr-1.text-xs.bg-yellow-100.text-yellow-800.px-2.py-1.rounded
-                    − #{skipped_count}
-                - if other_count > 0
+                    − #{counts[:skipped]}
+                - if counts[:other] > 0
                   %span.inline-block.text-xs.bg-gray-100.text-gray-800.px-2.py-1.rounded
-                    ◇ #{other_count}
+                    ◇ #{counts[:other]}
                 - if change_group.reviews.empty?
                   %span.text-xs.text-gray-400= t('.no_reviews')
 

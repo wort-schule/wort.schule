@@ -191,8 +191,7 @@ class PendingReviewsController < ApplicationController
   def extract_ids_from_value(value)
     case value
     when Array
-      value.select { |item| item.is_a?(Integer) || (item.is_a?(String) && item.to_i.to_s == item) }
-        .map { |item| item.is_a?(Integer) ? item : item.to_i }
+      Llm::Attributes.numeric_ids(value)
     when String
       # Try to parse as JSON first
       begin

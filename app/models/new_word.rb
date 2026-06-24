@@ -9,7 +9,7 @@ class NewWord < ApplicationRecord
   belongs_to :created_word, class_name: "Word", optional: true
   has_many :unlisted_keywords, dependent: :destroy
 
-  enumerize :word_type, in: %w[Noun Verb Adjective FunctionWord]
+  enumerize :word_type, in: Word::TYPES
 
   validates :word_type, presence: true
   validates :name, presence: true

@@ -182,6 +182,27 @@ class ChangeGroupTest < ActiveSupport::TestCase
     end
   end
 
+  class ReviewStateCountsTest < ActiveSupport::TestCase
+    test "counts reviews by outcome" do
+      change_group = create(:word_attribute_edit).change_group
+      change_group.reviews.create!(reviewer: create(:user), state: :confirmed)
+      change_group.reviews.create!(reviewer: create(:user), state: :skipped)
+      change_group.reviews.create!(reviewer: create(:user), state: :edited)
+
+      counts = change_group.review_state_counts
+
+      assert_equal 1, counts[:confirmed]
+      assert_equal 1, counts[:skipped]
+      assert_equal 1, counts[:other]
+    end
+
+    test "returns zeros when there are no reviews" do
+      change_group = create(:word_attribute_edit).change_group
+
+      assert_equal({confirmed: 0, skipped: 0, other: 0}, change_group.review_state_counts)
+    end
+  end
+
   class StoreReviewTest < ActiveSupport::TestCase
     setup do
       @reviewable = create(:word_attribute_edit)

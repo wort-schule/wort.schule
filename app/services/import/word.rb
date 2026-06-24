@@ -16,13 +16,14 @@ module Import
       return if [word_type, name].any?(&:blank?)
 
       # Only check for existing words if topic is provided
-      if topic.present? && existing_words(name:, topic:).present?
+      words = existing_words(name:, topic:) if topic.present?
+      if words.present?
         Rails.logger.info("Word exists, starting enrichment. name=#{name} topic=#{topic} word_type=#{word_type}")
-        existing_words(name:, topic:).each do |existing_word|
+        words.each do |existing_word|
           Llm::Enrich.new(word: existing_word).call
         end
 
-        process_unlisted_keywords_for_existing_word(existing_words(name:, topic:).first)
+        process_unlisted_keywords_for_existing_word(words.first)
 
         @word_import.update!(state: :completed)
         return
@@ -73,13 +74,7 @@ module Import
     end
 
     def existing_words(name:, topic:)
-      ::Word
-        .joins(:topics)
-        .where(
-          name:,
-          type: word_type,
-          "topics.name": topic
-        )
+      ::Word.by_type_name_topic(type: word_type, name:, topic:)
     end
   end
 end

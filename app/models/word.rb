@@ -9,6 +9,10 @@
 # Common attributes include name, meaning, syllables, and associations with
 # topics, sources, learning strategies, and other words (keywords, opposites, etc.)
 class Word < ApplicationRecord
+  # STI subclass names, in display order. Single source of truth for the
+  # word-type list shared by NewWord, WordImport and the bulk-edit search.
+  TYPES = %w[Noun Verb Adjective FunctionWord].freeze
+
   extend FriendlyId
 
   has_paper_trail ignore: %i[hit_counter]
@@ -42,6 +46,18 @@ class Word < ApplicationRecord
   has_many :image_requests, dependent: :destroy
 
   scope :ordered_lexigraphically, -> { order(:name) }
+
+  # Words of a given STI type with a given name that belong to a topic with a
+  # given name. Shared by import and review duplicate-detection.
+  scope :by_type_name_topic, ->(type:, name:, topic:) {
+    joins(:topics).where(type:, name:, "topics.name": topic)
+  }
+
+  # Words that are keywords of any word in the given relation. Populates the
+  # search keyword filter dropdown.
+  scope :keywords_of, ->(words) {
+    where(id: Keyword.where(word_id: words.pluck(:id)).pluck(:keyword_id))
+  }
 
   before_save :set_consonant_vowel
   before_save :sanitize_slug
@@ -194,8 +210,6 @@ class Word < ApplicationRecord
   def delete_image_requests
     return unless image.attached?
 
-    ImageRequest
-      .where(word: self)
-      .delete_all
+    image_requests.delete_all
   end
 end

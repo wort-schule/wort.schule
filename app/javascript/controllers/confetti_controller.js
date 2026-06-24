@@ -8,9 +8,13 @@ export default class extends Controller {
 
     this.element.classList.add(confettiClass);
 
-    setTimeout(
+    this.timeout = setTimeout(
       () => this.element.classList.remove(confettiClass),
       animationLengthInSeconds * 1000
     );
+  }
+
+  disconnect() {
+    clearTimeout(this.timeout);
   }
 }

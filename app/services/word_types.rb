@@ -42,13 +42,7 @@ class WordTypes
   end
 
   def self.as_collection
-    NAMES
-      .map do |config|
-        key = config[:key]
-        label = config[:names].values.map(&:first).join(" — ")
-
-        [label, key]
-      end
+    NAMES.map { |config| [label_all(config[:key]), config[:key]] }
   end
 
   def self.label_all(key)

@@ -28,8 +28,6 @@ module PendingReviewsHelper
       truncate(value, length: 40)
     when Array
       truncate(value.map(&:to_s).join(", "), length: 40)
-    when Hash
-      truncate(value.to_s, length: 40)
     else
       truncate(value.to_s, length: 40)
     end
@@ -48,18 +46,8 @@ module PendingReviewsHelper
     return truncate_value(proposed) if ids.empty?
 
     # Fetch and display the actual names based on the attribute type
-    names = case attribute_name
-    when "keywords", "synonyms", "opposites", "rimes"
-      Word.where(id: ids).pluck(:name).sort
-    when "topics"
-      Topic.where(id: ids).pluck(:name).sort
-    when "strategies"
-      Strategy.where(id: ids).pluck(:name).sort
-    when "phenomenons"
-      Phenomenon.where(id: ids).pluck(:name).sort
-    else
-      []
-    end
+    klass = Llm::Attributes.relation_klass(attribute_name)
+    names = klass ? klass.where(id: ids).pluck(:name).sort : []
 
     truncate(names.join(", "), length: 120)
   end
@@ -69,8 +57,7 @@ module PendingReviewsHelper
   def extract_ids_from_proposed(proposed)
     case proposed
     when Array
-      proposed.select { |item| item.is_a?(Integer) || (item.is_a?(String) && item.to_i.to_s == item) }
-        .map { |item| item.is_a?(Integer) ? item : item.to_i }
+      Llm::Attributes.numeric_ids(proposed)
     when String
       proposed.split(",").map(&:strip).map(&:to_i).reject(&:zero?)
     else

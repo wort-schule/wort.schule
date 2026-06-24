@@ -23,11 +23,7 @@ class Genus < ApplicationRecord
   end
 
   def self.as_collection
-    NAMES.map do |key, names|
-      label = names.values.join(" — ")
-
-      [label, key]
-    end
+    NAMES.keys.map { |key| [label_all(key), key] }
   end
 
   def self.label_all(key)

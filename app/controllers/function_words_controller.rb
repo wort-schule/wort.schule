@@ -11,10 +11,6 @@ class FunctionWordsController < WordTypeController
     function_word_params
   end
 
-  def filtered_words
-    @function_words.order("words.name").page(params[:page])
-  end
-
   def function_word_params
     params.require(:function_word).permit(
       :name, :function_type, :syllables, :written_syllables

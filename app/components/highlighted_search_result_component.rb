@@ -9,6 +9,17 @@ class HighlightedSearchResultComponent < ViewComponent::Base
   end
 
   def parts
+    @parts ||= compute_parts
+  end
+
+  def hit_in
+    return @hit_in if defined?(@hit_in)
+    @hit_in = compute_hit_in
+  end
+
+  private
+
+  def compute_parts
     return [] if query.blank?
     return [result.name] unless /^[[:alpha:]]*$/.match?(query)
 
@@ -21,7 +32,7 @@ class HighlightedSearchResultComponent < ViewComponent::Base
       end
   end
 
-  def hit_in
+  def compute_hit_in
     return :full_name if result.name&.match?(/#{query}/i)
     return :full_plural if result.plural&.match?(/#{query}/i)
     return :comparative if result.comparative&.match?(/#{query}/i)

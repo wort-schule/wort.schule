@@ -33,6 +33,19 @@ class ChangeGroup < ApplicationRecord
     counts
   end
 
+  # Counts of this change group's reviews by outcome, for the pending-review
+  # index badges: confirmed, skipped, and everything else.
+  def review_state_counts
+    confirmed = reviews.count { |review| review.state == "confirmed" }
+    skipped = reviews.count { |review| review.state == "skipped" }
+
+    {
+      confirmed: confirmed,
+      skipped: skipped,
+      other: reviews.size - confirmed - skipped
+    }
+  end
+
   private
 
   def cancel_related_enrich_word_jobs
