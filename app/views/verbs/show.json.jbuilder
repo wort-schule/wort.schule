@@ -1,4 +1,4 @@
-json.cache! ["v1", verb], expires_in: 15.minutes do
+json.cache! ["v2", verb], expires_in: 15.minutes do
   json.extract! verb,
     :id,
     :name,
@@ -32,6 +32,7 @@ json.cache! ["v1", verb], expires_in: 15.minutes do
 
   json.word_type verb.class.model_name.human
   json.image_url verb.image.attached? ? Rails.application.routes.url_helpers.rails_storage_proxy_url(verb.image, host: Rails.application.routes.default_url_options[:host], protocol: Rails.application.routes.default_url_options[:protocol]) : nil
+  json.image_alt_text verb.image_alt_text
   json.compound_entities verb.compound_entities.map(&:part).map(&:name)
   json.example_sentences verb.example_sentences
   json.hierarchy do

@@ -96,6 +96,7 @@ de:
         name: Wort
         slug: URL Term
         image: Bild
+        image_alt_text: Bildbeschreibung
         hierarchy: Kategorie
         topics: Themen
         meaning: Bedeutung

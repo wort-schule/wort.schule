@@ -1,4 +1,4 @@
-json.cache! ["v1", function_word], expires_in: 15.minutes do
+json.cache! ["v2", function_word], expires_in: 15.minutes do
   json.extract! function_word,
     :id,
     :name,
@@ -11,6 +11,7 @@ json.cache! ["v1", function_word], expires_in: 15.minutes do
 
   json.word_type function_word.class.model_name.human
   json.image_url function_word.image.attached? ? Rails.application.routes.url_helpers.rails_storage_proxy_url(function_word.image, host: Rails.application.routes.default_url_options[:host], protocol: Rails.application.routes.default_url_options[:protocol]) : nil
+  json.image_alt_text function_word.image_alt_text
   json.compound_entities function_word.compound_entities.map(&:part).map(&:name)
   json.example_sentences function_word.example_sentences
   json.hierarchy do

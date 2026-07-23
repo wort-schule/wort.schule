@@ -14,8 +14,10 @@
         .text-xs.font-light.mt-3= description? ? description : word.meaning
 
       .p-1.pr-4.flex.items-center.object-cover
+        -# Decorative: the word name sits right next to the thumbnail, so a
+        -# description here would be announced twice per list entry.
         - if word.image.attached?
-          = image_tag word.image.variant(:thumb), class: 'w-24 h-full object-cover'
+          = image_tag word.image.variant(:thumb), class: 'w-24 h-full object-cover', alt: ''
         - else
           .w-24.h-24
 

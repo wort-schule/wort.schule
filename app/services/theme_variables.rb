@@ -40,6 +40,7 @@ class ThemeVariables
       hierarchies: hierarchies(word.hierarchy).map(&:name).join(", "),
       hierarchy_breadcrumbs: view_context&.controller&.render_to_string(partial: "words/hierarchies", locals: {word:}),
       image_url: word_image_url,
+      image_alt_text: word.image_alt_text.presence || "",
       keywords: word.keywords.map(&:name).join(", "),
       keywords_separated: view_context&.controller&.render_to_string(partial: "words/keywords", locals: {word:}),
       lists_box: view_context&.controller&.render_to_string(partial: "words/lists", locals: {word:, current_user: view_context.current_user, current_ability: view_context.current_ability}),
