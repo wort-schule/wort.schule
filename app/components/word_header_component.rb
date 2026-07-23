@@ -11,6 +11,13 @@ class WordHeaderComponent < ViewComponent::Base
     @word_font = word_font
   end
 
+  # Description of the word illustration for screen readers (WCAG 1.1.1).
+  # Until an editor has written one, fall back to a generic text: it announces
+  # that an image is there without claiming a description we do not have.
+  def image_alt_text
+    word.image_alt_text.presence || t(".image_fallback_alt", name: word.name)
+  end
+
   def montessori_symbol
     case word.type
     when "Noun" then "montessori/nomen.svg"

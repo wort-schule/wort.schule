@@ -67,12 +67,18 @@ class Word < ApplicationRecord
   after_save :handle_audio_attachments, if: -> { respond_to?(:with_tts) }
   after_save :delete_image_requests
 
+  # Alt texts describe a single illustration and are read out loud by screen
+  # readers, so they need to stay short. Long descriptions belong in meaning_long.
+  IMAGE_ALT_TEXT_MAX_LENGTH = 300
+
   validates :slug, presence: true, uniqueness: true
+  validates :image_alt_text, length: {maximum: IMAGE_ALT_TEXT_MAX_LENGTH}
 
   ATTRIBUTES = [
     :name,
     :slug,
     :image,
+    :image_alt_text,
     :meaning,
     :meaning_long,
     :hierarchy_id,

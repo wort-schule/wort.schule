@@ -156,6 +156,20 @@ The rule of thumb: **the Rails console must behave the same as the web form.** I
 - Don't rely on the HTML form (`required`, `pattern`) as the only check.
 - Authorization (who is allowed to do this?) stays in `Ability` / CanCanCan. That is a separate concern from validity.
 
+## db/schema.rb only ever changes because of a migration
+
+`bin/rails db:migrate` dumps `db/schema.rb` from your **local development database**, not from the migrations. If that database has drifted (columns from a branch you once checked out, columns another branch added, an older Postgres version formatting defaults differently), the dump silently writes that drift into `schema.rb` and the next person commits it.
+
+This has already bitten us: four columns (`image_alt_text`, `example_sentences_verified`, `syllables_verified`, `wiktionary_syllables`) reached `schema.rb` on `main` from the unmerged `feature/wip-local-features` branch, without the migrations that create them. Because CI builds its database with `db:schema:load` and production runs `db:migrate`, code using such a column passes CI and raises in production.
+
+So, after every `db:migrate`:
+
+1. **Read `git diff db/schema.rb` line by line.** The only lines allowed to change are the ones your own migration produces, plus the `version:` line.
+2. **Revert everything else**: `git checkout db/schema.rb`, then bump the `version:` line by hand and re-apply your migration's own lines. Removed columns you never touched and reformatted defaults are drift, not your change.
+3. **Never commit a `schema.rb` column that no migration in `db/migrate/` creates.** Grep for it if you are unsure.
+
+When a migration has to run against databases that may already carry a drifted column, use `add_column ..., if_not_exists: true` (or `remove_column ..., if_exists: true`) rather than a hand-written `column_exists?` guard.
+
 ## Code Conventions
 
 - Start every Ruby file with `# frozen_string_literal: true` (project-wide convention, matches the Rails framework's own AGENTS.md guidance).

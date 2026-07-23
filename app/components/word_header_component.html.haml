@@ -10,16 +10,18 @@
         = property
 
     .w-full.flex.flex-col.gap-4.items-end.lg:items-start
+      -# The word type is already spelled out as text above, so the symbol is
+      -# decorative and gets an empty alt instead of repeating it.
       - if montessori_symbol.present? && helpers.current_word_view_setting.show_montessori_symbols
-        = image_tag montessori_symbol, class: "word-symbol"
+        = image_tag montessori_symbol, class: "word-symbol", alt: ""
       - if helpers.current_word_view_setting.show_fresch_symbols
         - word.strategies.each do |strategy|
           - if strategy.fresch_symbol.attached?
-            = image_tag strategy.fresch_symbol, class: "word-symbol"
+            = image_tag strategy.fresch_symbol, class: "word-symbol", alt: strategy.name
 
   .m-6.max-w-96(style="grid-area: image")
     - if word.image.attached?
-      = image_tag word.image
+      = image_tag word.image, alt: image_alt_text
 
   .m-6(style="grid-area: speech")
     = render 'words/tts', word:

@@ -19,6 +19,8 @@ de:
         meaning: 'Kurzbedeutung (1-2 Wörter)'
         meaning_long: längere Bedeutung
     hints:
+      defaults:
+        image_alt_text: 'Kurze Beschreibung dessen, was auf dem Bild zu sehen ist. Wird von Screenreadern vorgelesen und angezeigt, wenn das Bild nicht lädt. Ein bis zwei Sätze, ohne einleitendes "Bild von".'
       noun:
         singularetantum: 'Manche Substantive kommen nur im Singular vor, Beispiele sind: Schnee, Vernunft, Gesundheit, Butter, Post. <a href="https://de.wikipedia.org/wiki/Singularetantum" rel="noopener noreferrer" target="_blank">Mehr dazu</a>'
         pluraletantum: 'Manche Substantive kommen nur im Plural vor, Beispiele sind: Ferien, Kosten, Leute. <a href="https://de.wikipedia.org/wiki/Pluraletantum" rel="noopener noreferrer" target="_blank">Mehr dazu</a>'

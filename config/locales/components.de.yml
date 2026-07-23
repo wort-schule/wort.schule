@@ -32,3 +32,5 @@ de:
       add: "Hinzufügen:"
   request_image_component:
     request: Wort-Illustration beantragen
+  word_header_component:
+    image_fallback_alt: 'Bild zum Wort %{name}'

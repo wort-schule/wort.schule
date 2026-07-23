@@ -130,6 +130,23 @@ class NounsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match(/[?&]exp=/, json_response["image_url"])
   end
 
+  test "#update stores the image alt text" do
+    patch noun_path(@word), params: {
+      noun: {image_alt_text: "Ein Bach fließt durch einen Wald."}
+    }
+
+    assert_equal "Ein Bach fließt durch einen Wald.", @word.reload.image_alt_text
+  end
+
+  test "#show as JSON exposes the image alt text" do
+    @word.update!(image_alt_text: "Ein Bach fließt durch einen Wald.")
+
+    get noun_path(@word, format: :json)
+
+    assert_response :success
+    assert_equal "Ein Bach fließt durch einen Wald.", JSON.parse(response.body)["image_alt_text"]
+  end
+
   test "#show renders even when example_sentences is double-serialized in the database" do
     # Reproduce the production data bug (issue #751): the JSONB column holds the
     # JSON string "[]" instead of the array []. update_column bypasses the model

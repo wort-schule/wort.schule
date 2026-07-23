@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_03_071237) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_092121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -645,7 +645,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_03_071237) do
     t.string "consonant_vowel"
     t.datetime "created_at", null: false
     t.jsonb "example_sentences", default: [], null: false
-    t.boolean "example_sentences_verified", default: false, null: false
     t.boolean "foreign", default: false, null: false
     t.integer "function_type"
     t.bigint "genus_feminine_id"
@@ -690,10 +689,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_03_071237) do
     t.boolean "subjectless", default: false, null: false
     t.string "superlative", default: ""
     t.string "syllables", default: ""
-    t.boolean "syllables_verified", default: false, null: false
     t.string "type", null: false
     t.datetime "updated_at", null: false
-    t.string "wiktionary_syllables"
     t.boolean "with_tts", default: true, null: false
     t.string "written_syllables", default: ""
     t.index "lower((name)::text)", name: "idx_words_lower_name"

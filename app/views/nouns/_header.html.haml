@@ -7,6 +7,7 @@
   - component.with_property do
     = render LabeledValueComponent.new(label: Noun.human_attribute_name(:genus_id)) do
       .flex.gap-2.items-center
+        -# Decorative: the genus label follows immediately after the symbol.
         - if noun.genus&.symbol&.attached? && current_word_view_setting.show_gender_symbols
-          = image_tag noun.genus.symbol, class: 'max-w-6'
+          = image_tag noun.genus.symbol, class: 'max-w-6', alt: ''
         = noun.genus&.label(current_word_view_setting.genus_wording)

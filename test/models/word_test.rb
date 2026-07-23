@@ -180,4 +180,23 @@ class WordTest < ActiveSupport::TestCase
     word.update!(with_tts: false)
     assert_equal false, word.audios.attached?
   end
+
+  test "image_alt_text may be blank" do
+    word = build(:noun, image_alt_text: "")
+
+    assert_predicate word, :valid?
+  end
+
+  test "image_alt_text accepts a description up to the maximum length" do
+    word = build(:noun, image_alt_text: "a" * Word::IMAGE_ALT_TEXT_MAX_LENGTH)
+
+    assert_predicate word, :valid?
+  end
+
+  test "image_alt_text is invalid beyond the maximum length" do
+    word = build(:noun, image_alt_text: "a" * (Word::IMAGE_ALT_TEXT_MAX_LENGTH + 1))
+
+    assert_not_predicate word, :valid?
+    assert_includes word.errors.attribute_names, :image_alt_text
+  end
 end
