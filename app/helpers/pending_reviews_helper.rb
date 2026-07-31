@@ -27,7 +27,7 @@ module PendingReviewsHelper
     when String
       truncate(value, length: 40)
     when Array
-      truncate(value.map(&:to_s).join(", "), length: 40)
+      truncate(value.join(", "), length: 40)
     else
       truncate(value.to_s, length: 40)
     end
