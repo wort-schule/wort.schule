@@ -52,7 +52,7 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "ttfunk"
 gem "turbo-rails"
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
+gem "tzinfo-data", platforms: %i[windows jruby]
 gem "view_component"
 
 group :development do
@@ -78,7 +78,7 @@ group :test do
 end
 
 group :development, :test do
-  gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "debug", platforms: %i[mri windows]
   gem "factory_bot"
   gem "factory_bot_rails"
   gem "faker"
