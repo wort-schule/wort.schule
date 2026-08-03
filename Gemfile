@@ -41,7 +41,7 @@ gem "puma", "~> 8.0"
 gem "rack-cors"
 gem "rails-i18n", "~> 8.1"
 gem "rb-gravatar"
-gem "redis", "~> 5.3" # Use Redis for Action Cable
+gem "redis", "~> 6.0" # Use Redis for Action Cable
 gem "route_downcaser"
 gem "ruby-openai", "~> 8.1"
 gem "ruby-vips"
