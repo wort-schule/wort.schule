@@ -537,7 +537,7 @@ GEM
     tailwindcss-ruby (4.3.3-x86_64-linux-gnu)
     temple (0.10.4)
     thor (1.5.0)
-    tidewave (0.8.1)
+    tidewave (0.8.2)
       rack (>= 2.0)
     tilt (2.8.0)
     timeout (0.6.1)
