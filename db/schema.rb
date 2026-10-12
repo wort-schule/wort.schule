@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_092121) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_090100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -736,6 +736,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_092121) do
   add_foreign_key "bulk_edit_changes", "words", on_delete: :nullify
   add_foreign_key "bulk_edits", "users", on_delete: :restrict
   add_foreign_key "change_groups", "change_groups", column: "successor_id"
+  add_foreign_key "compound_entities", "words", on_delete: :cascade
   add_foreign_key "hierarchies", "hierarchies", column: "top_hierarchy_id"
   add_foreign_key "image_requests", "users"
   add_foreign_key "image_requests", "words"

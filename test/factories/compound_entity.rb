@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :compound_entity do
-    word
+    word factory: :noun
     pos { 1 }
     part factory: :noun
   end
