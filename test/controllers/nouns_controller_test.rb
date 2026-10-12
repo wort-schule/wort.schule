@@ -157,4 +157,26 @@ class NounsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "#show renders a word whose compound part is gone" do
+    noun = create(:noun, name: "Abdeckstift")
+    create(:compound_entity, word: noun, part: @compound_preconfix, pos: 1)
+    create(:compound_entity, word: noun, part: @word, pos: 2)
+    CompoundPreconfix.where(id: @compound_preconfix.id).delete_all
+
+    get noun_path(noun)
+
+    assert_response :success
+    assert_select "a[href=?]", noun_path(@word)
+  end
+
+  test "#destroy keeps a noun that is part of another word and says why" do
+    create(:compound_entity, part: @word)
+
+    assert_no_difference -> { Noun.count } do
+      delete noun_path(@word)
+    end
+
+    assert_includes flash[:alert], I18n.t("activerecord.errors.models.word.restrict_dependent_destroy.has_many")
+  end
 end

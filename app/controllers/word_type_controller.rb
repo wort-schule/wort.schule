@@ -62,7 +62,7 @@ class WordTypeController < PublicController
     notice = if destroyed
       {notice: destroy_notice}
     else
-      {alert: destroy_alert}
+      {alert: [destroy_alert, *resource.errors.full_messages].join(" ")}
     end
 
     redirect_to url_for(action: :index), notice
@@ -144,6 +144,6 @@ class WordTypeController < PublicController
   def destroy_alert
     t("alerts.#{controller_name}.destroyed", resource_name => resource.name)
   rescue
-    t("alerts.shared.destroyed", name: resource.name)
+    t("alerts.shared.destroyed", name: resource.name, class_name: resource.class.model_name.human)
   end
 end

@@ -40,7 +40,10 @@ class Word < ApplicationRecord
 
   belongs_to :prefix, optional: true
   belongs_to :postfix, optional: true
-  has_one :compound_entity, as: :part
+  # The other direction of compound_entities: the rows where this word is a
+  # part of another word. Such a word cannot be deleted, otherwise the other
+  # word would silently lose a part.
+  has_many :compound_usages, class_name: "CompoundEntity", as: :part, dependent: :restrict_with_error
   has_and_belongs_to_many :lists, counter_cache: :words_count
 
   has_many :image_requests, dependent: :destroy

@@ -58,7 +58,7 @@ module CrudActions
     notice = if destroyed
       {notice: destroy_notice}
     else
-      {alert: destroy_alert}
+      {alert: [destroy_alert, *resource.errors.full_messages].join(" ")}
     end
 
     redirect_to url_for(action: :index), notice
@@ -108,7 +108,7 @@ module CrudActions
   end
 
   def destroy_alert
-    t("alerts.shared.destroyed", name: resource.name)
+    t("alerts.shared.destroyed", name: resource.name, class_name: resource_class.model_name.human)
   end
 
   def page_title

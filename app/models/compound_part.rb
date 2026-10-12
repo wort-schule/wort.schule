@@ -5,8 +5,10 @@
 class CompoundPart < ApplicationRecord
   self.abstract_class = true
 
-  has_one :compound_entity, as: :part
-  has_many :words, through: :compound_entity
+  # A part that is still used in a word cannot be deleted, otherwise that word
+  # would silently lose a part.
+  has_many :compound_usages, class_name: "CompoundEntity", as: :part, dependent: :restrict_with_error
+  has_many :words, through: :compound_usages
 
   validates :name, presence: true
 end

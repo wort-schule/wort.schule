@@ -310,6 +310,16 @@ de:
           attributes:
             operation:
               invalid_for_field: ist für das gewählte Feld nicht zulässig
+        word:
+          restrict_dependent_destroy:
+            has_many: Das Wort ist noch Baustein anderer Wörter. Entferne es dort zuerst.
+        compound_interfix: &compound_part_in_use
+          restrict_dependent_destroy:
+            has_many: Der Baustein wird noch in Wörtern verwendet. Entferne ihn dort zuerst.
+        compound_preconfix: *compound_part_in_use
+        compound_postconfix: *compound_part_in_use
+        compound_phonem_reduction: *compound_part_in_use
+        compound_vocalalternation: *compound_part_in_use
 
   activemodel:
     attributes:
