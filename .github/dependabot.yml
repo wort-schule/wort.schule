@@ -4,6 +4,11 @@ updates:
     directory: '/'
     schedule:
       interval: weekly
+    ignore:
+      # Action Cable's Redis adapter in Rails 8.1 requires redis < 6.
+      # Remove this once the app runs on a Rails version that lifts the cap.
+      - dependency-name: redis
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: '/'
