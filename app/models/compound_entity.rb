@@ -18,6 +18,6 @@ class CompoundEntity < ApplicationRecord
   delegate :name, to: :word
 
   def to_s
-    part.name
+    part&.name.to_s
   end
 end
