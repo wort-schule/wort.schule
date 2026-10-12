@@ -2,6 +2,7 @@
 
 require "test_helper"
 require Rails.root.join("db/migrate/20261012090000_fix_compound_phonem_reduction_part_type")
+require Rails.root.join("db/migrate/20261012090100_add_word_foreign_key_to_compound_entities")
 
 class CompoundEntityTest < ActiveSupport::TestCase
   test "#part loads a phoneme reduction" do
@@ -29,5 +30,41 @@ class CompoundEntityTest < ActiveSupport::TestCase
     end
 
     assert_equal reduction, entity.reload.part
+  end
+
+  test "destroying a word destroys its compound entities" do
+    entity = create(:compound_entity)
+
+    entity.word.destroy!
+
+    assert_not CompoundEntity.exists?(entity.id)
+  end
+
+  test "the database removes compound entities when a word is deleted without callbacks" do
+    entity = create(:compound_entity)
+
+    Word.where(id: entity.word_id).delete_all
+
+    assert_not CompoundEntity.exists?(entity.id)
+  end
+
+  test "the migration removes compound entities whose word is gone" do
+    kept = create(:compound_entity)
+    orphan = create(:compound_entity)
+    connection = ActiveRecord::Base.connection
+
+    # Recreate the state before the migration: no foreign key, one orphan.
+    if connection.foreign_key_exists?(:compound_entities, :words)
+      connection.remove_foreign_key :compound_entities, :words
+    end
+    Word.where(id: orphan.word_id).delete_all
+
+    ActiveRecord::Migration.suppress_messages do
+      AddWordForeignKeyToCompoundEntities.new.up
+    end
+
+    assert_not CompoundEntity.exists?(orphan.id)
+    assert CompoundEntity.exists?(kept.id)
+    assert connection.foreign_key_exists?(:compound_entities, :words)
   end
 end

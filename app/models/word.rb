@@ -29,7 +29,7 @@ class Word < ApplicationRecord
   has_and_belongs_to_many :phenomenons, -> { distinct }, counter_cache: :words_count
   has_and_belongs_to_many :strategies, -> { distinct }, counter_cache: :words_count
   belongs_to :hierarchy, optional: true, counter_cache: :words_count
-  has_many :compound_entities
+  has_many :compound_entities, dependent: :destroy
 
   has_self_referential_association :keywords, :keyword_id
   has_self_referential_association :opposites, :opposite_id
