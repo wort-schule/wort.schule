@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "~> 4.0.3"
 
-gem "rails", "~> 8.1.0"
+gem "rails", "~> 8.1.4"
 gem "activerecord-session_store"
 gem "active_storage_svg_sanitizer"
 gem "bootsnap", require: false
