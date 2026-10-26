@@ -5,16 +5,16 @@
     = render WordPanelComponent.new(word: keyword, menu: true) do |component|
       - if @keyword_ids.count > 1
         - component.with_description do
-          = link_to t('.remove'), keyword_path(keyword_ids: (@keyword_ids - [keyword.id.to_s]).join(','))
+          = link_to t('.remove'), keyword_path(keyword_ids: (@keyword_ids - [keyword.id]).join(','))
 
 = turbo_frame_tag :related_keywords do
   - if @related_keywords.present?
     %h1= t '.related_keywords.title'
     .grid.my-6.gap-4.grid-cols-1.lg:grid-cols-2.xl:grid-cols-3
       - @related_keywords.each do |word|
-        = render WordPanelComponent.new(word:, url: keyword_path(keyword_ids: params[:keyword_ids] + ",#{word.id}")) do |component|
+        = render WordPanelComponent.new(word:, url: keyword_path(keyword_ids: (@keyword_ids + [word.id]).join(','))) do |component|
           - component.with_description do
-            = t('keywords.index.words_count', count: Keyword.words_count(Array(params[:keyword_ids]) + [word.id]))
+            = t('keywords.index.words_count', count: Keyword.words_count(@keyword_ids + [word.id]))
 
     .pagination-with-actions
       = paginate @related_keywords, model_name: 'activerecord.models.related_keyword'
