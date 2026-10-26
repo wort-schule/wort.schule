@@ -17,7 +17,7 @@ class KeywordsController < PublicController
   end
 
   def show
-    @keyword_ids = (params[:keyword_ids].presence || "").split(",").uniq
+    @keyword_ids = Keyword.parse_ids(params[:keyword_ids])
     @keywords = Word.where(id: @keyword_ids)
     @all_words = Word.where(
       id: Keyword
