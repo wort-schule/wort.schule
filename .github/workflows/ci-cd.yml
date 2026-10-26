@@ -13,7 +13,7 @@ concurrency:
 jobs:
   test:
     name: Run Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     services:
       postgres:
@@ -72,7 +72,7 @@ jobs:
   deploy:
     name: Deploy to Production
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Only deploy from main branch after tests pass
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: deployment
