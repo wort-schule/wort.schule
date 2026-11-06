@@ -34,7 +34,7 @@ gem "kaminari"
 gem "langchainrb", require: "langchain"
 # json 3 dropped the quirks_mode option that json-schema 5 passes, and langchainrb
 # still caps json-schema below 6. Lift this pin once langchainrb allows json-schema 6.
-gem "json", "< 3"
+gem "json", "< 4"
 gem "liquid"
 gem "meta-tags"
 gem "paper_trail"
