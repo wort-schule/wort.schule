@@ -71,7 +71,7 @@ group :test do
   gem "capybara"
   gem "capybara-screenshot"
   gem "cuprite"
-  gem "minitest", "~> 6.0"
+  gem "minitest", "~> 6.1"
   # Minitest 6 extracted Mock and Object#stub into this companion gem (same API).
   # We keep using the built-in vanilla mocks rather than adding mocha or another
   # gem. The explicit require path matches the gem's lib file (minitest/mock.rb).
