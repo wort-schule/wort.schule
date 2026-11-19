@@ -33,6 +33,13 @@ class ApplicationViewComponentTestCase < ActiveSupport::TestCase
   include ViewComponent::TestHelpers
   include Capybara::Minitest::Assertions
 
+  # Rails 8 loads routes lazily, and Devise only defines current_user once
+  # they are loaded. A component test renders without a request, so when one
+  # runs first in the suite, current_user would be missing from its view.
+  setup do
+    Rails.application.reload_routes_unless_loaded
+  end
+
   def page
     Capybara.string(rendered_content)
   end
