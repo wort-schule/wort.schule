@@ -41,13 +41,24 @@ task :remote_environment do
   invoke :"rvm:use", RUBY_VERSION_FOR_DEPLOY
 end
 
+# The server has two RVM installs and both need the Ruby version: the deploy
+# runs with the deploy user's own RVM (~/.rvm, via rvm_use_path), while the
+# systemd units start Puma and GoodJob with the system RVM in /usr/local/rvm.
 desc "Abort if the server is missing the Ruby version this deploy targets."
 task :verify_remote_ruby do
   command %(
-    if ! /usr/local/rvm/bin/rvm list strings | grep -qx 'ruby-#{RUBY_VERSION_FOR_DEPLOY}'; then
-      echo "ERROR: ruby-#{RUBY_VERSION_FOR_DEPLOY} is not installed on the server."
-      echo "Install it first:  ssh root@#{fetch(:domain)} '/usr/local/rvm/bin/rvm install #{RUBY_VERSION_FOR_DEPLOY}'"
-      echo "(Then re-run the deploy.)"
+    missing=""
+    if [ ! -x "$HOME/.rvm/rubies/ruby-#{RUBY_VERSION_FOR_DEPLOY}/bin/ruby" ]; then
+      missing="$missing deploy-user RVM (~/.rvm),"
+    fi
+    if [ ! -x "/usr/local/rvm/rubies/ruby-#{RUBY_VERSION_FOR_DEPLOY}/bin/ruby" ]; then
+      missing="$missing system RVM (/usr/local/rvm),"
+    fi
+    if [ -n "$missing" ]; then
+      echo "ERROR: ruby-#{RUBY_VERSION_FOR_DEPLOY} is missing in:$missing"
+      echo "Install it in both before re-running the deploy:"
+      echo "  ssh root@#{fetch(:domain)} '/usr/local/rvm/bin/rvm install #{RUBY_VERSION_FOR_DEPLOY}'"
+      echo "  ssh root@#{fetch(:domain)} 'su - #{fetch(:user)} -c \\"source #{fetch(:rvm_use_path)}; rvm install #{RUBY_VERSION_FOR_DEPLOY}\\"'"
       exit 1
     fi
   )
