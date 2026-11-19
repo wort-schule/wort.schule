@@ -17,6 +17,11 @@ set :branch, "main"
 set :rvm_use_path, "/etc/profile.d/rvm.sh"
 set :bundle_prefix, "env $(cat .env | xargs) bundle exec "
 
+# mina's bundle:install passes --deployment, --path and --without, which
+# Bundler 4 (shipped with Ruby 4.0.10) removed. Set the same options through
+# `bundle config`, which Bundler 2.7 and 4 both understand.
+set :bundle_options, ""
+
 # Optional settings:
 #   set :user, 'foobar'          # Username in the server to SSH to.
 set :user, "wortschule"
@@ -44,6 +49,13 @@ end
 # The server has two RVM installs and both need the Ruby version: the deploy
 # runs with the deploy user's own RVM (~/.rvm, via rvm_use_path), while the
 # systemd units start Puma and GoodJob with the system RVM in /usr/local/rvm.
+desc "Configure Bundler for a deployment install in the release directory."
+task :configure_bundler do
+  command %(bundle config set --local deployment true)
+  command %(bundle config set --local path "#{fetch(:bundle_path)}")
+  command %(bundle config set --local without "#{fetch(:bundle_withouts)}")
+end
+
 desc "Abort if the server is missing the Ruby version this deploy targets."
 task :verify_remote_ruby do
   command %(
@@ -104,6 +116,7 @@ task :deploy do
     invoke :"git:clone"
     invoke :"deploy:link_shared_paths"
     # Bundle install with deployment settings
+    invoke :configure_bundler
     invoke :"bundle:install"
     invoke :"rails:db_migrate"
     command %(#{fetch(:bundle_prefix)} rake change_groups:process_waiting_reviews)
