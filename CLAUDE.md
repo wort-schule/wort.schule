@@ -170,6 +170,10 @@ So, after every `db:migrate`:
 
 When a migration has to run against databases that may already carry a drifted column, use `add_column ..., if_not_exists: true` (or `remove_column ..., if_exists: true`) rather than a hand-written `column_exists?` guard.
 
+## Ruby upgrades
+
+Deploy a Ruby bump only after `bundle install` has run on the server under the new Ruby, in a copy of the current release; both RVM installs and the bundled Bundler can differ from CI.
+
 ## Code Conventions
 
 - Start every Ruby file with `# frozen_string_literal: true` (project-wide convention, matches the Rails framework's own AGENTS.md guidance).
