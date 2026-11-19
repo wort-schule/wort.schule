@@ -35,6 +35,9 @@ module CrudTests
       click_on t("actions.edit"), match: :first
       fill_in "#{singular}[name]", with: "Anderer Name"
       click_on t("helpers.submit.update")
+      # Wait for the redirect away from the form before reading the database,
+      # or the reload can run before the update request has been handled.
+      assert_no_field "#{singular}[name]"
 
       entry.reload
       assert_equal "Anderer Name", entry.name
