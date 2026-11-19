@@ -32,8 +32,9 @@ gem "importmap-rails"
 gem "jbuilder"
 gem "kaminari"
 gem "langchainrb", require: "langchain"
-# json 3 dropped the quirks_mode option that json-schema 5 passes, and langchainrb
-# still caps json-schema below 6. Lift this pin once langchainrb allows json-schema 6.
+# json 3 raises on unknown options, and json-schema 5 still passes quirks_mode
+# (removed back in json 2.0, silently ignored until 3). langchainrb caps
+# json-schema below 6. Lift this pin once langchainrb allows json-schema 6.
 gem "json", "< 3"
 gem "liquid"
 gem "meta-tags"
