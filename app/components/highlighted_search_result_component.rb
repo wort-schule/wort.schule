@@ -17,6 +17,11 @@ class HighlightedSearchResultComponent < ViewComponent::Base
     @hit_in = compute_hit_in
   end
 
+  # The query is user input: escape it so it is matched as plain text.
+  def query_pattern
+    @query_pattern ||= Regexp.new(Regexp.escape(query.to_s), Regexp::IGNORECASE)
+  end
+
   private
 
   def compute_parts
@@ -25,7 +30,7 @@ class HighlightedSearchResultComponent < ViewComponent::Base
 
     result
       .public_send(hit_in)
-      .split(/(#{query})/i)
+      .split(/(#{query_pattern})/)
       .select(&:present?)
       .map do |part|
         part.gsub(" ", "&nbsp;")
@@ -33,10 +38,10 @@ class HighlightedSearchResultComponent < ViewComponent::Base
   end
 
   def compute_hit_in
-    return :full_name if result.name&.match?(/#{query}/i)
-    return :full_plural if result.plural&.match?(/#{query}/i)
-    return :comparative if result.comparative&.match?(/#{query}/i)
-    return :superlative if result.superlative&.match?(/#{query}/i)
+    return :full_name if result.name&.match?(query_pattern)
+    return :full_plural if result.plural&.match?(query_pattern)
+    return :comparative if result.comparative&.match?(query_pattern)
+    return :superlative if result.superlative&.match?(query_pattern)
     :full_name if result.cologne_phonetics&.any? do |term|
       term.match?(ColognePhonetics.encode(query))
     end
