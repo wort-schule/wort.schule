@@ -9,6 +9,9 @@ updates:
       # Remove this once the app runs on a Rails version that lifts the cap.
       - dependency-name: redis
         update-types: ['version-update:semver-major']
+      # json 3 breaks json-schema 5, which langchainrb pins; see the Gemfile.
+      - dependency-name: json
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: '/'
