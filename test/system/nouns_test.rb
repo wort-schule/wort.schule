@@ -127,12 +127,12 @@ class NounsTest < ApplicationSystemTestCase
   test "ignores hits from bots" do
     noun = create(:noun, name: "Ticken")
 
-    page.driver.headers = {"User-Agent" => "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"}
+    page.driver.browser.headers.set({"User-Agent" => "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"})
     assert_equal 0, noun.reload.hit_counter
     visit noun_path(noun)
     assert_equal 0, noun.reload.hit_counter
 
-    page.driver.headers = {"User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"}
+    page.driver.browser.headers.set({"User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"})
     assert_equal 0, noun.reload.hit_counter
     visit noun_path(noun)
     assert_equal 1, noun.reload.hit_counter
