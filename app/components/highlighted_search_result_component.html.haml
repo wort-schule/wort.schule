@@ -4,6 +4,6 @@
   - else
     .flex.items-baseline
       - parts.each do |part|
-        %span{ class: part.match?(/#{query}/i) ? 'bg-search-highlight' : '' }
+        %span{ class: part.match?(query_pattern) ? 'bg-search-highlight' : '' }
           = part.html_safe
   %span= t hit_in, scope: :words, base: result.full_name

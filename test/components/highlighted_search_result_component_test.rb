@@ -19,4 +19,12 @@ class HighlightedSearchResultComponentTest < ApplicationViewComponentTestCase
     # Noun with article
     assert_equal ["das&nbsp;", "Hau", "s"], HighlightedSearchResultComponent.new(result: Noun.new(name: "Haus", genus_id: 2), query: "hau").parts
   end
+
+  # The query comes straight from the search box, so it must be matched as
+  # plain text and never compiled as a regular expression.
+  test "treats regexp characters in the query as plain text" do
+    assert_nil HighlightedSearchResultComponent.new(result: Word.new(name: "Haus"), query: "(").hit_in
+    assert_nil HighlightedSearchResultComponent.new(result: Word.new(name: "Haus"), query: "h.us").hit_in
+    assert_equal :full_name, HighlightedSearchResultComponent.new(result: Word.new(name: "Haus"), query: "AU").hit_in
+  end
 end
